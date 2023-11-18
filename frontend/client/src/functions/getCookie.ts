@@ -1,0 +1,1 @@
+export const getCookie = (name:string)=>document.cookie.split(';').find(c => c.trim().startsWith(`${name}=`))?.replace(`${name}=`, '')
