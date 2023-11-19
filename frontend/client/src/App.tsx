@@ -49,16 +49,19 @@ export default function App() {
   const navigate = useNavigate()
   const { pathname } = useLocation()
 
-  /* useEffect(() => {
+  useEffect(() => {
     //code for reloading on code change during development
-    new Sockette('ws://localhost:5000/reloadws', {
+    new Sockette('ws://localhost:3000/reloadws', {
       timeout: 5000,
-      maxAttempts: 10,
+      maxAttempts: 1,
+      onopen(){
+        //console.log('ws opened')
+      },
       onreconnect: () => {
         window.location.reload()
       },
     })
-  }, []) */
+  }, [])
 
   //let data: any = useLoaderData()
 
