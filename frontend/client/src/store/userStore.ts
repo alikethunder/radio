@@ -2,7 +2,7 @@ import { createStore } from '@udecode/zustood'
 
 import {
   FrontUser,
-} from '../../types'
+} from '@/types'
 
 export const userStore = createStore('app')({
   id: null,

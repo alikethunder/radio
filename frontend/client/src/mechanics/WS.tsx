@@ -2,7 +2,7 @@ import { FC, useMemo, useEffect, createRef, useState } from "react"
 
 import Sockette from 'sockette'
 
-import { actions, useTrackedStore, store, useStore } from "../store"
+import { actions, useTrackedStore, store, useStore } from "@/store"
 
 export const WS: FC = () => {
 

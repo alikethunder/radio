@@ -1,7 +1,7 @@
 import { FC, useCallback, useEffect } from "react"
 
 import { Toast, ToastProps } from 'primereact/toast'
-import { actions, store } from "../../store"
+import { actions, store } from "@/store"
 
 export const Toasts: FC = () => {
   const positions = Object.getOwnPropertyNames(store.toast).filter(p=>p!='state') as ToastProps['position'][]

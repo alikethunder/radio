@@ -13,7 +13,7 @@ import { Toast } from 'primereact/toast'
 import {
   QueryLink,
   GoogleOAuth,
-} from "../../../components"
+} from "@/components"
 
 import { classNames } from 'primereact/utils'
 
@@ -22,12 +22,12 @@ import {
   store,
   actions,
   useTrackedStore,
-} from "../../../store"
+} from "@/store"
 
 import {
   User,
   FrontUser,
-} from '../../../../types'
+} from '@/types'
 
 type SigninUser = { [Property in keyof User as Exclude<Property, "name" | "id">]: User[Property] }
 

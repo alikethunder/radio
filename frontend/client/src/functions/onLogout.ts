@@ -5,7 +5,7 @@ import {
 import {
   actions,
   store,
-} from "../store"
+} from "@/store"
 
 export const onLogout = ()=>{
 

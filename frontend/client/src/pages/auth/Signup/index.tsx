@@ -7,7 +7,7 @@ import {
 import {
   QueryLink,
   GoogleOAuth,
-} from "../../../components"
+} from "@/components"
 
 import { Button } from 'primereact/button'
 import { InputText } from 'primereact/inputtext'
@@ -18,14 +18,14 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import {
   store,
   actions,
-} from "../../../store"
+} from "@/store"
 
 import './index.sass'
 
 import {
   User,
   FrontUser,
-} from '../../../../types'
+} from '@/types'
 
 export const Signup: FC = () => {
   const navigate = useNavigate()

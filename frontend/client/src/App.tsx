@@ -35,7 +35,7 @@ import {
 
 import {
   FrontUser,
-} from '../types'
+} from '@/types'
 
 import {
   logout,

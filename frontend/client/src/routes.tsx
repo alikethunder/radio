@@ -16,7 +16,7 @@ import {
 
 import {
   FrontUser,
-} from '../types'
+} from '@/types'
 
 const IdElem = () => {
   const { id } = useLoaderData() as { id: string }

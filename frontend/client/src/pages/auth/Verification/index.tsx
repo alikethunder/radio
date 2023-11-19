@@ -6,7 +6,7 @@ import {
 
 import {
   QueryLink
-} from "../../../components"
+} from "@/components"
 
 import { Button } from 'primereact/button'
 import { InputText } from 'primereact/inputtext'
@@ -21,14 +21,14 @@ import {
   store,
   actions,
   useTrackedStore,
-} from "../../../store"
+} from "@/store"
 
 import './index.sass'
 
 import {
   User,
   FrontUser,
-} from '../../../../types'
+} from '@/types'
 
 export const Verification: FC = () => {
 

@@ -6,7 +6,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/template/html/v2"
 	"go_react_starter/controllers"
-	"go_react_starter/initializers"
+	"go_react_starter/settings"
 	//"fmt"
 )
 
@@ -19,7 +19,7 @@ func main() {
 	//fmt.Println("start go")
 
 	// Load templates
-	engine := html.New("./frontend/client", ".html")
+	engine := html.New("./frontend/client/dist", ".html")
 
 	// Create app
 	app := fiber.New(fiber.Config{
@@ -27,9 +27,9 @@ func main() {
 	})
 
 	// Configure app
-	app.Static("/", "./frontend/public")
+	app.Static("/", "./frontend/client/dist")
 
-	app.Get("/", controllers.Home)
+	app.Get("*", controllers.Home)
 
 	// Start app
 	app.Listen(":" + os.Getenv("PORT"))

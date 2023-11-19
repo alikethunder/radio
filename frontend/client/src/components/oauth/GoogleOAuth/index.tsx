@@ -1,6 +1,6 @@
 import { FC, useEffect} from "react"
 
-import oauth from '../../../../settings/google_oauth.json'
+import oauth from '&/settings/google_oauth.json'
 
 export const GoogleOAuth: FC<{rememberme?: boolean}> = ({rememberme}) => {
 

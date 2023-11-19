@@ -14,8 +14,8 @@ export default defineConfig({
     //manifest: false,
     /* rollupOptions: {
       input: './src/client/index.html',
-    },
-    outDir: './public' */
+    },*/
+    //outDir: '../public' 
   },
   plugins: [
     react(), 
@@ -32,6 +32,7 @@ export default defineConfig({
   resolve: {
     alias: [
       {find: '@', replacement: path.resolve(__dirname, './src'),},
+      {find: '&', replacement: path.resolve(__dirname, '../../'),},
     ]
   },
   base: "./"
