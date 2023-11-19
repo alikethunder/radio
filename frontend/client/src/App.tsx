@@ -49,7 +49,7 @@ export default function App() {
   const navigate = useNavigate()
   const { pathname } = useLocation()
 
-  useEffect(() => {
+  /* useEffect(() => {
     //code for reloading on code change during development
     new Sockette('ws://localhost:5000/reloadws', {
       timeout: 5000,
@@ -58,29 +58,15 @@ export default function App() {
         window.location.reload()
       },
     })
-  }, [])
+  }, []) */
 
   //let data: any = useLoaderData()
 
   useEffect(() => {
-    (async () => {
-
-      let k = window.key
-      let secret = window.secret
-      document.getElementById('scriptToDelete')?.remove()
-      delete window.key
-      delete window.secret
-      //@ts-ignore
-      const importedKey = await window.crypto.subtle.importKey('jwk', k, { name: 'AES-GCM' }, true, ['encrypt', 'decrypt'])
-
-      actions.auth.importedKey(importedKey)
-      actions.auth.iv(new TextEncoder().encode(secret))
-    })()
-  }, [])
-
-  useEffect(() => {
     //**effects is running only on client
-    actions.app.isClient(true)
+    if (typeof window !== 'undefined') {
+      actions.app.isClient(true)
+    }
   }, [])
 
   useEffect(() => {
@@ -114,7 +100,7 @@ export default function App() {
       appendTo: 'self',
       ripple: true,
     }}>
-      <WS />
+      {/*  <WS /> */}
       <Outlet />
 
       <div className="logout" onClick={logout}>Logout</div>

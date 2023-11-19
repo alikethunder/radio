@@ -11,11 +11,7 @@ export default defineConfig({
     sourcemap: true,
     chunkSizeWarningLimit: 1500,
     target: 'es2015',
-    //manifest: false,
-    /* rollupOptions: {
-      input: './src/client/index.html',
-    },*/
-    //outDir: '../public' 
+    outDir: '../../build/public' 
   },
   plugins: [
     react(), 
