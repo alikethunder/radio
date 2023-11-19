@@ -20,7 +20,7 @@ func main() {
 	//fmt.Println("start go")
 
 	// Load templates
-	engine := html.New("./build/public", ".html")
+	engine := html.New("./public", ".html")
 
 	// Create app
 	app := fiber.New(fiber.Config{
@@ -28,7 +28,7 @@ func main() {
 	})
 
 	// Configure app
-	app.Static("/", "./build/public")
+	app.Static("/", "./public")
 
 	app.Get("*", controllers.Home)
 

@@ -93,7 +93,7 @@ export const Signup: FC = () => {
 
       <form onSubmit={handleSubmit(onSubmit)} className="sm:border-1 surface-border sm:surface-card border-round py-5 px-4 md:px-5 z-1 sm:shadow-2 w-full md:w-30rem">
 
-        <div className="text-900 text-xl font-bold mb-5 flex justify-content-center">Registration</div>
+        <div className="text-900 text-xl font-bold mb-5 flex justify-content-center">Registration1</div>
 
         <div className="flex flex-column">
 

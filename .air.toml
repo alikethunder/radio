@@ -16,9 +16,9 @@ tmp_dir = "build"
   # Watch these filename extensions.
   include_ext = ["go", "html"]
   # Ignore these filename extensions or directories.
-  exclude_dir = ["frontend", "build/main"]
+  exclude_dir = ["frontend"]
   # Watch these directories if you specified.
-  include_dir = []
+  include_dir = ["public"]
   # Exclude files.
   exclude_file = []
   # It's not necessary to trigger build each time file changes if it's too frequent.
