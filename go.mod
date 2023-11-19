@@ -14,13 +14,16 @@ require (
 	github.com/fasthttp/websocket v1.5.7 // indirect
 	github.com/fatih/color v1.16.0 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
+	github.com/gocql/gocql v1.6.0 // indirect
 	github.com/gofiber/contrib/websocket v1.2.2 // indirect
 	github.com/gofiber/fiber/v2 v2.51.0 // indirect
 	github.com/gofiber/template v1.8.2 // indirect
 	github.com/gofiber/template/html/v2 v2.0.5 // indirect
 	github.com/gofiber/utils v1.1.0 // indirect
 	github.com/gohugoio/hugo v0.120.4 // indirect
+	github.com/golang/snappy v0.0.4 // indirect
 	github.com/google/uuid v1.4.0 // indirect
+	github.com/hailocab/go-hostpool v0.0.0-20160125115350-e80d13ce29ed // indirect
 	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/klauspost/compress v1.17.3 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
@@ -30,6 +33,8 @@ require (
 	github.com/pelletier/go-toml/v2 v2.1.0 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
 	github.com/savsgio/gotils v0.0.0-20230208104028-c358bd845dee // indirect
+	github.com/scylladb/go-reflectx v1.0.1 // indirect
+	github.com/scylladb/gocqlx/v2 v2.8.0 // indirect
 	github.com/spf13/afero v1.10.0 // indirect
 	github.com/tdewolff/parse/v2 v2.7.5 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
@@ -39,4 +44,5 @@ require (
 	golang.org/x/sys v0.14.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
+	gopkg.in/inf.v0 v0.9.1 // indirect
 )
