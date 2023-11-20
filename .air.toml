@@ -16,9 +16,9 @@ tmp_dir = "build"
   # Watch these filename extensions.
   include_ext = ["go", "html"]
   # Ignore these filename extensions or directories.
-  exclude_dir = ["frontend"]
+  exclude_dir = ["frontend", "build", "bin"]
   # Watch these directories if you specified.
-  include_dir = ["public"]
+  include_dir = []
   # Exclude files.
   exclude_file = []
   # It's not necessary to trigger build each time file changes if it's too frequent.
@@ -27,6 +27,9 @@ tmp_dir = "build"
   stop_on_error = true
   # This log file places in your tmp_dir.
   log = "air_errors.log"
+  send_interrupt = false
+  # Delay after sending Interrupt signal
+  kill_delay = 500 # ms
 
 [log]
   # Show log time
