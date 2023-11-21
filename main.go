@@ -8,9 +8,10 @@ import (
 	"github.com/gofiber/template/html/v2"
 	"go_react_starter/controllers"
 	//"go_react_starter/settings"
-	//"fmt"
+	"fmt"
 	"github.com/gofiber/contrib/websocket"
 	_ "github.com/joho/godotenv/autoload"
+	"go_react_starter/db"
 )
 
 func init() {
@@ -19,7 +20,7 @@ func init() {
 
 func main() {
 
-	//fmt.Println("start go")
+	fmt.Println(db.Cluster)
 
 	// Load templates
 	engine := html.New("./public", ".html")
