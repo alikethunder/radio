@@ -19,8 +19,8 @@ func init() {
 }
 
 func main() {
-
-	fmt.Println(db.Cluster)
+	fmt.Println("start server")
+	//fmt.Println(db.Session)
 
 	// Load templates
 	engine := html.New("./public", ".html")

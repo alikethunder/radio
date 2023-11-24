@@ -1,3 +1,7 @@
+1. Start db service
+  
+  sudo systemctl start scylla-server
+
 1. To start dev server
   
   air -c .air.toml & npm --prefix ./frontend/client run build:watch
