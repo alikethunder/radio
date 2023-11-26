@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"github.com/gofiber/contrib/websocket"
 	_ "github.com/joho/godotenv/autoload"
+	"go_react_starter/Users"
 	"go_react_starter/db"
 )
 
@@ -20,7 +21,9 @@ func init() {
 
 func main() {
 	fmt.Println("start server")
-	//fmt.Println(db.Session)
+	defer db.Session.Close()
+
+	fmt.Println(Users.GetAll())
 
 	// Load templates
 	engine := html.New("./public", ".html")

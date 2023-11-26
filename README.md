@@ -1,8 +1,8 @@
-1. Start db service
+1. To start dev server
+
+  #Start db service
   
   sudo systemctl start scylla-server
-
-1. To start dev server
   
   air -c .air.toml & npm --prefix ./frontend/client run build:watch
   (This will run go build with hot reload and building to ./build/main and vite build watching frontend/client building to ./public )
