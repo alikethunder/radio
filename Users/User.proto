@@ -1,0 +1,15 @@
+syntax = 'proto3';
+
+package Users;
+
+message User {
+  string id = 1;
+  string name = 2;
+  string email = 3;
+  string password = 4;
+  uint64 created = 5;
+  uint64 updated = 6;
+  bool rememberme = 7;
+  uint32 verification_code = 8;
+  uint64 verification_code_created = 9;
+}
