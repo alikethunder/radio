@@ -42,24 +42,11 @@ export const Signup: FC = () => {
   const onSubmit: SubmitHandler<User> = async (form) => {
     //console.log('form submit : ', form)
 
-    const text = JSON.stringify(form)
-
-    const encodedText = new TextEncoder().encode(text)
-
-    const body = await crypto.subtle.encrypt(
-      {
-        name: store.auth.name(),
-        iv: store.auth.iv() as Uint8Array
-      },
-      store.auth.importedKey() as CryptoKey,
-      encodedText
-    )
-
     let res = await fetch('/auth/signup', {
       method: 'POST',
-      body,
+      body: JSON.stringify(form),
       headers: {
-        'Content-Type': 'arrayBuffer'
+        'Content-Type': 'application/json'
       },
     })
 

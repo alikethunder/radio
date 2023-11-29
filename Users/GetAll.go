@@ -1,7 +1,10 @@
 package Users
 
-import "go_react_starter/db"
-import "github.com/gocql/gocql"
+import (
+	"github.com/gocql/gocql"
+	"go_react_starter/db"
+	"time"
+)
 
 var query = db.Session.Query("SELECT * FROM users")
 
@@ -14,8 +17,8 @@ func GetAll() []User {
 		userList = append(userList, User{
 			Id:      m["id"].(gocql.UUID),
 			Name:    m["name"].(string),
-			Created: m["created"].(uint64),
-			Updated: m["updated"].(uint64),
+			Created: m["created"].(time.Time),
+			Updated: m["updated"].(time.Time),
 			Email:   m["email"].(string),
 		})
 

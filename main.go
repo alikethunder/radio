@@ -5,16 +5,17 @@ import (
 	"os"
 
 	"go_react_starter/controllers"
-	"go_react_starter/functions"
+	//"go_react_starter/functions"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/template/html/v2"
 
 	//"go_react_starter/settings"
 	"fmt"
-	"go_react_starter/Users"
+	//"go_react_starter/Users"
 	"go_react_starter/db"
 
+	"github.com/goccy/go-json"
 	"github.com/gofiber/contrib/websocket"
 	_ "github.com/joho/godotenv/autoload"
 )
@@ -27,7 +28,7 @@ func main() {
 	fmt.Println("start server")
 	defer db.Session.Close()
 
-	fmt.Println(Users.GetAll())
+	//fmt.Println(Users.GetAll())
 	//fmt.Println(functions.Vc())
 
 	// Load templates
@@ -35,13 +36,17 @@ func main() {
 
 	// Create app
 	app := fiber.New(fiber.Config{
-		Views: engine,
+		Views:       engine,
+		JSONEncoder: json.Marshal,
+		JSONDecoder: json.Unmarshal,
 	})
 
 	// Configure app
 	app.Static("/", "./public")
 
-	app.Use('')
+	auth := app.Group("/auth")
+
+	auth.Post("/signup", controllers.Signup)
 
 	app.Use("/reloadws", func(c *fiber.Ctx) error {
 		// IsWebSocketUpgrade returns true if the client

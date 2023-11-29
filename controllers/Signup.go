@@ -1,7 +1,20 @@
 package controllers
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"fmt"
+	"go_react_starter/Users"
+
+	"github.com/gofiber/fiber/v2"
+)
 
 func Signup(c *fiber.Ctx) error {
-	return c.Render("index", fiber.Map{})
+	c.Accepts("application/json")
+
+	u := new(Users.User)
+	if err := c.BodyParser(u); err != nil {
+		return err
+	}
+	fmt.Println(u)
+
+	return c.Send(c.Body())
 }
