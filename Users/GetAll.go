@@ -12,7 +12,7 @@ func GetAll() []User {
 
 	for iterable.MapScan(m) {
 		userList = append(userList, User{
-			//Id:      m["id"].(gocql.UUID),
+			Id:      m["id"].(gocql.UUID),
 			Name:    m["name"].(string),
 			Created: m["created"].(uint64),
 			Updated: m["updated"].(uint64),
