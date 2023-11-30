@@ -6,12 +6,12 @@ import (
 	"time"
 )
 
-var query = db.Session.Query("SELECT * FROM users")
+var getAll = db.Session.Query("SELECT * FROM users")
 
 func GetAll() []User {
 	var userList []User
 	m := map[string]interface{}{}
-	iterable := query.Iter()
+	iterable := getAll.Iter()
 
 	for iterable.MapScan(m) {
 		userList = append(userList, User{

@@ -20,6 +20,8 @@ func init() {
 		panic(err)
 	}
 
+	Session.Query("CREATE KEYSPACE IF NOT EXISTS app WITH replication = { 'class' : 'SimpleStrategy', 'replication_factor': 1}").Exec()
+
 	fmt.Println("db initialized sucessfully")
 
 }

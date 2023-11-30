@@ -14,7 +14,9 @@ func Signup(c *fiber.Ctx) error {
 	if err := c.BodyParser(u); err != nil {
 		return err
 	}
-	fmt.Println(u)
+	fmt.Println("Signup user : ", u)
+
+	Users.Create(*u)
 
 	return c.Send(c.Body())
 }
