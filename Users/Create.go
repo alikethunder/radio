@@ -1,15 +1,15 @@
 package Users
 
 import (
+	"errors"
 	"fmt"
 	"go_react_starter/db"
-	"log"
 	"time"
 
 	"github.com/gocql/gocql"
 )
 
-func Create(user User) User {
+func Create(user User) (User, error) {
 
 	tm := time.Now()
 	fmt.Println("Create user : ", user)
@@ -24,15 +24,16 @@ func Create(user User) User {
 		fmt.Println("create user check existing_email : ", existing_email)
 
 		if err := db.Session.Query("INSERT INTO users (id, name, email, updated) VALUES (?, ?, ?, ?)", gocql.TimeUUID(), user.Name, user.Email, tm).Exec(); err != nil {
-
-			log.Fatal("insert into users : ", err)
+			return User{}, err
 		}
 
-	} else {
+		//return GetByParameter
 
+	} else {
+		return User{}, errors.New("email exists")
 	}
 
 	//fmt.Println("inserted user : ", u)
 
-	return u
+	return u, nil
 }

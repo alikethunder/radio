@@ -16,7 +16,9 @@ func Signup(c *fiber.Ctx) error {
 	}
 	fmt.Println("Signup user : ", u)
 
-	Users.Create(*u)
-
+	/* if u, err := Users.Create(*u); err != nil {
+		return 403
+	} */
+	//return 200 and user
 	return c.Send(c.Body())
 }
