@@ -1,28 +1,19 @@
 package Users
 
 import (
-	"github.com/gocql/gocql"
 	"go_react_starter/db"
-	"time"
 )
 
 var getAll = db.Session.Query("SELECT * FROM users")
 
-func GetAll() []User {
-	var userList []User
-	m := map[string]interface{}{}
+func GetAll() []UserMap {
+	var userList []UserMap
+	var user UserMap
 	iterable := getAll.Iter()
 
-	for iterable.MapScan(m) {
-		userList = append(userList, User{
-			Id:      m["id"].(gocql.UUID),
-			Name:    m["name"].(string),
-			Created: m["created"].(time.Time),
-			Updated: m["updated"].(time.Time),
-			Email:   m["email"].(string),
-		})
+	for iterable.MapScan(user) {
+		userList = append(userList, user)
 
-		m = map[string]interface{}{}
 	}
 	return userList
 }

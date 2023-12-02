@@ -9,31 +9,24 @@ import (
 	"github.com/gocql/gocql"
 )
 
-func Create(user User) (User, error) {
+func Create(user UserMap) (UserMap, error) {
 
 	tm := time.Now()
 	fmt.Println("Create user : ", user)
-	var u User
 	var existing_email string
 
-	db.Session.Query("SELECT Email FROM users WHERE Email = ? LIMIT 1 ALLOW FILTERING", user.Email).Scan(&existing_email)
+	db.Session.Query(`SELECT email FROM users WHERE email = ? LIMIT 1 ALLOW FILTERING`, user["email"]).Scan(&existing_email)
 
-	if existing_email != user.Email {
+	if existing_email != user["email"] {
 		//new user
 
-		fmt.Println("create user check existing_email : ", existing_email)
-
-		if err := db.Session.Query("INSERT INTO users (Id, Name, Email, Updated) VALUES (?, ?, ?, ?)", gocql.TimeUUID(), user.Name, user.Email, tm).Exec(); err != nil {
-			return User{}, err
+		if err := db.Session.Query(`INSERT INTO users (id, name, email, updated) VALUES (?, ?, ?, ?)`, gocql.TimeUUID(), user["name"], user["email"], tm).Exec(); err != nil {
+			return nil, err
 		}
 
-		//return GetByParameter
+		return GetByParameters(user, "id", "name", "email", "updated")
 
 	} else {
-		return User{}, errors.New("email exists")
+		return nil, errors.New("email exists")
 	}
-
-	//fmt.Println("inserted user : ", u)
-
-	return u, nil
 }
