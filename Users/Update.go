@@ -1,5 +1,5 @@
 package Users
 
-func Update(user User) {
+func Update(user UserMap) {
 
 }
