@@ -15,7 +15,7 @@ func Create(user UserMap) (UserMap, error) {
 	var existing_email string
 
 	//add to query condition password not null
-	db.Session.Query(`SELECT email FROM users WHERE email = ? AND WHERE password IS NOT NULL LIMIT 1 ALLOW FILTERING`, user["email"]).Scan(&existing_email)
+	db.Session.Query(`SELECT email FROM users WHERE email = ? AND password IS NOT NULL LIMIT 1 ALLOW FILTERING`, user["email"]).Scan(&existing_email)
 
 	if existing_email != user["email"] {
 		//new user
