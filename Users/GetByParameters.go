@@ -32,11 +32,11 @@ func GetByParameters(user UserMap, keys ...string) (UserMap, error) {
 		querystring.WriteString(`* `)
 	}
 
-	querystring.WriteString(`FROM users WHERE `)
+	querystring.WriteString(`FROM users WHERE id = ? AND email = ? `)
 
-	var values []interface{}
+	/*var values []interface{}
 
-	i := 0
+	 i := 0
 	for k, v := range user {
 
 		querystring.WriteString(k)
@@ -49,12 +49,13 @@ func GetByParameters(user UserMap, keys ...string) (UserMap, error) {
 		values = append(values, v)
 		i++
 	}
+	*/
 
 	fmt.Println("[GetByParameters] querystring : ", querystring.String())
 
-	fmt.Println("[GetByParameters] values : ", values)
+	//fmt.Println("[GetByParameters] values : ", values)
 
-	if err := db.Session.Query(querystring.String(), values...).MapScan(u); err != nil {
+	if err := db.Session.Query(querystring.String(), user["id"], user["email"]).MapScan(u); err != nil {
 		return nil, err
 	}
 

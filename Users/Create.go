@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"go_react_starter/db"
+	"go_react_starter/functions"
 	"time"
 
 	"github.com/gocql/gocql"
@@ -21,14 +22,16 @@ func Create(user UserMap) (UserMap, error) {
 		//new user
 
 		tm := time.Now()
+		id := gocql.TimeUUID()
 
-		if err := db.Session.Query(`INSERT INTO users (id, name, email, updated) VALUES (?, ?, ?, ?)`, gocql.TimeUUID(), user["name"], user["email"], tm).Exec(); err != nil {
+		if err := db.Session.Query(`INSERT INTO users (id, name, email, updated) VALUES (?, ?, ?, ?)`, id, user["name"], user["email"], tm).Exec(); err != nil {
 			return nil, err
 		}
 
 		//update with verification code
+		Update(UserMap{"verification_code": functions.Vc()}, id, user["email"].(string))
 
-		return GetByParameters(user, "id", "name", "email", "updated")
+		return GetByParameters(UserMap{"id": id, "email": user["email"]}, "id", "name", "email", "updated")
 
 	} else {
 		return nil, errors.New("email exists")

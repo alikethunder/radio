@@ -13,9 +13,8 @@ func init() {
 		email text,
 		password text,
 		verification_code text,
-		verification_code_created timestamp,
 		updated timestamp,
-		PRIMARY KEY (id, name, email, password)
+		PRIMARY KEY (id, email)
 	)`).Exec(); err != nil {
 
 		log.Fatal("create users TABLE err : ", err)

@@ -26,11 +26,11 @@ export type User = {
 } & {
   id: number;
 } & {
-    [key in 'verification_code'// 8-digit verification code
-    | 'verification_code_created'
+    [
+    key in 'verification_code'// 8-digit verification code
     ]?: string | null;
   }
 
-export type FrontUser = (Pick<User, 'name' | 'email' | 'created' | 'updated'>) & {id: number | null}
+export type FrontUser = (Pick<User, 'name' | 'email' | 'created' | 'updated'>) & { id: number | null }
 
-export type VerificationUser = (Pick<User, 'verification_code' | 'name' | 'email' | 'created'>) & {id: number | null}
+export type VerificationUser = (Pick<User, 'verification_code' | 'name' | 'email' | 'created'>) & { id: number | null }
