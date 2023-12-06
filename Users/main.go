@@ -19,6 +19,11 @@ func init() {
 
 		log.Fatal("create users TABLE err : ", err)
 	}
+	/*
+		if err := db.Session.Query(`CREATE INDEX ON users(password)`).Exec(); err != nil {
+
+			log.Fatal("create INDEX on users err : ", err)
+		} */
 
 	fmt.Println("users TABLE CREATED")
 }

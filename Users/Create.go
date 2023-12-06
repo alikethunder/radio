@@ -2,7 +2,7 @@ package Users
 
 import (
 	"errors"
-	"fmt"
+	//"fmt"
 	"go_react_starter/db"
 	"go_react_starter/functions"
 	"time"
@@ -12,13 +12,11 @@ import (
 
 func Create(user UserMap) (UserMap, error) {
 
-	fmt.Println("Create user : ", user)
-	var existing_email string
+	//fmt.Println("Create user : ", user)
+	var password string
 
 	//add to query condition password not null
-	db.Session.Query(`SELECT email FROM users WHERE email = ? AND password IS NOT NULL LIMIT 1 ALLOW FILTERING`, user["email"]).Scan(&existing_email)
-
-	if existing_email != user["email"] {
+	if err := db.Session.Query(`SELECT password FROM users WHERE email = ? LIMIT 1 ALLOW FILTERING`, user["email"]).Scan(&password); err != nil && err.Error() == "not found" || password != "" {
 		//new user
 
 		tm := time.Now()
@@ -33,7 +31,6 @@ func Create(user UserMap) (UserMap, error) {
 
 		return GetByParameters(UserMap{"id": id, "email": user["email"]}, "id", "name", "email", "updated")
 
-	} else {
-		return nil, errors.New("email exists")
 	}
+	return nil, errors.New("email exists")
 }

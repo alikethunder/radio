@@ -1,14 +1,14 @@
 package Users
 
 import (
-	"fmt"
+	//"fmt"
 	"strings"
 
 	"go_react_starter/db"
 )
 
 func GetByParameters(user UserMap, keys ...string) (UserMap, error) {
-	fmt.Println("[GetByParameters] user : ", user)
+	//fmt.Println("[GetByParameters] user : ", user)
 	u := make(UserMap)
 
 	//keys = what columns to select
@@ -51,7 +51,7 @@ func GetByParameters(user UserMap, keys ...string) (UserMap, error) {
 	}
 	*/
 
-	fmt.Println("[GetByParameters] querystring : ", querystring.String())
+	//fmt.Println("[GetByParameters] querystring : ", querystring.String())
 
 	//fmt.Println("[GetByParameters] values : ", values)
 
@@ -59,7 +59,7 @@ func GetByParameters(user UserMap, keys ...string) (UserMap, error) {
 		return nil, err
 	}
 
-	fmt.Println(`[GetByParameters] user from db : `, u)
+	//fmt.Println(`[GetByParameters] user from db : `, u)
 	return u, nil
 
 }
