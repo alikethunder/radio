@@ -6,7 +6,7 @@ import (
 	"log"
 )
 
-func init() {
+func Initialize() {
 	if err := db.Session.Query(`CREATE TABLE IF NOT EXISTS users (
 		id uuid,
 		name text,

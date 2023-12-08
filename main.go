@@ -4,7 +4,9 @@ import (
 	"log"
 	"os"
 
+	"go_react_starter/Users"
 	"go_react_starter/controllers"
+	"go_react_starter/db"
 	//"go_react_starter/functions"
 
 	"github.com/gofiber/fiber/v2"
@@ -12,8 +14,6 @@ import (
 
 	//"go_react_starter/settings"
 	"fmt"
-	//"go_react_starter/Users"
-	"go_react_starter/db"
 
 	"github.com/goccy/go-json"
 	"github.com/gofiber/contrib/websocket"
@@ -22,6 +22,7 @@ import (
 
 func init() {
 	//initializers.LoadEnvVars()
+	Users.Initialize()
 }
 
 func main() {

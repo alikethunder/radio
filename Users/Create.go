@@ -1,11 +1,13 @@
 package Users
 
 import (
-	"errors"
-	//"fmt"
 	"go_react_starter/db"
 	"go_react_starter/functions"
+	"go_react_starter/mailer"
+
+	"errors"
 	"time"
+	//"fmt"
 
 	"github.com/gocql/gocql"
 )
@@ -26,8 +28,11 @@ func Create(user UserMap) (UserMap, error) {
 			return nil, err
 		}
 
+		vc := functions.Vc()
 		//update with verification code
-		Update(UserMap{"verification_code": functions.Vc()}, id, user["email"].(string))
+		Update(UserMap{"verification_code": vc}, id, user["email"].(string))
+
+		mailer.SendVc(vc, user["email"].(string), user["name"].(string))
 
 		return GetByParameters(UserMap{"id": id, "email": user["email"]}, "id", "name", "email", "updated")
 
