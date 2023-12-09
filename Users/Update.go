@@ -29,7 +29,7 @@ func Update(user UserMap, id gocql.UUID, email string) error {
 				querystring.WriteString(` = ?`)
 
 				if i != len(user)-1 {
-					querystring.WriteString(` AND `)
+					querystring.WriteString(`, `)
 				}
 
 				values = append(values, v)
@@ -37,9 +37,11 @@ func Update(user UserMap, id gocql.UUID, email string) error {
 			i++
 		}
 
-		values = append(values, id, email)
+		values = append(values, &id, &email)
 
 		querystring.WriteString(` WHERE id = ? AND email = ?`)
+
+		//fmt.Println("[Update user] querystring : ", querystring.String(), values)
 
 		if err := db.Session.Query(querystring.String(), values...).Exec(); err != nil {
 			fmt.Println("[Update user] error : ", err)
