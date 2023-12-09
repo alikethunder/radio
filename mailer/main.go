@@ -1,22 +1,39 @@
 package mailer
 
 import (
-	//"fmt"
+	// "fmt"
+	"crypto/tls"
+	"log"
 	"net/smtp"
 )
 
 const (
-	from        = "ers@erx.example.com"
-	smtpPort    = "25"
-	smtpHost    = "127.0.0.1"
-	password    = "revelation2221"
+	from        = "aleksandr.popugaiev@gmail.com"
+	smtpPort    = "587"
+	smtpHost    = "smtp.gmail.com"
+	password    = "nfhs tfdi wbqn ichg" // google app password
 	mimeHeaders = "MIME-version: 1.0;\nContent-Type: text/html; charset=\"UTF-8\";\n\n"
+	login       = "aleksandr.popugaiev@gmail.com"
+
+	smtpHostPort = smtpHost + ":" + smtpPort
 )
 
-var Auth smtp.Auth
-
 func Initialize() {
+	auth := smtp.PlainAuth("", login, password, smtpHost)
 
-	Auth = smtp.PlainAuth("", "alikethunder@ers.example.com", password, smtpHost)
+	tlsconfig := &tls.Config{
+		InsecureSkipVerify: true,
+		ServerName:         smtpHost,
+	}
 
+	c, err := smtp.Dial(smtpHostPort)
+	if err != nil {
+		log.Panic(err)
+	}
+
+	c.StartTLS(tlsconfig)
+
+	if err = c.Auth(auth); err != nil {
+		log.Panic(err)
+	}
 }
