@@ -1,14 +1,14 @@
 package mailer
 
 import (
-	// "fmt"
 	"crypto/tls"
+	"fmt"
 	"log"
 	"net/smtp"
 )
 
 const (
-	from        = "aleksandr.popugaiev@gmail.com"
+	from        = "test@example.com"
 	smtpPort    = "587"
 	smtpHost    = "smtp.gmail.com"
 	password    = "nfhs tfdi wbqn ichg" // google app password
@@ -18,22 +18,31 @@ const (
 	smtpHostPort = smtpHost + ":" + smtpPort
 )
 
-func Initialize() {
-	auth := smtp.PlainAuth("", login, password, smtpHost)
+var Auth smtp.Auth
+var Tlsconfig *tls.Config
+var C *smtp.Client
 
-	tlsconfig := &tls.Config{
+func Initialize() {
+	var err error
+
+	Auth = smtp.PlainAuth("", login, password, smtpHost)
+
+	Tlsconfig = &tls.Config{
 		InsecureSkipVerify: true,
 		ServerName:         smtpHost,
 	}
 
-	c, err := smtp.Dial(smtpHostPort)
+	C, err = smtp.Dial(smtpHostPort)
 	if err != nil {
+		fmt.Println("[mailer initialize] Dial error : ", err)
 		log.Panic(err)
 	}
 
-	c.StartTLS(tlsconfig)
+	C.StartTLS(Tlsconfig)
 
-	if err = c.Auth(auth); err != nil {
+	if err = C.Auth(Auth); err != nil {
+		fmt.Println("[mailer initialize] Auth error : ", err)
 		log.Panic(err)
 	}
+
 }

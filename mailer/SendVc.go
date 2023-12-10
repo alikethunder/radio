@@ -12,8 +12,7 @@ const (
 func SendVc(vc string, to string, name string) {
 	//send verification code (vc) to user (name) email (to)
 
-	//VerificationCode
-	address := []string{to}
+	subject := "Subject: Verification code \n%s\n\n"
 
 	if err := SendEmail("emails/VerificationCode.html", struct {
 		Name             string
@@ -21,7 +20,7 @@ func SendVc(vc string, to string, name string) {
 	}{
 		Name:             name,
 		VerificationCode: vc,
-	}, address); err != nil {
+	}, []string{to}, subject); err != nil {
 		fmt.Println("[SendVc] error : ", err)
 	}
 

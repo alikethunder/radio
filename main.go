@@ -7,6 +7,8 @@ import (
 	"go_react_starter/Users"
 	"go_react_starter/controllers"
 	"go_react_starter/db"
+	"go_react_starter/mailer"
+
 	//"go_react_starter/functions"
 
 	"github.com/gofiber/fiber/v2"
@@ -23,11 +25,13 @@ import (
 func init() {
 	//initializers.LoadEnvVars()
 	Users.Initialize()
+	mailer.Initialize()
 }
 
 func main() {
 	fmt.Println("start server")
 	defer db.Session.Close()
+	defer mailer.C.Quit()
 
 	//fmt.Println(Users.GetAll())
 	//fmt.Println(functions.Vc())
