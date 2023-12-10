@@ -19,7 +19,6 @@ export type User = {
   | 'email'
   | 'password'
   | 'created'
-  | 'updated'
   ]: string;
 } & {
   rememberme: boolean;
@@ -31,6 +30,6 @@ export type User = {
     ]?: string | null;
   }
 
-export type FrontUser = (Pick<User, 'name' | 'email' | 'created' | 'updated'>) & { id: number | null }
+export type FrontUser = (Pick<User, 'name' | 'email' | 'created'>) & { id: number | null }
 
 export type VerificationUser = (Pick<User, 'verification_code' | 'name' | 'email' | 'created'>) & { id: number | null }

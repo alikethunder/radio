@@ -14,7 +14,7 @@ export const onLogout = ()=>{
   actions.auth.signedin(false);
 
   //@ts-ignore
-  (['id', 'name', 'email', 'created', 'updated'] as (keyof FrontUser)[]).forEach(i => actions.user[i](i === 'id' ? null : ''))
+  (['id', 'name', 'email', 'created'] as (keyof FrontUser)[]).forEach(i => actions.user[i](i === 'id' ? null : ''))
 
   //redirect to signin if failed
   if (![

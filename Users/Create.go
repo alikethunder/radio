@@ -6,7 +6,7 @@ import (
 	"go_react_starter/mailer"
 
 	"errors"
-	"time"
+	//"time"
 
 	"fmt"
 
@@ -20,17 +20,17 @@ func Create(user UserMap) (UserMap, error) {
 	var err error
 
 	//add to query condition password not null
-	if u, err = GetUser(UserMap{"email": user["email"]}, "id", "password"); err != nil {
-		//fmt.Println("[Create] GetUser error : ", err)
+	if u, err = GetUserFields(UserMap{"email": user["email"]}, "id", "password"); err != nil {
+		//fmt.Println("[Create] GetUserFields error : ", err)
 		u = make(UserMap)
 	}
 	//db.Session.Query(`SELECT id, password FROM users WHERE email = ? LIMIT 1 ALLOW FILTERING`, user["email"]).Scan(&id, &password)
 
-	//fmt.Println("[Create] GetUser : ", u, u["password"] == nil, u["password"] == "")
+	//fmt.Println("[Create] GetUserFields : ", u, u["password"] == nil, u["password"] == "")
 
 	if u["password"] == nil || u["password"] == "" {
 
-		tm := time.Now()
+		//tm := time.Now()
 
 		vc := functions.Vc()
 
@@ -40,7 +40,7 @@ func Create(user UserMap) (UserMap, error) {
 
 			u["id"] = gocql.TimeUUID()
 
-			if err := db.Session.Query(`INSERT INTO users (id, name, email, updated) VALUES (?, ?, ?, ?)`, u["id"], user["name"], user["email"], tm).Exec(); err != nil {
+			if err := db.Session.Query(`INSERT INTO users (id, name, email) VALUES (?, ?, ?)`, u["id"], user["name"], user["email"]).Exec(); err != nil {
 				return nil, err
 			}
 
@@ -51,12 +51,12 @@ func Create(user UserMap) (UserMap, error) {
 
 			//update existing user without password
 			fmt.Println("[Create] update existing user without password")
-			Update(UserMap{"verification_code": vc, "updated": tm, "name": user["name"]}, u["id"].(gocql.UUID), user["email"].(string))
+			Update(UserMap{"verification_code": vc, "name": user["name"]}, u["id"].(gocql.UUID), user["email"].(string))
 		}
 
 		mailer.SendVc(vc, user["email"].(string), user["name"].(string))
 
-		return GetUser(UserMap{"id": u["id"], "email": user["email"]}, "name", "email", "updated")
+		return GetUserFields(UserMap{"id": u["id"], "email": user["email"]}, "name", "email")
 
 	}
 

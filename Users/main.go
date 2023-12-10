@@ -13,7 +13,6 @@ func Initialize() {
 		email text,
 		password text,
 		verification_code text,
-		updated timestamp,
 		PRIMARY KEY (id, email)
 	)`).Exec(); err != nil {
 

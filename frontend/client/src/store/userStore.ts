@@ -9,7 +9,6 @@ export const userStore = createStore('app')({
   name: '',
   email: '',
   created: '',
-  updated: '',
 } as unknown as FrontUser,
   {
     persist: {

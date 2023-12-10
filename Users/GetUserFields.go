@@ -7,8 +7,8 @@ import (
 	"go_react_starter/db"
 )
 
-func GetUser(user UserMap, keys ...string) (UserMap, error) {
-	//fmt.Println("[GetUser] user : ", user)
+func GetUserFields(user UserMap, keys ...string) (UserMap, error) {
+	//fmt.Println("[GetUserFields] user : ", user)
 	u := make(UserMap)
 
 	//keys = what columns to select
@@ -52,15 +52,15 @@ func GetUser(user UserMap, keys ...string) (UserMap, error) {
 
 	querystring.WriteString(` LIMIT 1 ALLOW FILTERING`)
 
-	//fmt.Println("[GetUser] querystring : ", querystring.String())
+	//fmt.Println("[GetUserFields] querystring : ", querystring.String())
 
-	//fmt.Println("[GetUser] values : ", values)
+	//fmt.Println("[GetUserFields] values : ", values)
 
 	if err := db.Session.Query(querystring.String(), values...).MapScan(u); err != nil {
 		return nil, err
 	}
 
-	//fmt.Println(`[GetUser] user from db : `, u)
+	//fmt.Println(`[GetUserFields] user from db : `, u)
 	return u, nil
 
 }

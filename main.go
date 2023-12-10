@@ -6,6 +6,7 @@ import (
 
 	"go_react_starter/Users"
 	"go_react_starter/controllers"
+	"go_react_starter/controllers/auth"
 	"go_react_starter/db"
 	"go_react_starter/mailer"
 
@@ -51,7 +52,8 @@ func main() {
 
 	auth := app.Group("/auth")
 
-	auth.Post("/signup", controllers.Signup)
+	auth.Post("/signup", Auth.Signup)
+	auth.Post("/verification", Auth.Verification)
 
 	app.Use("/reloadws", func(c *fiber.Ctx) error {
 		// IsWebSocketUpgrade returns true if the client
@@ -93,7 +95,7 @@ func main() {
 
 	}))
 
-	app.Get("*", controllers.Home)
+	app.Get("*", controllers.Index)
 
 	// Start app
 	app.Listen(":" + os.Getenv("PORT"))
