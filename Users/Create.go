@@ -8,7 +8,7 @@ import (
 	"errors"
 	"time"
 
-	//"fmt"
+	"fmt"
 
 	"github.com/gocql/gocql"
 )
@@ -16,13 +16,19 @@ import (
 func Create(user UserMap) (UserMap, error) {
 
 	//fmt.Println("Create user : ", user)
-	var password string
-	var id gocql.UUID
+	var u UserMap
+	var err error
 
 	//add to query condition password not null
-	err := db.Session.Query(`SELECT id, password FROM users WHERE email = ? LIMIT 1 ALLOW FILTERING`, user["email"]).Scan(&id, &password)
+	if u, err = GetUser(UserMap{"email": user["email"]}, "id", "password"); err != nil {
+		//fmt.Println("[Create] GetUser error : ", err)
+		u = make(UserMap)
+	}
+	//db.Session.Query(`SELECT id, password FROM users WHERE email = ? LIMIT 1 ALLOW FILTERING`, user["email"]).Scan(&id, &password)
 
-	if password == "" {
+	//fmt.Println("[Create] GetUser : ", u, u["password"] == nil, u["password"] == "")
+
+	if u["password"] == nil || u["password"] == "" {
 
 		tm := time.Now()
 
@@ -30,24 +36,27 @@ func Create(user UserMap) (UserMap, error) {
 
 		if err != nil && err.Error() == "not found" {
 			//create new user
-			id := gocql.TimeUUID()
+			fmt.Println("[Create] create new user")
 
-			if err := db.Session.Query(`INSERT INTO users (id, name, email, updated) VALUES (?, ?, ?, ?)`, id, user["name"], user["email"], tm).Exec(); err != nil {
+			u["id"] = gocql.TimeUUID()
+
+			if err := db.Session.Query(`INSERT INTO users (id, name, email, updated) VALUES (?, ?, ?, ?)`, u["id"], user["name"], user["email"], tm).Exec(); err != nil {
 				return nil, err
 			}
 
 			//update with verification code
-			Update(UserMap{"verification_code": vc}, id, user["email"].(string))
+			Update(UserMap{"verification_code": vc}, u["id"].(gocql.UUID), user["email"].(string))
 
 		} else {
 
 			//update existing user without password
-			Update(UserMap{"verification_code": vc, "updated": tm, "name": user["name"]}, id, user["email"].(string))
+			fmt.Println("[Create] update existing user without password")
+			Update(UserMap{"verification_code": vc, "updated": tm, "name": user["name"]}, u["id"].(gocql.UUID), user["email"].(string))
 		}
 
 		mailer.SendVc(vc, user["email"].(string), user["name"].(string))
 
-		return GetByParameters(UserMap{"id": id, "email": user["email"]}, "id", "name", "email", "updated")
+		return GetUser(UserMap{"id": u["id"], "email": user["email"]}, "name", "email", "updated")
 
 	}
 

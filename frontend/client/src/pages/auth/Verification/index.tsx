@@ -48,22 +48,9 @@ export const Verification: FC = () => {
   const onSubmit: SubmitHandler<User> = async (form) => {
     //console.log('form submit : ', form)
 
-    const text = JSON.stringify({...form, email: store.user.email()})
-
-    const encodedText = new TextEncoder().encode(text)
-
-    const body = await crypto.subtle.encrypt(
-      {
-        name: store.auth.name(),
-        iv: store.auth.iv() as Uint8Array
-      },
-      store.auth.importedKey() as CryptoKey,
-      encodedText
-    )
-
     let res = await fetch('/auth/verification', {
       method: 'POST',
-      body,
+      body: JSON.stringify({...form, email: store.user.email()}),
       headers: {
         'Content-Type': 'arrayBuffer'
       },

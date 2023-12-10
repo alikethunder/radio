@@ -7,8 +7,8 @@ import (
 	"go_react_starter/db"
 )
 
-func GetByParameters(user UserMap, keys ...string) (UserMap, error) {
-	//fmt.Println("[GetByParameters] user : ", user)
+func GetUser(user UserMap, keys ...string) (UserMap, error) {
+	//fmt.Println("[GetUser] user : ", user)
 	u := make(UserMap)
 
 	//keys = what columns to select
@@ -32,11 +32,11 @@ func GetByParameters(user UserMap, keys ...string) (UserMap, error) {
 		querystring.WriteString(`* `)
 	}
 
-	querystring.WriteString(`FROM users WHERE id = ? AND email = ? `)
+	//querystring.WriteString(`FROM users WHERE id = ? AND email = ?`)
+	querystring.WriteString(`FROM users WHERE `)
+	var values []interface{}
 
-	/*var values []interface{}
-
-	 i := 0
+	i := 0
 	for k, v := range user {
 
 		querystring.WriteString(k)
@@ -49,17 +49,18 @@ func GetByParameters(user UserMap, keys ...string) (UserMap, error) {
 		values = append(values, v)
 		i++
 	}
-	*/
 
-	//fmt.Println("[GetByParameters] querystring : ", querystring.String())
+	querystring.WriteString(` LIMIT 1 ALLOW FILTERING`)
 
-	//fmt.Println("[GetByParameters] values : ", values)
+	//fmt.Println("[GetUser] querystring : ", querystring.String())
 
-	if err := db.Session.Query(querystring.String(), user["id"], user["email"]).MapScan(u); err != nil {
+	//fmt.Println("[GetUser] values : ", values)
+
+	if err := db.Session.Query(querystring.String(), values...).MapScan(u); err != nil {
 		return nil, err
 	}
 
-	//fmt.Println(`[GetByParameters] user from db : `, u)
+	//fmt.Println(`[GetUser] user from db : `, u)
 	return u, nil
 
 }
