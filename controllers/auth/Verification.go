@@ -33,6 +33,12 @@ func Verification(c *fiber.Ctx) error {
 
 		Users.Update(Users.UserMap{"password": p, "verification_code": nil}, user["id"].(gocql.UUID), u["email"].(string))
 
+		//set auth cookie
+		auth := new(fiber.Cookie)
+		auth.Name = "auth"
+		auth.Value = ""
+
+		c.Cookie(auth)
 		return c.Status(fiber.StatusOK).JSON(Users.UserMap{"id": user["id"], "created": user["id"].(gocql.UUID).Timestamp(), "name": user["name"]})
 
 	}
