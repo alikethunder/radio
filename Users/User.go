@@ -1,7 +1,7 @@
 package Users
 
 import (
-	"time"
+	//"time"
 
 	"github.com/gocql/gocql"
 )

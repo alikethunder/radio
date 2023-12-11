@@ -21,10 +21,10 @@ func Verification(c *fiber.Ctx) error {
 
 	//fmt.Println("Signup user : ", u)
 
-	user, err := Users.GetUserFields(Users.UserMap{"email": u["email"]}, "id", "verification_code")
+	user, err := Users.GetUserFields(Users.UserMap{"email": u["email"]}, "id", "verification_code", "name")
 
 	if err != nil {
-		fmt.Println("[Verification] error : ", err)
+		fmt.Println("[Verification] GetUserFields error : ", err)
 	}
 
 	if user != nil && user["verification_code"] == u["verification_code"] {
@@ -33,10 +33,8 @@ func Verification(c *fiber.Ctx) error {
 
 		Users.Update(Users.UserMap{"password": p, "verification_code": nil}, user["id"].(gocql.UUID), u["email"].(string))
 
-		return c.Status(fiber.StatusOK).JSON(Users.UserMap{"id": user["id"], "created": user["id"].(gocql.UUID).Timestamp(), "name": })
+		return c.Status(fiber.StatusOK).JSON(Users.UserMap{"id": user["id"], "created": user["id"].(gocql.UUID).Timestamp(), "name": user["name"]})
 
-	} else {
-		fmt.Println("user created : ", user)
 	}
 
 	return c.SendStatus(fiber.StatusForbidden)
