@@ -16,6 +16,7 @@ require (
 	github.com/gocql/gocql v1.6.0 // indirect
 	github.com/gofiber/template v1.8.2 // indirect
 	github.com/gofiber/utils v1.1.0 // indirect
+	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/golang/snappy v0.0.3 // indirect
 	github.com/google/uuid v1.4.0 // indirect

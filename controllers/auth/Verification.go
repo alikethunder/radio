@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"go_react_starter/Users"
+	"go_react_starter/cookies"
 	"go_react_starter/functions"
 
 	"github.com/gocql/gocql"
@@ -33,12 +34,9 @@ func Verification(c *fiber.Ctx) error {
 
 		Users.Update(Users.UserMap{"password": p, "verification_code": nil}, user["id"].(gocql.UUID), u["email"].(string))
 
-		//set auth cookie
-		auth := new(fiber.Cookie)
-		auth.Name = "auth"
-		auth.Value = ""
+		//todo: set auth cookie
+		cookies.SetAuthCookie(Users.UserMap{"email": u["email"], "rememberme": u["rememberme"]}, c)
 
-		c.Cookie(auth)
 		return c.Status(fiber.StatusOK).JSON(Users.UserMap{"id": user["id"], "created": user["id"].(gocql.UUID).Timestamp(), "name": user["name"]})
 
 	}
