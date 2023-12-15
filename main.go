@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"os"
+	//"time"
 
 	"go_react_starter/Users"
 	"go_react_starter/controllers"
@@ -30,6 +31,9 @@ func init() {
 }
 
 func main() {
+	/* err := db.Session.Query(`ALTER TABLE users ADD last_seen text`).Exec()
+	fmt.Println(err)
+	return */
 	fmt.Println("start server")
 	defer db.Session.Close()
 	defer mailer.C.Quit()
@@ -54,6 +58,7 @@ func main() {
 
 	auth.Post("/signup", Auth.Signup)
 	auth.Post("/verification", Auth.Verification)
+	auth.Post("/signin", Auth.Signin)
 
 	app.Use("/reloadws", func(c *fiber.Ctx) error {
 		// IsWebSocketUpgrade returns true if the client

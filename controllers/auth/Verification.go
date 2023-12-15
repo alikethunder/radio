@@ -3,6 +3,7 @@ package Auth
 import (
 	"encoding/json"
 	"fmt"
+	"time"
 
 	"go_react_starter/Users"
 	"go_react_starter/cookies"
@@ -32,7 +33,9 @@ func Verification(c *fiber.Ctx) error {
 
 		p, _ := functions.HashPassword(u["password"].(string))
 
-		Users.Update(Users.UserMap{"password": p, "verification_code": nil}, user["id"].(gocql.UUID), u["email"].(string))
+		tm := time.Now().UTC()
+
+		Users.Update(Users.UserMap{"password": p, "verification_code": nil, "last_seen": tm}, user["id"].(gocql.UUID), u["email"].(string))
 
 		cookies.SetAuthCookie(Users.UserMap{"email": u["email"], "rememberme": u["rememberme"]}, c)
 

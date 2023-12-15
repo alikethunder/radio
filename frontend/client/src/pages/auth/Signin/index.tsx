@@ -49,54 +49,41 @@ export const Signin: FC = () => {
   const onSubmit: SubmitHandler<SigninUser> = async (form) => {
     //console.log('form submit : ', form)
 
-    const text = JSON.stringify(form)
-
-    const encodedText = new TextEncoder().encode(text)
-
-    const body = await crypto.subtle.encrypt(
-      {
-        name: store.auth.name(),
-        iv: store.auth.iv() as Uint8Array
-      },
-      store.auth.importedKey() as CryptoKey,
-      encodedText
-    )
-
     let res = await fetch('/auth/signin', {
       method: 'POST',
-      body,
+      body: JSON.stringify(form),
       headers: {
         'Content-Type': 'arrayBuffer'
       },
     })
 
-    if (res.status == 200) {
-      const user = await res.json() as FrontUser
-      //console.log('[signin] user : ', user)
-      //@ts-ignore
-      (Object.entries(user)).forEach(entry => (actions.user[entry[0]])(entry[1]));
-      actions.auth.signedin(true)
-      navigate('/home')
-      return
-    }
+    switch (res.status) {
+      case 200:
+        const user = await res.json() as FrontUser
+        //console.log('[signin] user : ', user)
+        //@ts-ignore
+        (Object.entries(user)).forEach(entry => (actions.user[entry[0]])(entry[1]));
 
-    let resText = await res.text()
+        actions.user.email(form.email)
 
-    switch (resText) {
+        actions.auth.signedin(true)
+        
+        navigate('/home')
+        break;
 
-      case 'wrong password': //wrong password
+      case 401: //wrong password
 
         setError('password', { type: 'custom', message: 'Wrong password' })
         passwordRef.current?.focus()
         break;
 
-      case 'userNotExist':
+      case 403: //user not exist
 
         setError('email', { type: 'custom', message: 'User with such email doesn\'t exist' })
         emailRef.current?.focus()
         break;
 
-      default: //successfull sign in
+      default:
 
         store.toast['center']().show({
           severity: 'error',
@@ -252,7 +239,7 @@ export const Signin: FC = () => {
               iconPos="right"
             />
 
-            <GoogleOAuth rememberme={watch('rememberme')}/>
+            <GoogleOAuth rememberme={watch('rememberme')} />
 
             <QueryLink to='/signup' className="font-medium no-underline ml-2 text-blue-500 align-self-center">Don't have an account? <span className="font-semibold">Create today!</span></QueryLink>
 
