@@ -34,10 +34,11 @@ func Verification(c *fiber.Ctx) error {
 
 		Users.Update(Users.UserMap{"password": p, "verification_code": nil}, user["id"].(gocql.UUID), u["email"].(string))
 
-		//todo: set auth cookie
 		cookies.SetAuthCookie(Users.UserMap{"email": u["email"], "rememberme": u["rememberme"]}, c)
 
-		return c.Status(fiber.StatusOK).JSON(Users.UserMap{"id": user["id"], "created": user["id"].(gocql.UUID).Timestamp(), "name": user["name"]})
+		created, _ := gocql.ParseUUID(user["id"].(string))
+
+		return c.Status(fiber.StatusOK).JSON(Users.UserMap{"id": user["id"], "created": created.Time(), "name": user["name"]})
 
 	}
 

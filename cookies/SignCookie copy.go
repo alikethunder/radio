@@ -1,12 +1,11 @@
 package cookies
 
 import (
-	"fmt"
+	//"fmt"
 
 	"go_react_starter/Users"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/golang-jwt/jwt"
 )
 
 func SetAuthCookie(u Users.UserMap, c *fiber.Ctx) {
