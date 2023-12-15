@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"os"
+
 	//"time"
 
 	"go_react_starter/Users"
@@ -34,6 +35,7 @@ func main() {
 	/* err := db.Session.Query(`ALTER TABLE users ADD last_seen text`).Exec()
 	fmt.Println(err)
 	return */
+
 	fmt.Println("start server")
 	defer db.Session.Close()
 	defer mailer.C.Quit()

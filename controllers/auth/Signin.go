@@ -39,7 +39,7 @@ func Signin(c *fiber.Ctx) error {
 
 			//created, _ := gocql.ParseUUID(user["id"].(gocql.UUID))
 
-			tm := time.Now().UTC()
+			tm := time.Now().UTC().String()
 
 			Users.Update(Users.UserMap{"last_seen": tm}, user["id"].(gocql.UUID), u["email"].(string))
 

@@ -33,7 +33,7 @@ func Verification(c *fiber.Ctx) error {
 
 		p, _ := functions.HashPassword(u["password"].(string))
 
-		tm := time.Now().UTC()
+		tm := time.Now().UTC().String()
 
 		Users.Update(Users.UserMap{"password": p, "verification_code": nil, "last_seen": tm}, user["id"].(gocql.UUID), u["email"].(string))
 
