@@ -50,7 +50,7 @@ export const Verification: FC = () => {
 
     let res = await fetch('/auth/verification', {
       method: 'POST',
-      body: JSON.stringify({...form, email: store.user.email()}),
+      body: JSON.stringify({ ...form, email: store.user.email() }),
       headers: {
         'Content-Type': 'arrayBuffer'
       },
@@ -73,6 +73,55 @@ export const Verification: FC = () => {
     verification_codeRef.current?.focus()
 
   }
+
+  const [sendingVC, setSendingVC] = useState(false)
+
+  const resendVC = async () => {
+    setSendingVC(true)
+
+    let res = await fetch('/auth/reset-password', {
+      method: 'POST',
+      body: JSON.stringify({ email: store.user.email() }),
+      headers: {
+        'Content-Type': 'arrayBuffer'
+      },
+    })
+
+    switch (res.status) {
+
+      case 200:
+        //show VerificationToast
+        store.toast['bottom-center']().show({
+          severity: 'info',
+          summary: 'Verification code',
+          detail: 'We\'ve sent the 8-digit verification code to your email',
+          closable: true,
+          life: 10000
+        })
+
+        navigate('/verification')
+        break;
+
+      default:
+
+        store.toast['center']().show({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Something went wrong, please try again later',
+          closable: true,
+          life: 1500
+        })
+        break;
+    }
+
+    setSendingVC(false)
+  }
+
+  useEffect(() => {
+    if (!store.user.email()){
+      navigate('/signin', {replace: true})
+    }
+  }, [store.user.email()])
 
   return (
     <div className="sm:px-3 md:px-5 min-h-screen flex justify-content-center align-items-center">
@@ -227,6 +276,15 @@ export const Verification: FC = () => {
                 : ''
             }
           </div>
+
+          <Button
+            label="Resend verification code"
+            icon={`pi ${sendingVC ? 'pi-spin pi-sync' : 'pi-key'}`}
+            className="w-full mb-4"
+            iconPos="right"
+            onClick={resendVC}
+            disabled={sendingVC}
+          />
 
           <Button
             type="submit"
