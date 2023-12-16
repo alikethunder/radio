@@ -63,7 +63,7 @@ func Create(user UserMap) (UserMap, error) {
 			mailer.SendVc(vc, user["email"].(string), user["name"].(string))
 		}
 
-		return GetUserFields(UserMap{"id": u["id"], "email": user["email"]}, "name", "email")
+		return GetUserFields(UserMap{"id": u["id"], "email": user["email"]}, "name", "email", "id")
 
 	}
 

@@ -1,0 +1,22 @@
+package cookies
+
+import (
+	//"fmt"
+
+	"go_react_starter/Users"
+
+	"github.com/goccy/go-json"
+	"github.com/gofiber/fiber/v2"
+)
+
+func SetUserCookie(u Users.UserMap, c *fiber.Ctx) {
+	cookie := new(fiber.Cookie)
+
+	cookie.Name = "user"
+
+	j, _ := json.Marshal(u)
+
+	cookie.Value = string(j)
+
+	c.Cookie(cookie)
+}

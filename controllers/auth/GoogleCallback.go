@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"go_react_starter/Users"
+	"go_react_starter/cookies"
 	"go_react_starter/functions"
 	"os"
 	"strings"
@@ -15,15 +16,13 @@ import (
 	//"go_react_starter/cookies"
 	//"go_react_starter/functions"
 
-	//"github.com/gocql/gocql"
 	"github.com/goccy/go-json"
+	"github.com/gocql/gocql"
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt"
 )
 
 func GoogleCallback(c *fiber.Ctx) error {
-
-	//todo: read rememberme from query
 
 	defer functions.Recovery()
 
@@ -109,13 +108,24 @@ func GoogleCallback(c *fiber.Ctx) error {
 			panic(errors.New("id tokens not equal"))
 		}
 
-		/* user, err :=  */
-		Users.Create(Users.UserMap{
+		user, err := Users.Create(Users.UserMap{
 			"email": credential["email"],
 			"name":  credential["name"],
 			"oauth": true,
 		})
 
+		if err != nil {
+			panic(err)
+		}
+
+		_, rememberme := c.Queries()["rememberme"]
+
+		cookies.SetAuthCookie(Users.UserMap{"email": credential["email"], "rememberme": rememberme}, c)
+
+		user["created"] = user["id"].(gocql.UUID).Time()
+		cookies.SetUserCookie(user, c)
+
+		return c.Redirect("/home")
 	}
 
 	return nil

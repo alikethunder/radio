@@ -9,19 +9,19 @@ import (
 )
 
 func SetAuthCookie(u Users.UserMap, c *fiber.Ctx) {
-	auth := new(fiber.Cookie)
+	cookie := new(fiber.Cookie)
 
-	auth.Name = "auth"
+	cookie.Name = "auth"
 
-	auth.Value = SignCookie(u)
+	cookie.Value = SignCookie(u)
 
-	auth.HTTPOnly = true
+	cookie.HTTPOnly = true
 
-	auth.SameSite = "Strict"
+	cookie.SameSite = "Strict"
 
 	if u["rememberme"].(bool) {
-		auth.MaxAge = MaxAge
+		cookie.MaxAge = MaxAge
 	}
 
-	c.Cookie(auth)
+	c.Cookie(cookie)
 }
