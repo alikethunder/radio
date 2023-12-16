@@ -12,9 +12,3 @@
 
 2. To build project
   go build -o ./build/main & npm --prefix ./frontend/client run build // add bun built script
-
-
-  Generate struct from .proto
-  https://stackoverflow.com/a/62612925/22795635
-    
-    protoc --go_out=./ -I=./ ./User.proto
