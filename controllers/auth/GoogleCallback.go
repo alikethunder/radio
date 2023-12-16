@@ -2,8 +2,13 @@ package Auth
 
 import (
 	//"encoding/json"
+	"errors"
 	"fmt"
+	"go_react_starter/Users"
+	"go_react_starter/functions"
+	"os"
 	"strings"
+
 	//"time"
 
 	//"go_react_starter/Users"
@@ -11,27 +16,30 @@ import (
 	//"go_react_starter/functions"
 
 	//"github.com/gocql/gocql"
+	"github.com/goccy/go-json"
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt"
 )
 
 func GoogleCallback(c *fiber.Ctx) error {
 
+	//todo: read rememberme from query
+
+	defer functions.Recovery()
+
 	//fmt.Println("Signup user : ", u)
 	cookie_g_csrf_token := c.Cookies("g_csrf_token")
 
 	if cookie_g_csrf_token == "" {
-		fmt.Println("no g_csrf_token cookie")
+		panic(errors.New("no g_csrf_token cookie"))
 	}
-	fmt.Println("g_csrf_token cookie : ", cookie_g_csrf_token)
 
 	if c.FormValue("g_csrf_token") == "" {
-		fmt.Println("no g_csrf_token in body")
+		panic(errors.New("no g_csrf_token in body"))
 	}
-	fmt.Println("g_csrf_token body : ", c.FormValue("g_csrf_token"))
 
 	if c.FormValue("g_csrf_token") != cookie_g_csrf_token {
-		fmt.Println("not equal csrf from body and cookie")
+		panic(errors.New("not equal csrf from body and cookie"))
 	}
 
 	type MyClaims struct {
@@ -41,20 +49,72 @@ func GoogleCallback(c *fiber.Ctx) error {
 		jwt.StandardClaims
 	}
 
-	fmt.Println("form credential : ", c.FormValue("credential"))
-
 	token, _, err := new(jwt.Parser).ParseUnverified(c.FormValue("credential"), jwt.MapClaims{})
 
 	if err != nil {
-		fmt.Println("Parse error : ", err)
+		panic(err)
 	}
 
 	if credential, ok := token.Claims.(jwt.MapClaims); ok {
 		fmt.Println("credential ", credential)
 
 		if strings.Contains(credential["iss"].(string), "accounts.google.com") {
-			fmt.Println("iss not accounts.google.com")
+			panic(errors.New("iss not accounts.google.com"))
 		}
+
+		oauth_json_content, err := os.ReadFile("./settings/google_oauth.json")
+		if err != nil {
+			panic(err)
+		}
+
+		var google_oauth Users.UserMap
+
+		err = json.Unmarshal(oauth_json_content, &google_oauth)
+
+		if err != nil {
+			panic(err)
+		}
+
+		if credential["aud"] != google_oauth["web"].(map[string]interface{})["client_id"] {
+			panic("wrong client_id")
+		}
+
+		agent := fiber.Get("https://www.googleapis.com/oauth2/v3/certs")
+
+		_, body, errs := agent.Bytes()
+
+		if len(errs) > 0 {
+			fmt.Println("googleapis errors : ", errs)
+			panic("googleapis errors")
+		}
+
+		var google_headers fiber.Map
+
+		err = json.Unmarshal(body, &google_headers)
+
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println("google_headers : ", google_headers)
+
+		id_tokens_equal := false
+
+		for _, key := range google_headers["keys"].([]interface{}) {
+			if key.(Users.UserMap)["kid"] == credential["kid"] {
+				id_tokens_equal = true
+			}
+		}
+
+		if !id_tokens_equal {
+			panic(errors.New("id tokens not equal"))
+		}
+
+		/* user, err :=  */
+		Users.Create(Users.UserMap{
+			"email": credential["email"],
+			"name":  credential["name"],
+			"oauth": true,
+		})
 
 	}
 

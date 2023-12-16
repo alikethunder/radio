@@ -19,16 +19,12 @@ func Create(user UserMap) (UserMap, error) {
 	var u UserMap
 	var err error
 
-	//add to query condition password not null
-	if u, err = GetUserFields(UserMap{"email": user["email"]}, "id", "password"); err != nil {
+	if u, err = GetUserFields(UserMap{"email": user["email"]}, "id", "password", "name"); err != nil {
 		//fmt.Println("[Create] GetUserFields error : ", err)
 		u = make(UserMap)
 	}
-	//db.Session.Query(`SELECT id, password FROM users WHERE email = ? LIMIT 1 ALLOW FILTERING`, user["email"]).Scan(&id, &password)
 
-	//fmt.Println("[Create] GetUserFields : ", u, u["password"] == nil, u["password"] == "")
-
-	if u["password"] == nil || u["password"] == "" {
+	if u["password"] == nil || u["password"] == "" || user["oauth"].(bool) {
 
 		//tm := time.Now()
 
@@ -44,17 +40,28 @@ func Create(user UserMap) (UserMap, error) {
 				return nil, err
 			}
 
-			//update with verification code
-			Update(UserMap{"verification_code": vc}, u["id"].(gocql.UUID), user["email"].(string))
-
+			if !u["oauth"].(bool) {
+				//update with verification code
+				Update(UserMap{"verification_code": vc}, u["id"].(gocql.UUID), user["email"].(string))
+			}
 		} else {
 
 			//update existing user without password
 			fmt.Println("[Create] update existing user without password")
-			Update(UserMap{"verification_code": vc, "name": user["name"]}, u["id"].(gocql.UUID), user["email"].(string))
+
+			if u["oauth"].(bool) {
+				if u["name"] == "" {
+					Update(UserMap{"name": user["name"]}, u["id"].(gocql.UUID), user["email"].(string))
+				}
+			} else {
+				Update(UserMap{"verification_code": vc, "name": user["name"]}, u["id"].(gocql.UUID), user["email"].(string))
+			}
+
 		}
 
-		mailer.SendVc(vc, user["email"].(string), user["name"].(string))
+		if !u["oauth"].(bool) {
+			mailer.SendVc(vc, user["email"].(string), user["name"].(string))
+		}
 
 		return GetUserFields(UserMap{"id": u["id"], "email": user["email"]}, "name", "email")
 
