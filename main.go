@@ -62,6 +62,7 @@ func main() {
 	auth.Post("/verification", Auth.Verification)
 	auth.Post("/signin", Auth.Signin)
 	auth.Post("/logout", Auth.Logout)
+	auth.Post("/reset-password", Auth.ResetPassword)
 
 	app.Use("/reloadws", func(c *fiber.Ctx) error {
 		// IsWebSocketUpgrade returns true if the client

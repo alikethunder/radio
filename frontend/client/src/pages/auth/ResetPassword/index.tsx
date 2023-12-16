@@ -65,32 +65,28 @@ export const ResetPassword: FC = () => {
       },
     })
 
-    if (res.status == 200) {
+    switch (res.status) {
 
-      //show VerificationToast
-      store.toast['bottom-center']().show({
-        severity: 'info',
-        summary: 'Verification code',
-        detail: 'We\'ve sent the 8-digit verification code to your email',
-        closable: true,
-        life: 10000
-      })
+      case 200:
+        //show VerificationToast
+        store.toast['bottom-center']().show({
+          severity: 'info',
+          summary: 'Verification code',
+          detail: 'We\'ve sent the 8-digit verification code to your email',
+          closable: true,
+          life: 10000
+        })
 
-      navigate('/verification')
-      return
-    }
+        navigate('/verification')
+        break;
 
-    let resText = await res.text()
-
-    switch (resText) {
-
-      case 'userNotExist':
+      case 403:
 
         setError('email', { type: 'custom', message: 'User with such email doesn\'t exist' })
         emailRef.current?.focus()
         break;
 
-      default: //successfull sign in
+      default:
 
         store.toast['center']().show({
           severity: 'error',

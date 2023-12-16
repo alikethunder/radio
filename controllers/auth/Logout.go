@@ -10,7 +10,5 @@ func Logout(c *fiber.Ctx) error {
 
 	c.ClearCookie("user")
 
-	c.Status(fiber.StatusOK)
-
-	return nil
+	return c.SendStatus(fiber.StatusOK)
 }
