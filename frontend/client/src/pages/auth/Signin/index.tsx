@@ -53,7 +53,7 @@ export const Signin: FC = () => {
       method: 'POST',
       body: JSON.stringify(form),
       headers: {
-        'Content-Type': 'arrayBuffer'
+        'Content-Type': 'application/json'
       },
     })
 

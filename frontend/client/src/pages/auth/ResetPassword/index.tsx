@@ -48,13 +48,14 @@ export const ResetPassword: FC = () => {
       method: 'POST',
       body: JSON.stringify(form),
       headers: {
-        'Content-Type': 'arrayBuffer'
+        'Content-Type': 'application/json'
       },
     })
 
     switch (res.status) {
 
       case 200:
+        actions.user.email(form.email)
         //show VerificationToast
         store.toast['bottom-center']().show({
           severity: 'info',

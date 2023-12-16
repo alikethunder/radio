@@ -83,7 +83,7 @@ export const Verification: FC = () => {
       method: 'POST',
       body: JSON.stringify({ email: store.user.email() }),
       headers: {
-        'Content-Type': 'arrayBuffer'
+        'Content-Type': 'application/json'
       },
     })
 
@@ -118,8 +118,8 @@ export const Verification: FC = () => {
   }
 
   useEffect(() => {
-    if (!store.user.email()){
-      navigate('/signin', {replace: true})
+    if (!store.user.email()) {
+      navigate('/signin', { replace: true })
     }
   }, [store.user.email()])
 
@@ -278,21 +278,21 @@ export const Verification: FC = () => {
           </div>
 
           <Button
-            label="Resend verification code"
-            icon={`pi ${sendingVC ? 'pi-spin pi-sync' : 'pi-key'}`}
-            className="w-full mb-4"
-            iconPos="right"
-            onClick={resendVC}
-            disabled={sendingVC}
-          />
-
-          <Button
             type="submit"
             label="Confirm and sign in"
             icon={`pi ${isSubmitting ? 'pi-spin pi-sync' : 'pi-send'}`}
             className="w-full mb-4"
             iconPos="right"
             disabled={isSubmitting}
+          />
+
+          <Button
+            label="Resend verification code"
+            icon={`pi ${sendingVC ? 'pi-spin pi-sync' : 'pi-key'}`}
+            className="w-full mb-4"
+            iconPos="right"
+            onClick={resendVC}
+            disabled={sendingVC}
           />
 
           <QueryLink to='/signin' className="font-medium no-underline text-blue-500 align-self-center">Already have an account? <span className="font-semibold">Log in</span></QueryLink>
