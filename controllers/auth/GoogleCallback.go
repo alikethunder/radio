@@ -1,7 +1,6 @@
 package Auth
 
 import (
-	//"encoding/json"
 	"errors"
 	"fmt"
 	"go_react_starter/Users"
@@ -9,12 +8,6 @@ import (
 	"go_react_starter/functions"
 	"os"
 	"strings"
-
-	//"time"
-
-	//"go_react_starter/Users"
-	//"go_react_starter/cookies"
-	//"go_react_starter/functions"
 
 	"github.com/goccy/go-json"
 	"github.com/gocql/gocql"
@@ -39,13 +32,6 @@ func GoogleCallback(c *fiber.Ctx) error {
 
 	if c.FormValue("g_csrf_token") != cookie_g_csrf_token {
 		panic(errors.New("not equal csrf from body and cookie"))
-	}
-
-	type MyClaims struct {
-		name  string `json:"name"`
-		email string `json:"email"`
-		kid   string `json:"kid"`
-		jwt.StandardClaims
 	}
 
 	token, _, err := new(jwt.Parser).ParseUnverified(c.FormValue("credential"), jwt.MapClaims{})
@@ -129,37 +115,5 @@ func GoogleCallback(c *fiber.Ctx) error {
 	}
 
 	return nil
-
-	/* user, err := Users.GetUserFields(Users.UserMap{"email": u["email"]}, "id", "password", "name")
-
-	if err != nil {
-		fmt.Println("[Signin] GetUserFields error : ", err)
-	}
-
-	if user != nil && user["password"] != "" && user["password"] != nil {
-
-		correctPassword := functions.CheckPasswordHash(u["password"].(string), user["password"].(string))
-
-		if correctPassword {
-
-			cookies.SetAuthCookie(Users.UserMap{"email": u["email"], "rememberme": u["rememberme"]}, c)
-
-			//created, _ := gocql.ParseUUID(user["id"].(gocql.UUID))
-
-			tm := time.Now().UTC().String()
-
-			Users.Update(Users.UserMap{"last_seen": tm}, user["id"].(gocql.UUID), u["email"].(string))
-
-			return c.Status(fiber.StatusOK).JSON(Users.UserMap{"id": user["id"], "created": user["id"].(gocql.UUID).Time(), "name": user["name"]})
-
-		} else {
-			//wrong password
-			return c.SendStatus(fiber.StatusUnauthorized)
-		}
-
-	} else {
-		//user not exist
-		return c.SendStatus(fiber.StatusForbidden)
-	} */
 
 }
