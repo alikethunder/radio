@@ -1,9 +1,14 @@
 package functions
 
-import "fmt"
+import (
+	"fmt"
+	"runtime/debug"
+)
 
-func Recovery() {
+func Recovery(where string) {
 	if r := recover(); r != nil {
-		fmt.Println("[GoogleCallback] error : ", r)
+		//fmt.Println(where, " recover : ", r)
+		fmt.Println("stacktrace from panic: \n" + string(debug.Stack()))
+		fmt.Println(where, " error : ", r)
 	}
 }

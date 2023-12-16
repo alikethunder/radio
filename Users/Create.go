@@ -40,7 +40,7 @@ func Create(user UserMap) (UserMap, error) {
 				return nil, err
 			}
 
-			if !u["oauth"].(bool) {
+			if !user["oauth"].(bool) {
 				//update with verification code
 				Update(UserMap{"verification_code": vc}, u["id"].(gocql.UUID), user["email"].(string))
 			}
@@ -49,7 +49,7 @@ func Create(user UserMap) (UserMap, error) {
 			//update existing user without password
 			fmt.Println("[Create] update existing user without password")
 
-			if u["oauth"].(bool) {
+			if user["oauth"].(bool) {
 				if u["name"] == "" {
 					Update(UserMap{"name": user["name"]}, u["id"].(gocql.UUID), user["email"].(string))
 				}
@@ -59,7 +59,7 @@ func Create(user UserMap) (UserMap, error) {
 
 		}
 
-		if !u["oauth"].(bool) {
+		if !user["oauth"].(bool) {
 			mailer.SendVc(vc, user["email"].(string), user["name"].(string))
 		}
 

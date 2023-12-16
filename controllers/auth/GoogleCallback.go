@@ -17,7 +17,7 @@ import (
 
 func GoogleCallback(c *fiber.Ctx) error {
 
-	defer functions.Recovery()
+	defer functions.Recovery("[GoogleCallback]")
 
 	//fmt.Println("Signup user : ", u)
 	cookie_g_csrf_token := c.Cookies("g_csrf_token")
@@ -41,9 +41,9 @@ func GoogleCallback(c *fiber.Ctx) error {
 	}
 
 	if credential, ok := token.Claims.(jwt.MapClaims); ok {
-		fmt.Println("credential ", credential)
+		//fmt.Println("credential ", credential)
 
-		if strings.Contains(credential["iss"].(string), "accounts.google.com") {
+		if !strings.Contains(credential["iss"].(string), "accounts.google.com") {
 			panic(errors.New("iss not accounts.google.com"))
 		}
 
@@ -85,7 +85,7 @@ func GoogleCallback(c *fiber.Ctx) error {
 		id_tokens_equal := false
 
 		for _, key := range google_headers["keys"].([]interface{}) {
-			if key.(Users.UserMap)["kid"] == credential["kid"] {
+			if key.(map[string]interface{})["kid"] == token.Header["kid"] {
 				id_tokens_equal = true
 			}
 		}
