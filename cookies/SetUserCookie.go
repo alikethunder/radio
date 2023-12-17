@@ -9,14 +9,17 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func SetUserCookie(u Users.UserMap, c *fiber.Ctx) {
-	cookie := new(fiber.Cookie)
+// var UserCookie fiber.Cookie
+var UserCookie = new(fiber.Cookie)
 
-	cookie.Name = "user"
+func SetUserCookie(u Users.UserMap, c *fiber.Ctx) {
+	UserCookie := new(fiber.Cookie)
+
+	UserCookie.Name = "user"
 
 	j, _ := json.Marshal(u)
 
-	cookie.Value = string(j)
+	UserCookie.Value = string(j)
 
-	c.Cookie(cookie)
+	c.Cookie(UserCookie)
 }
