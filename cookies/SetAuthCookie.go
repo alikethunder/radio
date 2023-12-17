@@ -11,7 +11,7 @@ import (
 func SetAuthCookie(u Users.UserMap, c *fiber.Ctx) {
 	cookie := new(fiber.Cookie)
 
-	cookie.Name = "auth"
+	cookie.Name = AuthCookieName
 
 	cookie.Value = SignCookie(u)
 

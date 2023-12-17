@@ -7,7 +7,9 @@ import (
 
 const (
 	//a week
-	MaxAge = 7 * 86400
+	MaxAge         = 7 * 86400
+	AuthCookieName = "auth"
+	UserCookieName = "user"
 )
 
 var HmacSampleSecret []byte

@@ -1,6 +1,7 @@
 package Auth
 
 import (
+	"go_react_starter/cookies"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -9,7 +10,7 @@ import (
 func Logout(c *fiber.Ctx) error {
 
 	c.Cookie(&fiber.Cookie{
-		Name:     "auth",
+		Name:     cookies.AuthCookieName,
 		Value:    "",
 		HTTPOnly: true,
 		SameSite: "Strict",
@@ -17,12 +18,10 @@ func Logout(c *fiber.Ctx) error {
 	})
 
 	c.Cookie(&fiber.Cookie{
-		Name:    "user",
+		Name:    cookies.UserCookieName,
 		Value:   "",
 		Expires: time.Now().Add(-time.Second),
 	})
-
-	//c.SendStatus(fiber.StatusOK)
 
 	return c.Redirect("/signin")
 }
