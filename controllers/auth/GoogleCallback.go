@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"go_react_starter/Users"
 	"go_react_starter/cookies"
-	"go_react_starter/functions"
 	"os"
 	"strings"
 
@@ -16,8 +15,6 @@ import (
 )
 
 func GoogleCallback(c *fiber.Ctx) error {
-
-	defer functions.Recovery("[GoogleCallback]")
 
 	//fmt.Println("Signup user : ", u)
 	cookie_g_csrf_token := c.Cookies("g_csrf_token")

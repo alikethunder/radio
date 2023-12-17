@@ -10,6 +10,7 @@ import (
 	"go_react_starter/controllers"
 	"go_react_starter/controllers/auth"
 	"go_react_starter/db"
+	"go_react_starter/functions"
 	"go_react_starter/mailer"
 
 	//"go_react_starter/functions"
@@ -32,6 +33,8 @@ func init() {
 }
 
 func main() {
+
+	defer functions.Recovery()
 	/* err := db.Session.Query(`ALTER TABLE users ADD last_seen text`).Exec()
 	fmt.Println(err)
 	return */
