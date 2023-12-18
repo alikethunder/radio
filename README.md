@@ -1,3 +1,18 @@
+This is a start template with following features:
+
+  - Signin/logout including google oauth
+  - password creation
+  - verification code
+  - email sending using google apps
+  - auth cookie managment
+
+Technologies:
+  - Scylla db
+  - Go
+  - Typescript
+  - Primereact
+  
+
 1. To start dev server
 
   #Start db service
@@ -12,3 +27,5 @@
 
 2. To build project
   go build -o ./build/main & npm --prefix ./frontend/client run build // add bun built script
+
+
