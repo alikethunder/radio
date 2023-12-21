@@ -10,6 +10,10 @@ import {
 } from "./pages/auth"
 
 import {
+  Home
+} from '@/pages/Home'
+
+import {
   actions,
   store
 } from './store'
@@ -18,10 +22,10 @@ import {
   FrontUser,
 } from '@/types'
 
-const IdElem = () => {
+/* const IdElem = () => {
   const { id } = useLoaderData() as { id: string }
   return (<div >Id is {id}</div>)
-}
+} */
 
 export const routes = [
   {
@@ -31,12 +35,16 @@ export const routes = [
     },
     element: <App />,
     children: [
-      {
+      /* {
         path: '/:id',
         loader({ params }: { params: any }) {
           return { id: params.id }
         },
         element: <IdElem />
+      }, */
+      {
+        path: '/home',
+        element: <Home/>
       },
       ...[
         {

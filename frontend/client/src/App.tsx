@@ -20,12 +20,9 @@ import './index.sass'
 import Sockette from 'sockette'
 
 import {
-  Toasts
+  Toasts,
+  Header,
 } from './components'
-
-import {
-  actions,
-} from "./store"
 
 import { getCookie } from "./functions"
 
@@ -37,10 +34,13 @@ import {
   FrontUser,
 } from '@/types'
 
+import { actions, useTrackedStore, store, useStore } from "@/store"
+
 import {
   logout,
   onLogout,
 } from './functions'
+
 console.log('typeof window : ', typeof window)
 
 /* import favicon from './assets/favicon.ico' */
@@ -98,12 +98,23 @@ export default function App() {
 
   }, [])
 
+  
+
   return (
     <PrimeReactProvider value={{
       appendTo: 'self',
       ripple: true,
     }}>
       {/*  <WS /> */}
+
+      {//logged in condition
+        useTrackedStore().auth.signedin()
+        ?
+        <Header/>
+        :
+        ''
+      }
+
       <Outlet />
 
       <div className="logout" onClick={logout}>Logout</div>

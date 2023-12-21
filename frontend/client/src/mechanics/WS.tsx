@@ -13,7 +13,7 @@ export const WS: FC = () => {
       if (store.auth.signedin()) {
  
         const ws = await new Promise((res, rej) => {
-          let s = new Sockette('ws://localhost:5000/ws', {
+          let s = new Sockette('ws://localhost:3000/ws', {
             timeout: 5e3,
             maxAttempts: 1,//10,
             onopen: e => {
