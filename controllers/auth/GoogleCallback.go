@@ -77,7 +77,7 @@ func GoogleCallback(c *fiber.Ctx) error {
 		if err != nil {
 			panic(err)
 		}
-		fmt.Println("google_headers : ", google_headers)
+		//fmt.Println("google_headers : ", google_headers)
 
 		id_tokens_equal := false
 

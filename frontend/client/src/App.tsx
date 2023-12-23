@@ -103,7 +103,7 @@ export default function App() {
   return (
     <PrimeReactProvider value={{
       appendTo: 'self',
-      ripple: true,
+      ripple: true, 
     }}>
       {/*  <WS /> */}
 
@@ -117,7 +117,7 @@ export default function App() {
 
       <Outlet />
 
-      {/* <div className="logout" onClick={logout}>Logout</div> */}
+      <div className="logout" onClick={logout}>Logout</div>
 
       <Toasts />
     </PrimeReactProvider>

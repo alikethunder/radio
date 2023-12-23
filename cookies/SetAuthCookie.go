@@ -2,7 +2,7 @@ package cookies
 
 import (
 	//"fmt"
-
+	
 	"go_react_starter/Users"
 
 	"github.com/gofiber/fiber/v2"
@@ -22,6 +22,10 @@ func SetAuthCookie(u Users.UserMap, c *fiber.Ctx) {
 	if u["rememberme"].(bool) {
 		cookie.MaxAge = MaxAge
 	}
+
+	//fmt.Println("[SetAuthCookie] cookie value : ", cookie.Value)
+	
+	//fmt.Println("[SetAuthCookie] cookie : ", cookie)
 
 	c.Cookie(cookie)
 }
