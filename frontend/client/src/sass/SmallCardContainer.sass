@@ -1,5 +1,7 @@
+@import '@/sass/functions/cardRelative'
+
 :root
   --SmallCardContainer_width: 192px
-  --SmallCardContainer_height: calc(var(--SmallCardContainer_width) * 1.5)
+  --SmallCardContainer_height: #{cardRelative(1.5)}
   @media screen and ((max-width: 575.9px) or (max-height: 575.9px))
     --SmallCardContainer_width: Min(41vw, 41vh)
