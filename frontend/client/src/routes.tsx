@@ -10,8 +10,9 @@ import {
 } from "./pages/auth"
 
 import {
-  Home
-} from '@/pages/Home'
+  Home,
+  NewCard,
+} from '@/pages'
 
 import {
   actions,
@@ -45,6 +46,10 @@ export const routes = [
       {
         path: '/home',
         element: <Home/>
+      },
+      {
+        path: '/new-card',
+        element: <NewCard/>
       },
       ...[
         {

@@ -4,6 +4,7 @@ import { CreateNewCard } from '@/components'
 
 import { SmallCardContainer } from "@/layout parts"
 
+import { QueryLink } from "@/components"
 import './index.sass'
 
 export const Home = () => {

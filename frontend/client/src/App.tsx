@@ -78,7 +78,7 @@ export default function App() {
 
       const user = JSON.parse(decodeURIComponent(user_cookie))
 
-      console.log('[app ] user : ', user)
+      console.log('[app] user : ', user)
 
       actions.auth.signedin(true);
       //@ts-ignore
