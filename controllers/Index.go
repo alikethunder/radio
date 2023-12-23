@@ -31,8 +31,6 @@ func Index(c *fiber.Ctx) error {
 
 		cookies.SetAuthCookie(u, c)
 		
-	} else {
-		//cookies.ClearAuthCookies(c)
 	}
 
 	return c.Render("index", fiber.Map{})
