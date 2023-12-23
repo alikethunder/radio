@@ -117,7 +117,7 @@ export default function App() {
 
       <Outlet />
 
-      <div className="logout" onClick={logout}>Logout</div>
+      {/* <div className="logout" onClick={logout}>Logout</div> */}
 
       <Toasts />
     </PrimeReactProvider>

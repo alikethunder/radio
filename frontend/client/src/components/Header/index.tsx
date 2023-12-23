@@ -6,7 +6,7 @@ export const Header: FC = () => {
 
 
   return (
-    <div className="shadow-2 h-3rem sm:h-5rem">
+    <div className="flex-shrink-0 shadow-2 h-3rem sm:h-5rem">
       
     </div>
   )
