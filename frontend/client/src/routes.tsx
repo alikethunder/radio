@@ -1,5 +1,5 @@
 import React from "react"
-import { json, useLoaderData, redirect, RouteObject } from "react-router-dom"
+import { redirect, RouteObject } from "react-router-dom"
 import App from "./App"
 
 import {
@@ -11,7 +11,7 @@ import {
 
 import {
   Home,
-  NewCard,
+  Card,
 } from '@/pages'
 
 import {
@@ -45,34 +45,37 @@ export const routes = [
       }, */
       {
         path: '/home',
-        element: <Home/>
+        element: <Home />
       },
       {
-        path: '/new-card',
-        element: <NewCard/>
+        path: '/card/:id',
+        element: <Card />,
+        loader({ params }: { params: { id: string } }) {
+          return { id: params.id }
+        }
       },
       ...[
         {
-        path: '/signin',
-        element: <Signin />
-      },
-      {
-        path: '/signup',
-        element: <Signup />
-      },
-      {
-        path: '/verification',
-        element: <Verification />
-      },
-      {
-        path: '/reset-password',
-        element: <ResetPassword />
-      }].map((route: RouteObject)=>{
-        route.loader = async ()=>{
-          return store.auth.signedin() ? redirect('/home') : ''
-        }
-        return route
-      })
+          path: '/signin',
+          element: <Signin />
+        },
+        {
+          path: '/signup',
+          element: <Signup />
+        },
+        {
+          path: '/verification',
+          element: <Verification />
+        },
+        {
+          path: '/reset-password',
+          element: <ResetPassword />
+        }].map((route: RouteObject) => {
+          route.loader = async () => {
+            return store.auth.signedin() ? redirect('/home') : ''
+          }
+          return route
+        })
     ],
 
   },

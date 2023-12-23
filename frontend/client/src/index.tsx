@@ -17,7 +17,9 @@ import {
   actions
 } from './store'
 
-const router = createBrowserRouter(routes)
+const router = createBrowserRouter(routes, {
+  basename: '/'
+})
 
 actions.app.router(router)
 
