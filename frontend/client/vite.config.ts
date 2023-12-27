@@ -4,6 +4,7 @@ import viteTsconfigPaths from 'vite-tsconfig-paths'
 import commonjs from 'vite-plugin-commonjs'
 import autoprefixer from 'autoprefixer'
 import * as path from 'path'
+import svgr from '@svgr/rollup'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -16,6 +17,7 @@ export default defineConfig({
   plugins: [
     react(), 
     viteTsconfigPaths(),
+    svgr(),
     commonjs(),
   ],
   css: {

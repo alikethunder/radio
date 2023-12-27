@@ -23,6 +23,8 @@ import {
   FrontUser,
 } from '@/types'
 
+import { CardPageParams } from "@/types/card"
+
 /* const IdElem = () => {
   const { id } = useLoaderData() as { id: string }
   return (<div >Id is {id}</div>)
@@ -48,11 +50,11 @@ export const routes = [
         element: <Home />
       },
       {
-        path: '/card/:id',
+        path: '/card/:pageId/:tab?',
         element: <Card />,
-        loader({ params }: { params: { id: string } }) {
-          return { id: params.id }
-        }
+        loader: ({ params }: {
+          params: CardPageParams
+        }) => params
       },
       ...[
         {

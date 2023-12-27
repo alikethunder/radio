@@ -15,7 +15,8 @@
     "allowJs": true,
 
     /* Bundler mode */
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -28,6 +29,6 @@
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
   },
-  "include": ["src", "src/**/*"],
+  "include": ["src", "src/**/*", "./svg.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }],
 }
