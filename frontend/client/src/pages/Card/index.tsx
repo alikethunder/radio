@@ -1,9 +1,17 @@
 import { FC, useEffect, useState } from "react"
-import { json, useLoaderData, redirect, RouteObject } from "react-router-dom"
+
+import {
+  json,
+  useLoaderData,
+  redirect,
+  RouteObject,
+  useNavigate,
+} from "react-router-dom"
 
 import { useMediaQuery } from 'react-responsive'
 
 import { TabMenu } from 'primereact/tabmenu'
+import { TabView, TabPanel } from 'primereact/tabview'
 
 import './index.sass'
 
@@ -13,6 +21,9 @@ console.log(cardIcon)
 import { CardPageParams } from "@/types/card"
 
 export const Card = () => {
+
+  const navigate = useNavigate()
+
   const { pageId, tab } = useLoaderData() as CardPageParams
   console.log('[Card] pageId, tab : ', pageId, tab)
 
@@ -20,21 +31,52 @@ export const Card = () => {
 
   const [activeTab, setActiveTab] = useState(0)
 
-  const tabs = [
-    {
-      label: 'Card',
-      icon: cardIcon
-    },
-    {
-      label: 'Description',
-      icon: 'pi pi-fw pi-align-left'
-    }
-  ]
+  useEffect(() => {
+    setActiveTab(Number(tab == 'description'))
+  }, [tab])
+
+  useEffect(() => {
+    navigate(`/card/create/${activeTab ? 'description' : ''}`)
+  }, [activeTab])
 
   return (
-    <div className="sm:py-5 py-4 sm:px-6 px-4 w-full h-full overflow-y-auto page card_page">
+    <div className="sm:py-1 py-2 sm:px-4 px-2 w-full h-full overflow-y-auto page card_page">
 
-      <TabMenu model={tabs} activeIndex={activeTab} onTabChange={(e) => setActiveTab(e.index)} />
+      <TabView
+        activeIndex={activeTab}
+        onTabChange={(e) => {
+          setActiveTab(e.index)
+        }}
+        pt={{
+          root: {
+            style: {
+              //position: 'relative'
+            }
+          },
+          inkbar: {
+            style: {
+              display: 'block',
+              position: 'absolute',
+              bottom: 0,
+              height: '2px',
+              transition: '500ms cubic-bezier(0.35, 0, 0.25, 1)',
+              backgroundColor: 'var(--primary-color)'
+            }
+          }
+        }}>
+        <TabPanel
+          header="Card"
+          leftIcon={cardIcon}
+          className='main_tab'
+        >
+        </TabPanel>
+        <TabPanel
+          header="Description"
+          leftIcon='pi pi-fw pi-align-left'
+        >
+        </TabPanel>
+      </TabView>
+
 
       {
         isDesktop ? '' :
