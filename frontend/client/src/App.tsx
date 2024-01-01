@@ -13,7 +13,7 @@ import 'primereact/resources/themes/soho-light/theme.css'
 
 import 'primeicons/primeicons.css'
 
-import 'primeflex/primeflex.css'
+import '@/sass/primeflex/primeflex.scss'
 
 import './index.sass'
 

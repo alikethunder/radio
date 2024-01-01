@@ -40,7 +40,7 @@ export const Card = () => {
   }, [activeTab])
 
   return (
-    <div className="sm:py-1 py-2 sm:px-4 px-2 w-full h-full overflow-y-auto page card_page">
+    <div className="md:py-4 py-0 sm:px-4 px-2 w-full h-full overflow-y-auto page card_page">
 
       <TabView
         activeIndex={activeTab}
