@@ -6,8 +6,8 @@ import (
 	"go_react_starter/Users"
 	"go_react_starter/cookies"
 
-	"github.com/gofiber/fiber/v2"
 	"github.com/gocql/gocql"
+	"github.com/gofiber/fiber/v2"
 )
 
 func Index(c *fiber.Ctx) error {
@@ -30,7 +30,7 @@ func Index(c *fiber.Ctx) error {
 		cookies.SetUserCookie(user, c)
 
 		cookies.SetAuthCookie(u, c)
-		
+
 	}
 
 	return c.Render("index", fiber.Map{})
