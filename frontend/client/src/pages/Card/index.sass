@@ -2,14 +2,23 @@
   .p-tabview
     @media screen and (min-width: 768.1px)
       display: none
+
   .p-tabview-nav, .p-tabview-nav-link
     border: none
     background-color: transparent
+
   .main_tab
     svg
       width: 20px
       height: 20px
       margin-right: 8px
+
     &.p-highlight svg *
       fill: var(--primary-color)
-      
+
+  .container
+    display: flex
+    flex-direction: row
+    &>*
+      flex: 0 0 50%
+

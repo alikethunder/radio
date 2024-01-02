@@ -16,7 +16,11 @@ import { TabView, TabPanel } from 'primereact/tabview'
 import './index.sass'
 
 import { ReactComponent as cardIcon } from '@/assets/svg/vertical_card.svg'
-console.log(cardIcon)
+
+import {
+  CardDescriptionForm,
+  CardForm,
+} from '@/components'
 
 import { CardPageParams } from "@/types/card"
 
@@ -25,9 +29,10 @@ export const Card = () => {
   const navigate = useNavigate()
 
   const { pageId, tab } = useLoaderData() as CardPageParams
-  console.log('[Card] pageId, tab : ', pageId, tab)
 
-  const isDesktop = useMediaQuery({ query: '(min-width: 575.9px) and (min-height: 575.9px)' })
+  //console.log('[Card] pageId, tab : ', pageId, tab)
+
+  const isDesktop = useMediaQuery({ query: '(min-width: 768.1px) and (min-height: 768.1px)' })
 
   const [activeTab, setActiveTab] = useState(0)
 
@@ -79,38 +84,19 @@ export const Card = () => {
 
 
       {
-        isDesktop ? '' :
-          <>
-            {/* tabs */}
-          </>
+        pageId == 'create' ?
+          isDesktop ?
+            <div className="container">
+              <CardForm />
+              <CardDescriptionForm />
+            </div>
+            :
+            tab == 'description' ?
+              <CardDescriptionForm />
+              :
+              <CardForm />
+          : ''
       }
-
-      {/* tab main view content */}
-
-      {/* tab description view content */}
-
-      {
-        pageId == 'create'
-          ?
-          <>
-
-          </>
-          :
-          <></>
-      }
-
-      {/* this is pseudo markup to see the structure */}
-      <div className="tabs"></div>
-
-      <div className="form">
-
-      </div>
-
-      <div className="content">
-        <div className="card">
-
-        </div>
-      </div>
 
     </div>
   )
