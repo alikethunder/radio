@@ -16,6 +16,7 @@ import (
 	//"go_react_starter/functions"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/template/html/v2"
 
 	//"go_react_starter/settings"
@@ -55,9 +56,6 @@ func main() {
 		JSONEncoder: json.Marshal,
 		JSONDecoder: json.Unmarshal,
 	})
-
-	// Configure app
-	app.Static("/", "./public")
 
 	auth := app.Group("/auth")
 
@@ -107,6 +105,11 @@ func main() {
 		}
 
 	}))
+
+	app.Use(compress.New())
+
+	// Configure app
+	app.Static("/", "./public")
 
 	app.Get("*", controllers.Index)
 
