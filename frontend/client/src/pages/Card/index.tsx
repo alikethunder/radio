@@ -82,7 +82,6 @@ export const Card = () => {
         </TabPanel>
       </TabView>
 
-
       {
         pageId == 'create' ?
           isDesktop ?
