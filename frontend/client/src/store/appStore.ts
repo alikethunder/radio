@@ -12,5 +12,5 @@ type AppStore = {
 export const appStore = createStore('app')({
   //to render client parts only
   isClient: false,
-  router: null
+  router: null,
 } as AppStore)

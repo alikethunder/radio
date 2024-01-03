@@ -23,6 +23,7 @@ import {
 } from '@/components'
 
 import { CardPageParams } from "@/types/card"
+import { useTrackedStore } from "@/store"
 
 export const Card = () => {
 
@@ -31,8 +32,6 @@ export const Card = () => {
   const { pageId, tab } = useLoaderData() as CardPageParams
 
   //console.log('[Card] pageId, tab : ', pageId, tab)
-
-  const isDesktop = useMediaQuery({ query: '(min-width: 768.1px) and (min-height: 768.1px)' })
 
   const [activeTab, setActiveTab] = useState(0)
 
@@ -53,9 +52,14 @@ export const Card = () => {
           setActiveTab(e.index)
         }}
         pt={{
-          root: {
+          panelContainer: {
             style: {
-              //position: 'relative'
+              display: 'none'
+            }
+          },
+          nav: {
+            style: {
+              justifyContent: 'space-around'
             }
           },
           inkbar: {
@@ -84,8 +88,8 @@ export const Card = () => {
 
       {
         pageId == 'create' ?
-          isDesktop ?
-            <div className="container">
+          window.settings.isDesktop ?
+            <div className="container h-full">
               <CardForm />
               <CardDescriptionForm />
             </div>

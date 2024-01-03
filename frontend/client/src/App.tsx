@@ -97,8 +97,6 @@ export default function App() {
 
   }, [])
 
-  
-
   return (
     <PrimeReactProvider value={{
       appendTo: 'self',

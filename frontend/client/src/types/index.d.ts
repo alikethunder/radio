@@ -6,6 +6,9 @@ declare global {
     key?: string;
     user?: string;
     google?: any;
+    settings: {
+      isDesktop: boolean;
+    };
   }
   interface ObjectConstructor {
     entries<T extends {}>(o: T): ReadonlyArray<Entry<T>>
