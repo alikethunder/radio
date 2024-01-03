@@ -37,7 +37,6 @@ import {
 import { actions, useTrackedStore, store, useStore } from "@/store"
 
 import {
-  logout,
   onLogout,
 } from './functions'
 
@@ -116,8 +115,6 @@ export default function App() {
       }
 
       <Outlet />
-
-      <div className="logout" onClick={logout}>Logout</div>
 
       <Toasts />
     </PrimeReactProvider>

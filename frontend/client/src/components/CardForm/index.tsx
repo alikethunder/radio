@@ -22,7 +22,7 @@ export const CardForm = () => {
 
   return (
     <div className="md:py-4 py-0 sm:px-4 px-2 w-full h-full card_form">
-
+      
     </div>
   )
 }
