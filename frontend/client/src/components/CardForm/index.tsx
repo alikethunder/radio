@@ -14,6 +14,10 @@ import { FileUpload } from 'primereact/fileupload'
 
 import { Button } from 'primereact/button'
 
+import {
+  useRefCallback
+} from '@/hooks'
+
 import './index.sass'
 
 export const CardForm = () => {
@@ -26,21 +30,20 @@ export const CardForm = () => {
 
   const [background, setBackground] = useState<File | undefined>()
 
-  const new_card_ref = useCallback((node: HTMLDivElement) => {
-    if (node != null) {
-      const { height } = node.getBoundingClientRect()
+  const [new_card_node, new_card_ref] = useRefCallback()
 
-      setHeight(height)
+  useEffect(() => {
+    if (new_card_node) {
+
+      setHeight(new_card_node.getBoundingClientRect().height)
 
       new ResizeObserver(() => {
 
-        const { height } = node.getBoundingClientRect()
+        setHeight(new_card_node.getBoundingClientRect().height)
 
-        setHeight(height)
-
-      }).observe(node)
+      }).observe(new_card_node)
     }
-  }, [])
+  }, [new_card_node])
 
   const selectBackground = (e: any) => {
     console.log('[CardForm] selectBackground : ', e.target.files)
@@ -49,7 +52,7 @@ export const CardForm = () => {
   }
 
   const removeBackground = (e: any) => {
-    console.log('[CardForm] removeBackground : ', )
+    console.log('[CardForm] removeBackground : ',)
     setBackground(undefined)
   }
 
@@ -61,13 +64,13 @@ export const CardForm = () => {
         <div className="flex flex-column">
 
           <span className="p-buttonset">
-            <Button label="Card background" icon="pi pi-image" 
-            onClick={//@ts-ignore
-              (e) => e.target.querySelector('input')?.click()
-            }>
-              <input style={{ display: 'none' }} type="file" accept="image/*" onChange={selectBackground}/>
+            <Button label="Card background" icon="pi pi-image"
+              onClick={//@ts-ignore
+                (e) => e.target.querySelector('input')?.click()
+              }>
+              <input style={{ display: 'none' }} type="file" accept="image/*" onChange={selectBackground} />
             </Button>
-            <Button icon="pi pi-times" onClick={removeBackground}/>
+            <Button icon="pi pi-times" onClick={removeBackground} />
           </span>
 
           {background?.name}
@@ -76,13 +79,13 @@ export const CardForm = () => {
       </div>
 
       <div className="new_card shadow-2 border-round align-self-center" ref={new_card_ref} style={height ? { '--card-height': `${height}px` } : {}} >
-            {
-              background ?
-              <img 
+        {
+          background ?
+            <img
               className="card_background"
-              src={URL.createObjectURL(background)}/>
-              : ''
-            }
+              src={URL.createObjectURL(background)} />
+            : ''
+        }
       </div>
 
     </div >
