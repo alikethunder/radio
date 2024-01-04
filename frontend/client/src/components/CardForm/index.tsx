@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from "react"
+import { FC, useCallback, useEffect, useRef, useState } from "react"
 
 import {
   json,
@@ -10,6 +10,10 @@ import {
 
 import { CardPageParams } from "@/types/card"
 
+import { FileUpload } from 'primereact/fileupload'
+
+import { Button } from 'primereact/button'
+
 import './index.sass'
 
 export const CardForm = () => {
@@ -20,6 +24,8 @@ export const CardForm = () => {
 
   const [height, setHeight] = useState<number | null>(null)
 
+  const [background, setBackground] = useState<File | undefined>()
+
   const new_card_ref = useCallback((node: HTMLDivElement) => {
     if (node != null) {
       const { height } = node.getBoundingClientRect()
@@ -29,22 +35,54 @@ export const CardForm = () => {
       new ResizeObserver(() => {
 
         const { height } = node.getBoundingClientRect()
-        
+
         setHeight(height)
 
       }).observe(node)
     }
   }, [])
 
+  const selectBackground = (e: any) => {
+    console.log('[CardForm] selectBackground : ', e.target.files)
+    const file = e.target.files[0]
+    setBackground(file)
+  }
+
+  const removeBackground = (e: any) => {
+    console.log('[CardForm] removeBackground : ', )
+    setBackground(undefined)
+  }
+
   return (
     <div className="md:py-4 py-0 sm:px-4 px-2 w-full h-full card_form flex flex-column">
 
       <div className="form">
 
+        <div className="flex flex-column">
+
+          <span className="p-buttonset">
+            <Button label="Card background" icon="pi pi-image" 
+            onClick={//@ts-ignore
+              (e) => e.target.querySelector('input')?.click()
+            }>
+              <input style={{ display: 'none' }} type="file" accept="image/*" onChange={selectBackground}/>
+            </Button>
+            <Button icon="pi pi-times" onClick={removeBackground}/>
+          </span>
+
+          {background?.name}
+        </div>
+
       </div>
 
       <div className="new_card shadow-2 border-round align-self-center" ref={new_card_ref} style={height ? { '--card-height': `${height}px` } : {}} >
-
+            {
+              background ?
+              <img 
+              className="card_background"
+              src={URL.createObjectURL(background)}/>
+              : ''
+            }
       </div>
 
     </div >
