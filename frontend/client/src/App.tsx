@@ -40,7 +40,7 @@ import {
   onLogout,
 } from './functions'
 
-console.log('typeof window : ', typeof window)
+//console.log('typeof window : ', typeof window)
 
 /* import favicon from './assets/favicon.ico' */
 

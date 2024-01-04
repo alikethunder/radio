@@ -1,4 +1,9 @@
+@import '@/sass/constants'
+
 .card_form
   &>*
     flex: 0 0 50%
     //border: 1px dotted #000
+  .new_card
+    --card-height: 373.5px
+    width: calc(var(--card-height)/ $card-height-to-width-ratio)
