@@ -1,0 +1,17 @@
+@import '@/sass/functions/sizeRelativeToCardWidth'
+  
+.become_seller_page1
+  display: flex
+  flex-wrap: wrap
+  justify-content: center
+
+
+.become_seller_page
+  display: grid
+  justify-content: space-around
+  grid-gap: 25px 5px
+  grid-template-columns: repeat(auto-fill, var(--SmallCardContainer_width))
+  grid-template-rows: repeat(auto-fill, sizeRelativeToCardWidth(var(--card-ratio)))
+  @media screen and (min-width: 576px) and (min-height: 576px)
+    grid-gap: 45px 25px
+

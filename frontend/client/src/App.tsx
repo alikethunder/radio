@@ -19,6 +19,8 @@ import './index.sass'
 
 import Sockette from 'sockette'
 
+import { useWindowSize } from "@uidotdev/usehooks"
+
 import {
   Toasts,
   Navbar,
@@ -46,15 +48,18 @@ import {
 /* import favicon from './assets/favicon.ico' */
 
 export default function App() {
+
   const navigate = useNavigate()
   const { pathname } = useLocation()
+
+  const windowSize = useWindowSize()
 
   useEffect(() => {
     //code for reloading on code change during development
     new Sockette('ws://localhost:3000/reloadws', {
       timeout: 5000,
       maxAttempts: 1,
-      onopen(){
+      onopen() {
         //console.log('ws opened')
       },
       onreconnect: () => {
@@ -98,22 +103,40 @@ export default function App() {
 
   }, [])
 
+  useEffect(() => {
+    actions.app.isDesktop(
+      (
+        windowSize?.width ? windowSize?.width > 768.1 : false
+      )
+      && (
+        windowSize?.height ? windowSize?.height > 768.1 : false
+      )
+    )
+    const { width, height } = windowSize
+
+    actions.app.windowSize({
+      width: width ?? 0,
+      height: height ?? 0
+    })
+
+  }, [windowSize])
+
   return (
     <PrimeReactProvider value={{
       appendTo: 'self',
-      ripple: true, 
+      ripple: true,
     }}>
       {/*  <WS /> */}
 
       {//logged in condition
         useTrackedStore().auth.signedin()
-        ?
-        <Navbar/>
-        :
-        ''
+          ?
+          <Navbar />
+          :
+          ''
       }
 
-      <RightSidebar/>
+      <RightSidebar />
 
       <Outlet />
 

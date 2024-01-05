@@ -7,7 +7,7 @@ declare global {
     user?: string;
     google?: any;
     settings: {
-      isDesktop: boolean;
+      
     };
   }
   interface ObjectConstructor {

@@ -4,6 +4,10 @@ import { Button } from 'primereact/button'
 import { Sidebar } from 'primereact/sidebar'
 
 import {
+  QueryLink,
+} from '@/components/QueryLink'
+
+import {
   logout,
 } from '@/functions'
 
@@ -32,13 +36,14 @@ export const RightSidebar: FC = () => {
       }}
     >
       <div className="top flex flex-column">
-
-        <Button
-          label="Become an advertiser"
-          text
-          raised
-          className="border-noround"
-        />
+        <QueryLink to="/become-seller" onClick={() => actions.app.rightSidebarOpened(false)}>
+          <Button
+            label="Become a seller"
+            text
+            raised
+            className="border-noround w-full h-full"
+          />
+        </QueryLink>
 
       </div>
 

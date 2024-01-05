@@ -11,7 +11,8 @@ import {
 
 import {
   Home,
-  Card,
+  //Card,
+  BecomeSeller,
 } from '@/pages'
 
 import {
@@ -50,12 +51,16 @@ export const routes = [
         element: <Home />
       },
       {
+        path: '/become-seller',
+        element: <BecomeSeller/>
+      },
+      /* {
         path: '/card/:pageId/:tab?',
         element: <Card />,
         loader: ({ params }: {
           params: CardPageParams
         }) => params
-      },
+      }, */
       ...[
         {
           path: '/signin',

@@ -1,10 +1,10 @@
-@import '@/sass/functions/cardWidthRelative'
-@import '@/sass/constants'
+@import '@/sass/functions/sizeRelativeToCardWidth'
 
 :root
   --SmallCardContainer_width: 192px
+  --card-ratio: 1.75
   //usual bussiness card size
-  --SmallCardContainer_height: #{cardWidthRelative($card-height-to-width-ratio)}
+  --SmallCardContainer_height: #{sizeRelativeToCardWidth(var(--card-ratio))}
 
   @media screen and ((max-width: 575.9px) or (max-height: 575.9px))
     --SmallCardContainer_width: Min(41vw, 41vh)
