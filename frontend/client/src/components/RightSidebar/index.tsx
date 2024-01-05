@@ -31,7 +31,14 @@ export const RightSidebar: FC = () => {
         }
       }}
     >
-      <div className="top flex flex-column align-items-start">
+      <div className="top flex flex-column">
+
+        <Button
+          label="Become an advertiser"
+          text
+          raised
+          className="border-noround"
+        />
 
       </div>
 
@@ -43,14 +50,7 @@ export const RightSidebar: FC = () => {
           icon="pi pi-sign-out"
           onClick={logout}
           iconPos="right"
-          className="border-noround"
-          pt={{
-            root: {
-              style: {
-                color: 'var(--gray-900)'
-              }
-            }
-          }}
+          className="border-noround gray-800"
         />
       </div>
 

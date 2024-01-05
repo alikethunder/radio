@@ -16,10 +16,9 @@ export const Navbar: FC = () => {
 
       <div className="right h-full">
         <Button
-          className="h-full border-noround border-none shadow-1"
+          className="h-full border-noround border-none shadow-1 gray-800"
           text
           size="large"
-          //raised
           icon="pi pi-align-justify"
           onClick={() => actions.app.rightSidebarOpened(true)}
         />
