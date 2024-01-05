@@ -64,7 +64,7 @@ export const CardForm = () => {
         <div className="flex flex-column">
 
           <span className="p-buttonset">
-            <Button label="Card background" icon="pi pi-image"
+            <Button label="Card background" raised icon="pi pi-image"
               onClick={//@ts-ignore
                 (e) => e.target.querySelector('input')?.click()
               }>

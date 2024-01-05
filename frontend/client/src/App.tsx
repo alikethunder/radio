@@ -21,7 +21,8 @@ import Sockette from 'sockette'
 
 import {
   Toasts,
-  Header,
+  Navbar,
+  RightSidebar,
 } from './components'
 
 import { getCookie } from "./functions"
@@ -107,10 +108,12 @@ export default function App() {
       {//logged in condition
         useTrackedStore().auth.signedin()
         ?
-        <Header/>
+        <Navbar/>
         :
         ''
       }
+
+      <RightSidebar/>
 
       <Outlet />
 

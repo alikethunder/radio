@@ -7,10 +7,12 @@ import {
 type AppStore = {
   isClient: boolean;
   router: ReturnType<typeof createBrowserRouter> | null;
+  rightSidebarOpened: boolean;
 }
 
 export const appStore = createStore('app')({
   //to render client parts only
   isClient: false,
   router: null,
+  rightSidebarOpened: false,
 } as AppStore)
