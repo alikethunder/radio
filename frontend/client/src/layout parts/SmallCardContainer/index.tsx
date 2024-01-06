@@ -11,7 +11,7 @@ export const SmallCardContainer: FC<Props> = ({ children, className }) => {
 
   return (
     <div
-      className={`cursor-pointer flex-shrink-0 shadow-2 border-round SmallCardContainer transition-all hover:shadow-4 transition-duration-250 hover:surface-hover transition-colors ${className ?? ''}`}
+      className={`flex-shrink-0 shadow-2 border-round SmallCardContainer ${className ?? ''}`}
     >
       {children}
     </div>
