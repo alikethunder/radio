@@ -21,16 +21,20 @@ export const BecomeSeller = () => {
     isDesktop ? windowSize.width * .25 : Math.min(windowSize.width, windowSize.height) * .7
     , [isDesktop, windowSize])
 
-    const becomeSeller = async ()=>{
-      const r = await fetch('/api/seller/start', {
-        method: 'POST',
-      })
+  const becomeSeller = async () => {
+    const r = await fetch('/api/seller/start', {
+      method: 'POST',
+    })
 
-      //const json = await r.json()
-    }
+    //const json = await r.json()
+  }
+
+  
+
 
   return (
-    <div className="sm:py-5 py-4 sm:px-6 px-4 w-full overflow-y-auto page become_seller_page flex-grow-1"
+    <div
+      className="sm:py-5 py-4 sm:px-6 px-4 w-full overflow-y-auto page become_seller_page flex-grow-1 flex flex-column"
 
       style={{
         ...width ? {
@@ -39,44 +43,49 @@ export const BecomeSeller = () => {
         } : {}
       }}
     >
-      {/* Заголовок - станьте продавцом и рекламируйте свои товары */}
 
-      {/* Display current plan and dates and paid info */}
+      <div className=" align-self-center sm:text-3xl lg:text-5xl lg:w-7 w-11 mb-5 text-center font-semibold text-800">
+        Хотите стать продавцом и рекламировать свои товары и услуги?
+      </div>
 
-      <SmallCardContainer>
 
-        <div className="card_header">
-          Начальный
-        </div>
+      <div className="plans">
 
-        <div className="active_cards">
-          Активных карточек {/*вопросик с всплывающей подсказкой - карточки которые отображаются пользователям */}
-        </div>
+        {/* TODO: If present display current plan and dates and paid info */}
 
-        <div className="total_cards">
-          Всего карточек {/*вопросик с всплывающей подсказкой - ваши карточки в том числе неактивные (которые не отображаются пользователям) */}
-        </div>
+        <SmallCardContainer className="flex flex-column pt-1">
 
-        <Button
-          label="Попробовать бесплатно"
-          text
-          raised
-          icon="pi pi-sign-out"
-          onClick={()=>becomeSeller()}
-          iconPos="right"
-          className="border-noround gray-800"
-        />
+          <div className="card_header align-self-center">
+            Начальный
+          </div>
 
-      </SmallCardContainer>
+          <div className="active_cards">
+            Активных карточек {/*вопросик с всплывающей подсказкой - карточки которые отображаются пользователям */}
+          </div>
 
-      <SmallCardContainer />
+          <div className="total_cards">
+            Всего карточек {/*вопросик с всплывающей подсказкой - ваши карточки в том числе неактивные (которые не отображаются пользователям) */}
+          </div>
 
-      <SmallCardContainer />
+          <Button
+            label="Попробовать бесплатно"
+            text
+            raised
+            onClick={() => becomeSeller()}
+            className="border-noround mt-auto align-self-stretch bg-primary"
+          />
 
-      <SmallCardContainer />
-      <SmallCardContainer />
-      <SmallCardContainer />
-      <SmallCardContainer />
+        </SmallCardContainer>
+
+        <SmallCardContainer />
+
+        <SmallCardContainer />
+
+        <SmallCardContainer />
+        <SmallCardContainer />
+        <SmallCardContainer />
+        <SmallCardContainer />
+      </div>
 
     </div>
   )
