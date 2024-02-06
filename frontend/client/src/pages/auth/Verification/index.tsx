@@ -48,7 +48,7 @@ export const Verification: FC = () => {
   const onSubmit: SubmitHandler<User> = async (form) => {
     //console.log('form submit : ', form)
 
-    let res = await fetch('/auth/verification', {
+    let res = await fetch('/api/v1/auth/verification', {
       method: 'POST',
       body: JSON.stringify({ ...form, email: store.user.email() }),
       headers: {
@@ -79,7 +79,7 @@ export const Verification: FC = () => {
   const resendVC = async () => {
     setSendingVC(true)
 
-    let res = await fetch('/auth/reset-password', {
+    let res = await fetch('/api/v1/auth/reset-password', {
       method: 'POST',
       body: JSON.stringify({ email: store.user.email() }),
       headers: {

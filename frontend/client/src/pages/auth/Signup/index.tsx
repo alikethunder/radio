@@ -42,7 +42,7 @@ export const Signup: FC = () => {
   const onSubmit: SubmitHandler<User> = async (form) => {
     //console.log('form submit : ', form)
 
-    let res = await fetch('/auth/signup', {
+    let res = await fetch('/api/v1/auth/signup', {
       method: 'POST',
       body: JSON.stringify(form),
       headers: {

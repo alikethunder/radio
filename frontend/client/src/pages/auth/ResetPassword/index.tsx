@@ -44,7 +44,7 @@ export const ResetPassword: FC = () => {
   const onSubmit: SubmitHandler<SigninUser> = async (form) => {
     //console.log('form submit : ', form)
 
-    let res = await fetch('/auth/reset-password', {
+    let res = await fetch('/api/v1/auth/reset-password', {
       method: 'POST',
       body: JSON.stringify(form),
       headers: {

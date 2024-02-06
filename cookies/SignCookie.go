@@ -3,7 +3,7 @@ package cookies
 import (
 	"fmt"
 
-	"go_react_starter/Users"
+	"sale_platform/Users"
 
 	"github.com/golang-jwt/jwt"
 )

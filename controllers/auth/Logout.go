@@ -1,7 +1,7 @@
-package Auth
+package AuthEndpoints
 
 import (
-	"go_react_starter/cookies"
+	"sale_platform/cookies"
 
 	"github.com/gofiber/fiber/v2"
 )

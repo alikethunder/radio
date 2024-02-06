@@ -2,8 +2,8 @@ package cookies
 
 import (
 	//"fmt"
-	
-	"go_react_starter/Users"
+
+	"sale_platform/Users"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -24,7 +24,7 @@ func SetAuthCookie(u Users.UserMap, c *fiber.Ctx) {
 	}
 
 	//fmt.Println("[SetAuthCookie] cookie value : ", cookie.Value)
-	
+
 	//fmt.Println("[SetAuthCookie] cookie : ", cookie)
 
 	c.Cookie(cookie)

@@ -3,8 +3,8 @@ package controllers
 import (
 	"fmt"
 
-	"go_react_starter/Users"
-	"go_react_starter/cookies"
+	"sale_platform/Users"
+	"sale_platform/cookies"
 
 	"github.com/gocql/gocql"
 	"github.com/gofiber/fiber/v2"
@@ -13,7 +13,7 @@ import (
 func Index(c *fiber.Ctx) error {
 
 	authCookie := c.Cookies("auth")
-	fmt.Println("[Index] auth cookie : ", authCookie, authCookie == "")
+	//fmt.Println("[Index] auth cookie : ", authCookie, authCookie == "")
 
 	if authCookie != "" {
 
@@ -23,13 +23,17 @@ func Index(c *fiber.Ctx) error {
 
 		if err != nil {
 			fmt.Println("[Index] GetUserFields error : ", err)
+
+			cookies.ClearAuthCookies(c)
+
+		} else {
+
+			user["created"] = user["id"].(gocql.UUID).Time()
+
+			cookies.SetUserCookie(user, c)
+
+			cookies.SetAuthCookie(u, c)
 		}
-
-		user["created"] = user["id"].(gocql.UUID).Time()
-
-		cookies.SetUserCookie(user, c)
-
-		cookies.SetAuthCookie(u, c)
 
 	}
 

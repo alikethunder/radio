@@ -4,7 +4,7 @@ import (
 	//"fmt"
 	"strings"
 
-	"go_react_starter/db"
+	"sale_platform/db"
 )
 
 func GetUserFields(user UserMap, keys ...string) (UserMap, error) {

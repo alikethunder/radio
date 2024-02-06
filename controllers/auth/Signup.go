@@ -1,10 +1,10 @@
-package Auth
+package AuthEndpoints
 
 import (
 	"encoding/json"
 	"fmt"
 
-	"go_react_starter/Users"
+	"sale_platform/Users"
 
 	"github.com/gofiber/fiber/v2"
 )

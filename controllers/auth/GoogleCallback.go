@@ -1,11 +1,11 @@
-package Auth
+package AuthEndpoints
 
 import (
 	"errors"
 	"fmt"
-	"go_react_starter/Users"
-	"go_react_starter/cookies"
 	"os"
+	"sale_platform/Users"
+	"sale_platform/cookies"
 	"strings"
 
 	"github.com/goccy/go-json"

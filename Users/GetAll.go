@@ -1,7 +1,7 @@
 package Users
 
 import (
-	"go_react_starter/db"
+	"sale_platform/db"
 )
 
 var getAll = db.Session.Query("SELECT * FROM users")

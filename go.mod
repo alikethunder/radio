@@ -1,4 +1,4 @@
-module go_react_starter
+module sale_platform
 
 go 1.21.4
 

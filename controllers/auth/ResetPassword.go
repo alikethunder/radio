@@ -1,12 +1,12 @@
-package Auth
+package AuthEndpoints
 
 import (
 	"encoding/json"
 	"fmt"
 
-	"go_react_starter/Users"
-	"go_react_starter/functions"
-	"go_react_starter/mailer"
+	"sale_platform/Users"
+	"sale_platform/functions"
+	"sale_platform/mailer"
 
 	"github.com/gocql/gocql"
 	"github.com/gofiber/fiber/v2"

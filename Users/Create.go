@@ -1,9 +1,9 @@
 package Users
 
 import (
-	"go_react_starter/db"
-	"go_react_starter/functions"
-	"go_react_starter/mailer"
+	"sale_platform/db"
+	"sale_platform/functions"
+	"sale_platform/mailer"
 
 	"errors"
 	//"time"

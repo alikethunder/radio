@@ -6,20 +6,21 @@ import (
 
 	//"time"
 
-	"go_react_starter/Users"
-	"go_react_starter/controllers"
-	"go_react_starter/controllers/auth"
-	"go_react_starter/db"
-	"go_react_starter/functions"
-	"go_react_starter/mailer"
+	"sale_platform/Users"
+	"sale_platform/controllers"
+	AuthEndpoints "sale_platform/controllers/auth"
+	SellerEndpoints "sale_platform/controllers/seller"
+	"sale_platform/db"
+	"sale_platform/functions"
+	"sale_platform/mailer"
 
-	//"go_react_starter/functions"
+	//"sale_platform/functions"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/template/html/v2"
 
-	//"go_react_starter/settings"
+	//"sale_platform/settings"
 	"fmt"
 
 	"github.com/goccy/go-json"
@@ -57,14 +58,21 @@ func main() {
 		JSONDecoder: json.Unmarshal,
 	})
 
-	auth := app.Group("/auth")
+	api := app.Group("/api")
+	v1 := api.Group("/v1")
 
-	auth.Post("/signup", Auth.Signup)
-	auth.Post("/verification", Auth.Verification)
-	auth.Post("/signin", Auth.Signin)
-	auth.Post("/logout", Auth.Logout)
-	auth.Post("/reset-password", Auth.ResetPassword)
-	auth.Post("/google-callback", Auth.GoogleCallback)
+	auth := v1.Group("/auth")
+
+	auth.Post("/signup", AuthEndpoints.Signup)
+	auth.Post("/verification", AuthEndpoints.Verification)
+	auth.Post("/signin", AuthEndpoints.Signin)
+	auth.Post("/logout", AuthEndpoints.Logout)
+	auth.Post("/reset-password", AuthEndpoints.ResetPassword)
+	auth.Post("/google-callback", AuthEndpoints.GoogleCallback)
+
+	seller := v1.Group("/seller")
+
+	seller.Post("/start", SellerEndpoints.Start)
 
 	app.Use("/reloadws", func(c *fiber.Ctx) error {
 		// IsWebSocketUpgrade returns true if the client

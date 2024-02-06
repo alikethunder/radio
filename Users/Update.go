@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"go_react_starter/db"
+	"sale_platform/db"
 
 	"github.com/gocql/gocql"
 )

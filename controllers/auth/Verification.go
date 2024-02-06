@@ -1,13 +1,13 @@
-package Auth
+package AuthEndpoints
 
 import (
 	"encoding/json"
 	"fmt"
 	"time"
 
-	"go_react_starter/Users"
-	"go_react_starter/cookies"
-	"go_react_starter/functions"
+	"sale_platform/Users"
+	"sale_platform/cookies"
+	"sale_platform/functions"
 
 	"github.com/gocql/gocql"
 	"github.com/gofiber/fiber/v2"

@@ -22,7 +22,7 @@ export const BecomeSeller = () => {
     , [isDesktop, windowSize])
 
   const becomeSeller = async () => {
-    const r = await fetch('/api/seller/start', {
+    const r = await fetch('/api/v1/seller/start', {
       method: 'POST',
     })
 
@@ -44,7 +44,7 @@ export const BecomeSeller = () => {
       }}
     >
 
-      <div className=" align-self-center sm:text-3xl lg:text-5xl lg:w-7 w-11 mb-5 text-center font-semibold text-800">
+      <div className=" align-self-center sm:text-3xl lg:text-5xl lg:w-7 w-11 mb-5 text-center font-semibold">
         Хотите стать продавцом и рекламировать свои товары и услуги?
       </div>
 
@@ -55,7 +55,7 @@ export const BecomeSeller = () => {
 
         <SmallCardContainer className="flex flex-column pt-1">
 
-          <div className="card_header align-self-center">
+          <div className="card_header align-self-center font-semibold">
             Начальный
           </div>
 
