@@ -12,7 +12,7 @@ export const GoogleOAuth: FC<{rememberme?: boolean}> = ({rememberme}) => {
       client_id: oauth.web.client_id,
       itp_support: true,
       ux_mode: 'redirect',
-      login_uri: `${window.location.origin}/auth/google-callback${rememberme ? '?rememberme' : ''}`,
+      login_uri: `${window.location.origin}/api/v1/auth/google-callback${rememberme ? '?rememberme' : ''}`,
       allowed_parent_origin: window.location.origin,
     })
 
