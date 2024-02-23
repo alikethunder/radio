@@ -3,6 +3,8 @@
 
 import 'vite/modulepreload-polyfill'
 
+import 'promise-polyfill'
+
 import React from 'react'
 import { hydrateRoot, createRoot } from 'react-dom/client'
 

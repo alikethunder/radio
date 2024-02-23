@@ -1,7 +1,7 @@
-package SellerEndpoints
+package PlansEndpoints
 
 import (
-	"encoding/json"
+	/* "encoding/json"
 	"fmt"
 
 	"sale_platform/Users"
@@ -9,33 +9,13 @@ import (
 	"sale_platform/functions"
 	"sale_platform/mailer"
 
-	"github.com/gocql/gocql"
+	"github.com/gocql/gocql" */
 	"github.com/gofiber/fiber/v2"
 )
 
-func Start(c *fiber.Ctx) error {
+func GetPlans(c *fiber.Ctx) error {
 
-	authCookie := c.Cookies("auth")
-
-	if authCookie != "" {
-
-		u := cookies.ParseAuthCookie(c.Cookies("auth"))
-
-		user, err := Users.GetUserFields(Users.UserMap{"email": u["email"]}, "id", "name", "email")
-
-		if err != nil {
-			fmt.Println("[Index] GetUserFields error : ", err)
-		}
-
-		user["created"] = user["id"].(gocql.UUID).Time()
-
-		cookies.SetUserCookie(user, c)
-
-		cookies.SetAuthCookie(u, c)
-
-	}
-
-	var u Users.UserMap
+	/* var u Users.UserMap
 
 	json.Unmarshal(c.Body(), &u)
 
@@ -55,7 +35,7 @@ func Start(c *fiber.Ctx) error {
 		mailer.SendVc(vc, u["email"].(string), user["name"].(string))
 
 		return c.SendStatus(fiber.StatusOK)
-	}
+	} */
 
 	return c.SendStatus(fiber.StatusForbidden)
 }

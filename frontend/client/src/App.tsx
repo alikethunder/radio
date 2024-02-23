@@ -19,7 +19,7 @@ import './index.sass'
 
 import Sockette from 'sockette'
 
-import { useWindowSize } from "@uidotdev/usehooks"
+import { useWindowSize } from "usehooks-ts"
 
 import {
   Toasts,

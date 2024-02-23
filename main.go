@@ -9,7 +9,7 @@ import (
 	"sale_platform/Users"
 	"sale_platform/controllers"
 	AuthEndpoints "sale_platform/controllers/auth"
-	SellerEndpoints "sale_platform/controllers/seller"
+	PlansEndpoints "sale_platform/controllers/plans"
 	"sale_platform/db"
 	"sale_platform/functions"
 	"sale_platform/mailer"
@@ -72,7 +72,8 @@ func main() {
 
 	seller := v1.Group("/purchase-plan")
 
-	seller.Post("/start", SellerEndpoints.Start)
+	seller.Post("/get-plans", PlansEndpoints.GetPlans)
+	seller.Post("/start", PlansEndpoints.Start)
 
 	app.Use("/reloadws", func(c *fiber.Ctx) error {
 		// IsWebSocketUpgrade returns true if the client
