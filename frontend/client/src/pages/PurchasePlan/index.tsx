@@ -11,7 +11,7 @@ import { QueryLink } from "@/components"
 import './index.sass'
 
 import { useTrackedStore } from "@/store"
-import { useFetcher } from "@/functions/fetcher"
+import { useFetcher } from "@/functions"
 
 export const PurchasePlan = () => {
 
