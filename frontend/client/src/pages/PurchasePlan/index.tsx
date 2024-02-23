@@ -12,7 +12,7 @@ import './index.sass'
 
 import { useTrackedStore } from "@/store"
 
-export const BuyPlan = () => {
+export const PurchasePlan = () => {
 
   const windowSize = useTrackedStore().app.windowSize()
   const isDesktop = useTrackedStore().app.isDesktop()

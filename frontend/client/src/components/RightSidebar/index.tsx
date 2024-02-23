@@ -36,7 +36,7 @@ export const RightSidebar: FC = () => {
       }}
     >
       <div className="top flex flex-column">
-        <QueryLink to="/buy-plan" onClick={() => actions.app.rightSidebarOpened(false)}>
+        <QueryLink to="/purchase-plan" onClick={() => actions.app.rightSidebarOpened(false)}>
           <Button
             label="Become a seller"//upgrade seller plan
             text

@@ -70,7 +70,7 @@ func main() {
 	auth.Post("/reset-password", AuthEndpoints.ResetPassword)
 	auth.Post("/google-callback", AuthEndpoints.GoogleCallback)
 
-	seller := v1.Group("/seller")
+	seller := v1.Group("/purchase-plan")
 
 	seller.Post("/start", SellerEndpoints.Start)
 

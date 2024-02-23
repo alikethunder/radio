@@ -12,7 +12,7 @@ import {
 import {
   Home,
   //Card,
-  BuyPlan,
+  PurchasePlan,
 } from '@/pages'
 
 import {
@@ -51,8 +51,8 @@ export const routes = [
         element: <Home />
       },
       {
-        path: '/buy-plan',
-        element: <BuyPlan/>
+        path: '/purchase-plan',
+        element: <PurchasePlan/>
       },
       /* {
         path: '/card/:pageId/:tab?',
