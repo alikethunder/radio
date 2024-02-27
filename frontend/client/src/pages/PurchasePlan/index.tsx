@@ -11,7 +11,7 @@ import { QueryLink } from "@/components"
 import './index.sass'
 
 import { useTrackedStore } from "@/store"
-import { useFetcher } from "@/functions"
+import { useImmutableFetcher } from "@/functions"
 
 export const PurchasePlan = () => {
 
@@ -22,7 +22,7 @@ export const PurchasePlan = () => {
     isDesktop ? windowSize.width * .25 : Math.min(windowSize.width, windowSize.height) * .7
     , [isDesktop, windowSize])
 
-  const {error, data: plans, isLoading} = useFetcher('/api/v1/purchase-plan/get-plans')
+  const {error, data: plans, isLoading} = useImmutableFetcher('/api/v1/purchase-plan/get-plans')
 
   console.log('plans : ', plans, error)
 
@@ -40,7 +40,7 @@ export const PurchasePlan = () => {
   return (
     <div
       className="sm:py-5 py-4 sm:px-6 px-4 w-full overflow-y-auto page become_seller_page flex-grow-1 flex flex-column"
-
+      //@ts-ignore
       style={{
         ...width ? {
           '--SmallCardContainer_width': `${width}px`,

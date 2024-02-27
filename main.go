@@ -72,8 +72,8 @@ func main() {
 
 	seller := v1.Group("/purchase-plan")
 
-	seller.Post("/get-plans", PlansEndpoints.GetPlans)
-	seller.Post("/start", PlansEndpoints.Start)
+	seller.Get("/get-plans", PlansEndpoints.GetPlans)
+	//seller.Post("/start", PlansEndpoints.Start)
 
 	app.Use("/reloadws", func(c *fiber.Ctx) error {
 		// IsWebSocketUpgrade returns true if the client
