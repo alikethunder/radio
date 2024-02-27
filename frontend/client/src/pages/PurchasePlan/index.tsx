@@ -22,9 +22,27 @@ export const PurchasePlan = () => {
     isDesktop ? windowSize.width * .25 : Math.min(windowSize.width, windowSize.height) * .7
     , [isDesktop, windowSize])
 
-  const {error, data: plans, isLoading} = useImmutableFetcher('/api/v1/purchase-plan/get-plans')
+  const { error, data: plans, isLoading } = useImmutableFetcher('/api/v1/purchase-plan/get-plans')
 
-  console.log('plans : ', plans, error)
+  const sortedPlans = useMemo(() => plans?.sort((a, b) => a.priority - b.priority).map(plan => {
+    plan.options = [
+      {
+        name: 'projects',
+        val: plan.options.projects
+      },
+      {
+        name: 'users',
+        val: plan.options.users
+      },
+      {
+        name: 'components',
+        val: plan.options.components
+      }
+    ]
+    return plan
+  }), [plans])
+
+  console.log('plans : ', plans, error, isLoading)
 
   const becomeSeller = async () => {
     /* const r = await fetch('/api/v1/purchase-plan/start', {
@@ -34,9 +52,9 @@ export const PurchasePlan = () => {
     //const json = await r.json()
   }
 
-  
 
- 
+
+
   return (
     <div
       className="sm:py-5 py-4 sm:px-6 px-4 w-full overflow-y-auto page become_seller_page flex-grow-1 flex flex-column"
@@ -50,46 +68,51 @@ export const PurchasePlan = () => {
     >
 
       <div className=" align-self-center sm:text-3xl lg:text-5xl lg:w-7 w-11 mb-5 text-center font-semibold">
-        Хотите стать продавцом и рекламировать свои товары и услуги?
+        Преобразите свой проект современной документацией
       </div>
-
 
       <div className="plans">
 
         {/* TODO: If present display current plan and dates and paid info */}
+        {
+          sortedPlans?.map(plan =>
 
-        <SmallCardContainer className="flex flex-column pt-1">
+            <SmallCardContainer className="flex flex-column pt-1">
 
-          <div className="card_header align-self-center font-semibold">
-            Начальный
-          </div>
+              <div className="card_header align-self-center font-semibold">
+                {plan.name}
+              </div>
 
-          <div className="active_cards">
-            Активных карточек {/*вопросик с всплывающей подсказкой - карточки которые отображаются пользователям */}
-          </div>
+              <div className="options">
+                {
+                  plan.options.map(option =>
+                    <div className="option">
+                      <div className="option_name">
+                        {option.name}
+                      </div>
+                      {/* многоточие */}
+                      <div className="option_val">
+                        {option.val}
+                      </div>
+                      {/*вопросик с всплывающей подсказкой*/}
+                    </div>
+                  )
+                }
 
-          <div className="total_cards">
-            Всего карточек {/*вопросик с всплывающей подсказкой - ваши карточки в том числе неактивные (которые не отображаются пользователям) */}
-          </div>
+              </div>
 
-          <Button
-            label="Попробовать бесплатно"
-            text
-            raised
-            onClick={() => becomeSeller()}
-            className="border-noround mt-auto align-self-stretch bg-primary"
-          />
+              <Button
+                label="Попробовать бесплатно"
+                text
+                raised
+                onClick={() => becomeSeller()}
+                className="border-noround mt-auto align-self-stretch bg-primary"
+              />
 
-        </SmallCardContainer>
+            </SmallCardContainer>
+          )
+        }
 
-        <SmallCardContainer />
-
-        <SmallCardContainer />
-
-        <SmallCardContainer />
-        <SmallCardContainer />
-        <SmallCardContainer />
-        <SmallCardContainer />
       </div>
 
     </div>

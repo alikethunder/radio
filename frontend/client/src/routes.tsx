@@ -52,7 +52,7 @@ export const routes = [
       },
       {
         path: '/purchase-plan',
-        element: <PurchasePlan/>
+        element: <PurchasePlan />
       },
       /* {
         path: '/card/:pageId/:tab?',
@@ -77,12 +77,13 @@ export const routes = [
         {
           path: '/reset-password',
           element: <ResetPassword />
-        }].map((route: RouteObject) => {
-          route.loader = async () => {
-            return store.auth.signedin() ? redirect('/home') : ''
-          }
-          return route
-        })
+        }
+      ].map((route: RouteObject) => {
+        route.loader = async () => {
+          return store.auth.signedin() ? redirect('/home') : ''
+        }
+        return route
+      })
     ],
 
   },
