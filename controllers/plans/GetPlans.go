@@ -4,7 +4,7 @@ import (
 	/* "encoding/json"
 
 	"github.com/gocql/gocql" */
-	"fmt"
+	//"fmt"
 	"web_project/db"
 
 	"github.com/gofiber/fiber/v2"
