@@ -1,7 +1,7 @@
 package Users
 
 import (
-	"sale_platform/db"
+	"web_project/db"
 )
 
 var getAll = db.Session.Query("SELECT * FROM users")

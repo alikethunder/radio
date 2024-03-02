@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"sale_platform/db"
+	"web_project/db"
 
 	"github.com/gocql/gocql"
 )

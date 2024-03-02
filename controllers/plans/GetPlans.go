@@ -5,7 +5,7 @@ import (
 
 	"github.com/gocql/gocql" */
 	"fmt"
-	"sale_platform/db"
+	"web_project/db"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -28,7 +28,7 @@ func GetPlans(c *fiber.Ctx) error {
 
 	}
 
-	fmt.Println("plans : ", plans)
+	//fmt.Println("plans : ", plans)
 
 	return c.Status(fiber.StatusOK).JSON(plans)
 

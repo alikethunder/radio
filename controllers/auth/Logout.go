@@ -1,7 +1,7 @@
 package AuthEndpoints
 
 import (
-	"sale_platform/cookies"
+	"web_project/cookies"
 
 	"github.com/gofiber/fiber/v2"
 )

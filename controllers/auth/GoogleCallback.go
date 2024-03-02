@@ -4,9 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"sale_platform/Users"
-	"sale_platform/cookies"
 	"strings"
+	"web_project/cookies"
+	Users "web_project/db/Users"
 
 	"github.com/goccy/go-json"
 	"github.com/gocql/gocql"

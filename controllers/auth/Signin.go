@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"time"
 
-	"sale_platform/Users"
-	"sale_platform/cookies"
-	"sale_platform/functions"
+	"web_project/cookies"
+	Users "web_project/db/Users"
+	"web_project/functions"
 
 	"github.com/gocql/gocql"
 	"github.com/gofiber/fiber/v2"

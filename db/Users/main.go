@@ -3,7 +3,7 @@ package Users
 import (
 	"fmt"
 	"log"
-	"sale_platform/db"
+	"web_project/db"
 )
 
 /*

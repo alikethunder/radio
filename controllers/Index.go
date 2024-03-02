@@ -3,8 +3,8 @@ package controllers
 import (
 	"fmt"
 
-	"sale_platform/Users"
-	"sale_platform/cookies"
+	"web_project/cookies"
+	Users "web_project/db/Users"
 
 	"github.com/gocql/gocql"
 	"github.com/gofiber/fiber/v2"

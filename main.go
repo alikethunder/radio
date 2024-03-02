@@ -1,31 +1,33 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 
 	//"time"
 
-	"sale_platform/Users"
-	"sale_platform/controllers"
-	AuthEndpoints "sale_platform/controllers/auth"
-	PlansEndpoints "sale_platform/controllers/plans"
-	"sale_platform/db"
-	DBPlans "sale_platform/db/Plans"
-	"sale_platform/functions"
-	"sale_platform/mailer"
+	"web_project/db"
+	DBPlans "web_project/db/Plans"
+	Users "web_project/db/Users"
 
-	//"sale_platform/functions"
+	"web_project/controllers"
+	AuthEndpoints "web_project/controllers/auth"
+	PlansEndpoints "web_project/controllers/plans"
 
+	"web_project/functions"
+	"web_project/mailer"
+
+	//"web_project/functions"
+
+	"github.com/gofiber/contrib/websocket"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/template/html/v2"
 
-	//"sale_platform/settings"
-	"fmt"
+	//"web_project/settings"
 
 	"github.com/goccy/go-json"
-	"github.com/gofiber/contrib/websocket"
 	_ "github.com/joho/godotenv/autoload"
 )
 

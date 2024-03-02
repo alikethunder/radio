@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"sale_platform/Users"
-	"sale_platform/functions"
-	"sale_platform/mailer"
+	Users "web_project/db/Users"
+	"web_project/functions"
+	"web_project/mailer"
 
 	"github.com/gocql/gocql"
 	"github.com/gofiber/fiber/v2"

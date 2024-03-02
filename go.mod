@@ -1,4 +1,4 @@
-module sale_platform
+module web_project
 
 go 1.22.0
 

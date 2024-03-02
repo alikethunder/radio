@@ -4,15 +4,18 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"sale_platform/Users"
-	"sale_platform/cookies"
-	"sale_platform/functions"
-	"sale_platform/mailer"
+	"web_project/cookies"
+	Users "web_project/db/Users"
+	"web_project/functions"
+	"web_project/mailer"
 
 	"github.com/gocql/gocql"
 	"github.com/gofiber/fiber/v2"
 )
 
+// contains unrelevanlt code
+// to be developed
+// purchase plan
 func Start(c *fiber.Ctx) error {
 
 	authCookie := c.Cookies("auth")

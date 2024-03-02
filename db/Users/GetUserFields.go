@@ -4,7 +4,7 @@ import (
 	//"fmt"
 	"strings"
 
-	"sale_platform/db"
+	"web_project/db"
 )
 
 func GetUserFields(user UserMap, keys ...string) (UserMap, error) {

@@ -3,7 +3,7 @@ package cookies
 import (
 	//"fmt"
 
-	"sale_platform/Users"
+	Users "web_project/db/Users"
 
 	"github.com/goccy/go-json"
 	"github.com/gofiber/fiber/v2"

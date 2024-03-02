@@ -1,9 +1,9 @@
 package Users
 
 import (
-	"sale_platform/db"
-	"sale_platform/functions"
-	"sale_platform/mailer"
+	"web_project/db"
+	"web_project/functions"
+	"web_project/mailer"
 
 	"errors"
 	//"time"
