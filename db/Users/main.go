@@ -13,8 +13,8 @@ import (
 	password text, hashed password
 	verification_code text, 8-digit code
 	last_seen text, date last seen
-	seller_plan text,
-	seller_plan_ends text, date seller plan ends
+	subscription_plan text,
+	subscription_plan_ends text, date seller plan ends
 */
 
 func Initialize() {
@@ -25,8 +25,8 @@ func Initialize() {
 		password text,
 		verification_code text,
 		last_seen text,
-		seller_plan text,
-		seller_plan_ends text,
+		subscription_plan text,
+		subscription_plan_ends text,
 		PRIMARY KEY (id, email)
 	)`).Exec(); err != nil {
 

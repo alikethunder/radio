@@ -20,7 +20,7 @@ func Index(c *fiber.Ctx) error {
 
 		u := cookies.ParseAuthCookie(c.Cookies("auth"))
 
-		user, err := Users.GetUserFields(Types.Map{"email": u["email"]}, "id", "name", "email", "seller_plan")
+		user, err := Users.GetUserFields(Types.Map{"email": u["email"]}, "id", "name", "email", "subscription_plan")
 
 		if err != nil {
 			fmt.Println("[Index] GetUserFields error : ", err)

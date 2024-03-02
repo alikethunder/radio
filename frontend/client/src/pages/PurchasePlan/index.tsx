@@ -10,11 +10,16 @@ import { QueryLink } from "@/components"
 
 import './index.sass'
 
-import { useTrackedStore } from "@/store"
+import {
+  store,
+  useTrackedStore,
+} from "@/store"
+
 import {
   useImmutableFetcher,
   sortByPriority,
 } from "@/functions"
+
 import { DataTable } from "primereact/datatable"
 import { Column } from "primereact/column"
 import { Tooltip } from "primereact/tooltip"
@@ -67,9 +72,15 @@ export const PurchasePlan = () => {
     })
   }, [])
 
-  const { error: getUserPlanErr, data: userPlan, isLoading: userPlanIsLoading } = useImmutableFetcher('/api/v1/purchase-plan/get-user-plan')
+  const signedin = useTrackedStore().auth.signedin()
+
+  const { error: getUserPlanErr, data: userPlan, isLoading: userPlanIsLoading } = useImmutableFetcher(signedin ? '/api/v1/purchase-plan/get-user-plan' : null)
 
   console.log('user plan : ', userPlan)
+
+  const planIsNotExpired = useMemo(() => Boolean(
+    userPlan?.subscription_plan_ends && new Date(userPlan?.subscription_plan_ends).getTime() - new Date().getTime() > 0
+  ), [userPlan])
 
   return (
     <div
@@ -112,6 +123,37 @@ export const PurchasePlan = () => {
                   }}
                   align={'center'} />
               </DataTable>
+
+              <div className="active_plan">
+                {
+                  store.auth.signedin()
+                    && (
+                      !userPlan?.subscription_plan ?
+                        plan.name == 'free'
+                        :
+                        !planIsNotExpired
+                    )
+                    ?
+                    <>
+                      Вы пользуетесь этим планом
+                    </>
+                    : ''
+                }
+
+                {
+                  store.auth.signedin()
+                    && plan.name == userPlan?.subscription_plan ?
+                    planIsNotExpired ?
+                      <>
+                        Вы пользуетесь этим планом до {userPlan?.subscription_plan_ends}
+                      </>
+                      :
+                      <>
+                        Вы пользовались этим планом до {userPlan?.subscription_plan_ends}
+                      </>
+                    : ''
+                }
+              </div>
 
               <div className="buttons">
                 {
