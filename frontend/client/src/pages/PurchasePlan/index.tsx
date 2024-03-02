@@ -11,7 +11,10 @@ import { QueryLink } from "@/components"
 import './index.sass'
 
 import { useTrackedStore } from "@/store"
-import { useImmutableFetcher } from "@/functions"
+import {
+  useImmutableFetcher,
+  sortByPriority,
+} from "@/functions"
 
 export const PurchasePlan = () => {
 
@@ -24,7 +27,7 @@ export const PurchasePlan = () => {
 
   const { error, data: plans, isLoading } = useImmutableFetcher('/api/v1/purchase-plan/get-plans')
 
-  const sortedPlans = useMemo(() => plans?.sort((a, b) => a.priority - b.priority).map(plan => {
+  const sortedPlans = useMemo(() => plans?.sort(sortByPriority)/* .map(plan => {
     plan.options = [
       {
         name: 'projects',
@@ -38,9 +41,9 @@ export const PurchasePlan = () => {
         name: 'components',
         val: plan.options.components
       }
-    ]
+    ] 
     return plan
-  }), [plans])
+  })*/, [plans])
 
   console.log('plans : ', plans, error, isLoading)
 
@@ -75,7 +78,7 @@ export const PurchasePlan = () => {
 
         {/* TODO: If present display current plan and dates and paid info */}
         {
-          sortedPlans?.map(plan =>
+          sortedPlans?.map((plan: any) =>
 
             <SmallCardContainer className="flex flex-column pt-1">
 
@@ -85,29 +88,45 @@ export const PurchasePlan = () => {
 
               <div className="options">
                 {
-                  plan.options.map(option =>
+                  plan.options.sort(sortByPriority).map((option: any) =>
                     <div className="option">
                       <div className="option_name">
                         {option.name}
+                        {/*вопросик с всплывающей подсказкой*/}
                       </div>
-                      {/* многоточие */}
+
                       <div className="option_val">
-                        {option.val}
+                        {option.value}
                       </div>
-                      {/*вопросик с всплывающей подсказкой*/}
                     </div>
                   )
                 }
 
               </div>
 
-              <Button
-                label="Попробовать бесплатно"
-                text
-                raised
-                onClick={() => becomeSeller()}
-                className="border-noround mt-auto align-self-stretch bg-primary"
-              />
+              <div className="buttons">
+                {
+                  plan.name == 'free' ?
+                    <Button
+                      label="Попробовать бесплатно"
+                      text
+                      raised
+                      onClick={() => becomeSeller()}
+                      className="border-noround mt-auto align-self-stretch bg-primary"
+                    /> :
+                    plan.prices.sort(sortByPriority).map((price: any) =>
+                      <Button
+                        label={`${price.name} за ${price.value}$`}
+                        text
+                        raised
+                        onClick={() => becomeSeller()}
+                        className="border-noround mt-auto align-self-stretch bg-primary"
+                      />
+                    )
+                }
+              </div>
+
+
 
             </SmallCardContainer>
           )
