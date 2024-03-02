@@ -1,5 +1,9 @@
 import { FC, useCallback, useEffect, useMemo } from "react"
 
+import {
+  useNavigate,
+} from "react-router-dom"
+
 import { Button } from 'primereact/button'
 
 import { CreateNewCard } from '@/components'
@@ -25,6 +29,8 @@ import { Column } from "primereact/column"
 import { Tooltip } from "primereact/tooltip"
 
 export const PurchasePlan = () => {
+
+  const navigate = useNavigate()
 
   const windowSize = useTrackedStore().app.windowSize()
   const isDesktop = useTrackedStore().app.isDesktop()
@@ -89,7 +95,7 @@ export const PurchasePlan = () => {
       style={{
         ...width ? {
           '--SmallCardContainer_width': `${width}px`,
-          '--card-ratio': `${1}`
+          '--card-ratio': `${1.2}`
         } : {}
       }}
     >
@@ -103,7 +109,7 @@ export const PurchasePlan = () => {
         {
           sortedPlans?.map((plan: any) =>
 
-            <SmallCardContainer className="flex flex-column pt-1">
+            <SmallCardContainer className="flex flex-column pt-1 overflow-hidden">
 
               <div className="card_header align-self-center font-semibold">
                 {plan.name}
@@ -124,7 +130,7 @@ export const PurchasePlan = () => {
                   align={'center'} />
               </DataTable>
 
-              <div className="active_plan">
+              <div className="active_plan my-auto text-center p-2">
                 {
                   store.auth.signedin()
                     && (
@@ -155,23 +161,22 @@ export const PurchasePlan = () => {
                 }
               </div>
 
-              <div className="buttons">
+              <div className="buttons flex flex-column">
                 {
                   plan.name == 'free' ?
                     <Button
-                      label="Попробовать бесплатно"
+                      label="Бесплатный план"
                       text
                       raised
-                      onClick={() => becomeSeller()}
                       className="border-noround mt-auto align-self-stretch bg-primary"
                     /> :
-                    plan.prices.sort(sortByPriority).map((price: any) =>
+                    plan.prices.sort(sortByPriority).map((price: any, i: number) =>
                       <Button
                         label={`${price.name} за ${price.value}$`}
                         text
                         raised
-                        onClick={() => becomeSeller()}
-                        className="border-noround mt-auto align-self-stretch bg-primary"
+                        onClick={() => store.auth.signedin() ? becomeSeller() : navigate('/signin')}
+                        className={`border-noround mt-2 align-self-stretch ${i == 0 ? 'bg-blue-600 text-white' : 'bg-primary'}`}
                       />
                     )
                 }
