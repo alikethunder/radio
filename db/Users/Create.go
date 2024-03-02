@@ -4,6 +4,7 @@ import (
 	"web_project/db"
 	"web_project/functions"
 	"web_project/mailer"
+	Types "web_project/types"
 
 	"errors"
 	//"time"
@@ -13,15 +14,15 @@ import (
 	"github.com/gocql/gocql"
 )
 
-func Create(user UserMap) (UserMap, error) {
+func Create(user Types.Map) (Types.Map, error) {
 
 	//fmt.Println("Create user : ", user)
-	var u UserMap
+	var u Types.Map
 	var err error
 
-	if u, err = GetUserFields(UserMap{"email": user["email"]}, "id", "password", "name"); err != nil {
+	if u, err = GetUserFields(Types.Map{"email": user["email"]}, "id", "password", "name"); err != nil {
 		//fmt.Println("[Create] GetUserFields error : ", err)
-		u = make(UserMap)
+		u = make(Types.Map)
 	}
 
 	if u["password"] == nil || u["password"] == "" || user["oauth"].(bool) {
@@ -42,7 +43,7 @@ func Create(user UserMap) (UserMap, error) {
 
 			if !user["oauth"].(bool) {
 				//update with verification code
-				Update(UserMap{"verification_code": vc}, u["id"].(gocql.UUID), user["email"].(string))
+				Update(Types.Map{"verification_code": vc}, u["id"].(gocql.UUID), user["email"].(string))
 			}
 		} else {
 
@@ -51,10 +52,10 @@ func Create(user UserMap) (UserMap, error) {
 
 			if user["oauth"].(bool) {
 				if u["name"] == "" {
-					Update(UserMap{"name": user["name"]}, u["id"].(gocql.UUID), user["email"].(string))
+					Update(Types.Map{"name": user["name"]}, u["id"].(gocql.UUID), user["email"].(string))
 				}
 			} else {
-				Update(UserMap{"verification_code": vc, "name": user["name"]}, u["id"].(gocql.UUID), user["email"].(string))
+				Update(Types.Map{"verification_code": vc, "name": user["name"]}, u["id"].(gocql.UUID), user["email"].(string))
 			}
 
 		}
@@ -63,7 +64,7 @@ func Create(user UserMap) (UserMap, error) {
 			mailer.SendVc(vc, user["email"].(string), user["name"].(string))
 		}
 
-		return GetUserFields(UserMap{"id": u["id"], "email": user["email"]}, "name", "email", "id")
+		return GetUserFields(Types.Map{"id": u["id"], "email": user["email"]}, "name", "email", "id")
 
 	}
 

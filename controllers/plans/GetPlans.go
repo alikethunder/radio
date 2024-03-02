@@ -6,20 +6,19 @@ import (
 	"github.com/gocql/gocql" */
 	//"fmt"
 	"web_project/db"
+	"web_project/types"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-type PlanMap map[string]interface{}
-
 func GetPlans(c *fiber.Ctx) error {
 
-	var plans []PlanMap
+	var plans []Types.Map
 
 	iterable := db.Session.Query("SELECT * FROM pricing_plans").Iter()
 
 	for {
-		plan := make(PlanMap)
+		plan := make(Types.Map)
 		if !iterable.MapScan(plan) {
 			break
 		}

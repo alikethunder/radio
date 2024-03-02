@@ -7,6 +7,7 @@ import (
 	"strings"
 	"web_project/cookies"
 	Users "web_project/db/Users"
+	"web_project/types"
 
 	"github.com/goccy/go-json"
 	"github.com/gocql/gocql"
@@ -49,7 +50,7 @@ func GoogleCallback(c *fiber.Ctx) error {
 			panic(err)
 		}
 
-		var google_oauth Users.UserMap
+		var google_oauth Types.Map
 
 		err = json.Unmarshal(oauth_json_content, &google_oauth)
 
@@ -91,7 +92,7 @@ func GoogleCallback(c *fiber.Ctx) error {
 			panic(errors.New("id tokens not equal"))
 		}
 
-		user, err := Users.Create(Users.UserMap{
+		user, err := Users.Create(Types.Map{
 			"email": credential["email"],
 			"name":  credential["name"],
 			"oauth": true,
@@ -103,7 +104,7 @@ func GoogleCallback(c *fiber.Ctx) error {
 
 		_, rememberme := c.Queries()["rememberme"]
 
-		cookies.SetAuthCookie(Users.UserMap{"email": credential["email"], "rememberme": rememberme}, c)
+		cookies.SetAuthCookie(Types.Map{"email": credential["email"], "rememberme": rememberme}, c)
 
 		user["created"] = user["id"].(gocql.UUID).Time()
 		cookies.SetUserCookie(user, c)

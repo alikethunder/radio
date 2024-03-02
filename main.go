@@ -74,10 +74,11 @@ func main() {
 	auth.Post("/reset-password", AuthEndpoints.ResetPassword)
 	auth.Post("/google-callback", AuthEndpoints.GoogleCallback)
 
-	seller := v1.Group("/purchase-plan")
+	subscriptionPlans := v1.Group("/purchase-plan")
 
-	seller.Get("/get-plans", PlansEndpoints.GetPlans)
-	//seller.Post("/start", PlansEndpoints.Start)
+	subscriptionPlans.Get("/get-plans", PlansEndpoints.GetPlans)
+	subscriptionPlans.Get("/get-user-plan", PlansEndpoints.GetUserPlan)
+	//subscriptionPlans.Post("/start", PlansEndpoints.Start)
 
 	app.Use("/reloadws", func(c *fiber.Ctx) error {
 		// IsWebSocketUpgrade returns true if the client

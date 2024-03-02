@@ -5,6 +5,7 @@ import (
 
 	"web_project/cookies"
 	Users "web_project/db/Users"
+	"web_project/types"
 
 	"github.com/gocql/gocql"
 	"github.com/gofiber/fiber/v2"
@@ -19,7 +20,7 @@ func Index(c *fiber.Ctx) error {
 
 		u := cookies.ParseAuthCookie(c.Cookies("auth"))
 
-		user, err := Users.GetUserFields(Users.UserMap{"email": u["email"]}, "id", "name", "email")
+		user, err := Users.GetUserFields(Types.Map{"email": u["email"]}, "id", "name", "email", "seller_plan")
 
 		if err != nil {
 			fmt.Println("[Index] GetUserFields error : ", err)

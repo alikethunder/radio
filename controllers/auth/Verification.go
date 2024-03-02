@@ -8,6 +8,7 @@ import (
 	"web_project/cookies"
 	Users "web_project/db/Users"
 	"web_project/functions"
+	"web_project/types"
 
 	"github.com/gocql/gocql"
 	"github.com/gofiber/fiber/v2"
@@ -17,13 +18,13 @@ func Verification(c *fiber.Ctx) error {
 
 	c.Accepts("application/json")
 
-	var u Users.UserMap
+	var u Types.Map
 
 	json.Unmarshal(c.Body(), &u)
 
 	//fmt.Println("Signup user : ", u)
 
-	user, err := Users.GetUserFields(Users.UserMap{"email": u["email"]}, "id", "verification_code", "name")
+	user, err := Users.GetUserFields(Types.Map{"email": u["email"]}, "id", "verification_code", "name")
 
 	if err != nil {
 		fmt.Println("[Verification] GetUserFields error : ", err)
@@ -35,11 +36,11 @@ func Verification(c *fiber.Ctx) error {
 
 		tm := time.Now().UTC().String()
 
-		Users.Update(Users.UserMap{"password": p, "verification_code": nil, "last_seen": tm}, user["id"].(gocql.UUID), u["email"].(string))
+		Users.Update(Types.Map{"password": p, "verification_code": nil, "last_seen": tm}, user["id"].(gocql.UUID), u["email"].(string))
 
-		cookies.SetAuthCookie(Users.UserMap{"email": u["email"], "rememberme": u["rememberme"]}, c)
+		cookies.SetAuthCookie(Types.Map{"email": u["email"], "rememberme": u["rememberme"]}, c)
 
-		return c.Status(fiber.StatusOK).JSON(Users.UserMap{"id": user["id"], "created": user["id"].(gocql.UUID).Time(), "name": user["name"]})
+		return c.Status(fiber.StatusOK).JSON(Types.Map{"id": user["id"], "created": user["id"].(gocql.UUID).Time(), "name": user["name"]})
 
 	}
 

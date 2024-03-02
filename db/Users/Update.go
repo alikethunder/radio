@@ -6,11 +6,12 @@ import (
 	"strings"
 
 	"web_project/db"
+	"web_project/types"
 
 	"github.com/gocql/gocql"
 )
 
-func Update(user UserMap, id gocql.UUID, email string) error {
+func Update(user Types.Map, id gocql.UUID, email string) error {
 	fmt.Println("[Update users] incoming user update : ", user)
 	if len(user) > 0 {
 

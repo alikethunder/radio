@@ -5,11 +5,12 @@ import (
 	"strings"
 
 	"web_project/db"
+	"web_project/types"
 )
 
-func GetUserFields(user UserMap, keys ...string) (UserMap, error) {
+func GetUserFields(user Types.Map, keys ...string) (Types.Map, error) {
 	//fmt.Println("[GetUserFields] user : ", user)
-	u := make(UserMap)
+	u := make(Types.Map)
 
 	//keys = what columns to select
 	var querystring strings.Builder

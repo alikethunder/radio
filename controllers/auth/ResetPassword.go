@@ -7,6 +7,7 @@ import (
 	Users "web_project/db/Users"
 	"web_project/functions"
 	"web_project/mailer"
+	"web_project/types"
 
 	"github.com/gocql/gocql"
 	"github.com/gofiber/fiber/v2"
@@ -16,13 +17,13 @@ func ResetPassword(c *fiber.Ctx) error {
 
 	c.Accepts("application/json")
 
-	var u Users.UserMap
+	var u Types.Map
 
 	json.Unmarshal(c.Body(), &u)
 
 	//fmt.Println("ResetPassword user : ", u)
 
-	user, err := Users.GetUserFields(Users.UserMap{"email": u["email"]}, "id", "name")
+	user, err := Users.GetUserFields(Types.Map{"email": u["email"]}, "id", "name")
 
 	if err != nil {
 		fmt.Println("[ResetPassword] GetUserFields error : ", err)
@@ -31,7 +32,7 @@ func ResetPassword(c *fiber.Ctx) error {
 	if user != nil {
 		vc := functions.Vc()
 
-		Users.Update(Users.UserMap{"verification_code": vc}, user["id"].(gocql.UUID), u["email"].(string))
+		Users.Update(Types.Map{"verification_code": vc}, user["id"].(gocql.UUID), u["email"].(string))
 
 		mailer.SendVc(vc, u["email"].(string), user["name"].(string))
 

@@ -14,5 +14,3 @@ type User struct {
 	Rememberme       bool       `json:"rememberme,omitempty"`
 	VerificationCode string     ` json:"verification_code,omitempty"`
 }
-
-type UserMap map[string]interface{}

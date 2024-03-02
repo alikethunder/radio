@@ -3,12 +3,11 @@ package cookies
 import (
 	//"fmt"
 
-	Users "web_project/db/Users"
-
 	"github.com/gofiber/fiber/v2"
+	"web_project/types"
 )
 
-func SetAuthCookie(u Users.UserMap, c *fiber.Ctx) {
+func SetAuthCookie(u Types.Map, c *fiber.Ctx) {
 	cookie := new(fiber.Cookie)
 
 	cookie.Name = AuthCookieName

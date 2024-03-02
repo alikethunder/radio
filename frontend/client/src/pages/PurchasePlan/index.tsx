@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo } from "react"
+import { FC, useCallback, useEffect, useMemo } from "react"
 
 import { Button } from 'primereact/button'
 
@@ -15,6 +15,9 @@ import {
   useImmutableFetcher,
   sortByPriority,
 } from "@/functions"
+import { DataTable } from "primereact/datatable"
+import { Column } from "primereact/column"
+import { Tooltip } from "primereact/tooltip"
 
 export const PurchasePlan = () => {
 
@@ -55,8 +58,18 @@ export const PurchasePlan = () => {
     //const json = await r.json()
   }
 
+  const planOptions = useCallback((plan: any) => {
+    return plan.options.sort(sortByPriority).map((option: any) => {
+      option.explanation = <i className={`question pi pi-question-circle`}
+        data-pr-tooltip={`test text ${option.priority}`}
+      />
+      return option
+    })
+  }, [])
 
+  const { error: getUserPlanErr, data: userPlan, isLoading: userPlanIsLoading } = useImmutableFetcher('/api/v1/purchase-plan/get-user-plan')
 
+  console.log('user plan : ', userPlan)
 
   return (
     <div
@@ -76,7 +89,6 @@ export const PurchasePlan = () => {
 
       <div className="plans">
 
-        {/* TODO: If present display current plan and dates and paid info */}
         {
           sortedPlans?.map((plan: any) =>
 
@@ -86,23 +98,20 @@ export const PurchasePlan = () => {
                 {plan.name}
               </div>
 
-              <div className="options">
-                {
-                  plan.options.sort(sortByPriority).map((option: any) =>
-                    <div className="option">
-                      <div className="option_name">
-                        {option.name}
-                        {/*вопросик с всплывающей подсказкой*/}
-                      </div>
+              <Tooltip target={`.question`} />
 
-                      <div className="option_val">
-                        {option.value}
-                      </div>
-                    </div>
-                  )
-                }
-
-              </div>
+              <DataTable value={planOptions(plan)} showHeaders={false} size="small">
+                <Column field="name" header="" />
+                <Column field="value"
+                  header=""
+                  align={'center'} />
+                <Column field="explanation"
+                  header=""
+                  style={{
+                    width: '24px'
+                  }}
+                  align={'center'} />
+              </DataTable>
 
               <div className="buttons">
                 {
