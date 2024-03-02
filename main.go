@@ -11,6 +11,7 @@ import (
 	AuthEndpoints "sale_platform/controllers/auth"
 	PlansEndpoints "sale_platform/controllers/plans"
 	"sale_platform/db"
+	DBPlans "sale_platform/db/Plans"
 	"sale_platform/functions"
 	"sale_platform/mailer"
 
@@ -31,6 +32,7 @@ import (
 func init() {
 	//initializers.LoadEnvVars()
 	Users.Initialize()
+	DBPlans.Initialize()
 	mailer.Initialize()
 }
 
