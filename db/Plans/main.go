@@ -108,11 +108,11 @@ func Initialize() {
 	SET priority = 2,
 	 		options = [{
 				name: 'projects',
-				value: 10,
+				value: 7,
 				priority: 0
 			},{
 				name: 'components',
-				value: 100,
+				value: 125,
 				priority: 1
 			},{
 				name: 'users',
@@ -121,7 +121,7 @@ func Initialize() {
 			}],
 			prices = [{
 				name: 'month',
-				value: 100,
+				value: 75,
 				priority: 0
 			},{
 				name: 'year',
@@ -136,6 +136,36 @@ func Initialize() {
 
 	if err := db.Session.Query(`UPDATE pricing_plans 
 	SET priority = 3,
+	 		options = [{
+				name: 'projects',
+				value: 15,
+				priority: 0
+			},{
+				name: 'components',
+				value: 300,
+				priority: 1
+			},{
+				name: 'users',
+				value: 100,
+				priority: 2
+			}],
+			prices = [{
+				name: 'month',
+				value: 175,
+				priority: 0
+			},{
+				name: 'year',
+				value: 1000,
+				priority: 1
+			}]
+	WHERE name='big'`).Exec(); err != nil {
+
+		log.Fatal("update pricing plan medium err : ", err)
+
+	}
+
+	if err := db.Session.Query(`UPDATE pricing_plans 
+	SET priority = 4,
 	 		options = [{
 				name: 'projects',
 				value: 100,

@@ -78,7 +78,6 @@ func main() {
 
 	subscriptionPlans.Get("/get-plans", PlansEndpoints.GetPlans)
 	subscriptionPlans.Get("/get-user-plan", PlansEndpoints.GetUserPlan)
-	//subscriptionPlans.Post("/start", PlansEndpoints.Start)
 
 	app.Use("/reloadws", func(c *fiber.Ctx) error {
 		// IsWebSocketUpgrade returns true if the client

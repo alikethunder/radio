@@ -38,12 +38,17 @@ export const RightSidebar: FC = () => {
       <div className="top flex flex-column">
         <QueryLink to="/purchase-plan" onClick={() => actions.app.rightSidebarOpened(false)}>
           <Button
-            label="Become a seller"//upgrade seller plan
+            label="Upgrade a plan"
+            severity="info"
             text
             raised
-            className="border-noround w-full h-full"
+            icon="pi pi-book"
+            iconPos="right"
+            className="border-noround w-full h-full text-left"
           />
         </QueryLink>
+
+        
 
       </div>
 
@@ -55,7 +60,7 @@ export const RightSidebar: FC = () => {
           icon="pi pi-sign-out"
           onClick={logout}
           iconPos="right"
-          className="border-noround gray-800"
+          className="border-noround gray-800 text-left"
         />
       </div>
 
