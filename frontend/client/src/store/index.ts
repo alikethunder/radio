@@ -32,3 +32,5 @@ export const store = mapValuesKey('get', rootStore);
 
 // Global actions
 export const actions = mapValuesKey('set', rootStore);
+
+export type Stores = keyof typeof rootStore

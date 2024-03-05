@@ -43,6 +43,9 @@ import { actions, useTrackedStore, store, useStore } from "@/store"
 
 import {
   onLogout,
+  useImmutableFetcher,
+  sortByPriority,
+  useImmutableFetcherAndStore,
 } from './functions'
 
 //console.log('typeof window : ', typeof window)
@@ -122,6 +125,16 @@ export default function App() {
     })
 
   }, [windowSize])
+
+  const signedin = useTrackedStore().auth.signedin()
+
+  /* const { error: getUserPlanErr, data: subscriptionPlan, isLoading: subscriptionPlanIsLoading } = useImmutableFetcher(signedin ? '/api/v1/purchase-plan/get-user-plan' : null) */
+
+  useImmutableFetcherAndStore(
+    signedin ? '/api/v1/purchase-plan/get-user-plan' : null,
+    'user',
+    'subscriptionPlan', 'subscriptionPlanIsLoading'
+  )
 
   return (
     <PrimeReactProvider value={{

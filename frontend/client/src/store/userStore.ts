@@ -9,7 +9,17 @@ export const userStore = createStore('app')({
   name: '',
   email: '',
   created: '',
-} as unknown as FrontUser,
+  subscriptionPlan: {
+    name: '',
+    ends: ''
+  },
+  subscriptionPlanIsLoading: '',
+} as unknown as (FrontUser & {
+  subscriptionPlan: {
+    subscription_plan: string;
+    subscription_plan_ends: string;
+  }
+}),
   {
     persist: {
       enabled: true,

@@ -13,6 +13,8 @@ import {
 
 import { actions, useTrackedStore } from "@/store"
 
+import './index.sass'
+
 export const RightSidebar: FC = () => {
 
   const rightSidebarOpened = useTrackedStore().app.rightSidebarOpened()
@@ -25,6 +27,9 @@ export const RightSidebar: FC = () => {
       className="w-15rem"
       showCloseIcon={false}
       pt={{
+        root: {
+          className: 'right_sidebar'
+        },
         header: {
           style: {
             display: 'none'
@@ -48,11 +53,43 @@ export const RightSidebar: FC = () => {
           />
         </QueryLink>
 
-        
+
 
       </div>
 
       <div className="bottom flex flex-column">
+
+        <Button
+          label={
+            <div className="flex justify-content-between">
+              <span>
+                Current plan
+              </span>
+              <span className="text-green-600">
+                <i className="pi pi-angle-double-up fadeindown animation-duration-2000 animation-iteration-infinite" />
+                <span className="upgrade">
+                  Upgrade
+                </span>
+                <i className="pi pi-angle-double-up fadeindown animation-duration-1000 animation-iteration-infinite animation-delay-300" />
+              </span>
+            </div>
+          }
+          text
+          raised
+          //onClick={logout}
+          className="border-noround"
+        />
+
+        <div className="flex flex-column shadow-1">
+          <div className="plan_name_and_date">
+
+          </div>
+          <div className="plan_details">
+
+          </div>
+
+        </div>
+
         <Button
           label="Logout"
           text

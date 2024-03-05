@@ -78,15 +78,11 @@ export const PurchasePlan = () => {
     })
   }, [])
 
-  const signedin = useTrackedStore().auth.signedin()
-
-  const { error: getUserPlanErr, data: userPlan, isLoading: userPlanIsLoading } = useImmutableFetcher(signedin ? '/api/v1/purchase-plan/get-user-plan' : null)
-
-  console.log('user plan : ', userPlan)
+  const subscriptionPlan = useTrackedStore().user.subscriptionPlan()
 
   const planIsNotExpired = useMemo(() => Boolean(
-    userPlan?.subscription_plan_ends && new Date(userPlan?.subscription_plan_ends).getTime() - new Date().getTime() > 0
-  ), [userPlan])
+    subscriptionPlan?.subscription_plan_ends && new Date(subscriptionPlan?.subscription_plan_ends).getTime() - new Date().getTime() > 0
+  ), [subscriptionPlan])
 
   return (
     <div
@@ -134,7 +130,7 @@ export const PurchasePlan = () => {
                 {
                   store.auth.signedin()
                     && (
-                      !userPlan?.subscription_plan ?
+                      !subscriptionPlan?.subscription_plan ?
                         plan.name == 'free'
                         :
                         !planIsNotExpired
@@ -148,14 +144,14 @@ export const PurchasePlan = () => {
 
                 {
                   store.auth.signedin()
-                    && plan.name == userPlan?.subscription_plan ?
+                    && plan.name == subscriptionPlan?.subscription_plan ?
                     planIsNotExpired ?
                       <>
-                        Вы пользуетесь этим планом до {userPlan?.subscription_plan_ends}
+                        Вы пользуетесь этим планом до {subscriptionPlan?.subscription_plan_ends}
                       </>
                       :
                       <>
-                        Вы пользовались этим планом до {userPlan?.subscription_plan_ends}
+                        Вы пользовались этим планом до {subscriptionPlan?.subscription_plan_ends}
                       </>
                     : ''
                 }

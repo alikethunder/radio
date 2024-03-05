@@ -5,7 +5,7 @@ import (
 
 	"web_project/cookies"
 	Users "web_project/db/Users"
-	"web_project/types"
+	Types "web_project/types"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -19,13 +19,13 @@ func GetUserPlan(c *fiber.Ctx) error {
 
 		u := cookies.ParseAuthCookie(c.Cookies("auth"))
 
-		user, err := Users.GetUserFields(Types.Map{"email": u["email"]}, "subscription_plan", "subscription_plan_ends")
+		user, err := Users.GetUserFields(Types.Map{"email": u["email"]}, "subscription_plan")
 
 		if err != nil {
 			fmt.Println("[GetUserPlan] GetUserFields error : ", err)
 
 		} else {
-			return c.Status(fiber.StatusOK).JSON(user)
+			return c.Status(fiber.StatusOK).JSON(Types.Map{"subscription_plan": user["subscription_plan"]})
 		}
 	}
 
