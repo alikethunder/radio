@@ -62,6 +62,7 @@ export const RightSidebar: FC = () => {
       <div className="bottom flex flex-column">
         <QueryLink to="/purchase-plan" onClick={() => actions.app.rightSidebarOpened(false)}>
           <Button
+            //@ts-ignore
             label={
               <div className="flex justify-content-between">
                 <span>
@@ -97,7 +98,7 @@ export const RightSidebar: FC = () => {
             </div>
           </div>
           <div className="plan_details">
-              
+
           </div>
 
         </div>
