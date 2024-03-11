@@ -22,6 +22,7 @@ import {
 import {
   useImmutableFetcher,
   sortByPriority,
+  useImmutableFetcherAndStore,
 } from "@/functions"
 
 import { DataTable } from "primereact/datatable"
@@ -39,27 +40,11 @@ export const PurchasePlan = () => {
     isDesktop ? windowSize.width * .25 : Math.min(windowSize.width, windowSize.height) * .7
     , [isDesktop, windowSize])
 
-  const { error, data: plans, isLoading } = useImmutableFetcher('/api/v1/purchase-plan/get-plans')
+  const plans = useTrackedStore().app.subscription_plans()
 
-  const sortedPlans = useMemo(() => plans?.sort(sortByPriority)/* .map(plan => {
-    plan.options = [
-      {
-        name: 'projects',
-        val: plan.options.projects
-      },
-      {
-        name: 'users',
-        val: plan.options.users
-      },
-      {
-        name: 'components',
-        val: plan.options.components
-      }
-    ] 
-    return plan
-  })*/, [plans])
+  const sortedPlans = useMemo(() => plans?.sort(sortByPriority), [plans])
 
-  console.log('plans : ', plans, error, isLoading)
+  console.log('plans : ', plans)
 
   const becomeSeller = async () => {
     /* const r = await fetch('/api/v1/purchase-plan/start', {
@@ -78,11 +63,11 @@ export const PurchasePlan = () => {
     })
   }, [])
 
-  const subscriptionPlan = useTrackedStore().user.subscriptionPlan()
+  const subscription_plan = useTrackedStore().user.subscription_plan()
 
   const planIsNotExpired = useMemo(() => Boolean(
-    subscriptionPlan?.subscription_plan_ends && new Date(subscriptionPlan?.subscription_plan_ends).getTime() - new Date().getTime() > 0
-  ), [subscriptionPlan])
+    subscription_plan?.ends && new Date(subscription_plan?.ends).getTime() - new Date().getTime() > 0
+  ), [subscription_plan])
 
   return (
     <div
@@ -130,7 +115,7 @@ export const PurchasePlan = () => {
                 {
                   store.auth.signedin()
                     && (
-                      !subscriptionPlan?.subscription_plan ?
+                      !subscription_plan?.name ?
                         plan.name == 'free'
                         :
                         !planIsNotExpired
@@ -144,14 +129,14 @@ export const PurchasePlan = () => {
 
                 {
                   store.auth.signedin()
-                    && plan.name == subscriptionPlan?.subscription_plan ?
+                    && plan.name == subscription_plan?.name ?
                     planIsNotExpired ?
                       <>
-                        Вы пользуетесь этим планом до {subscriptionPlan?.subscription_plan_ends}
+                        Вы пользуетесь этим планом до {subscription_plan?.ends}
                       </>
                       :
                       <>
-                        Вы пользовались этим планом до {subscriptionPlan?.subscription_plan_ends}
+                        Вы пользовались этим планом до {subscription_plan?.ends}
                       </>
                     : ''
                 }
@@ -177,8 +162,6 @@ export const PurchasePlan = () => {
                     )
                 }
               </div>
-
-
 
             </SmallCardContainer>
           )

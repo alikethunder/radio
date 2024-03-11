@@ -15,9 +15,9 @@ export const userStore = createStore('app')({
   },
   subscription_plan_loading: '',
 } as unknown as (FrontUser & {
-  subscriptionPlan: {
-    subscription_plan: string;
-    subscription_plan_ends: string;
+  subscription_plan: {
+    name: string;
+    ends: string;
   }
 }),
   {

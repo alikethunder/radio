@@ -13,6 +13,8 @@ type AppStore = {
     width: number;
     height: number;
   };
+  subscription_plans: [];
+  subscription_plans_loading: boolean;
 }
 
 export const appStore = createStore('app')({
@@ -25,4 +27,6 @@ export const appStore = createStore('app')({
     width: 0,
     height: 0
   },
+  subscription_plans: [],
+  subscription_plans_loading: false,
 } as AppStore)

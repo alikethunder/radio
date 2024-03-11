@@ -22,7 +22,7 @@ export const useImmutableFetcherAndStore = (url: string | null, store: Stores, .
   keys.forEach(key => {
     if (data) {
       //@ts-ignore 
-      actions[store][key](data[key])
+      actions[store][key](data[key] ?? data)
     }
     //@ts-ignore
     actions[store][`${key}_loading`](isLoading)

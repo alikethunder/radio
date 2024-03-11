@@ -25,7 +25,7 @@ func GetUserPlan(c *fiber.Ctx) error {
 			fmt.Println("[GetUserPlan] GetUserFields error : ", err)
 
 		} else {
-			return c.Status(fiber.StatusOK).JSON(Types.Map{"subscription_plan": Types.Map{"name": user["subscription_plan"], "ends": user["subscription_plan_ends"]}})
+			return c.Status(fiber.StatusOK).JSON(Types.Map{"name": user["subscription_plan"], "ends": user["subscription_plan_ends"]})
 		}
 	}
 

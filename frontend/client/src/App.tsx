@@ -130,6 +130,8 @@ export default function App() {
 
   /* const { error: getUserPlanErr, data: subscriptionPlan, isLoading: subscriptionPlanIsLoading } = useImmutableFetcher(signedin ? '/api/v1/purchase-plan/get-user-plan' : null) */
 
+  useImmutableFetcherAndStore('/api/v1/purchase-plan/get-plans', "app","subscription_plans")
+
   useImmutableFetcherAndStore(
     signedin ? '/api/v1/purchase-plan/get-user-plan' : null,
     'user',
