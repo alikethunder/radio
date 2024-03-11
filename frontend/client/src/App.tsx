@@ -133,7 +133,7 @@ export default function App() {
   useImmutableFetcherAndStore(
     signedin ? '/api/v1/purchase-plan/get-user-plan' : null,
     'user',
-    'subscriptionPlan', 'subscriptionPlanIsLoading'
+    'subscription_plan'
   )
 
   return (

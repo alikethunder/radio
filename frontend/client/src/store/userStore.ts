@@ -9,11 +9,11 @@ export const userStore = createStore('app')({
   name: '',
   email: '',
   created: '',
-  subscriptionPlan: {
+  subscription_plan: {
     name: '',
     ends: ''
   },
-  subscriptionPlanIsLoading: '',
+  subscription_plan_loading: '',
 } as unknown as (FrontUser & {
   subscriptionPlan: {
     subscription_plan: string;

@@ -19,13 +19,13 @@ func GetUserPlan(c *fiber.Ctx) error {
 
 		u := cookies.ParseAuthCookie(c.Cookies("auth"))
 
-		user, err := Users.GetUserFields(Types.Map{"email": u["email"]}, "subscription_plan")
+		user, err := Users.GetUserFields(Types.Map{"email": u["email"]}, "subscription_plan", "subscription_plan_ends")
 
 		if err != nil {
 			fmt.Println("[GetUserPlan] GetUserFields error : ", err)
 
 		} else {
-			return c.Status(fiber.StatusOK).JSON(Types.Map{"subscription_plan": user["subscription_plan"]})
+			return c.Status(fiber.StatusOK).JSON(Types.Map{"subscription_plan": Types.Map{"name": user["subscription_plan"], "ends": user["subscription_plan_ends"]}})
 		}
 	}
 
