@@ -157,7 +157,7 @@ export const PurchasePlan = () => {
                         text
                         raised
                         onClick={() => store.auth.signedin() ? becomeSeller() : navigate('/signin')}
-                        className={`border-noround mt-2 align-self-stretch ${i == 0 ? 'bg-blue-600 text-white' : 'bg-primary'}`}
+                        className={`border-noround mt-2 align-self-stretch ${i == 0 ? 'bg-secondary text-white' : 'bg-primary'}`}
                       />
                     )
                 }

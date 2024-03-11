@@ -43,17 +43,30 @@ export const RightSidebar: FC = () => {
       }}
     >
       <div className="top flex flex-column">
-        <QueryLink to="/purchase-plan" onClick={() => actions.app.rightSidebarOpened(false)}>
-          <Button
-            label="Upgrade a plan"
-            severity="info"
-            text
-            raised
-            icon="pi pi-book"
-            iconPos="right"
-            className="border-noround w-full h-full text-left"
-          />
-        </QueryLink>
+        <Button
+          //todo: projects quantity like "My projects (5)"
+          //@ts-ignore
+          label="My projects"
+          text
+          raised
+          icon={`pi pi-caret-down`}
+          iconPos="right"
+          //onClick={logout}
+          className="border-noround w-full h-full px-2"
+        />
+        <Button
+          //@ts-ignore
+          label="Create new"
+          text
+          raised
+          icon={`pi pi-plus`}
+          iconPos="right"
+          //onClick={logout}
+          className="border-noround w-full h-full px-2 text-secondary"
+        />
+        <div className="flex flex-column shadow-4">
+
+        </div>
 
 
 
@@ -85,7 +98,7 @@ export const RightSidebar: FC = () => {
           />
         </QueryLink>
 
-        <div className="flex flex-column shadow-1">
+        <div className="flex flex-column shadow-4">
           <div className="plan_name_and_date">
             <div className="name pl-5 capitalize py-2">
               {subscription_plan.name || 'free'}
