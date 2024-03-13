@@ -127,5 +127,8 @@ func main() {
 	app.Get("*", controllers.Index)
 
 	// Start app
-	app.Listen(":" + os.Getenv("PORT"))
+	err := app.Listen(":" + os.Getenv("PORT"))
+	if err != nil {
+		fmt.Println("main error : ", err)
+	}
 }

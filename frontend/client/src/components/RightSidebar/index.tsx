@@ -43,27 +43,38 @@ export const RightSidebar: FC = () => {
       }}
     >
       <div className="top flex flex-column">
-        <Button
-          //todo: projects quantity like "My projects (5)"
-          //@ts-ignore
-          label="My projects"
-          text
-          raised
-          icon={`pi pi-caret-down`}
-          iconPos="right"
-          //onClick={logout}
-          className="border-noround w-full h-full px-2"
-        />
-        <Button
-          //@ts-ignore
-          label="Create new"
-          text
-          raised
-          icon={`pi pi-plus`}
-          iconPos="right"
-          //onClick={logout}
-          className="border-noround w-full h-full px-2 text-secondary"
-        />
+
+        <div className="flex">
+          <Button
+            //todo: projects quantity like "My projects (5)"
+            label="My projects"
+            text
+            raised
+            //onClick={logout}
+            className="border-noround w-full h-full px-2"
+          />
+          <Button
+            text
+            raised
+            //todo: switch to pi-chevron-up when opened projects list
+            icon={`pi pi-chevron-down`}
+            //onClick={logout}
+            className="border-noround h-full px-2"
+          />
+        </div>
+
+        <QueryLink to="/project/new" onClick={() => actions.app.rightSidebarOpened(false)}>
+          <Button
+            //@ts-ignore
+            label="Create new"
+            text
+            raised
+            icon={`pi pi-plus`}
+            iconPos="right"
+            //onClick={logout}
+            className="border-noround w-full h-full px-2 text-secondary"
+          />
+        </QueryLink>
         <div className="flex flex-column shadow-4">
 
         </div>
@@ -98,7 +109,7 @@ export const RightSidebar: FC = () => {
           />
         </QueryLink>
 
-        <div className="flex flex-column shadow-4">
+        <div className="flex flex-column">
           <div className="plan_name_and_date">
             <div className="name pl-5 capitalize py-2">
               {subscription_plan.name || 'free'}

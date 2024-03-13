@@ -13,6 +13,7 @@ import {
   Home,
   //Card,
   PurchasePlan,
+  Project,
 } from '@/pages'
 
 import {
@@ -39,13 +40,6 @@ export const routes = [
     },
     element: <App />,
     children: [
-      /* {
-        path: '/:id',
-        loader({ params }: { params: any }) {
-          return { id: params.id }
-        },
-        element: <IdElem />
-      }, */
       {
         path: '/home',
         element: <Home />
@@ -54,13 +48,21 @@ export const routes = [
         path: '/purchase-plan',
         element: <PurchasePlan />
       },
-      /* {
-        path: '/card/:pageId/:tab?',
-        element: <Card />,
-        loader: ({ params }: {
-          params: CardPageParams
-        }) => params
-      }, */
+      {
+        path: '/project/:id',
+        element: <Project />,
+        loader(
+          {
+            params
+          }: { 
+            params: { id: string } 
+          }
+        ) {
+          //todo: load project data from db
+          //todo: if there is no such project -> return redirect('/project/new')
+          return null
+        }
+      },
       ...[
         {
           path: '/signin',
