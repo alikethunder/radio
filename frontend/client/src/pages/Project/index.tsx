@@ -88,7 +88,6 @@ export const Project = () => {
                   pt={{
                     root: {
                       onInput: (e) =>{
-                        console.log(e.target.value.length)
                         //@ts-ignore
                         e.target.size = Math.min(Math.max(e.target.value.length, 20), 80)
                       }
