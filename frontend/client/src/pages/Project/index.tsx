@@ -85,11 +85,12 @@ export const Project = () => {
                   className={classNames({ 'p-invalid': fieldState.error }, 'text-center')}
                   onChange={(e) => field.onChange(e.target.value)}
                   disabled={false}
-                  oninput="this.size = this.value.length"
                   pt={{
                     root: {
-                      oninput: function() {
-                        console.log(this)
+                      onInput: (e) =>{
+                        console.log(e.target.value.length)
+                        //@ts-ignore
+                        e.target.size = Math.min(Math.max(e.target.value.length, 20), 80)
                       }
                     }
                   }}
