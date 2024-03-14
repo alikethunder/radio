@@ -26,6 +26,7 @@ import { Button } from 'primereact/button'
 import {
   Toasts,
   Navbar,
+  LeftSidebar,
   RightSidebar,
 } from './components'
 
@@ -130,7 +131,7 @@ export default function App() {
 
   /* const { error: getUserPlanErr, data: subscriptionPlan, isLoading: subscriptionPlanIsLoading } = useImmutableFetcher(signedin ? '/api/v1/purchase-plan/get-user-plan' : null) */
 
-  useImmutableFetcherAndStore('/api/v1/purchase-plan/get-plans', "app","subscription_plans")
+  useImmutableFetcherAndStore('/api/v1/purchase-plan/get-plans', "app", "subscription_plans")
 
   useImmutableFetcherAndStore(
     signedin ? '/api/v1/purchase-plan/get-user-plan' : null,
@@ -154,6 +155,16 @@ export default function App() {
       } */}
 
       <Button
+        className="border-circle fixed top-0 left-0 ml-4 mt-3"
+        severity="info"
+        text
+        raised
+        icon="pi pi-bars"
+        onClick={
+          () => actions.app.leftSidebarOpened(true)
+        } />
+
+      <Button
         className="border-circle fixed top-0 right-0 mr-4 mt-3"
         severity="info"
         text
@@ -161,6 +172,7 @@ export default function App() {
         icon="pi pi-bars"
         onClick={() => actions.app.rightSidebarOpened(true)} />
 
+      <LeftSidebar />
       <RightSidebar />
 
       <Outlet />

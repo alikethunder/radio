@@ -15,6 +15,7 @@ type AppStore = {
   };
   subscription_plans: [];
   subscription_plans_loading: boolean;
+  leftSidebarOpened: boolean;
 }
 
 export const appStore = createStore('app')({
@@ -22,6 +23,7 @@ export const appStore = createStore('app')({
   isClient: false,
   router: null,
   rightSidebarOpened: false,
+  leftSidebarOpened: false,
   isDesktop: false,
   windowSize: {
     width: 0,

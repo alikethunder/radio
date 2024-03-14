@@ -67,38 +67,65 @@ export const Project = () => {
 
   return (
     <div
-      className="sm:py-5 py-4 sm:px-6 px-4 w-full overflow-y-auto page project_page flex-grow-1 flex flex-column"
+      className="sm:py-3 py-4 sm:px-6 px-4 w-full overflow-y-auto page project_page flex-grow-1 flex flex-column"
     >
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-2 align-self-center">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-2 align-self-start ml-7">
         <Controller
           name="value"
           control={control}
           rules={{ required: 'Name - Surname is required.' }}
           render={({ field, fieldState }) => (
             <>
-              <label htmlFor={field.name} className={classNames({ 'p-error': errors.value })}></label>
-              <span className="p-float-label">
+              <label
+                htmlFor={field.name}
+                className={classNames(
+                  { 'p-error': errors.value },
+                  //'flex',
+                  //'align-items-end',
+                )}
+              >
+                <small>Project</small>
 
-                <InputText
-                  id={field.name}
-                  value={field.value}
-                  className={classNames({ 'p-invalid': fieldState.error }, 'text-center')}
-                  onChange={(e) => field.onChange(e.target.value)}
-                  disabled={false}
+                <Button
+                  icon="pi pi-check"
+                  rounded
+                  text
+                  raised
+                  aria-label="Accept"
+                  className="align-self-center p-0 ml-2"
+                  severity="success"
+                  disabled
                   pt={{
                     root: {
-                      onInput: (e) =>{
-                        //@ts-ignore
-                        e.target.size = Math.min(Math.max(e.target.value.length, 20), 80)
+                      style: {
+                        height: '1.2rem',
+                        width: '1.2rem',
+                      }
+                    },
+                    icon: {
+                      style: {
+                        fontSize: '.7rem',
                       }
                     }
                   }}
                 />
+              </label>
 
-                <label htmlFor={field.name}>
-                  Project
-                </label>
-              </span>
+              <InputText
+                id={field.name}
+                value={field.value}
+                className={classNames({ 'p-invalid': fieldState.error })}
+                onChange={(e) => field.onChange(e.target.value)}
+                disabled={false}
+                pt={{
+                  root: {
+                    onInput: (e) => {
+                      //@ts-ignore
+                      e.target.size = Math.min(Math.max(e.target.value.length - 7, 20), 70)
+                    }
+                  }
+                }}
+              />
 
               <small className="p-error">{errors[name] ? errors[name].message : <>&nbsp;</>}</small>
             </>
