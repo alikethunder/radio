@@ -66,81 +66,101 @@ export const Project = () => {
 
   return (
     <div
-      className="sm:py-3 py-4 sm:px-6 px-4 w-full overflow-y-auto page project_page flex-grow-1 flex flex-column"
+      className="sm:py-3 py-4 sm:px-3 px-4 w-full overflow-y-auto page project_page flex-grow-1 flex"
     >
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-2 align-self-start ml-7">
-        <Controller
-          name="name"
-          control={control}
-          rules={{ required: 'Project name cannot be empty' }}
-          render={({ field, fieldState }) => (
-            <>
-              <label
-                htmlFor={field.name}
-                className={classNames(
-                  { 'p-error': errors[field.name] },
-                  //'flex',
-                  //'align-items-end',
-                )}
-              >
-                <small>Project</small>
 
-                <Button
-                  icon="pi pi-check"
-                  rounded
-                  text
-                  raised
-                  aria-label="Accept"
-                  className="align-self-center p-0 ml-2"
-                  severity={false ? `success` : 'secondary'}
-                  disabled
-                  /* disabled={
-                    new project 
-                    && empty input
-                    || existing project
-                    && new_value == old_value
-                  } */
-                  pt={{
-                    root: {
-                      style: {
-                        height: '1.2rem',
-                        width: '1.2rem',
-                      }
-                    },
-                    icon: {
-                      style: {
-                        fontSize: '.7rem',
-                      }
-                    }
-                  }}
-                  onClick={() => {
+      <div className="buttons mt-8 pt-2">
 
-                  }}
-                />
-              </label>
+        <Button
+          icon="pi pi-check"
+          rounded
+          text
+          raised
+          aria-label="Accept"
+          className="align-self-center p-0 ml-2"
+          severity={false ? `success` : 'secondary'}
+          /* disabled={
+            new project 
+            && empty input
+            || existing project
+            && new_value == old_value
+          } */
 
-              <InputText
-                id={field.name}
-                value={field.value}
-                className={classNames({ 'p-invalid': fieldState.error })}
-                onChange={(e) => field.onChange(e.target.value)}
-                disabled={false}
-                pt={{
-                  root: {
-                    onInput: (e) => {
-                      //@ts-ignore
-                      e.target.size = Math.min(Math.max(e.target.value.length - 7, 20), 70)
-                    }
-                  }
-                }}
-              />
+          onClick={() => {
 
-              <small className="p-error">{errors[field.name]?.message ?? ' '}</small>
-            </>
-          )}
+          }}
         />
 
-      </form>
+      </div>
+
+      <div className="flex flex-column">
+
+        <div
+          className="breadcrumbs shadow-3 ml-5 flex align-items-center pl-3"
+          style={{
+            borderRadius: '24px',
+            height: '3rem',
+          }}>
+          asd a
+        </div>
+
+        <div className="flex mt-3">
+
+          <Button
+            icon="pi pi-image"
+            rounded
+            text
+            raised
+            aria-label="Accept"
+            className="p-0 ml-5 mt-4"
+            onClick={() => {
+
+            }}
+          />
+
+          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-2 align-self-start ml-5">
+            <Controller
+              name="name"
+              control={control}
+              rules={{ required: 'Project name cannot be empty' }}
+              render={({ field, fieldState }) => (
+                <>
+                  <label
+                    htmlFor={field.name}
+                    className={classNames(
+                      { 'p-error': errors[field.name] },
+                      'ml-2',
+                      'pl-1',
+                      'text-600'
+                    )}
+                  >
+                    <small>Project</small>
+                  </label>
+
+                  <InputText
+                    id={field.name}
+                    value={field.value}
+                    className={classNames({ 'p-invalid': fieldState.error })}
+                    onChange={(e) => field.onChange(e.target.value)}
+                    disabled={false}
+                    pt={{
+                      root: {
+                        onInput: (e) => {
+                          //@ts-ignore
+                          e.target.size = Math.min(Math.max(e.target.value.length - 7, 20), 70)
+                        }
+                      }
+                    }}
+                  />
+
+                  <small className="p-error">{errors[field.name]?.message ?? ' '}</small>
+                </>
+              )}
+            />
+          </form>
+        </div>
+
+      </div>
 
 
     </div>
