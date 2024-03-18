@@ -139,6 +139,8 @@ export default function App() {
     'subscription_plan'
   )
 
+  console.log(pathname)
+
   return (
     <PrimeReactProvider value={{
       appendTo: 'self',
@@ -154,15 +156,19 @@ export default function App() {
           ''
       } */}
 
-      <Button
-        className="border-circle fixed top-0 left-0 ml-4 mt-3"
-        severity="info"
-        text
-        raised
-        icon="pi pi-bars"
-        onClick={
-          () => actions.app.leftSidebarOpened(true)
-        } />
+      {
+        pathname.includes('/project') ?
+          <Button
+            className="border-circle fixed top-0 left-0 ml-4 mt-3"
+            severity="info"
+            text
+            raised
+            icon="pi pi-bars"
+            onClick={
+              () => actions.app.leftSidebarOpened(true)
+            } />
+          : ''
+      }
 
       <Button
         className="border-circle fixed top-0 right-0 mr-4 mt-3"

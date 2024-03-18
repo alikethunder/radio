@@ -48,18 +48,17 @@ export const Project = () => {
 
   const project = useLoaderData()
 
-  const defaultValues = {
-    value: ''
-  };
-
   const {
     control,
     formState: { errors },
     handleSubmit,
     getValues,
     reset
-  } = useForm({ defaultValues })
-
+  } = useForm({
+    defaultValues: {
+      name: '',
+    }
+  })
 
   const onSubmit = (data) => {
     console.log('submit : ', data)
@@ -71,15 +70,15 @@ export const Project = () => {
     >
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-2 align-self-start ml-7">
         <Controller
-          name="value"
+          name="name"
           control={control}
-          rules={{ required: 'Name - Surname is required.' }}
+          rules={{ required: 'Project name cannot be empty' }}
           render={({ field, fieldState }) => (
             <>
               <label
                 htmlFor={field.name}
                 className={classNames(
-                  { 'p-error': errors.value },
+                  { 'p-error': errors[field.name] },
                   //'flex',
                   //'align-items-end',
                 )}
@@ -93,8 +92,14 @@ export const Project = () => {
                   raised
                   aria-label="Accept"
                   className="align-self-center p-0 ml-2"
-                  severity="success"
+                  severity={false ? `success` : 'secondary'}
                   disabled
+                  /* disabled={
+                    new project 
+                    && empty input
+                    || existing project
+                    && new_value == old_value
+                  } */
                   pt={{
                     root: {
                       style: {
@@ -107,6 +112,9 @@ export const Project = () => {
                         fontSize: '.7rem',
                       }
                     }
+                  }}
+                  onClick={() => {
+
                   }}
                 />
               </label>
@@ -127,7 +135,7 @@ export const Project = () => {
                 }}
               />
 
-              <small className="p-error">{errors[name] ? errors[name].message : <>&nbsp;</>}</small>
+              <small className="p-error">{errors[field.name]?.message ?? ' '}</small>
             </>
           )}
         />
