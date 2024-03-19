@@ -91,11 +91,10 @@ export const Project = () => {
         <Button
           icon="pi pi-check"
           rounded
-          //text
           raised
           aria-label="Accept"
-          className="align-self-center p-0 ml-2"
-          severity={save_disabled ? 'secondary' : `success`}
+          className={`align-self-center p-0 ml-2 ${save_disabled ? 'bg-bluegray-300' : ''}`}
+          severity={`success`}
           disabled={save_disabled}
 
           onClick={handleSubmit(onSubmit)}
