@@ -139,7 +139,7 @@ export default function App() {
     'subscription_plan'
   )
 
-  console.log(pathname)
+  //console.log(pathname)
 
   return (
     <PrimeReactProvider value={{

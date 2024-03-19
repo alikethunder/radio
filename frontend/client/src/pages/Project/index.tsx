@@ -47,52 +47,75 @@ export const Project = () => {
   const isDesktop = useTrackedStore().app.isDesktop()
 
   const project = useLoaderData()
+  console.log('project : ', project)
 
   const {
     control,
-    formState: { errors },
+    formState: {
+      errors,
+      isDirty,
+    },
     handleSubmit,
     getValues,
-    reset
+    reset,
   } = useForm({
-    mode: 'onBlur',
+    mode: 'onTouched',
     defaultValues: {
       name: '',
     }
   })
 
+  console.log(errors.name)
+
   const onSubmit = (data) => {
     console.log('submit : ', data)
   };
+
+  const save_disabled = useMemo(() => {
+    return project ?
+      //existing project /*new_value == old_value */
+      false
+      : //new project
+      Boolean(
+        isDirty ? errors.name : true
+      )
+  }, [isDirty, errors])
 
   return (
     <div
       className="sm:py-3 py-4 sm:px-3 px-4 w-full overflow-y-auto page project_page flex-grow-1 flex"
     >
 
-      <div className="buttons mt-8 pt-2">
+      <div className="buttons mt-8 pt-2 flex flex-column gap-3">
 
         <Button
           icon="pi pi-check"
           rounded
-          text
+          //text
           raised
           aria-label="Accept"
           className="align-self-center p-0 ml-2"
-          severity={false ? `success` : 'secondary'}
-          //disabled
-          /* disabled={
-            new project 
-            && empty input
-            || existing project
-            && new_value == old_value
-          } */
+          severity={save_disabled ? 'secondary' : `success`}
+          disabled={save_disabled}
 
-          onClick={() => {
-
-          }}
+          onClick={handleSubmit(onSubmit)}
         />
 
+        {
+          project ?
+            <Button
+              icon="pi pi-trash"
+              rounded
+              text
+              raised
+              aria-label="Accept"
+              className="align-self-center p-0 ml-2"
+              severity='danger'
+
+              onClick={() => { }}
+            />
+            : ''
+        }
       </div>
 
       <div className="flex flex-column">
