@@ -55,6 +55,7 @@ export const Project = () => {
     getValues,
     reset
   } = useForm({
+    mode: 'onBlur',
     defaultValues: {
       name: '',
     }
@@ -79,6 +80,7 @@ export const Project = () => {
           aria-label="Accept"
           className="align-self-center p-0 ml-2"
           severity={false ? `success` : 'secondary'}
+          //disabled
           /* disabled={
             new project 
             && empty input
@@ -100,8 +102,9 @@ export const Project = () => {
           style={{
             borderRadius: '24px',
             height: '3rem',
+            lineHeight: '1rem',
           }}>
-          asd a
+          Breadcrumbs
         </div>
 
         <div className="flex mt-3">
@@ -142,6 +145,7 @@ export const Project = () => {
                     value={field.value}
                     className={classNames({ 'p-invalid': fieldState.error })}
                     onChange={(e) => field.onChange(e.target.value)}
+                    onBlur={field.onBlur}
                     disabled={false}
                     pt={{
                       root: {
@@ -153,13 +157,18 @@ export const Project = () => {
                     }}
                   />
 
-                  <small className="p-error">{errors[field.name]?.message ?? ' '}</small>
+                  <small className="p-error ml-2 pl-1">{errors[field.name]?.message ?? ' '}</small>
                 </>
               )}
             />
           </form>
+
         </div>
 
+      </div>
+
+      <div className="shadow-3 flex-grow-1 h-full ml-5 mt-8 flex align-items-center justify-content-center">
+        Editor
       </div>
 
 
