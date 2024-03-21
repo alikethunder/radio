@@ -189,7 +189,7 @@ export const Project = () => {
 
       </div>
 
-      <div className="shadow-3 flex-grow-1 h-full ml-5 mt-8 flex align-items-center justify-content-center">
+      <div className="shadow-3 flex-grow-1 ml-5 mt-8 flex align-items-center justify-content-center">
         Editor
       </div>
 

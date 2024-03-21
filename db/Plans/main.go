@@ -48,15 +48,15 @@ func Initialize() {
 	SET priority = 0,
 	 		options = [{
 				name: 'projects',
-				value: 1,
+				value: 3,
 				priority: 0
 			},{
 				name: 'components',
-				value: 20,
+				value: 12,
 				priority: 1
 			},{
 				name: 'users',
-				value: 2,
+				value: 3,
 				priority: 2
 			}],
 			prices = [{
@@ -78,11 +78,11 @@ func Initialize() {
 	SET priority = 1,
 	 		options = [{
 				name: 'projects',
-				value: 3,
+				value: 5,
 				priority: 0
 			},{
 				name: 'components',
-				value: 50,
+				value: 40,
 				priority: 1
 			},{
 				name: 'users',
@@ -91,11 +91,11 @@ func Initialize() {
 			}],
 			prices = [{
 				name: 'month',
-				value: 30,
+				value: 50,
 				priority: 0
 			},{
 				name: 'year',
-				value: 300,
+				value: 500,
 				priority: 1
 			}]
 	WHERE name='small'`).Exec(); err != nil {
@@ -108,24 +108,24 @@ func Initialize() {
 	SET priority = 2,
 	 		options = [{
 				name: 'projects',
-				value: 7,
+				value: 8,
 				priority: 0
 			},{
 				name: 'components',
-				value: 125,
+				value: 80,
 				priority: 1
 			},{
 				name: 'users',
-				value: 35,
+				value: 40,
 				priority: 2
 			}],
 			prices = [{
 				name: 'month',
-				value: 75,
+				value: 120,
 				priority: 0
 			},{
 				name: 'year',
-				value: 1000,
+				value: 1200,
 				priority: 1
 			}]
 	WHERE name='medium'`).Exec(); err != nil {
@@ -146,7 +146,7 @@ func Initialize() {
 				priority: 1
 			},{
 				name: 'users',
-				value: 100,
+				value: 120,
 				priority: 2
 			}],
 			prices = [{
@@ -155,7 +155,7 @@ func Initialize() {
 				priority: 0
 			},{
 				name: 'year',
-				value: 1000,
+				value: 1750,
 				priority: 1
 			}]
 	WHERE name='big'`).Exec(); err != nil {
