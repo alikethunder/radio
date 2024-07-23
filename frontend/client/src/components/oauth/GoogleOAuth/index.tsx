@@ -1,30 +1,38 @@
-import { FC, useEffect} from "react"
+import { FC, useEffect } from "react"
 
 import oauth from '&/settings/google_oauth.json'
 
-export const GoogleOAuth: FC<{rememberme?: boolean}> = ({rememberme}) => {
+export const GoogleOAuth: FC<{ rememberme?: boolean }> = ({ rememberme }) => {
 
-  useEffect(()=>{
+  useEffect(() => {
 
-    //console.log('oauth settings : ', oauth)
+    //console.log('oauth settings : ', oauth, window.google)
+    //todo: add code to remove the old button and create new one each time
+    try {
+      window.google.accounts.id.initialize({
+        client_id: oauth.web.client_id,
+        itp_support: true,
+        ux_mode: 'redirect',
+        login_uri: `http://localhost:3000/api/v1/auth/google-callback${rememberme ? '?rememberme' : ''}`,
+        //`${window.location.origin}/signin/api/v1/auth/google-callback${rememberme ? '?rememberme' : ''}`
+        allowed_parent_origin: 'http://localhost:3000',
+        //window.location.origin
+      })
 
-    window.google.accounts.id.initialize({
-      client_id: oauth.web.client_id,
-      itp_support: true,
-      ux_mode: 'redirect',
-      login_uri: `${window.location.origin}/api/v1/auth/google-callback${rememberme ? '?rememberme' : ''}`,
-      allowed_parent_origin: window.location.origin,
-    })
-
-    window.google.accounts.id.renderButton(
-      document.getElementById("google_signin"),
-      {
-        locale: 'ru',
-        theme: "filled_blue",
-        size: "large",
-      }
-    )
-  },[])
+      window.google.accounts.id.renderButton(
+        document.getElementById("google_signin"),
+        {
+          locale: 'ru',
+          theme: "filled_blue",
+          size: "large",
+          //use 'state' to pass parameters within google-callback request
+          //state: '123254353',
+        }
+      )
+    } catch (e) {
+      console.log('google init error : ', e)
+    }
+  }, [rememberme])
 
   return (
     <div id="google_signin" className="mb-4 align-self-center" />

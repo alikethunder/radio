@@ -17,7 +17,8 @@ import (
 
 func GoogleCallback(c *fiber.Ctx) error {
 
-	//fmt.Println("Signup user : ", c)
+	fmt.Println("GoogleCallback : ", c)
+
 	cookie_g_csrf_token := c.Cookies("g_csrf_token")
 
 	if cookie_g_csrf_token == "" {
