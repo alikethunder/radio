@@ -47,7 +47,7 @@ export const RightSidebar: FC = () => {
         <div className="flex">
           <Button
             //todo: projects quantity like "My projects (5)"
-            label="My projects"
+            label="Мои компании"
             text
             raised
             //onClick={logout}
@@ -66,7 +66,7 @@ export const RightSidebar: FC = () => {
         <QueryLink to="/project/new" onClick={() => actions.app.rightSidebarOpened(false)}>
           <Button
             //@ts-ignore
-            label="Create new"
+            label="Создать компанию"
             text
             raised
             icon={`pi pi-plus`}

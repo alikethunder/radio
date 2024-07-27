@@ -68,7 +68,7 @@ func GoogleCallback(c *fiber.Ctx) error {
 		_, body, errs := agent.Bytes()
 
 		if len(errs) > 0 {
-			fmt.Println("googleapis errors : ", errs)
+			fmt.Println("googleapis errors : ", body, errs)
 			panic("googleapis errors")
 		}
 
