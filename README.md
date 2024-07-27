@@ -16,21 +16,29 @@ Prerequisites
 
   - install go (1.22.5)
   - install air
-  - npm install in frontend/client
   - install scylladb
+  - npm install in frontend/client
 
-      To create dev server for scylladb:
-        sudo docker run --name scylla_vercontrack -p 9042:9042 -d scylladb/scylla --smp 1
+  - To create dev server for scylladb:
+    sudo docker run --name scylla_vercontrack -p 9042:9042 -d scylladb/scylla --smp 1
+
+  - For first run the following commands from cqlsh from terminal:
+	  $ docker exec -it scylla_vercontrack cqlsh
+
+	  CREATE KEYSPACE IF NOT EXISTS app WITH replication = { 'class' : 'SimpleStrategy', 'replication_factor': 1};
 
 1. To start dev server
 
   #Start db service
   
-  - start scylladb (ubuntu - sudo systemctl start scylla-server)
+  - start scylladb:
+     - ubuntu: sudo systemctl start scylla-server
+     - mac: start from docker gui
   
   - start dev server: air -c .air.toml & npm --prefix ./frontend/client run build:watch
-  
   (This will run go build with hot reload and building to ./build/main and vite build watching frontend/client building to ./public )
+
+  
   To do:
     - add bun server start script for ssr in feature
 

@@ -1,5 +1,5 @@
 package db
- 
+
 import (
 	"fmt"
 
@@ -10,15 +10,9 @@ var Session *gocql.Session
 
 func init() {
 	var err error
-	//
-	/* run the following command from cqlsh
-	from terminal:
-	$ docker exec -it scylla_vercontrack cqlsh
-	
-	CREATE KEYSPACE IF NOT EXISTS app WITH replication = { 'class' : 'SimpleStrategy', 'replication_factor': 1};
-	*/
+
 	cluster := gocql.NewCluster("localhost")
- 
+
 	cluster.Keyspace = "app"
 
 	Session, err = cluster.CreateSession()
