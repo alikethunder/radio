@@ -22,7 +22,7 @@
     "react-router-dom": "^6.21.1",
     "sockette": "^2.0.6",
     "swr": "^2.2.5",
-    "usehooks-ts": "^2.15.1"
+    "usehooks-ts": "^3.0.1"
   },
   "devDependencies": {
     "@svgr/rollup": "^8.1.0",
