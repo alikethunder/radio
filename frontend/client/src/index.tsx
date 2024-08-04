@@ -11,6 +11,7 @@ import { hydrateRoot, createRoot } from 'react-dom/client'
 import {
   createBrowserRouter,
   RouterProvider,
+  RouteObject,
 } from "react-router-dom"
 
 import { routes } from "./routes"
@@ -19,7 +20,7 @@ import {
   actions
 } from './store'
 
-const router = createBrowserRouter(routes, {
+const router = createBrowserRouter(routes as RouteObject[], {
   basename: '/'
 })
 

@@ -13,9 +13,9 @@ export const GoogleOAuth: FC<{ rememberme?: boolean }> = ({ rememberme }) => {
         client_id: oauth.web.client_id,
         itp_support: true,
         ux_mode: 'redirect',
-        login_uri: `http://localhost:3000/api/v1/auth/google-callback${rememberme ? '?rememberme' : ''}`,
+        login_uri: `http://localhost:${import.meta.env.VITE_DEV_PORT}/api/v1/auth/google-callback${rememberme ? '?rememberme' : ''}`,
         //`${window.location.origin}/signin/api/v1/auth/google-callback${rememberme ? '?rememberme' : ''}`
-        allowed_parent_origin: 'http://localhost:3000',
+        allowed_parent_origin: `http://localhost:${import.meta.env.VITE_DEV_PORT}`,
         //window.location.origin
       })
 

@@ -33,5 +33,6 @@ export default defineConfig({
       {find: '&', replacement: path.resolve(__dirname, '../../'),},
     ]
   },
-  base: "/"
+  base: "/",
+  envDir: path.resolve(__dirname, '../../'),
 })

@@ -61,8 +61,9 @@ export default function App() {
   const windowSize = useWindowSize()
 
   useEffect(() => {
+    //console.log('import.meta.env.VITE_DEV_PORT : ', import.meta.env.VITE_DEV_PORT)
     //code for reloading on code change during development
-    new Sockette('ws://localhost:3000/reloadws', {
+    new Sockette(`ws://localhost:${import.meta.env.VITE_DEV_PORT}/reloadws`, {
       timeout: 5000,
       maxAttempts: 1,
       onopen() {
