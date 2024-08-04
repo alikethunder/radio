@@ -1,4 +1,4 @@
-import { createStore } from '@udecode/zustood'
+import { createStore } from 'zustand-x'
 
 export const persistedAppStore = createStore('app')({
   rememberme: false

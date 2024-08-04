@@ -1,4 +1,4 @@
-import { mapValuesKey } from '@udecode/zustood'
+import { mapValuesKey } from 'zustand-x'
 
 import { appStore } from './appStore'
 import { authStore } from './authStore'

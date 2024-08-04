@@ -11,7 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@udecode/zustood": "^2.0.0",
+    "zustand-x": "^3.0.4",
     "primeflex": "^3.3.1",
     "primeicons": "^6.0.1",
     "primereact": "^10.2.1",
@@ -22,8 +22,7 @@
     "react-router-dom": "^6.21.1",
     "sockette": "^2.0.6",
     "swr": "^2.2.5",
-    "usehooks-ts": "^2.15.1",
-    "zustand": "^4.4.7"
+    "usehooks-ts": "^2.15.1"
   },
   "devDependencies": {
     "@svgr/rollup": "^8.1.0",
