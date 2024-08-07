@@ -5,6 +5,7 @@ import {
   //useLoaderData,
   useNavigate,
   useLocation,
+  useBlocker,
 } from "react-router-dom"
 
 import { PrimeReactProvider } from 'primereact/api'
@@ -30,7 +31,9 @@ import {
   RightSidebar,
 } from './components'
 
-import { getCookie } from "./functions"
+import { getCookie, navigateFromProtectedRoute } from "./functions"
+
+import { unprotectedRoutes } from "@/constants/router"
 
 import {
   WS,
@@ -146,10 +149,6 @@ export default function App() {
   ) */
 
   useEffect(() => {
-    //todo: store previous page when entering the signin/up flow and send it with signin/up request 
-
-    console.log('page prior signin : ', store.app.prev_pathname())
-
     if (
       !signedin
       && pathname
@@ -160,11 +159,15 @@ export default function App() {
         '/verification',
       ].some(path => pathname.includes(path))
     ) {
-      console.log('checked page prior signin : ', pathname)
-
       actions.app.prev_pathname(pathname)
     }
   }, [pathname, signedin])
+
+  let navigation_blocker = useBlocker(({ currentLocation, nextLocation }) => !signedin && !unprotectedRoutes.find(path => path.includes(nextLocation.pathname)))
+
+  useEffect(() => {
+    navigation_blocker.reset && navigation_blocker.reset();
+  }, [navigation_blocker])
 
   return (
     <PrimeReactProvider value={{

@@ -6,14 +6,7 @@ import {
   store,
 } from "@/store"
 
-const unprotectedRoutes = [
-  '/signup',
-  '/signin',
-  '/reset-password',
-  '/verification',
-  '/purchase-plan',
-  '/',
-]
+import { unprotectedRoutes } from "@/constants/router"
 
 //routes accessible for not authenticated users
 
