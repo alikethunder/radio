@@ -24,7 +24,7 @@ func GoogleCallback(c *fiber.Ctx) error {
 
 	json.Unmarshal([]byte(c.FormValue("state")), &state)
 
-	//fmt.Println("GoogleCallback state: ", state["redirect_to"])
+	//fmt.Println("GoogleCallback state: ", state)
 
 	cookie_g_csrf_token := c.Cookies("g_csrf_token")
 
@@ -117,7 +117,7 @@ func GoogleCallback(c *fiber.Ctx) error {
 		user["created"] = user["id"].(gocql.UUID).Time()
 		cookies.SetUserCookie(user, c)
 
-		return c.Redirect("/")
+		return c.Redirect(state["redirect_to"].(string))
 	}
 
 	return nil
