@@ -1,5 +1,5 @@
 import React from "react"
-import { redirect, RouteObject } from "react-router-dom"
+import { redirect, RouteObject, IndexRouteProps } from "react-router-dom"
 import App from "./App"
 
 import {
@@ -27,6 +27,8 @@ import {
 
 import { CardPageParams } from "@/types/card"
 
+import { navigateFromProtectedRoute } from '@/functions'
+
 /* const IdElem = () => {
   const { id } = useLoaderData() as { id: string }
   return (<div >Id is {id}</div>)
@@ -53,11 +55,12 @@ export const routes = [
         element: <Project />,
         loader(
           {
-            params
-          }: { 
-            params: { id: string } 
+            params,
+            request,
           }
         ) {
+          return navigateFromProtectedRoute(request.url.replace(window.location.origin, ''))
+
           //todo: load project data from db
           //todo: if there is no such project -> return redirect('/project/new')
           return null

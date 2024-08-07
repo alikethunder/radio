@@ -1,3 +1,4 @@
+//routes accessible for not authenticated users
 export const unprotectedRoutes = [
   '/signup',
   '/signin',
