@@ -7,7 +7,7 @@ import (
 	"strings"
 	"web_project/cookies"
 	Users "web_project/db/Users"
-	"web_project/types"
+	Types "web_project/types"
 
 	"github.com/goccy/go-json"
 	"github.com/gocql/gocql"
@@ -17,7 +17,14 @@ import (
 
 func GoogleCallback(c *fiber.Ctx) error {
 
-	fmt.Println("GoogleCallback : ", c)
+	//state from google button
+	var state Types.Map
+
+	//fmt.Println("GoogleCallback c.Body() : ", c.Body())
+
+	json.Unmarshal([]byte(c.FormValue("state")), &state)
+
+	//fmt.Println("GoogleCallback state: ", state["redirect_to"])
 
 	cookie_g_csrf_token := c.Cookies("g_csrf_token")
 
@@ -103,7 +110,7 @@ func GoogleCallback(c *fiber.Ctx) error {
 			panic(err)
 		}
 
-		_, rememberme := c.Queries()["rememberme"]
+		_, rememberme := state["rememberme"]
 
 		cookies.SetAuthCookie(Types.Map{"email": credential["email"], "rememberme": rememberme}, c)
 

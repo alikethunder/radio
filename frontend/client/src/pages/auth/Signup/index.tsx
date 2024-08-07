@@ -11,6 +11,7 @@ import {
 
 import { Button } from 'primereact/button'
 import { InputText } from 'primereact/inputtext'
+import { Checkbox } from 'primereact/checkbox'
 
 import { classNames } from 'primereact/utils'
 
@@ -18,6 +19,7 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import {
   store,
   actions,
+  useTrackedStore,
 } from "@/store"
 
 import './index.sass'
@@ -32,7 +34,7 @@ export const Signup: FC = () => {
 
   const emailRef = useRef<HTMLInputElement>(null)
 
-  const { handleSubmit, formState: { errors, isSubmitting }, control, clearErrors, setError } = useForm<User>({
+  const { handleSubmit, formState: { errors, isSubmitting }, control, clearErrors, setError, watch } = useForm<User>({
     defaultValues: {
       name: '',
       email: '',
@@ -55,7 +57,7 @@ export const Signup: FC = () => {
       //console.log('[signup] user : ', user)
       //@ts-ignore
       (Object.entries(user)).forEach(entry => (actions.user[entry[0]])(entry[1]));
-      
+
       //show VerificationToast
       store.toast['bottom-center']().show({
         severity: 'info',
@@ -64,7 +66,7 @@ export const Signup: FC = () => {
         closable: true,
         life: 10000
       })
-      
+
       navigate('/verification')
       return
     }
@@ -142,6 +144,38 @@ export const Signup: FC = () => {
             )}
           />
 
+          <div className="flex align-items-center justify-content-between mb-6">
+            <div className="flex align-items-center">
+
+              {
+                useTrackedStore().app.isClient()
+                  ?
+
+                  <Controller
+                    name="rememberme"
+                    control={control}
+                    render={({ field }) => (
+                      <>
+                        <Checkbox
+                          inputId={field.name}
+                          checked={field.value}
+                          inputRef={field.ref}
+                          className="mr-2"
+                          onChange={(e) => {
+                            actions.persistedApp.rememberme(!!e.checked)
+                            field.onChange(e.checked)
+                          }} />
+                        <label htmlFor={field.name} className="cursor-pointer">Remember me</label>
+                      </>
+                    )}
+                  />
+                  : ''
+              }
+
+            </div>
+            <QueryLink to='/reset-password' className="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Forgot your password?</QueryLink>
+          </div>
+
           <Button
             type="submit"
             label="Sign Up"
@@ -151,17 +185,13 @@ export const Signup: FC = () => {
             disabled={isSubmitting}
           />
 
-          <GoogleOAuth />
+          <GoogleOAuth rememberme={watch('rememberme')} />
 
-          <div className="flex align-items-center justify-content-between mt-1">
-            <QueryLink to='/signin' className="font-medium no-underline ml-2 text-blue-500">
-              Already have an account? <span className="font-semibold">
-                Log in
-              </span>
-            </QueryLink>
-
-            <QueryLink to='/reset-password' className="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Forgot your password?</QueryLink>
-          </div>
+          <QueryLink to='/signin' className="font-medium no-underline ml-2 text-blue-500 align-self-center">
+            Already have an account? <span className="font-semibold">
+              Log in
+            </span>
+          </QueryLink>
 
         </div>
       </form>
