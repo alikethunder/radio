@@ -21,6 +21,7 @@ import {
   store,
   actions,
   useTrackedStore,
+  useStore,
 } from "@/store"
 
 import './index.sass'
@@ -62,7 +63,7 @@ export const Verification: FC = () => {
       //@ts-ignore
       (Object.entries(user)).forEach(entry => (actions.user[entry[0]])(entry[1]));
       actions.auth.signedin(true)
-      navigate('/home')
+      navigate(store.app.prev_pathname())
       return
     }
 
@@ -121,7 +122,7 @@ export const Verification: FC = () => {
     if (!store.user.email()) {
       navigate('/signin', { replace: true })
     }
-  }, [store.user.email()])
+  }, [])
 
   return (
     <div className="sm:px-3 md:px-5 min-h-screen flex justify-content-center align-items-center">

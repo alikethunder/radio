@@ -20,12 +20,14 @@ func Create(user Types.Map) (Types.Map, error) {
 	var u Types.Map
 	var err error
 
+	_, oauth_flow := user["oauth"].(bool)
+
 	if u, err = GetUserFields(Types.Map{"email": user["email"]}, "id", "password", "name"); err != nil {
 		//fmt.Println("[Create] GetUserFields error : ", err)
 		u = make(Types.Map)
 	}
 
-	if u["password"] == nil || u["password"] == "" || user["oauth"].(bool) {
+	if u["password"] == nil || u["password"] == "" || oauth_flow {
 
 		//tm := time.Now()
 
@@ -41,7 +43,7 @@ func Create(user Types.Map) (Types.Map, error) {
 				return nil, err
 			}
 
-			if !user["oauth"].(bool) {
+			if !oauth_flow {
 				//update with verification code
 				Update(Types.Map{"verification_code": vc}, u["id"].(gocql.UUID), user["email"].(string))
 			}
@@ -50,7 +52,7 @@ func Create(user Types.Map) (Types.Map, error) {
 			//update existing user without password
 			fmt.Println("[Create] update existing user without password")
 
-			if user["oauth"].(bool) {
+			if oauth_flow {
 				if u["name"] == "" {
 					Update(Types.Map{"name": user["name"]}, u["id"].(gocql.UUID), user["email"].(string))
 				}
@@ -60,7 +62,7 @@ func Create(user Types.Map) (Types.Map, error) {
 
 		}
 
-		if !user["oauth"].(bool) {
+		if !oauth_flow {
 			mailer.SendVc(vc, user["email"].(string), user["name"].(string))
 		}
 

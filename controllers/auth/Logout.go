@@ -10,5 +10,5 @@ func Logout(c *fiber.Ctx) error {
 
 	cookies.ClearAuthCookies(c)
 
-	return c.Redirect("/signin")
+	return c.SendStatus(fiber.StatusOK)
 }

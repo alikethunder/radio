@@ -68,7 +68,7 @@ export const Signin: FC = () => {
 
         actions.auth.signedin(true)
         
-        navigate('/home')
+        navigate(store.app.prev_pathname())
         break;
 
       case 401: //wrong password

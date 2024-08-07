@@ -40,7 +40,12 @@ import {
   FrontUser,
 } from '@/types'
 
-import { actions, useTrackedStore, store, useStore } from "@/store"
+import {
+  actions,
+  useTrackedStore,
+  store,
+  useStore
+} from "@/store"
 
 import {
   onLogout,
@@ -102,7 +107,7 @@ export default function App() {
         '/reset-password',
         '/verification'
       ].find(path => pathname.includes(path))) {
-        navigate('/home')
+        navigate('/')
       }
     } catch (e) {
       onLogout()
@@ -128,19 +133,38 @@ export default function App() {
 
   }, [windowSize])
 
-  const signedin = useTrackedStore().auth.signedin()
+  const signedin = useStore().auth.signedin()
 
   /* const { error: getUserPlanErr, data: subscriptionPlan, isLoading: subscriptionPlanIsLoading } = useImmutableFetcher(signedin ? '/api/v1/purchase-plan/get-user-plan' : null) */
 
-  useImmutableFetcherAndStore('/api/v1/purchase-plan/get-plans', "app", "subscription_plans")
+  /* useImmutableFetcherAndStore('/api/v1/purchase-plan/get-plans', "app", "subscription_plans")
 
   useImmutableFetcherAndStore(
     signedin ? '/api/v1/purchase-plan/get-user-plan' : null,
     'user',
     'subscription_plan'
-  )
+  ) */
 
-  //console.log(pathname)
+  useEffect(() => {
+    //todo: store previous page when entering the signin/up flow and send it with signin/up request 
+
+    console.log('page prior signin : ', store.app.prev_pathname())
+
+    if (
+      !signedin
+      && pathname
+      && ![
+        '/signup',
+        '/signin',
+        '/reset-password',
+        '/verification',
+      ].some(path => pathname.includes(path))
+    ) {
+      console.log('checked page prior signin : ', pathname)
+
+      actions.app.prev_pathname(pathname)
+    }
+  }, [pathname, signedin])
 
   return (
     <PrimeReactProvider value={{

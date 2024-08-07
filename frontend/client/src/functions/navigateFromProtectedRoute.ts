@@ -12,6 +12,7 @@ const unprotectedRoutes = [
   '/reset-password',
   '/verification',
   '/purchase-plan',
+  '/',
 ]
 
 //routes accessible for not authenticated users
@@ -20,7 +21,7 @@ export const navigateFromProtectedRoute = () => {
 
   const { navigate, state: { location: { pathname } } } = store.app.router() as ReturnType<typeof createBrowserRouter>
 
-  if (!unprotectedRoutes.find(path => pathname.includes(path))) {
-    navigate('/signin')
+  if (!unprotectedRoutes.find(path => path.includes(pathname))) {
+    navigate('/')
   }
 }

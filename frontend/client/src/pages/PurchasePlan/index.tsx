@@ -156,7 +156,9 @@ export const PurchasePlan = () => {
                         label={`${price.name} за ${price.value}$`}
                         text
                         raised
-                        onClick={() => store.auth.signedin() ? becomeSeller() : navigate('/signin')}
+                        onClick={() => {
+                          store.auth.signedin() ? becomeSeller() : navigate('/signin')
+                        }}
                         className={`border-noround mt-2 align-self-stretch ${i == 0 ? 'bg-secondary text-white' : 'bg-primary'}`}
                       />
                     )

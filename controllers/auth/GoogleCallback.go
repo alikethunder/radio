@@ -110,7 +110,7 @@ func GoogleCallback(c *fiber.Ctx) error {
 		user["created"] = user["id"].(gocql.UUID).Time()
 		cookies.SetUserCookie(user, c)
 
-		return c.Redirect("/home")
+		return c.Redirect("/")
 	}
 
 	return nil

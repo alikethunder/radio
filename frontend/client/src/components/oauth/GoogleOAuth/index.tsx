@@ -1,5 +1,12 @@
 import { FC, useEffect } from "react"
 
+import {
+  actions,
+  useTrackedStore,
+  store,
+  useStore
+} from "@/store"
+
 import oauth from '&/settings/google_oauth.json'
 
 export const GoogleOAuth: FC<{ rememberme?: boolean }> = ({ rememberme }) => {
@@ -26,7 +33,10 @@ export const GoogleOAuth: FC<{ rememberme?: boolean }> = ({ rememberme }) => {
           theme: "filled_blue",
           size: "large",
           //use 'state' to pass parameters within google-callback request
-          //state: '123254353',
+          state: JSON.stringify({
+            redirect_to: store.app.prev_pathname(),
+            rememberme,
+          }),
         }
       )
     } catch (e) {

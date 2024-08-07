@@ -41,7 +41,7 @@ export const routes = [
     element: <App />,
     children: [
       {
-        path: '/home',
+        path: '/',
         element: <Home />
       },
       {
@@ -82,7 +82,7 @@ export const routes = [
         }
       ].map((route: RouteObject) => {
         route.loader = async () => {
-          return store.auth.signedin() ? redirect('/home') : ''
+          return store.auth.signedin() ? redirect('/') : ''
         }
         return route
       })
