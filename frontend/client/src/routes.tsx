@@ -17,6 +17,10 @@ import {
 } from '@/pages'
 
 import {
+  AuthRequired,
+} from '@/components'
+
+import {
   actions,
   store
 } from './store'
@@ -27,7 +31,10 @@ import {
 
 import { CardPageParams } from "@/types/card"
 
-import { navigateFromProtectedRoute } from '@/functions'
+import {
+  navigateFromProtectedRoute,
+  has_to_redirect,
+} from '@/functions'
 
 /* const IdElem = () => {
   const { id } = useLoaderData() as { id: string }
@@ -52,14 +59,13 @@ export const routes = [
       },
       {
         path: '/project/:id',
-        element: <Project />,
+        element: <AuthRequired><Project /></AuthRequired>,
         loader(
-          {
+          /* {
             params,
             request,
-          }
+          } */
         ) {
-          return navigateFromProtectedRoute(request.url.replace(window.location.origin, ''))
 
           //todo: load project data from db
           //todo: if there is no such project -> return redirect('/project/new')

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 
 import {
   Outlet,
@@ -55,6 +55,7 @@ import {
   useImmutableFetcher,
   sortByPriority,
   useImmutableFetcherAndStore,
+  has_to_redirect,
 } from './functions'
 
 //console.log('typeof window : ', typeof window)
@@ -67,6 +68,8 @@ export default function App() {
   const { pathname } = useLocation()
 
   const windowSize = useWindowSize()
+
+  const [checked_signin, set_checked_signin] = useState(false)
 
   useEffect(() => {
     //console.log('import.meta.env.VITE_DEV_PORT : ', import.meta.env.VITE_DEV_PORT)
@@ -116,6 +119,7 @@ export default function App() {
       onLogout()
     }
 
+    set_checked_signin(true)
   }, [])
 
   useEffect(() => {
@@ -163,7 +167,8 @@ export default function App() {
     }
   }, [pathname, signedin])
 
-  let navigation_blocker = useBlocker(({ currentLocation, nextLocation }) => !signedin && !unprotectedRoutes.find(path => path.includes(nextLocation.pathname)))
+  //prevent navigation for not signed in users to protected routes
+  let navigation_blocker = useBlocker(({ currentLocation, nextLocation }) => has_to_redirect(nextLocation.pathname))
 
   useEffect(() => {
     navigation_blocker.reset && navigation_blocker.reset();
@@ -209,7 +214,11 @@ export default function App() {
       <LeftSidebar />
       <RightSidebar />
 
-      <Outlet />
+      {
+        checked_signin ?
+          <Outlet />
+          : <></>
+      }
 
       <Toasts />
     </PrimeReactProvider>
