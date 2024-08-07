@@ -9,7 +9,7 @@ import {
 
 import { unprotectedRoutes } from "@/constants/router"
 
-export const has_to_redirect = (path_to_check: string) => {
+export const has_to_redirect = (path_to_check?: string) => {
   
   const { navigate, state: { location: { pathname } } } = store.app.router() as ReturnType<typeof createBrowserRouter>
 
