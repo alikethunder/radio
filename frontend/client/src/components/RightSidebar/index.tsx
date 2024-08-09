@@ -70,7 +70,7 @@ export const RightSidebar: FC = () => {
           />
         </div>
 
-        <QueryLink to={generatePath(app_routes.project_id, { id: 'new' })} onClick={() => actions.app.rightSidebarOpened(false)}>
+        <QueryLink to={generatePath(app_routes.project$id, { id: 'new' })} onClick={() => actions.app.rightSidebarOpened(false)}>
           <Button
             //@ts-ignore
             label="Создать компанию"

@@ -39,6 +39,10 @@ import { DataTable } from "primereact/datatable"
 import { Column } from "primereact/column"
 import { Tooltip } from "primereact/tooltip"
 
+import {
+  app_routes,
+} from '@/constants/router'
+
 export const Project = () => {
 
   const navigate = useNavigate()
@@ -192,9 +196,9 @@ export const Project = () => {
 
         </div>
 
-        <QueryLink to='/signup' className="font-medium no-underline ml-2 text-blue-500 align-self-center">Don't have an account? <span className="font-semibold">Create today!</span></QueryLink>
+        <QueryLink to={app_routes.signup} className="font-medium no-underline ml-2 text-blue-500 align-self-center">Don't have an account? <span className="font-semibold">Create today!</span></QueryLink>
 
-        <QueryLink to='/signin' className="font-medium no-underline ml-2 text-blue-500">
+        <QueryLink to={app_routes.signin} className="font-medium no-underline ml-2 text-blue-500">
           Already have an account? <span className="font-semibold">
             Log in
           </span>

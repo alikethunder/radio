@@ -114,10 +114,10 @@ export default function App() {
       (Object.entries(user)).forEach(entry => (actions.user[entry[0]])(entry[1]));
 
       if ([
-        '/signup',
-        '/signin',
-        '/reset-password',
-        '/verification'
+        app_routes.signup,
+        app_routes.signin,
+        app_routes.reset_password,
+        app_routes.verification,
       ].find(path => pathname.includes(path))) {
         navigate('/')
       }
@@ -163,10 +163,10 @@ export default function App() {
       !signedin
       && pathname
       && ![
-        '/signup',
-        '/signin',
-        '/reset-password',
-        '/verification',
+        app_routes.signup,
+        app_routes.signin,
+        app_routes.reset_password,
+        app_routes.verification,
       ].some(path => pathname.includes(path))
     ) {
       actions.app.prev_pathname(pathname)
@@ -180,7 +180,7 @@ export default function App() {
     navigation_blocker.reset && navigation_blocker.reset();
   }, [navigation_blocker])
 
-  const is_project_page = useMatch(app_routes.project_id)
+  const is_project_page = useMatch(app_routes.project$id)
 
   return (
     <PrimeReactProvider value={{

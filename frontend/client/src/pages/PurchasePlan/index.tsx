@@ -29,6 +29,10 @@ import { DataTable } from "primereact/datatable"
 import { Column } from "primereact/column"
 import { Tooltip } from "primereact/tooltip"
 
+import {
+  app_routes,
+} from '@/constants/router'
+
 export const PurchasePlan = () => {
 
   const navigate = useNavigate()
@@ -157,7 +161,7 @@ export const PurchasePlan = () => {
                         text
                         raised
                         onClick={() => {
-                          store.auth.signedin() ? becomeSeller() : navigate('/signin')
+                          store.auth.signedin() ? becomeSeller() : navigate(app_routes.signin)
                         }}
                         className={`border-noround mt-2 align-self-stretch ${i == 0 ? 'bg-secondary text-white' : 'bg-primary'}`}
                       />

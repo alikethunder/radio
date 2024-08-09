@@ -25,6 +25,10 @@ import {
 } from "@/store"
 
 import {
+  app_routes,
+} from '@/constants/router'
+
+import {
   User,
   FrontUser,
 } from '@/types'
@@ -67,7 +71,7 @@ export const Signin: FC = () => {
         actions.user.email(form.email)
 
         actions.auth.signedin(true)
-        
+
         navigate(store.app.prev_pathname())
         break;
 
@@ -241,7 +245,7 @@ export const Signin: FC = () => {
 
             <GoogleOAuth rememberme={watch('rememberme')} />
 
-            <QueryLink to='/signup' className="font-medium no-underline ml-2 text-blue-500 align-self-center">Don't have an account? <span className="font-semibold">Create today!</span></QueryLink>
+            <QueryLink to={app_routes.signup} className="font-medium no-underline ml-2 text-blue-500 align-self-center">Don't have an account? <span className="font-semibold">Create today!</span></QueryLink>
 
           </div>
         </form>

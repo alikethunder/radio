@@ -22,6 +22,10 @@ import {
   useTrackedStore,
 } from "@/store"
 
+import {
+  app_routes,
+} from '@/constants/router'
+
 import './index.sass'
 
 import {
@@ -187,7 +191,7 @@ export const Signup: FC = () => {
 
           <GoogleOAuth rememberme={watch('rememberme')} />
 
-          <QueryLink to='/signin' className="font-medium no-underline ml-2 text-blue-500 align-self-center">
+          <QueryLink to={app_routes.signin} className="font-medium no-underline ml-2 text-blue-500 align-self-center">
             Already have an account? <span className="font-semibold">
               Log in
             </span>

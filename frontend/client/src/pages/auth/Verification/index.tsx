@@ -31,6 +31,10 @@ import {
   FrontUser,
 } from '@/types'
 
+import {
+  app_routes,
+} from '@/constants/router'
+
 export const Verification: FC = () => {
 
   const navigate = useNavigate()
@@ -120,7 +124,7 @@ export const Verification: FC = () => {
 
   useEffect(() => {
     if (!store.user.email()) {
-      navigate('/signin', { replace: true })
+      navigate(app_routes.signin, { replace: true })
     }
   }, [])
 
@@ -296,7 +300,7 @@ export const Verification: FC = () => {
             disabled={sendingVC}
           />
 
-          <QueryLink to='/signin' className="font-medium no-underline text-blue-500 align-self-center">Already have an account? <span className="font-semibold">Log in</span></QueryLink>
+          <QueryLink to={app_routes.signin} className="font-medium no-underline text-blue-500 align-self-center">Already have an account? <span className="font-semibold">Log in</span></QueryLink>
 
         </div>
       </form>

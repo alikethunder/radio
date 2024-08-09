@@ -54,7 +54,7 @@ export const routes = [
         element: <PurchasePlan />
       },
       {
-        path: app_routes.project_id,
+        path: app_routes.project$id,
         element: <AuthRequired><Project /></AuthRequired>,
         loader(
           {
@@ -62,7 +62,7 @@ export const routes = [
             request,
           }: Loader_params
         ) {
-          console.log('project params : ', params)
+          //console.log('project params : ', params)
           //todo: load project data from db
 
           //new project

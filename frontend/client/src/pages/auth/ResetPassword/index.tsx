@@ -24,6 +24,10 @@ import {
 } from "@/store"
 
 import {
+  app_routes,
+} from '@/constants/router'
+
+import {
   User
 } from '@/types'
 
@@ -142,9 +146,9 @@ export const ResetPassword: FC = () => {
               iconPos="right"
             />
 
-            <QueryLink to='/signin' className="font-medium no-underline text-blue-500 text-right cursor-pointer align-self-center mb-4">Remember your password? <span className="font-semibold">Log in</span></QueryLink>
+            <QueryLink to={app_routes.signin} className="font-medium no-underline text-blue-500 text-right cursor-pointer align-self-center mb-4">Remember your password? <span className="font-semibold">Log in</span></QueryLink>
 
-            <QueryLink to='/signup' className="font-medium no-underline  text-blue-500 align-self-center">Don't have an account? <span className="font-semibold">Create today!</span></QueryLink>
+            <QueryLink to={app_routes.signup} className="font-medium no-underline  text-blue-500 align-self-center">Don't have an account? <span className="font-semibold">Create today!</span></QueryLink>
 
           </div>
         </form>

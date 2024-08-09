@@ -1,3 +1,10 @@
+
+
+/* 
+routes transformation for name
+        _ === -
+        $ === :
+*/
 export const app_routes = {
   root: '/',
   signup: '/signup',
@@ -5,7 +12,7 @@ export const app_routes = {
   reset_password: '/reset-password',
   verification: '/verification',
   purchase_plan: '/purchase-plan',
-  project_id: '/project/:id',
+  project$id: '/project/:id',
 }
 
 
