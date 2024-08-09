@@ -104,7 +104,7 @@ export const Verification: FC = () => {
           life: 10000
         })
 
-        navigate('/verification')
+        navigate(app_routes.verification)
         break;
 
       default:

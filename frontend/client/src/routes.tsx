@@ -93,7 +93,7 @@ export const routes = [
         }
       ].map((route: RouteObject) => {
         route.loader = async () => {
-          return store.auth.signedin() ? redirect('/') : ''
+          return store.auth.signedin() ? redirect(app_routes.root) : ''
         }
         return route
       })

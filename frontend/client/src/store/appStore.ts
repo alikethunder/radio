@@ -4,6 +4,10 @@ import {
   createBrowserRouter
 } from "react-router-dom"
 
+import {
+  app_routes,
+} from '@/constants/router'
+
 type AppStore = {
   isClient: boolean;
   router: ReturnType<typeof createBrowserRouter> | null;
@@ -32,5 +36,5 @@ export const appStore = createStore('app')({
   },
   subscription_plans: [],
   subscription_plans_loading: false,
-  prev_pathname: '/',
+  prev_pathname: app_routes.root,
 } as AppStore)

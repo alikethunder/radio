@@ -69,7 +69,7 @@ export const ResetPassword: FC = () => {
           life: 10000
         })
 
-        navigate('/verification')
+        navigate(app_routes.verification)
         break;
 
       case 403:

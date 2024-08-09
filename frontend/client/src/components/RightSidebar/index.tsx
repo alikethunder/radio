@@ -97,7 +97,10 @@ export const RightSidebar: FC = () => {
           text
           raised
           icon="pi pi-sign-out"
-          onClick={logout}
+          onClick={() => {
+            logout();
+            actions.app.rightSidebarOpened(false)
+          }}
           iconPos="right"
           className="border-noround gray-800 text-left"
         />

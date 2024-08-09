@@ -119,7 +119,7 @@ export default function App() {
         app_routes.reset_password,
         app_routes.verification,
       ].find(path => pathname.includes(path))) {
-        navigate('/')
+        navigate(app_routes.root)
       }
     } catch (e) {
       onLogout()

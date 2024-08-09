@@ -71,7 +71,7 @@ export const Signup: FC = () => {
         life: 10000
       })
 
-      navigate('/verification')
+      navigate(app_routes.verification)
       return
     }
 
@@ -177,7 +177,7 @@ export const Signup: FC = () => {
               }
 
             </div>
-            <QueryLink to='/reset-password' className="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Forgot your password?</QueryLink>
+            <QueryLink to={app_routes.reset_password} className="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Forgot your password?</QueryLink>
           </div>
 
           <Button
