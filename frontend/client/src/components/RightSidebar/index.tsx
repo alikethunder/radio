@@ -11,15 +11,22 @@ import {
   logout,
 } from '@/functions'
 
+import {
+  app_routes,
+} from '@/constants/router'
+
 import { actions, useTrackedStore } from "@/store"
 
 import './index.sass'
+import { generatePath } from "react-router-dom"
 
 export const RightSidebar: FC = () => {
 
   const rightSidebarOpened = useTrackedStore().app.rightSidebarOpened()
 
   const subscription_plan = useTrackedStore().user.subscription_plan()
+
+  //const new_project_url = 
 
   return (
     <Sidebar
@@ -63,7 +70,7 @@ export const RightSidebar: FC = () => {
           />
         </div>
 
-        <QueryLink to="/project/new" onClick={() => actions.app.rightSidebarOpened(false)}>
+        <QueryLink to={generatePath(app_routes.project_id, { id: 'new' })} onClick={() => actions.app.rightSidebarOpened(false)}>
           <Button
             //@ts-ignore
             label="Создать компанию"

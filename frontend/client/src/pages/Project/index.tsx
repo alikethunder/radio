@@ -47,7 +47,7 @@ export const Project = () => {
   const isDesktop = useTrackedStore().app.isDesktop()
 
   const project = useLoaderData()
-  console.log('project : ', project)
+  //console.log('project : ', project)
 
   const {
     control,
@@ -65,7 +65,7 @@ export const Project = () => {
     }
   })
 
-  console.log("errors.name : ", errors.name)
+  //console.log("errors.name : ", errors.name)
 
   const onSubmit = (data) => {
     console.log('submit : ', data)
@@ -82,6 +82,11 @@ export const Project = () => {
   }, [isDirty, errors])
 
   return (
+
+    //if project == new -> inputs in edit state, autofocus on first field (project name)
+
+    //todo: if there is no such project (project == null) -> show message that there is no such project
+
     <div
       className="sm:py-3 py-4 sm:px-3 px-4 w-full overflow-y-auto page project_page flex-grow-1 flex"
     >

@@ -1,5 +1,5 @@
 import React from "react"
-import { redirect, RouteObject, IndexRouteProps } from "react-router-dom"
+import { redirect, RouteObject, } from "react-router-dom"
 import App from "./App"
 
 import {
@@ -32,61 +32,63 @@ import {
 import { CardPageParams } from "@/types/card"
 
 import {
-  navigateFromProtectedRoute,
-  has_to_redirect,
-} from '@/functions'
+  app_routes,
+} from '@/constants/router'
 
-/* const IdElem = () => {
-  const { id } = useLoaderData() as { id: string }
-  return (<div >Id is {id}</div>)
-} */
+type Loader_params = { params: { [param: string]: string; }, request: Request }
 
 export const routes = [
   {
-    path: "/",
+    path: app_routes.root,
     loader() {
       return ''
     },
     element: <App />,
     children: [
       {
-        path: '/',
+        path: app_routes.root,
         element: <Home />
       },
       {
-        path: '/purchase-plan',
+        path: app_routes.purchase_plan,
         element: <PurchasePlan />
       },
       {
-        path: '/project/:id',
+        path: app_routes.project_id,
         element: <AuthRequired><Project /></AuthRequired>,
         loader(
-          /* {
+          {
             params,
             request,
-          } */
+          }: Loader_params
         ) {
-
+          console.log('project params : ', params)
           //todo: load project data from db
-          //todo: if there is no such project -> return redirect('/project/new')
+
+          //new project
+          if (params.id == 'new') {
+            return params.id
+          }
+
+          //if there is no such project
           return null
         }
       },
       ...[
         {
-          path: '/signin',
+          path: app_routes.signin,
           element: <Signin />
         },
         {
-          path: '/signup',
+          path: app_routes.signup,
           element: <Signup />
         },
         {
-          path: '/verification',
+          path: app_routes.verification,
           element: <Verification />
         },
         {
-          path: '/reset-password',
+          path: app_routes.reset_password,
           element: <ResetPassword />
         }
       ].map((route: RouteObject) => {

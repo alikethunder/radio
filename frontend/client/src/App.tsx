@@ -6,6 +6,8 @@ import {
   useNavigate,
   useLocation,
   useBlocker,
+  matchPath,
+  useMatch,
 } from "react-router-dom"
 
 import { PrimeReactProvider } from 'primereact/api'
@@ -57,6 +59,10 @@ import {
   useImmutableFetcherAndStore,
   has_to_redirect,
 } from './functions'
+
+import {
+  app_routes,
+} from '@/constants/router'
 
 //console.log('typeof window : ', typeof window)
 
@@ -174,6 +180,8 @@ export default function App() {
     navigation_blocker.reset && navigation_blocker.reset();
   }, [navigation_blocker])
 
+  const is_project_page = useMatch(app_routes.project_id)
+
   return (
     <PrimeReactProvider value={{
       appendTo: 'self',
@@ -190,7 +198,7 @@ export default function App() {
       } */}
 
       {
-        pathname.includes('/project') ?
+        is_project_page ?
           <Button
             className="border-circle fixed top-0 left-0 ml-4 mt-3"
             severity="info"
