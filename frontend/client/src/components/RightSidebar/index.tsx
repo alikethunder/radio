@@ -19,6 +19,7 @@ import {
   actions,
   useTrackedStore,
   useStore,
+  store,
 } from "@/store"
 
 import './index.sass'
@@ -58,24 +59,36 @@ export const RightSidebar: FC = () => {
       <div className="top flex flex-column">
         {
           signedin ?
-            <div className="flex">
-              <Button
-                //todo: projects quantity like "My projects (5)"
-                label="Мои компании"
-                text
-                raised
-                icon='pi pi-briefcase'
-                className="border-noround w-full h-full px-2"
-              />
-              <Button
-                text
-                raised
-                //todo: switch to pi-chevron-up when opened projects list
-                icon={`pi pi-chevron-down`}
-                //onClick={logout}
-                className="border-noround h-full px-2"
-              />
-            </div>
+            <>
+              <QueryLink to={generatePath(app_routes.user_profile$id, { id: store.user.id() })} onClick={() => actions.app.rightSidebarOpened(false)}>
+                <Button
+                  label="Личный кабинет"
+                  text
+                  raised
+                  icon={`pi pi-id-card text-xl md:text-2xl`}
+                  className="border-noround w-full h-full px-2 text-secondary"
+                />
+              </QueryLink>
+
+              <div className="flex">
+                <Button
+                  //todo: projects quantity like "My projects (5)"
+                  label="Мои компании"
+                  text
+                  raised
+                  icon='pi pi-briefcase text-xl md:text-2xl'
+                  className="border-noround w-full h-full px-2"
+                />
+                <Button
+                  text
+                  raised
+                  //todo: switch to pi-chevron-up when opened projects list
+                  icon={`pi pi-chevron-down`}
+                  //onClick={logout}
+                  className="border-noround h-full px-2"
+                />
+              </div>
+            </>
             :
             <QueryLink to={app_routes.signin} onClick={() => actions.app.rightSidebarOpened(false)}>
               <Button

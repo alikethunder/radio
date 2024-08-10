@@ -14,6 +14,7 @@ import {
   //Card,
   PurchasePlan,
   Project,
+  UserProfile,
 } from '@/pages'
 
 import {
@@ -52,6 +53,27 @@ export const routes = [
       {
         path: app_routes.purchase_plan,
         element: <PurchasePlan />
+      },
+      {
+        path: app_routes.user_profile$id,
+        element: <UserProfile />,
+        loader(
+          {
+            params,
+            request,
+          }: Loader_params
+        ) {
+          console.log('user_profile params : ', params)
+          //todo: load project data from db
+
+          //own user profile
+          if (params.id == store.user.id()) {
+            //return store.user.id()
+          }
+
+          //if there is no such project
+          return null
+        }
       },
       {
         path: app_routes.project$id,

@@ -12,11 +12,11 @@ import {
 import { useRestrictedPage } from '@/hooks'
 
 import {
-  protected_routes,
+  auth_required_routes,
   auth_routes,
 } from "@/constants/router"
 
-export const RestrictedPage = ({ children }: { children: JSX.Element }) => {
+export const RestrictedPage = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
 
   let location = useLocation()
 
@@ -24,11 +24,11 @@ export const RestrictedPage = ({ children }: { children: JSX.Element }) => {
 
   const [auth_page_is_restricted, checked_auth_page_is_restricted] = useRestrictedPage(auth_routes)
 
-  const [protected_page_is_restricted, checked_protected_page_is_restricted] = useRestrictedPage(protected_routes)
+  const [auth_required_page_is_restricted, checked_auth_required_page_is_restricted] = useRestrictedPage(auth_required_routes)
 
-  if (checked_protected_page_is_restricted && checked_auth_page_is_restricted) {
+  if (checked_auth_required_page_is_restricted && checked_auth_page_is_restricted) {
     if (
-      signedin ? auth_page_is_restricted : protected_page_is_restricted
+      signedin ? auth_page_is_restricted : auth_required_page_is_restricted
     ) {
       return <Navigate to={app_routes.root} state={{ from: location }} replace />
     }

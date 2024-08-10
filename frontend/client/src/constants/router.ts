@@ -1,5 +1,4 @@
 
-
 /* 
 routes transformation for name
         _ === -
@@ -13,10 +12,13 @@ export const app_routes = {
   verification: '/verification',
   purchase_plan: '/purchase-plan',
   project$id: '/project/:id',
+  user_profile$id: '/user-profile/:id',
 }
 
-export const protected_routes = [
+export const auth_required_routes = [
   app_routes.project$id,
+  app_routes.user_profile$id,
+
 ]
 
 export const auth_routes = [

@@ -32,6 +32,7 @@ import {
   LeftSidebar,
   RightSidebar,
   RestrictedPage,
+  QueryLink,
 } from './components'
 
 import {
@@ -204,11 +205,11 @@ export default function App() {
       {
         authPage ? <></> :
           <Button
-            className="border-circle fixed top-0 right-0 mr-4 mt-3"
+            className="border-circle p-2 fixed top-0 right-0 mx-4 mt-3"
             severity="info"
             text
             raised
-            icon="pi pi-bars"
+            icon="pi pi-bars text-3xl"
             onClick={() => actions.app.rightSidebarOpened(true)} />
       }
 
@@ -219,7 +220,9 @@ export default function App() {
       {
         checked_signin ?
           <RestrictedPage>
+
             <Outlet />
+            
           </RestrictedPage>
           : <></>
       }
