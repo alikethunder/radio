@@ -31,11 +31,14 @@ import {
   Navbar,
   LeftSidebar,
   RightSidebar,
+  RestrictedPage,
 } from './components'
 
-import { getCookie, navigateFromProtectedRoute } from "./functions"
+import {
+  getCookie,
+} from "./functions"
 
-import { unprotectedRoutes } from "@/constants/router"
+import { useRestrictedPage } from '@/hooks'
 
 import {
   WS,
@@ -57,11 +60,11 @@ import {
   useImmutableFetcher,
   sortByPriority,
   useImmutableFetcherAndStore,
-  has_to_redirect,
 } from './functions'
 
 import {
   app_routes,
+  auth_routes,
 } from '@/constants/router'
 
 //console.log('typeof window : ', typeof window)
@@ -92,6 +95,10 @@ export default function App() {
     })
   }, [])
 
+  const [authPage, checked_auth_page] = useRestrictedPage(auth_routes)
+
+  const signedin = useStore().auth.signedin()
+
   //let data: any = useLoaderData()
 
   useEffect(() => {
@@ -112,20 +119,12 @@ export default function App() {
       actions.auth.signedin(true);
       //@ts-ignore
       (Object.entries(user)).forEach(entry => (actions.user[entry[0]])(entry[1]));
-
-      if ([
-        app_routes.signup,
-        app_routes.signin,
-        app_routes.reset_password,
-        app_routes.verification,
-      ].find(path => pathname.includes(path))) {
-        navigate(app_routes.root)
-      }
     } catch (e) {
       onLogout()
     }
 
     set_checked_signin(true)
+
   }, [])
 
   useEffect(() => {
@@ -146,8 +145,6 @@ export default function App() {
 
   }, [windowSize])
 
-  const signedin = useStore().auth.signedin()
-
   /* const { error: getUserPlanErr, data: subscriptionPlan, isLoading: subscriptionPlanIsLoading } = useImmutableFetcher(signedin ? '/api/v1/purchase-plan/get-user-plan' : null) */
 
   /* useImmutableFetcherAndStore('/api/v1/purchase-plan/get-plans', "app", "subscription_plans")
@@ -159,26 +156,19 @@ export default function App() {
   ) */
 
   useEffect(() => {
+    //save prev path to redirect after signin/up
     if (
-      !signedin
-      && pathname
-      && ![
-        app_routes.signup,
-        app_routes.signin,
-        app_routes.reset_password,
-        app_routes.verification,
-      ].some(path => pathname.includes(path))
+      pathname
+      && checked_auth_page
+      && !authPage
     ) {
       actions.app.prev_pathname(pathname)
     }
-  }, [pathname, signedin])
-
-  //prevent navigation for not signed in users to protected routes
-  let navigation_blocker = useBlocker(({ currentLocation, nextLocation }) => has_to_redirect(nextLocation.pathname))
-
-  useEffect(() => {
-    navigation_blocker.reset && navigation_blocker.reset();
-  }, [navigation_blocker])
+  }, [
+    pathname,
+    authPage,
+    checked_auth_page
+  ])
 
   const is_project_page = useMatch(app_routes.project$id)
 
@@ -190,7 +180,7 @@ export default function App() {
       {/*  <WS /> */}
 
       {/* {//logged in condition
-        useTrackedStore().auth.signedin()
+        checked_signin && signedin
           ?
           <Navbar />
           :
@@ -211,20 +201,26 @@ export default function App() {
           : ''
       }
 
-      <Button
-        className="border-circle fixed top-0 right-0 mr-4 mt-3"
-        severity="info"
-        text
-        raised
-        icon="pi pi-bars"
-        onClick={() => actions.app.rightSidebarOpened(true)} />
+      {
+        authPage ? <></> :
+          <Button
+            className="border-circle fixed top-0 right-0 mr-4 mt-3"
+            severity="info"
+            text
+            raised
+            icon="pi pi-bars"
+            onClick={() => actions.app.rightSidebarOpened(true)} />
+      }
 
       <LeftSidebar />
+
       <RightSidebar />
 
       {
         checked_signin ?
-          <Outlet />
+          <RestrictedPage>
+            <Outlet />
+          </RestrictedPage>
           : <></>
       }
 

@@ -17,7 +17,7 @@ import {
 } from '@/pages'
 
 import {
-  AuthRequired,
+  
 } from '@/components'
 
 import {
@@ -55,7 +55,7 @@ export const routes = [
       },
       {
         path: app_routes.project$id,
-        element: <AuthRequired><Project /></AuthRequired>,
+        element: <Project />,
         loader(
           {
             params,
@@ -91,12 +91,12 @@ export const routes = [
           path: app_routes.reset_password,
           element: <ResetPassword />
         }
-      ].map((route: RouteObject) => {
+      ]/* .map((route: RouteObject) => {
         route.loader = async () => {
           return store.auth.signedin() ? redirect(app_routes.root) : ''
         }
         return route
-      })
+      }) */
     ],
 
   },

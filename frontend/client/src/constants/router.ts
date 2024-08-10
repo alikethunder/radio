@@ -3,7 +3,7 @@
 /* 
 routes transformation for name
         _ === -
-        $ === :
+        /$ === :
 */
 export const app_routes = {
   root: '/',
@@ -15,14 +15,20 @@ export const app_routes = {
   project$id: '/project/:id',
 }
 
+export const protected_routes = [
+  app_routes.project$id,
+]
 
-
-//routes accessible for not authenticated users
-export const unprotectedRoutes = [
-  app_routes.root,
+export const auth_routes = [
   app_routes.signup,
   app_routes.signin,
   app_routes.reset_password,
   app_routes.verification,
+]
+
+//routes accessible for not authenticated users
+export const unprotectedRoutes = [
+  app_routes.root,
   app_routes.purchase_plan,
+  ...auth_routes,
 ]

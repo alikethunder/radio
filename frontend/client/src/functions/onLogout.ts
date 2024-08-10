@@ -1,9 +1,6 @@
 import {
   actions,
-  store,
 } from "@/store"
-
-import { navigateFromProtectedRoute } from '@/functions'
 
 export const onLogout = () => {
 
@@ -13,5 +10,4 @@ export const onLogout = () => {
   //@ts-ignore
   (['id', 'name', 'email', 'created'] as (keyof FrontUser)[]).forEach(i => actions.user[i](i === 'id' ? null : ''))
 
-  navigateFromProtectedRoute()
 }

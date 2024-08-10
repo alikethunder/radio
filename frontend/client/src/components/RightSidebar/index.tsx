@@ -15,7 +15,11 @@ import {
   app_routes,
 } from '@/constants/router'
 
-import { actions, useTrackedStore } from "@/store"
+import {
+  actions,
+  useTrackedStore,
+  useStore,
+} from "@/store"
 
 import './index.sass'
 import { generatePath } from "react-router-dom"
@@ -27,6 +31,8 @@ export const RightSidebar: FC = () => {
   const subscription_plan = useTrackedStore().user.subscription_plan()
 
   //const new_project_url = 
+
+  const signedin = useStore().auth.signedin()
 
   return (
     <Sidebar
@@ -50,29 +56,40 @@ export const RightSidebar: FC = () => {
       }}
     >
       <div className="top flex flex-column">
-
-        <div className="flex">
+        {
+          signedin ?
+            <div className="flex">
+              <Button
+                //todo: projects quantity like "My projects (5)"
+                label="Мои компании"
+                text
+                raised
+                icon='pi pi-briefcase'
+                className="border-noround w-full h-full px-2"
+              />
+              <Button
+                text
+                raised
+                //todo: switch to pi-chevron-up when opened projects list
+                icon={`pi pi-chevron-down`}
+                //onClick={logout}
+                className="border-noround h-full px-2"
+              />
+            </div>
+            :
+            <QueryLink to={app_routes.signin} onClick={() => actions.app.rightSidebarOpened(false)}>
+              <Button
+                label="Войти"
+                text
+                raised
+                icon={`pi pi-sign-in`}
+                iconPos="right"
+                className="border-noround w-full h-full px-2 text-secondary"
+              />
+            </QueryLink>
+        }
+        {/* <QueryLink to={generatePath(app_routes.project$id, { id: 'new' })} onClick={() => actions.app.rightSidebarOpened(false)}>
           <Button
-            //todo: projects quantity like "My projects (5)"
-            label="Мои компании"
-            text
-            raised
-            //onClick={logout}
-            className="border-noround w-full h-full px-2"
-          />
-          <Button
-            text
-            raised
-            //todo: switch to pi-chevron-up when opened projects list
-            icon={`pi pi-chevron-down`}
-            //onClick={logout}
-            className="border-noround h-full px-2"
-          />
-        </div>
-
-        <QueryLink to={generatePath(app_routes.project$id, { id: 'new' })} onClick={() => actions.app.rightSidebarOpened(false)}>
-          <Button
-            //@ts-ignore
             label="Создать компанию"
             text
             raised
@@ -81,7 +98,7 @@ export const RightSidebar: FC = () => {
             //onClick={logout}
             className="border-noround w-full h-full px-2 text-secondary"
           />
-        </QueryLink>
+        </QueryLink> */}
         <div className="flex flex-column shadow-4">
 
         </div>
@@ -91,19 +108,22 @@ export const RightSidebar: FC = () => {
       </div>
 
       <div className="bottom flex flex-column">
-
-        <Button
-          label="Logout"
-          text
-          raised
-          icon="pi pi-sign-out"
-          onClick={() => {
-            logout();
-            actions.app.rightSidebarOpened(false)
-          }}
-          iconPos="right"
-          className="border-noround gray-800 text-left"
-        />
+        {
+          signedin ?
+            <Button
+              label="Logout"
+              text
+              raised
+              icon="pi pi-sign-out"
+              onClick={() => {
+                logout();
+                actions.app.rightSidebarOpened(false)
+              }}
+              iconPos="right"
+              className="border-noround gray-800 text-left"
+            />
+            : <></>
+        }
       </div>
 
     </Sidebar>
