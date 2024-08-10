@@ -17,7 +17,7 @@ import {
 } from '@/pages'
 
 import {
-  
+
 } from '@/components'
 
 import {
@@ -74,30 +74,22 @@ export const routes = [
           return null
         }
       },
-      ...[
-        {
-          path: app_routes.signin,
-          element: <Signin />
-        },
-        {
-          path: app_routes.signup,
-          element: <Signup />
-        },
-        {
-          path: app_routes.verification,
-          element: <Verification />
-        },
-        {
-          path: app_routes.reset_password,
-          element: <ResetPassword />
-        }
-      ]/* .map((route: RouteObject) => {
-        route.loader = async () => {
-          return store.auth.signedin() ? redirect(app_routes.root) : ''
-        }
-        return route
-      }) */
+      {
+        path: app_routes.signin,
+        element: <Signin />
+      },
+      {
+        path: app_routes.signup,
+        element: <Signup />
+      },
+      {
+        path: app_routes.verification,
+        element: <Verification />
+      },
+      {
+        path: app_routes.reset_password,
+        element: <ResetPassword />
+      }
     ],
-
   },
 ]
