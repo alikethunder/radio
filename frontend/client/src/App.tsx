@@ -39,7 +39,7 @@ import {
   getCookie,
 } from "./functions"
 
-import { useRestrictedPage } from '@/hooks'
+import { usePageInList } from '@/hooks'
 
 import {
   WS,
@@ -64,8 +64,10 @@ import {
 } from './functions'
 
 import {
+  all_routes,
   app_routes,
   auth_routes,
+  route_name,
 } from '@/constants/router'
 
 //console.log('typeof window : ', typeof window)
@@ -96,10 +98,20 @@ export default function App() {
     })
   }, [])
 
-  const [authPage, checked_auth_page] = useRestrictedPage(auth_routes)
+  const [authPage, checked_auth_page] = usePageInList(auth_routes)
 
   const signedin = useStore().auth.signedin()
 
+  //check what route is active and set appropriate current page
+  const [current_route, checked_current_route] = usePageInList(all_routes)
+  useEffect(() => {
+    if (checked_current_route && current_route) {
+      console.log('current page : ', current_route)
+      actions.app.current_page_name(route_name[current_route] ?? '')
+    }
+  }, [
+    current_route, checked_current_route
+  ])
   //let data: any = useLoaderData()
 
   useEffect(() => {
@@ -115,7 +127,7 @@ export default function App() {
 
       const user = JSON.parse(decodeURIComponent(user_cookie))
 
-      console.log('[app] user : ', user)
+      //console.log('[App.tsx] user : ', user)
 
       actions.auth.signedin(true);
       //@ts-ignore
@@ -180,13 +192,7 @@ export default function App() {
     }}>
       {/*  <WS /> */}
 
-      {/* {//logged in condition
-        checked_signin && signedin
-          ?
-          <Navbar />
-          :
-          ''
-      } */}
+      <Navbar />
 
       {
         is_project_page ?
@@ -202,16 +208,7 @@ export default function App() {
           : ''
       }
 
-      {
-        authPage ? <></> :
-          <Button
-            className="border-circle p-2 fixed top-0 right-0 mx-4 mt-3"
-            severity="info"
-            text
-            raised
-            icon="pi pi-bars text-3xl"
-            onClick={() => actions.app.rightSidebarOpened(true)} />
-      }
+
 
       <LeftSidebar />
 
@@ -222,7 +219,7 @@ export default function App() {
           <RestrictedPage>
 
             <Outlet />
-            
+
           </RestrictedPage>
           : <></>
       }

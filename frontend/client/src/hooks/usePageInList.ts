@@ -9,7 +9,7 @@ import {
 checks if the page is auth page and returns its match if it's one,
 or null | undefined if it's not
 */
-export const useRestrictedPage = (pages: string[], path_to_check?: string): [PathMatch<string> | string | null | undefined, boolean] => {
+export const usePageInList = (pages: string[], path_to_check?: string): [PathMatch<string> | string | null | undefined, boolean] => {
 
   const { pathname } = useLocation()
 

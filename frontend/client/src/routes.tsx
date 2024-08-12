@@ -63,12 +63,18 @@ export const routes = [
             request,
           }: Loader_params
         ) {
-          console.log('user_profile params : ', params)
-          //todo: load project data from db
-
+          //console.log('user_profile params : ', params, request)
+          
           //own user profile
           if (params.id == store.user.id()) {
-            //return store.user.id()
+            return {
+              //id: store.user.id()
+              name: store.user.name(),
+              email: store.user.email(),
+
+            }
+          } else {
+            //todo: load public user data from db
           }
 
           //if there is no such project

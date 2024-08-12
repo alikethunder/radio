@@ -21,6 +21,7 @@ type AppStore = {
   subscription_plans_loading: boolean;
   leftSidebarOpened: boolean;
   prev_pathname: string;
+  current_page_name: string;
 }
 
 export const appStore = createStore('app')({
@@ -37,4 +38,5 @@ export const appStore = createStore('app')({
   subscription_plans: [],
   subscription_plans_loading: false,
   prev_pathname: app_routes.root,
+  current_page_name: '',
 } as AppStore)

@@ -9,7 +9,7 @@ import {
   useStore,
 } from "@/store"
 
-import { useRestrictedPage } from '@/hooks'
+import { usePageInList } from '@/hooks'
 
 import {
   auth_required_routes,
@@ -22,9 +22,9 @@ export const RestrictedPage = ({ children }: { children: JSX.Element | JSX.Eleme
 
   const signedin = useStore().auth.signedin()
 
-  const [auth_page_is_restricted, checked_auth_page_is_restricted] = useRestrictedPage(auth_routes)
+  const [auth_page_is_restricted, checked_auth_page_is_restricted] = usePageInList(auth_routes)
 
-  const [auth_required_page_is_restricted, checked_auth_required_page_is_restricted] = useRestrictedPage(auth_required_routes)
+  const [auth_required_page_is_restricted, checked_auth_required_page_is_restricted] = usePageInList(auth_required_routes)
 
   if (checked_auth_required_page_is_restricted && checked_auth_page_is_restricted) {
     if (

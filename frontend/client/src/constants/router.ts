@@ -34,3 +34,9 @@ export const unprotectedRoutes = [
   app_routes.purchase_plan,
   ...auth_routes,
 ]
+
+export const all_routes = Object.values(app_routes)
+
+export const route_name = {
+  '/user-profile/:id': 'Профиль',
+}

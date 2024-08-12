@@ -25,6 +25,7 @@ import { QueryLink } from "@/components"
 import './index.sass'
 
 import {
+  actions,
   store,
   useTrackedStore,
 } from "@/store"
@@ -42,6 +43,7 @@ import { Tooltip } from "primereact/tooltip"
 import {
   app_routes,
 } from '@/constants/router'
+import { Ripple } from "primereact/ripple"
 
 export const UserProfile = () => {
 
@@ -92,18 +94,19 @@ export const UserProfile = () => {
     //todo: if there is no such project (project == null) -> show message that there is no such project
 
     <div
-      className="sm:py-3 py-4 sm:px-3 px-4 w-full overflow-y-auto page project_page flex-grow-1 flex"
+      className=" w-full overflow-y-auto page user_profile_page flex-grow-1 flex text-800 md:py-4 py-3 md:px-4 px-3"
     >
 
-      <div className="buttons mt-8 pt-2 flex flex-column gap-3">
+      <div className="buttons pt-2 flex flex-column gap-2">
 
         <Button
           icon="pi pi-check"
           rounded
           raised
           aria-label="Accept"
-          className={`align-self-center p-0 ml-2 ${save_disabled ? 'bg-bluegray-300' : ''}`}
+          className={`align-self-center p-0 ${save_disabled ? 'bg-bluegray-300' : ''}`}
           severity={`success`}
+          size="small"
           disabled={save_disabled}
 
           onClick={handleSubmit(onSubmit)}
@@ -112,14 +115,14 @@ export const UserProfile = () => {
         {
           project ?
             <Button
-              icon="pi pi-trash"
+              icon="pi pi-times"
               rounded
               text
               raised
               aria-label="Accept"
-              className="align-self-center p-0 ml-2"
+              className="align-self-center p-0"
               severity='danger'
-
+              size="small"
               onClick={() => { }}
             />
             : ''
@@ -128,29 +131,18 @@ export const UserProfile = () => {
 
       <div className="flex flex-column">
 
-        <div
-          className="breadcrumbs shadow-3 ml-5 flex align-items-center pl-3"
-          style={{
-            borderRadius: '24px',
-            height: '3rem',
-            lineHeight: '1rem',
-          }}>
-          Breadcrumbs
-        </div>
+        <div className="flex">
 
-        <div className="flex mt-3">
-
-          <Button
-            icon="pi pi-image"
-            rounded
-            text
-            raised
-            aria-label="Accept"
-            className="p-0 ml-5 mt-4"
-            onClick={() => {
-
-            }}
-          />
+          <div className="profile_picture shadow-2 cursor-pointer select-none w-5rem h-5rem md:w-7rem md:h-7rem border-circle flex align-items-center justify-content-center ml-4  p-ripple">
+            <i className="pi pi-user text-4xl md:text-6xl"></i>
+            <div className="overlay absolute top-0 bottom-0 right-0 left-0 flex align-items-center justify-content-center text-center">
+              <div className="overlay_background surface-900 absolute top-0 bottom-0 right-0 left-0"></div>
+              <div className="overlay_text text-white font-semibold z-1">
+                Choose image
+              </div>
+            </div>
+            <Ripple />
+          </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-2 align-self-start ml-5">
             <Controller
@@ -195,7 +187,7 @@ export const UserProfile = () => {
           </form>
 
         </div>
-{/* 
+        {/* 
         <QueryLink to={app_routes.signup} className="font-medium no-underline ml-2 text-blue-500 align-self-center">Don't have an account? <span className="font-semibold">Create today!</span></QueryLink>
 
         <QueryLink to={app_routes.signin} className="font-medium no-underline ml-2 text-blue-500">

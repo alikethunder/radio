@@ -1,13 +1,13 @@
 @import '@/sass/functions/sizeRelativeToCardWidth'
   
-.become_seller_page .plans
-  display: grid
-  justify-content: space-around
-  grid-gap: 25px 5px
-  grid-template-columns: repeat(auto-fill, var(--SmallCardContainer_width))
-  grid-template-rows: repeat(auto-fill, sizeRelativeToCardWidth(var(--card-ratio)))
-  @media screen and (min-width: 576px) and (min-height: 576px)
-    grid-gap: 45px 25px
+.user_profile_page
 
-  .card_header
-    font-size: sizeRelativeToCardWidth(.0675)
+  .profile_picture
+
+    .overlay_background, .overlay_text
+      opacity: 0
+    &:hover
+      .overlay_background
+        opacity: .5
+      .overlay_text
+        opacity: 1

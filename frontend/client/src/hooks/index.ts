@@ -1,2 +1,2 @@
 export { useRefCallback } from './useRefCallback'
-export { useRestrictedPage } from './useRestrictedPage'
+export { usePageInList } from './usePageInList'
