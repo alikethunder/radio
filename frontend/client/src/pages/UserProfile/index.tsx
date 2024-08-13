@@ -144,7 +144,16 @@ export const UserProfile = () => {
         break;
 
       case 'saving':
-        return
+        return <Button
+          icon="pi pi-spin pi-cog"
+          rounded
+          outlined
+          aria-label="Сохраняется"
+          tooltip="Сохраняется"
+          tooltipOptions={navbar_actions_tooltip_options}
+          className="shadow-none p-0 w-2rem h-2rem cursor-wait"
+          severity='help'
+        />
         break;
 
       default: return null
