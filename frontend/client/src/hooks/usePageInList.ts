@@ -3,13 +3,14 @@ import { matchPath, useLocation, PathMatch, } from "react-router-dom"
 
 import {
   app_routes,
+  all_routes,
 } from '@/constants/router'
 
 /* 
 checks if the page is auth page and returns its match if it's one,
 or null | undefined if it's not
 */
-export const usePageInList = (pages: string[], path_to_check?: string): [PathMatch<string> | string | null | undefined, boolean] => {
+export const usePageInList = (pages: typeof all_routes, path_to_check?: string): [PathMatch<string> | string | null | undefined, boolean] => {
 
   const { pathname } = useLocation()
 

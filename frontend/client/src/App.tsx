@@ -67,7 +67,7 @@ import {
   all_routes,
   app_routes,
   auth_routes,
-  route_name,
+  route_attributes,
 } from '@/constants/router'
 
 //console.log('typeof window : ', typeof window)
@@ -107,7 +107,7 @@ export default function App() {
   useEffect(() => {
     if (checked_current_route && current_route) {
       console.log('current page : ', current_route)
-      actions.app.current_page_name(route_name[current_route] ?? '')
+      actions.app.current_page(route_attributes[current_route] ?? '')
     }
   }, [
     current_route, checked_current_route

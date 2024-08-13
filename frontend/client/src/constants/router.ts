@@ -13,13 +13,13 @@ export const app_routes = {
   purchase_plan: '/purchase-plan',
   project$id: '/project/:id',
   user_profile$id: '/user-profile/:id',
-}
+} as const
 
 export const auth_required_routes = [
   app_routes.project$id,
   app_routes.user_profile$id,
 
-]
+] as const
 
 export const auth_routes = [
   app_routes.signup,
@@ -33,10 +33,13 @@ export const unprotectedRoutes = [
   app_routes.root,
   app_routes.purchase_plan,
   ...auth_routes,
-]
+] as const
 
 export const all_routes = Object.values(app_routes)
 
-export const route_name = {
-  '/user-profile/:id': 'Профиль',
+export const route_attributes = {
+  '/user-profile/:id': {
+    name: 'Профиль',
+    icon: 'pi-id-card'
+  },
 }

@@ -20,16 +20,17 @@ export const Navbar: FC = () => {
 
   const [authPage, checked_auth_page] = usePageInList(auth_routes)
 
-  const current_page_name = useStore().app.current_page_name()
+  const current_page = useStore().app.current_page()
 
   return (
     <div className="flex flex-shrink-0  shadow-2 h-3rem sm:h-4rem justify-content-between bg-white">
       
       <div className="left h-full flex ">
         
-        <div className="current_page_name align-self-center font-italic font-medium ml-3 md:ml-5 text-lg md:text-xl">
+        <div className="lobster_font align-self-center ml-3 md:ml-5 text-xl md:text-2xl flex align-items-center text-secondary">
+          <i className={`pi ${current_page?.icon} text-xl md:text-2xl mr-2`}></i>
           {
-            current_page_name ?? ''
+            current_page?.name ?? ''
           }
         </div>
 

@@ -13,6 +13,7 @@ import {
 
 import {
   app_routes,
+  route_attributes,
 } from '@/constants/router'
 
 import {
@@ -62,11 +63,11 @@ export const RightSidebar: FC = () => {
             <>
               <QueryLink to={generatePath(app_routes.user_profile$id, { id: store.user.id() })} onClick={() => actions.app.rightSidebarOpened(false)}>
                 <Button
-                  label="Личный кабинет"
+                  label={route_attributes[app_routes.user_profile$id].name}
                   text
                   raised
-                  icon={`pi pi-id-card text-xl md:text-2xl`}
-                  className="border-noround w-full h-full px-2 text-secondary"
+                  icon={`pi ${route_attributes[app_routes.user_profile$id].icon} text-xl md:text-2xl`}
+                  className="border-noround w-full h-full px-2 text-secondary lobster_font text-xl"
                 />
               </QueryLink>
 
@@ -77,7 +78,7 @@ export const RightSidebar: FC = () => {
                   text
                   raised
                   icon='pi pi-briefcase text-xl md:text-2xl'
-                  className="border-noround w-full h-full px-2"
+                  className="border-noround w-full h-full px-2 lobster_font text-xl"
                 />
                 <Button
                   text
@@ -124,7 +125,7 @@ export const RightSidebar: FC = () => {
         {
           signedin ?
             <Button
-              label="Logout"
+              label="Выйти"
               text
               raised
               icon="pi pi-sign-out"
@@ -133,7 +134,7 @@ export const RightSidebar: FC = () => {
                 actions.app.rightSidebarOpened(false)
               }}
               iconPos="right"
-              className="border-noround gray-800 text-left"
+              className="border-noround gray-800 text-left lobster_font text-xl"
             />
             : <></>
         }
