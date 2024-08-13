@@ -22,17 +22,23 @@ export const Navbar: FC = () => {
 
   const current_page = useStore().app.current_page()
 
+  const navbar_actions = useStore().app.navbar_actions()
+
+  //console.log('navbar_actions : ', navbar_actions)
+
   return (
     <div className="flex flex-shrink-0  shadow-2 h-3rem sm:h-4rem justify-content-between bg-white">
-      
+
       <div className="left h-full flex ">
-        
+
         <div className="lobster_font align-self-center ml-3 md:ml-5 text-xl md:text-2xl flex align-items-center text-secondary">
           <i className={`pi ${current_page?.icon} text-xl md:text-2xl mr-2`}></i>
           {
             current_page?.name ?? ''
           }
         </div>
+
+        {navbar_actions ?? <></>}
 
       </div>
 

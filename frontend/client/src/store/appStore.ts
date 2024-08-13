@@ -25,6 +25,7 @@ type AppStore = {
     name: string;
     icon: string;
   };
+  navbar_actions: JSX.Element | null;
 }
 
 export const appStore = createStore('app')({
@@ -45,4 +46,5 @@ export const appStore = createStore('app')({
     name: '',
     icon: '',
   },
+  navbar_actions: null,
 } as AppStore)

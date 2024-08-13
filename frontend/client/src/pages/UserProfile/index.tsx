@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useMemo } from "react"
+import { FC, useCallback, useEffect, useMemo, useState } from "react"
 
 import {
   useLoaderData,
@@ -43,7 +43,10 @@ import { Tooltip } from "primereact/tooltip"
 import {
   app_routes,
 } from '@/constants/router'
+
 import { Ripple } from "primereact/ripple"
+
+const navbar_actions_tooltip_options = { showDelay: 300, hideDelay: 200, position: 'bottom' } as const
 
 export const UserProfile = () => {
 
@@ -54,6 +57,8 @@ export const UserProfile = () => {
 
   const project = useLoaderData()
   //console.log('project : ', project)
+
+  const [edit_mode, set_edit_mode] = useState<'read' | 'edit' | 'saving'>('read')
 
   const {
     control,
@@ -87,6 +92,75 @@ export const UserProfile = () => {
       )
   }, [isDirty, errors])
 
+  const navbar_actions = useMemo(() => {
+    switch (edit_mode) {
+      case 'read':
+        return <Button
+          icon="pi pi-file-edit"
+          rounded
+          outlined
+          aria-label="Редактировать"
+          tooltip="Редактировать"
+          tooltipOptions={navbar_actions_tooltip_options}
+          className={`shadow-none p-0 w-2rem h-2rem ${save_disabled ? 'bg-bluegray-300' : ''}`}
+          severity={`warning`}
+          disabled={save_disabled}
+
+          onClick={() => set_edit_mode('edit')}
+        />
+        break;
+
+      case 'edit':
+        return <>
+          <Button
+            icon="pi pi-check"
+            rounded
+            outlined
+            aria-label="Сохранить"
+            tooltip="Сохранить"
+            tooltipOptions={navbar_actions_tooltip_options}
+            className={`shadow-none p-0 w-2rem h-2rem ${save_disabled ? 'bg-bluegray-300' : ''}`}
+            severity={`success`}
+            size="small"
+            disabled={save_disabled}
+
+            onClick={handleSubmit(onSubmit)}
+          />
+
+          <Button
+            icon="pi pi-times"
+            rounded
+            outlined
+            aria-label="Отменить"
+            tooltip="Отменить"
+            tooltipOptions={navbar_actions_tooltip_options}
+            className="shadow-none p-0 w-2rem h-2rem"
+            severity='danger'
+            size="small"
+
+            onClick={() => set_edit_mode('read')}
+          />
+        </>
+        break;
+
+      case 'saving':
+        return
+        break;
+
+      default: return null
+    }
+  }, [edit_mode])
+
+  useEffect(() => {
+    actions.app.navbar_actions(
+      <div className="buttons flex flex-row gap-2 align-items-center pl-2">
+        {navbar_actions}
+      </div>
+    )
+
+    return () => actions.app.navbar_actions(null)
+  }, [navbar_actions])
+
   return (
 
     //if project == new -> inputs in edit state, autofocus on first field (project name)
@@ -97,37 +171,7 @@ export const UserProfile = () => {
       className=" w-full overflow-y-auto page user_profile_page flex-grow-1 flex text-800 md:py-4 py-3 md:px-4 px-3"
     >
 
-      <div className="buttons pt-2 flex flex-column gap-2">
 
-        <Button
-          icon="pi pi-check"
-          rounded
-          raised
-          aria-label="Accept"
-          className={`align-self-center p-0 ${save_disabled ? 'bg-bluegray-300' : ''}`}
-          severity={`success`}
-          size="small"
-          disabled={save_disabled}
-
-          onClick={handleSubmit(onSubmit)}
-        />
-
-        {
-          project ?
-            <Button
-              icon="pi pi-times"
-              rounded
-              text
-              raised
-              aria-label="Accept"
-              className="align-self-center p-0"
-              severity='danger'
-              size="small"
-              onClick={() => { }}
-            />
-            : ''
-        }
-      </div>
 
       <div className="flex flex-column">
 
