@@ -55,8 +55,9 @@ export const UserProfile = () => {
   const windowSize = useTrackedStore().app.windowSize()
   const isDesktop = useTrackedStore().app.isDesktop()
 
-  const project = useLoaderData()
-  //console.log('project : ', project)
+  const user_data = useLoaderData()
+
+  console.log('user_data : ', user_data)
 
   const [edit_mode, set_edit_mode] = useState<'read' | 'edit' | 'saving'>('read')
 
@@ -72,7 +73,7 @@ export const UserProfile = () => {
   } = useForm({
     mode: 'onTouched',
     defaultValues: {
-      name: '',
+      name: user_data?.name,
     }
   })
 
@@ -83,7 +84,7 @@ export const UserProfile = () => {
   };
 
   const save_disabled = useMemo(() => {
-    return project ?
+    return user_data ?
       //existing project /*new_value == old_value */
       false
       : //new project
@@ -171,76 +172,79 @@ export const UserProfile = () => {
   }, [navbar_actions])
 
   return (
-
-    //if project == new -> inputs in edit state, autofocus on first field (project name)
-
-    //todo: if there is no such project (project == null) -> show message that there is no such project
-
     <div
-      className=" w-full overflow-y-auto page user_profile_page flex-grow-1 flex text-800 md:py-4 py-3 md:px-4 px-3"
+      className=" w-full overflow-y-auto page user_profile_page flex-grow-1 flex flex-column text-800 md:py-4 py-3 md:px-4 px-3"
     >
 
+      <div className="flex flex-column sm:flex-row">
 
+        <div className="profile_picture shadow-2 cursor-pointer select-none w-5rem h-5rem md:w-7rem md:h-7rem border-circle flex align-items-center justify-content-center p-ripple align-self-center">
 
-      <div className="flex flex-column">
+          <i className="pi pi-user text-4xl md:text-6xl"></i>
 
-        <div className="flex">
+          <div className="overlay absolute top-0 bottom-0 right-0 left-0 flex align-items-center justify-content-center text-center">
 
-          <div className="profile_picture shadow-2 cursor-pointer select-none w-5rem h-5rem md:w-7rem md:h-7rem border-circle flex align-items-center justify-content-center ml-4  p-ripple">
-            <i className="pi pi-user text-4xl md:text-6xl"></i>
-            <div className="overlay absolute top-0 bottom-0 right-0 left-0 flex align-items-center justify-content-center text-center">
-              <div className="overlay_background surface-900 absolute top-0 bottom-0 right-0 left-0"></div>
-              <div className="overlay_text text-white font-semibold z-1">
-                Choose image
-              </div>
+            <div className="overlay_background surface-900 absolute top-0 bottom-0 right-0 left-0"></div>
+
+            <div className="overlay_text text-white font-semibold z-1">
+              Choose image
             </div>
-            <Ripple />
+
           </div>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-2 align-self-start ml-5">
-            <Controller
-              name="name"
-              control={control}
-              rules={{ required: 'Project name cannot be empty' }}
-              render={({ field, fieldState }) => (
-                <>
-                  <label
-                    htmlFor={field.name}
-                    className={classNames(
-                      { 'p-error': errors[field.name] },
-                      'ml-2',
-                      'pl-1',
-                      'text-600'
-                    )}
-                  >
-                    <small>Project</small>
-                  </label>
-
-                  <InputText
-                    id={field.name}
-                    value={field.value}
-                    className={classNames({ 'p-invalid': fieldState.error })}
-                    onChange={(e) => field.onChange(e.target.value)}
-                    onBlur={field.onBlur}
-                    disabled={false}
-                    pt={{
-                      root: {
-                        onInput: (e) => {
-                          //@ts-ignore
-                          e.target.size = Math.min(Math.max(e.target.value.length - 7, 20), 70)
-                        }
-                      }
-                    }}
-                  />
-
-                  <small className="p-error ml-2 pl-1">{errors[field.name]?.message ?? ' '}</small>
-                </>
-              )}
-            />
-          </form>
+          <Ripple />
 
         </div>
-        {/* 
+
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-2 align-self-start ml-5">
+
+          <Controller
+            name="name"
+            control={control}
+            rules={{ required: 'Project name cannot be empty' }}
+            render={({ field, fieldState }) => (
+              <>
+                <label
+                  htmlFor={field.name}
+                  className={classNames(
+                    { 'p-error': errors[field.name] },
+                    'ml-2',
+                    'pl-1',
+                    'text-600'
+                  )}
+                >
+                  <small>Имя</small>
+                </label>
+
+                <InputText
+                  id={field.name}
+                  value={field.value}
+                  className={classNames({ 'p-invalid': fieldState.error })}
+                  onChange={(e) => {
+                    field.onChange(e.target.value)
+                  }}
+                  onBlur={field.onBlur}
+                  disabled={edit_mode == 'read'}
+                  pt={{
+                    root: {
+                      onInput: (e) => {
+                        //@ts-ignore
+                        e.target.size = Math.min(Math.max(e.target.value.length - 7, 20), 70)
+                      }
+                    }
+                  }}
+                />
+
+                <small className="p-error ml-2 pl-1">{errors[field.name]?.message ?? ' '}</small>
+              </>
+            )}
+          />
+
+          
+        </form>
+
+      </div>
+      {/* 
         <QueryLink to={app_routes.signup} className="font-medium no-underline ml-2 text-blue-500 align-self-center">Don't have an account? <span className="font-semibold">Create today!</span></QueryLink>
 
         <QueryLink to={app_routes.signin} className="font-medium no-underline ml-2 text-blue-500">
@@ -249,7 +253,6 @@ export const UserProfile = () => {
           </span>
         </QueryLink> */}
 
-      </div>
 
       <div className="shadow-3 flex-grow-1 ml-5 mt-8 flex align-items-center justify-content-center">
         Editor
