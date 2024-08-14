@@ -103,7 +103,7 @@ export const UserProfile = () => {
           aria-label="Редактировать"
           tooltip="Редактировать"
           tooltipOptions={navbar_actions_tooltip_options}
-          className={`shadow-none p-0 w-2rem h-2rem ${save_disabled ? 'bg-bluegray-300' : ''}`}
+          className={`shadow-none p-0 w-2rem h-2rem ${save_disabled ? 'bg-bluegray-300' : ''} shadow_on_hover`}
           severity={`warning`}
           disabled={save_disabled}
 
@@ -120,7 +120,7 @@ export const UserProfile = () => {
             aria-label="Сохранить"
             tooltip="Сохранить"
             tooltipOptions={navbar_actions_tooltip_options}
-            className={`shadow-none p-0 w-2rem h-2rem ${save_disabled ? 'bg-bluegray-300' : ''}`}
+            className={`shadow-none p-0 w-2rem h-2rem ${save_disabled ? 'bg-bluegray-300' : ''} shadow_on_hover`}
             severity={`success`}
             size="small"
             disabled={save_disabled}
@@ -135,7 +135,7 @@ export const UserProfile = () => {
             aria-label="Отменить"
             tooltip="Отменить"
             tooltipOptions={navbar_actions_tooltip_options}
-            className="shadow-none p-0 w-2rem h-2rem"
+            className="shadow-none p-0 w-2rem h-2rem shadow_on_hover"
             severity='danger'
             size="small"
 
@@ -240,7 +240,7 @@ export const UserProfile = () => {
             )}
           />
 
-          
+
         </form>
 
       </div>
