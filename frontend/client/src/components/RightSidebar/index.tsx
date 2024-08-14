@@ -67,7 +67,7 @@ export const RightSidebar: FC = () => {
                   text
                   raised
                   icon={`pi ${route_attributes[app_routes.user_profile$id].icon} text-xl md:text-2xl`}
-                  className="border-noround w-full h-full px-2 text-secondary lobster_font text-xl"
+                  className="border-noround w-full h-full px-2 text-secondary lobster_font text-xl shadow_on_hover"
                 />
               </QueryLink>
 
@@ -78,7 +78,7 @@ export const RightSidebar: FC = () => {
                   text
                   raised
                   icon='pi pi-briefcase text-xl md:text-2xl'
-                  className="border-noround w-full h-full px-2 lobster_font text-xl"
+                  className="border-noround w-full h-full px-2 lobster_font text-xl shadow_on_hover"
                 />
                 <Button
                   text
@@ -86,7 +86,7 @@ export const RightSidebar: FC = () => {
                   //todo: switch to pi-chevron-up when opened projects list
                   icon={`pi pi-chevron-down`}
                   //onClick={logout}
-                  className="border-noround h-full px-2"
+                  className="border-noround h-full px-2 shadow_on_hover"
                 />
               </div>
             </>
@@ -98,7 +98,7 @@ export const RightSidebar: FC = () => {
                 raised
                 icon={`pi pi-sign-in`}
                 iconPos="right"
-                className="border-noround w-full h-full px-2 text-secondary"
+                className="border-noround w-full h-full px-2 text-secondary shadow_on_hover lobster_font text-xl"
               />
             </QueryLink>
         }
@@ -134,7 +134,7 @@ export const RightSidebar: FC = () => {
                 actions.app.rightSidebarOpened(false)
               }}
               iconPos="right"
-              className="border-noround gray-800 text-left lobster_font text-xl"
+              className="border-noround gray-800 text-left lobster_font text-xl shadow_on_hover"
             />
             : <></>
         }
