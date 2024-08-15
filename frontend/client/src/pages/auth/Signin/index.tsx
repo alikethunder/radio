@@ -180,7 +180,7 @@ export const Signin: FC = () => {
                       pt={{
                         input: () => ({
                           style: {
-                            paddingLeft: '2.5rem',
+                            paddingLeft: '2.2rem',
                           },
                           autoComplete: 'current-password',
                         }),
@@ -238,8 +238,9 @@ export const Signin: FC = () => {
             <Button
               type="submit"
               label="Sign in"
+              outlined
               icon={`pi ${isSubmitting ? 'pi-spin pi-sync' : 'pi-send'}`}
-              className="w-full mb-4"
+              className="w-full mb-4 shadow_on_hover"
               iconPos="right"
             />
 

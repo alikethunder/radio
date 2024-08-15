@@ -178,25 +178,35 @@ export const UserProfile = () => {
 
       <div className="flex flex-column sm:flex-row">
 
-        <div className="profile_picture shadow-2 cursor-pointer select-none w-5rem h-5rem md:w-7rem md:h-7rem border-circle flex align-items-center justify-content-center p-ripple align-self-center">
+        <div className="profile_picture shadow-2 cursor-pointer select-none w-5rem h-5rem md:w-7rem md:h-7rem border-circle flex align-items-center justify-content-center p-ripple align-self-center" onClick={() => {
+          if (edit_mode == 'edit') {
+
+          }
+        }}>
 
           <i className="pi pi-user text-4xl md:text-6xl"></i>
 
-          <div className="overlay absolute top-0 bottom-0 right-0 left-0 flex align-items-center justify-content-center text-center">
+          {
+            edit_mode == 'edit' ?
+              <>
+                <div className="overlay absolute top-0 bottom-0 right-0 left-0 flex align-items-center justify-content-center text-center">
 
-            <div className="overlay_background surface-900 absolute top-0 bottom-0 right-0 left-0"></div>
+                  <div className="overlay_background surface-900 absolute top-0 bottom-0 right-0 left-0"></div>
 
-            <div className="overlay_text text-white font-semibold z-1">
-              Choose image
-            </div>
+                  <div className="overlay_text text-white font-semibold z-1">
+                    Choose image
+                  </div>
 
-          </div>
+                </div>
 
-          <Ripple />
+                <Ripple />
+              </>
+              : <></>
+          }
 
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-2 align-self-start ml-5">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-2 align-self-start sm:ml-5 mt-3 sm:mt-1">
 
           <Controller
             name="name"
@@ -207,9 +217,9 @@ export const UserProfile = () => {
                 <label
                   htmlFor={field.name}
                   className={classNames(
-                    { 'p-error': errors[field.name] },
-                    'ml-2',
-                    'pl-1',
+                    {
+                      'p-error': errors[field.name]
+                    },
                     'text-600'
                   )}
                 >
@@ -219,7 +229,11 @@ export const UserProfile = () => {
                 <InputText
                   id={field.name}
                   value={field.value}
-                  className={classNames({ 'p-invalid': fieldState.error })}
+                  className={classNames(
+                    {
+                      'p-invalid': fieldState.error,
+                    },
+                  )}
                   onChange={(e) => {
                     field.onChange(e.target.value)
                   }}
@@ -235,7 +249,7 @@ export const UserProfile = () => {
                   }}
                 />
 
-                <small className="p-error ml-2 pl-1">{errors[field.name]?.message ?? ' '}</small>
+                <small className="p-error">{errors[field.name]?.message ?? ' '}</small>
               </>
             )}
           />
@@ -254,7 +268,7 @@ export const UserProfile = () => {
         </QueryLink> */}
 
 
-      <div className="shadow-3 flex-grow-1 ml-5 mt-8 flex align-items-center justify-content-center">
+      <div className="shadow-3 flex-grow-1 mt-8 flex align-items-center justify-content-center">
         Editor
       </div>
 
