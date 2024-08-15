@@ -16,13 +16,15 @@ import {
   auth_routes,
 } from '@/constants/router'
 
+import {
+  FormStateActions,
+} from '@/components'
+
 export const Navbar: FC = () => {
 
   const [authPage, checked_auth_page] = usePageInList(auth_routes)
 
   const current_page = useStore().app.current_page()
-
-  const navbar_actions = useStore().app.navbar_actions()
 
   //console.log('navbar_actions : ', navbar_actions)
 
@@ -38,7 +40,7 @@ export const Navbar: FC = () => {
           }
         </div>
 
-        {navbar_actions ?? <></>}
+        <FormStateActions />
 
       </div>
 
