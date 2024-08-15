@@ -141,8 +141,10 @@ export const ResetPassword: FC = () => {
             <Button
               type="submit"
               label="Send 8-digit verification code"
+              outlined
+              raised
               icon={`pi ${isSubmitting ? 'pi-spin pi-sync' : 'pi-send'}`}
-              className="w-full mb-4"
+              className="w-full mb-4 shadow_on_hover"
               iconPos="right"
             />
 

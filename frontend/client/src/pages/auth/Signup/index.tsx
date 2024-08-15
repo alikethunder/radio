@@ -183,8 +183,10 @@ export const Signup: FC = () => {
           <Button
             type="submit"
             label="Sign Up"
+              outlined
+              raised
             icon={`pi ${isSubmitting ? 'pi-spin pi-sync' : 'pi-send'}`}
-            className="w-full mb-4"
+            className="w-full mb-4 shadow_on_hover"
             iconPos="right"
             disabled={isSubmitting}
           />

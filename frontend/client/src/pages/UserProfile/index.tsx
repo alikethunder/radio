@@ -100,10 +100,11 @@ export const UserProfile = () => {
           icon="pi pi-file-edit"
           rounded
           outlined
+          raised
           aria-label="Редактировать"
           tooltip="Редактировать"
           tooltipOptions={navbar_actions_tooltip_options}
-          className={`shadow-none p-0 w-2rem h-2rem ${save_disabled ? 'bg-bluegray-300' : ''} shadow_on_hover`}
+          className={`p-0 w-2rem h-2rem ${save_disabled ? 'bg-bluegray-300' : ''} shadow_on_hover focus:shadow-none`}
           severity={`warning`}
           disabled={save_disabled}
 
@@ -117,10 +118,11 @@ export const UserProfile = () => {
             icon="pi pi-check"
             rounded
             outlined
+            raised
             aria-label="Сохранить"
             tooltip="Сохранить"
             tooltipOptions={navbar_actions_tooltip_options}
-            className={`shadow-none p-0 w-2rem h-2rem ${save_disabled ? 'bg-bluegray-300' : ''} shadow_on_hover`}
+            className={`p-0 w-2rem h-2rem ${save_disabled ? 'bg-bluegray-300' : ''} shadow_on_hover focus:shadow-none`}
             severity={`success`}
             size="small"
             disabled={save_disabled}
@@ -132,10 +134,11 @@ export const UserProfile = () => {
             icon="pi pi-times"
             rounded
             outlined
+            raised
             aria-label="Отменить"
             tooltip="Отменить"
             tooltipOptions={navbar_actions_tooltip_options}
-            className="shadow-none p-0 w-2rem h-2rem shadow_on_hover"
+            className="p-0 w-2rem h-2rem shadow_on_hover focus:shadow-none"
             severity='danger'
             size="small"
 
@@ -149,10 +152,11 @@ export const UserProfile = () => {
           icon="pi pi-spin pi-cog"
           rounded
           outlined
+          raised
           aria-label="Сохраняется"
           tooltip="Сохраняется"
           tooltipOptions={navbar_actions_tooltip_options}
-          className="shadow-none p-0 w-2rem h-2rem cursor-wait"
+          className="p-0 w-2rem h-2rem cursor-wait focus:shadow-none"
           severity='help'
         />
         break;

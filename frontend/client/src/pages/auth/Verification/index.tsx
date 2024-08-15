@@ -285,16 +285,20 @@ export const Verification: FC = () => {
           <Button
             type="submit"
             label="Confirm and sign in"
+            outlined
+            raised
             icon={`pi ${isSubmitting ? 'pi-spin pi-sync' : 'pi-send'}`}
-            className="w-full mb-4"
+            className="w-full mb-4 shadow_on_hover"
             iconPos="right"
             disabled={isSubmitting}
           />
 
           <Button
             label="Resend verification code"
+            outlined
+            raised
             icon={`pi ${sendingVC ? 'pi-spin pi-sync' : 'pi-key'}`}
-            className="w-full mb-4"
+            className="w-full mb-4 shadow_on_hover"
             iconPos="right"
             onClick={resendVC}
             disabled={sendingVC}
