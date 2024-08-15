@@ -46,6 +46,8 @@ import {
 
 import { Ripple } from "primereact/ripple"
 
+import { useFormState } from '@/hooks'
+
 export const UserProfile = () => {
 
   const navigate = useNavigate()
@@ -81,20 +83,31 @@ export const UserProfile = () => {
 
   const onSubmit = (data) => {
     console.log('submit : ', data)
-    return 'sadasd'
   }
 
-  useEffect(() => {
+  //todo add propt to reset and save form if fields changed
+  useFormState(form, {
+    submit: () => {
+      form?.requestSubmit()
+    },
+    reset: () => {
+      reset()
+    },
+  })
+
+  /* useEffect(() => {
     if (form) {
+      actions.app.FormStateActions_edit(()=>{})
       actions.app.FormStateActions_submit(() => { form.requestSubmit() })
       actions.app.FormStateActions_reset(() => { reset() })
     }
     return () => {
+      actions.app.FormStateActions_edit(null)
       actions.app.FormStateActions_submit(null)
       actions.app.FormStateActions_reset(null)
 
     }
-  }, [form])
+  }, [form]) */
 
   return (
     <div

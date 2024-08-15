@@ -16,7 +16,7 @@ import {
   auth_routes,
 } from '@/constants/router'
 
-const navbar_actions_tooltip_options = { showDelay: 300, hideDelay: 200, position: 'bottom' } as const
+const navbar_actions_tooltip_options = { showDelay: 300, hideDelay: 200, position: 'bottom', closeOnEscape: true, } as const
 
 /* 
 page that will include form and will need the form state actions has to set and clear after itself the FormStateActions_submit 
@@ -30,6 +30,7 @@ export const FormStateActions: FC = () => {
   const current_page = useStore().app.current_page()
 
   const edit_mode = useStore().app.FormStateActions_state()
+  const edit = useStore().app.FormStateActions_edit()
   const submit = useStore().app.FormStateActions_submit()
   const reset = useStore().app.FormStateActions_reset()
 
@@ -44,10 +45,13 @@ export const FormStateActions: FC = () => {
           aria-label="Редактировать"
           tooltip="Редактировать"
           tooltipOptions={navbar_actions_tooltip_options}
-          className={`p-0 w-2rem h-2rem shadow_on_hover focus:shadow-none`}
+          className={`p-0 w-2rem h-2rem shadow_on_hover`}
           severity={`warning`}
 
-          onClick={() => actions.app.FormStateActions_state('edit')}
+          onClick={() => {
+            actions.app.FormStateActions_state('edit')
+            edit?.()
+          }}
         />
         break;
 
@@ -61,7 +65,7 @@ export const FormStateActions: FC = () => {
             aria-label="Сохранить"
             tooltip="Сохранить"
             tooltipOptions={navbar_actions_tooltip_options}
-            className={`p-0 w-2rem h-2rem shadow_on_hover focus:shadow-none`}
+            className={`p-0 w-2rem h-2rem shadow_on_hover`}
             severity={`success`}
             size="small"
 
@@ -76,7 +80,7 @@ export const FormStateActions: FC = () => {
             aria-label="Отменить"
             tooltip="Отменить"
             tooltipOptions={navbar_actions_tooltip_options}
-            className="p-0 w-2rem h-2rem shadow_on_hover focus:shadow-none"
+            className="p-0 w-2rem h-2rem shadow_on_hover"
             severity='danger'
             size="small"
 
@@ -97,7 +101,7 @@ export const FormStateActions: FC = () => {
           aria-label="Сохраняется"
           tooltip="Сохраняется"
           tooltipOptions={navbar_actions_tooltip_options}
-          className="p-0 w-2rem h-2rem cursor-wait focus:shadow-none"
+          className="p-0 w-2rem h-2rem cursor-wait"
           severity='help'
         />
         break;

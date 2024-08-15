@@ -58,6 +58,16 @@ export const RightSidebar: FC = () => {
       }}
     >
       <div className="top flex flex-column">
+        <QueryLink to={app_routes.root}
+          onClick={() => actions.app.rightSidebarOpened(false)}>
+          <Button
+            label={`Главная`}
+            text
+            raised
+            icon={`pi pi-home text-xl md:text-2xl`}
+            className="border-noround w-full h-full px-2 text-secondary lobster_font text-xl shadow_on_hover"
+          />
+        </QueryLink>
         {
           signedin ?
             <>

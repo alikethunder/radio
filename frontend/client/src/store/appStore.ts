@@ -8,6 +8,10 @@ import {
   app_routes,
 } from '@/constants/router'
 
+import {
+  FormState
+} from '@/types/FormState'
+
 type AppStore = {
   isClient: boolean;
   router: ReturnType<typeof createBrowserRouter> | null;
@@ -25,9 +29,11 @@ type AppStore = {
     name: string;
     icon: string;
   };
-  FormStateActions_state: 'read' | 'edit' | 'saving';
-  FormStateActions_submit: (() => void) | null;
-  FormStateActions_reset: (() => void) | null;
+
+  FormStateActions_state: FormState["state"];
+  FormStateActions_edit: FormState["edit"];
+  FormStateActions_submit: FormState["submit"];
+  FormStateActions_reset: FormState["reset"];
 }
 
 export const appStore = createStore('app')({
@@ -51,4 +57,5 @@ export const appStore = createStore('app')({
   FormStateActions_state: 'read',
   FormStateActions_submit: null,
   FormStateActions_reset: null,
+  FormStateActions_edit: null,
 } as AppStore)
