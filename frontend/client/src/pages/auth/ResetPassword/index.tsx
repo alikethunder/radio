@@ -31,6 +31,8 @@ import {
   User
 } from '@/types'
 
+import { icon_classes } from "@/constants/icon_classes"
+
 type SigninUser = { [Property in keyof User as Exclude<Property, "name" | "id">]: User[Property] }
 
 export const ResetPassword: FC = () => {
@@ -143,7 +145,7 @@ export const ResetPassword: FC = () => {
               label="Send 8-digit verification code"
               outlined
               raised
-              icon={`pi ${isSubmitting ? 'pi-spin pi-sync' : 'pi-send'}`}
+              icon={`${icon_classes} ${isSubmitting ? 'pi-spin pi-sync' : 'pi-send'}`}
               className="w-full mb-4 shadow_on_hover"
               iconPos="right"
             />

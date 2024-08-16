@@ -33,6 +33,8 @@ import {
   FrontUser,
 } from '@/types'
 
+import { icon_classes } from "@/constants/icon_classes"
+
 export const Signup: FC = () => {
   const navigate = useNavigate()
 
@@ -185,7 +187,7 @@ export const Signup: FC = () => {
             label="Sign Up"
               outlined
               raised
-            icon={`pi ${isSubmitting ? 'pi-spin pi-sync' : 'pi-send'}`}
+            icon={`${icon_classes} ${isSubmitting ? 'pi-spin pi-sync' : 'pi-send'}`}
             className="w-full mb-4 shadow_on_hover"
             iconPos="right"
             disabled={isSubmitting}

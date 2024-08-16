@@ -35,6 +35,8 @@ import {
   app_routes,
 } from '@/constants/router'
 
+import { icon_classes } from "@/constants/icon_classes"
+
 export const Verification: FC = () => {
 
   const navigate = useNavigate()
@@ -287,7 +289,7 @@ export const Verification: FC = () => {
             label="Confirm and sign in"
             outlined
             raised
-            icon={`pi ${isSubmitting ? 'pi-spin pi-sync' : 'pi-send'}`}
+            icon={`${icon_classes} ${isSubmitting ? 'pi-spin pi-sync' : 'pi-send'}`}
             className="w-full mb-4 shadow_on_hover"
             iconPos="right"
             disabled={isSubmitting}
@@ -297,7 +299,7 @@ export const Verification: FC = () => {
             label="Resend verification code"
             outlined
             raised
-            icon={`pi ${sendingVC ? 'pi-spin pi-sync' : 'pi-key'}`}
+            icon={`${icon_classes} ${sendingVC ? 'pi-spin pi-sync' : 'pi-key'}`}
             className="w-full mb-4 shadow_on_hover"
             iconPos="right"
             onClick={resendVC}
