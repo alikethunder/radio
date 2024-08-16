@@ -1,0 +1,1 @@
+export const tooltip_options = { showDelay: 300, hideDelay: 200, position: 'bottom', closeOnEscape: true, } as const

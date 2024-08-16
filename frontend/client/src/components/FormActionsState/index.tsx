@@ -16,7 +16,7 @@ import {
   auth_routes,
 } from '@/constants/router'
 
-const navbar_actions_tooltip_options = { showDelay: 300, hideDelay: 200, position: 'bottom', closeOnEscape: true, } as const
+import { tooltip_options } from "@/constants/tooltip_options"
 
 /* 
 page that will include form and will need the form state actions has to set and clear after itself the FormActionsState_submit 
@@ -44,7 +44,7 @@ export const FormActionsState: FC = () => {
           raised
           aria-label="Редактировать"
           tooltip="Редактировать"
-          tooltipOptions={navbar_actions_tooltip_options}
+          tooltipOptions={tooltip_options}
           className={`p-0 w-2rem h-2rem shadow_on_hover`}
           severity={`warning`}
 
@@ -64,7 +64,7 @@ export const FormActionsState: FC = () => {
             raised
             aria-label="Сохранить"
             tooltip="Сохранить"
-            tooltipOptions={navbar_actions_tooltip_options}
+            tooltipOptions={tooltip_options}
             className={`p-0 w-2rem h-2rem shadow_on_hover`}
             severity={`success`}
             size="small"
@@ -79,7 +79,7 @@ export const FormActionsState: FC = () => {
             raised
             aria-label="Отменить"
             tooltip="Отменить"
-            tooltipOptions={navbar_actions_tooltip_options}
+            tooltipOptions={tooltip_options}
             className="p-0 w-2rem h-2rem shadow_on_hover"
             severity='danger'
             size="small"
@@ -100,7 +100,7 @@ export const FormActionsState: FC = () => {
           raised
           aria-label="Сохраняется"
           tooltip="Сохраняется"
-          tooltipOptions={navbar_actions_tooltip_options}
+          tooltipOptions={tooltip_options}
           className="p-0 w-2rem h-2rem cursor-wait"
           severity='help'
         />

@@ -48,6 +48,10 @@ import { Ripple } from "primereact/ripple"
 
 import { useFormState } from '@/hooks'
 
+import { tooltip_options } from "@/constants/tooltip_options"
+
+const private_tooltip_options = { ...tooltip_options, position: 'right' } as const
+
 export const UserProfile = () => {
 
   const navigate = useNavigate()
@@ -72,10 +76,12 @@ export const UserProfile = () => {
     handleSubmit,
     getValues,
     reset,
+    clearErrors,
   } = useForm({
     mode: 'onTouched',
     defaultValues: {
       name: user_data?.name,
+      email: user_data?.email,
     }
   })
 
@@ -144,7 +150,7 @@ export const UserProfile = () => {
 
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-2 align-self-start sm:ml-5 mt-3 sm:mt-1" ref={e => set_form(e)}>
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-2 align-self-start sm:ml-5 mt-3 sm:mt-1 w-25rem" ref={e => set_form(e)}>
 
           <Controller
             name="name"
@@ -188,6 +194,60 @@ export const UserProfile = () => {
                 />
 
                 <small className="p-error">{errors[field.name]?.message ?? ' '}</small>
+              </>
+            )}
+          />
+
+          <Controller
+            name="email"
+            control={control}
+            rules={{
+              required: 'Please, enter your e-mail',
+              pattern: {
+                value: /\S+@\S+\.\S+/,
+                message: "Please, enter your real e-mail",
+              },
+            }}
+            render={({ field, fieldState }) => (
+              <>
+                <label
+                  htmlFor={field.name}
+                  className={classNames(
+                    {
+                      'p-error': errors[field.name]
+                    },
+                    'text-600'
+                  )}
+                >
+                  <Tooltip content="Видно только вам" target='.pi-lock' {...private_tooltip_options} />
+
+                  <small>E-mail </small> <i className="pi pi-lock text-xs" ></i>
+                </label>
+
+                <span className="p-input-icon-left">
+                  <i className="pi pi-envelope"></i>
+
+                  <InputText
+                    type="email"
+                    id={field.name}
+                    value={field.value}
+
+                    className={classNames(
+                      "w-full",
+                      { 'p-invalid': fieldState.error }
+                    )}
+                    onInput={() => clearErrors('email')}
+                    onChange={(e) => field.onChange(e.target.value)}
+                    onBlur={field.onBlur}
+                    disabled={edit_mode != 'edit'}
+                    autoComplete="email"
+
+                    onInvalid={e => (e.target as HTMLInputElement).setCustomValidity('Enter an email that contains "@" Example: info@roshni.nl')}
+
+                  />
+                </span>
+
+                <small className={`p-error`}>{errors?.[field.name]?.message ?? ' '}</small>
               </>
             )}
           />

@@ -135,7 +135,7 @@ export const ResetPassword: FC = () => {
                     />
                   </span>
 
-                  <small className={`p-error ml-2 pl-1 mb-${errors?.[field.name]?.message ? '2' : '4'}`}>{errors?.[field.name]?.message ?? ' '}</small>
+                  <small className={`p-error ml-2 pl-1 mb-2`}>{errors?.[field.name]?.message ?? ' '}</small>
                 </>
               )}
             />
