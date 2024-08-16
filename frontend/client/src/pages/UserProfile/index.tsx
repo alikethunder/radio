@@ -61,7 +61,7 @@ export const UserProfile = () => {
 
   console.log('user_data : ', user_data)
 
-  const edit_mode = useTrackedStore().app.FormStateActions_state()
+  const edit_mode = useTrackedStore().app.FormActionsState_state()
 
   const {
     control,
@@ -97,14 +97,14 @@ export const UserProfile = () => {
 
   /* useEffect(() => {
     if (form) {
-      actions.app.FormStateActions_edit(()=>{})
-      actions.app.FormStateActions_submit(() => { form.requestSubmit() })
-      actions.app.FormStateActions_reset(() => { reset() })
+      actions.app.FormActionsState_edit(()=>{})
+      actions.app.FormActionsState_submit(() => { form.requestSubmit() })
+      actions.app.FormActionsState_reset(() => { reset() })
     }
     return () => {
-      actions.app.FormStateActions_edit(null)
-      actions.app.FormStateActions_submit(null)
-      actions.app.FormStateActions_reset(null)
+      actions.app.FormActionsState_edit(null)
+      actions.app.FormActionsState_submit(null)
+      actions.app.FormActionsState_reset(null)
 
     }
   }, [form]) */

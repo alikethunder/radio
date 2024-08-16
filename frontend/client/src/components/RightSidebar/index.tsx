@@ -26,6 +26,8 @@ import {
 import './index.sass'
 import { generatePath } from "react-router-dom"
 
+import { icon_classes } from "@/constants/icon_classes"
+
 export const RightSidebar: FC = () => {
 
   const rightSidebarOpened = useTrackedStore().app.rightSidebarOpened()
@@ -61,10 +63,10 @@ export const RightSidebar: FC = () => {
         <QueryLink to={app_routes.root}
           onClick={() => actions.app.rightSidebarOpened(false)}>
           <Button
-            label={`Главная`}
+            label={route_attributes[app_routes.root].name}
             text
             raised
-            icon={`pi pi-home text-xl md:text-2xl`}
+            icon={`${icon_classes} ${route_attributes[app_routes.root].icon}`}
             className="border-noround w-full h-full px-2 text-secondary lobster_font text-xl shadow_on_hover"
           />
         </QueryLink>
@@ -76,7 +78,7 @@ export const RightSidebar: FC = () => {
                   label={route_attributes[app_routes.user_profile$id].name}
                   text
                   raised
-                  icon={`pi ${route_attributes[app_routes.user_profile$id].icon} text-xl md:text-2xl`}
+                  icon={`${icon_classes} ${route_attributes[app_routes.user_profile$id].icon} `}
                   className="border-noround w-full h-full px-2 text-secondary lobster_font text-xl shadow_on_hover"
                 />
               </QueryLink>
@@ -87,7 +89,7 @@ export const RightSidebar: FC = () => {
                   label="Мои компании"
                   text
                   raised
-                  icon='pi pi-briefcase text-xl md:text-2xl'
+                  icon={`${icon_classes} pi-briefcase`}
                   className="border-noround w-full h-full px-2 lobster_font text-xl shadow_on_hover"
                 />
                 <Button
@@ -95,7 +97,6 @@ export const RightSidebar: FC = () => {
                   raised
                   //todo: switch to pi-chevron-up when opened projects list
                   icon={`pi pi-chevron-down`}
-                  //onClick={logout}
                   className="border-noround h-full px-2 shadow_on_hover"
                 />
               </div>
@@ -103,10 +104,10 @@ export const RightSidebar: FC = () => {
             :
             <QueryLink to={app_routes.signin} onClick={() => actions.app.rightSidebarOpened(false)}>
               <Button
-                label="Войти"
+                label={route_attributes[app_routes.signin].name}
                 text
                 raised
-                icon={`pi pi-sign-in`}
+                icon={`${icon_classes} ${route_attributes[app_routes.signin].icon}`}
                 iconPos="right"
                 className="border-noround w-full h-full px-2 text-secondary shadow_on_hover lobster_font text-xl"
               />
@@ -138,7 +139,7 @@ export const RightSidebar: FC = () => {
               label="Выйти"
               text
               raised
-              icon="pi pi-sign-out"
+              icon={`${icon_classes} pi-sign-out`}
               onClick={() => {
                 logout();
                 actions.app.rightSidebarOpened(false)

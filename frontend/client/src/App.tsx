@@ -192,7 +192,13 @@ export default function App() {
     }}>
       {/*  <WS /> */}
 
-      <Navbar />
+      {
+        false ?
+        //authPage ?
+          <></>
+          :
+          <Navbar />
+      }
 
       {
         is_project_page ?

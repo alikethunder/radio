@@ -17,8 +17,10 @@ import {
 } from '@/constants/router'
 
 import {
-  FormStateActions,
+  FormActionsState,
 } from '@/components'
+
+import { icon_classes } from "@/constants/icon_classes"
 
 export const Navbar: FC = () => {
 
@@ -34,26 +36,23 @@ export const Navbar: FC = () => {
       <div className="left h-full flex ">
 
         <div className="lobster_font align-self-center ml-3 md:ml-5 text-xl md:text-2xl flex align-items-center text-secondary">
-          <i className={`pi ${current_page?.icon} text-xl md:text-2xl mr-2`}></i>
+          <i className={`${icon_classes} ${current_page?.icon} mr-2`}></i>
           {
             current_page?.name ?? ''
           }
         </div>
 
-        <FormStateActions />
+        <FormActionsState />
 
       </div>
 
       <div className="right h-full mr-0 md:mr-2">
-        {
-          checked_auth_page && authPage ? <></> :
-            <Button
-              className="h-full shadow-none"
-              severity="info"
-              text
-              icon="pi pi-bars text-2xl md:text-3xl"
-              onClick={() => actions.app.rightSidebarOpened(true)} />
-        }
+        <Button
+          className="h-full shadow-none"
+          severity="info"
+          text
+          icon="pi pi-bars text-2xl md:text-3xl"
+          onClick={() => actions.app.rightSidebarOpened(true)} />
       </div>
     </div>
   )

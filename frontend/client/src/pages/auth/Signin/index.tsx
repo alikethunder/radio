@@ -26,12 +26,15 @@ import {
 
 import {
   app_routes,
+  route_attributes,
 } from '@/constants/router'
 
 import {
   User,
   FrontUser,
 } from '@/types'
+
+import { icon_classes } from "@/constants/icon_classes"
 
 type SigninUser = { [Property in keyof User as Exclude<Property, "name" | "id">]: User[Property] }
 
@@ -103,11 +106,9 @@ export const Signin: FC = () => {
 
   return (
     <>
-      <div className="sm:px-3 md:px-5 min-h-screen flex justify-content-center align-items-center">
+      <div className="sm:px-3 md:px-5 flex justify-content-center align-items-center flex-grow-1">
 
         <form onSubmit={handleSubmit(onSubmit)} className="sm:border-1 surface-border sm:surface-card border-round py-5 px-4 md:px-5 z-1 sm:shadow-2 w-full md:w-30rem">
-
-          <div className="text-900 text-xl font-bold mb-5 flex justify-content-center">Sign in</div>
 
           <div className="flex flex-column">
 
@@ -168,7 +169,7 @@ export const Signin: FC = () => {
                       inputId={field.name}
                       value={field.value}
                       /* type={`${showPass ? 'text' : 'password'}`}  */
-                      placeholder="Password"
+                      placeholder="Пароль"
 
                       className={classNames("w-full", { 'p-invalid': fieldState.error })}
 
@@ -237,10 +238,10 @@ export const Signin: FC = () => {
 
             <Button
               type="submit"
-              label="Sign in"
+              label={route_attributes[app_routes.signin].name}
               outlined
               raised
-              icon={`pi ${isSubmitting ? 'pi-spin pi-sync' : 'pi-send'}`}
+              icon={`${icon_classes} ${isSubmitting ? 'pi-spin pi-sync' : route_attributes[app_routes.signin].icon}`}
               className="w-full mb-4 shadow_on_hover"
               iconPos="right"
             />

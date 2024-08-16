@@ -22,25 +22,25 @@ export const useFormState = (form: HTMLFormElement | null, {
 
   useEffect(() => {
 
-    console.log('[useFormStateActions] form : ', form)
+    console.log('[useFormActionsState] form : ', form)
 
     if (condition === undefined ? form : condition) {
       if (edit) {
-        actions.app.FormStateActions_edit(() => { })
+        actions.app.FormActionsState_edit(() => { })
       }
       if (submit) {
-        actions.app.FormStateActions_submit(() => { form?.requestSubmit() })
+        actions.app.FormActionsState_submit(() => { form?.requestSubmit() })
       }
       if (reset) {
-        actions.app.FormStateActions_reset(() => { reset() })
+        actions.app.FormActionsState_reset(() => { reset() })
       }
     }
 
     return () => {
-      actions.app.FormStateActions_edit(null)
-      actions.app.FormStateActions_submit(null)
-      actions.app.FormStateActions_reset(null)
-      actions.app.FormStateActions_state('read')
+      actions.app.FormActionsState_edit(null)
+      actions.app.FormActionsState_submit(null)
+      actions.app.FormActionsState_reset(null)
+      actions.app.FormActionsState_state('read')
     }
   }, [form, condition])
 

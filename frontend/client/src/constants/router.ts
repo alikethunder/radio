@@ -38,8 +38,16 @@ export const unprotectedRoutes = [
 export const all_routes = Object.values(app_routes)
 
 export const route_attributes = {
-  '/user-profile/:id': {
+  [app_routes.user_profile$id]: {
     name: 'Профиль',
     icon: 'pi-id-card'
+  },
+  [app_routes.signin]: {
+    name: 'Вход',
+    icon: 'pi-sign-in',
+  },
+  [app_routes.root]: {
+    name: 'Главная',
+    icon: 'pi-home'
   },
 }

@@ -30,10 +30,10 @@ type AppStore = {
     icon: string;
   };
 
-  FormStateActions_state: FormState["state"];
-  FormStateActions_edit: FormState["edit"];
-  FormStateActions_submit: FormState["submit"];
-  FormStateActions_reset: FormState["reset"];
+  FormActionsState_state: FormState["state"];
+  FormActionsState_edit: FormState["edit"];
+  FormActionsState_submit: FormState["submit"];
+  FormActionsState_reset: FormState["reset"];
 }
 
 export const appStore = createStore('app')({
@@ -54,8 +54,8 @@ export const appStore = createStore('app')({
     name: '',
     icon: '',
   },
-  FormStateActions_state: 'read',
-  FormStateActions_submit: null,
-  FormStateActions_reset: null,
-  FormStateActions_edit: null,
+  FormActionsState_state: 'read',
+  FormActionsState_submit: null,
+  FormActionsState_reset: null,
+  FormActionsState_edit: null,
 } as AppStore)

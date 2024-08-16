@@ -19,20 +19,20 @@ import {
 const navbar_actions_tooltip_options = { showDelay: 300, hideDelay: 200, position: 'bottom', closeOnEscape: true, } as const
 
 /* 
-page that will include form and will need the form state actions has to set and clear after itself the FormStateActions_submit 
-if it will be present the buttons will be rendered according to FormStateActions_state
+page that will include form and will need the form state actions has to set and clear after itself the FormActionsState_submit 
+if it will be present the buttons will be rendered according to FormActionsState_state
 */
 
-export const FormStateActions: FC = () => {
+export const FormActionsState: FC = () => {
 
   const [authPage, checked_auth_page] = usePageInList(auth_routes)
 
   const current_page = useStore().app.current_page()
 
-  const edit_mode = useStore().app.FormStateActions_state()
-  const edit = useStore().app.FormStateActions_edit()
-  const submit = useStore().app.FormStateActions_submit()
-  const reset = useStore().app.FormStateActions_reset()
+  const edit_mode = useStore().app.FormActionsState_state()
+  const edit = useStore().app.FormActionsState_edit()
+  const submit = useStore().app.FormActionsState_submit()
+  const reset = useStore().app.FormActionsState_reset()
 
   const navbar_actions = useMemo(() => {
     switch (edit_mode) {
@@ -49,7 +49,7 @@ export const FormStateActions: FC = () => {
           severity={`warning`}
 
           onClick={() => {
-            actions.app.FormStateActions_state('edit')
+            actions.app.FormActionsState_state('edit')
             edit?.()
           }}
         />
@@ -85,7 +85,7 @@ export const FormStateActions: FC = () => {
             size="small"
 
             onClick={() => {
-              actions.app.FormStateActions_state('read')
+              actions.app.FormActionsState_state('read')
               reset?.()
             }}
           />

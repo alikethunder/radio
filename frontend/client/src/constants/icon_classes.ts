@@ -1,0 +1,1 @@
+export const icon_classes = `pi text-xl md:text-2xl`
