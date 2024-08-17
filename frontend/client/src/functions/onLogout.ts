@@ -8,6 +8,6 @@ export const onLogout = () => {
 
   //clear user info
   //@ts-ignore
-  (['id', 'name', 'email', 'created'] as (keyof FrontUser)[]).forEach(i => actions.user[i](i === 'id' ? null : ''))
+  (['id', 'name', 'email', 'created', 'photo'] as (keyof FrontUser)[]).forEach(i => actions.user[i](i === 'id' ? null : ''))
 
 }

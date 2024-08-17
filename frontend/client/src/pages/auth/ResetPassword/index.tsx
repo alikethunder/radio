@@ -33,7 +33,7 @@ import {
 
 import { icon_classes } from "@/constants/icon_classes"
 
-type SigninUser = { [Property in keyof User as Exclude<Property, "name" | "id">]: User[Property] }
+type ResetPasswordUser = (Pick<User, 'email'>)
 
 export const ResetPassword: FC = () => {
 
@@ -41,13 +41,13 @@ export const ResetPassword: FC = () => {
 
   const emailRef = useRef<HTMLInputElement>(null)
 
-  const { handleSubmit, formState: { errors, isSubmitting }, control, clearErrors, setError } = useForm<SigninUser>({
+  const { handleSubmit, formState: { errors, isSubmitting }, control, clearErrors, setError } = useForm<ResetPasswordUser>({
     defaultValues: {
       email: '',
     }
   })
 
-  const onSubmit: SubmitHandler<SigninUser> = async (form) => {
+  const onSubmit: SubmitHandler<ResetPasswordUser> = async (form) => {
     //console.log('form submit : ', form)
 
     let res = await fetch('/api/v1/auth/reset-password', {

@@ -36,7 +36,7 @@ import {
 
 import { icon_classes } from "@/constants/icon_classes"
 
-type SigninUser = { [Property in keyof User as Exclude<Property, "name" | "id">]: User[Property] }
+type SigninUser = (Pick<User, 'password' | 'name' | 'email' | 'rememberme'>)
 
 export const Signin: FC = () => {
 

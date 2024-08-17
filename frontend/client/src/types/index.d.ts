@@ -7,7 +7,7 @@ declare global {
     user?: string;
     google?: any;
     settings: {
-      
+
     };
   }
   interface ObjectConstructor {
@@ -22,17 +22,17 @@ export type User = {
   | 'email'
   | 'password'
   | 'created'
+  | 'id'
+  | 'photo'
   ]: string;
 } & {
   rememberme: boolean;
 } & {
-  id: string;
-} & {
-    [
-    key in 'verification_code'// 8-digit verification code
-    ]?: string | null;
-  }
+  [
+  key in 'verification_code'// 8-digit verification code
+  ]?: string | null;
+}
 
-export type FrontUser = (Pick<User, 'name' | 'email' | 'created'>) & { id: string | null }
+export type FrontUser = (Pick<User, 'name' | 'email' | 'created' | 'photo'>) & { id: string | null }
 
 export type VerificationUser = (Pick<User, 'verification_code' | 'name' | 'email' | 'created'>) & { id: string | null }

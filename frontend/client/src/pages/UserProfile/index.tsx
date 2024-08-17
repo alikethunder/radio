@@ -103,6 +103,10 @@ export const UserProfile = () => {
       body.set('photo', photo_blob)
     }
 
+    if (photo_data_url) {
+      actions.user.photo(photo_data_url)
+    }
+
     console.log('body : ', body.values())
 
     /* const response = await fetch('', {

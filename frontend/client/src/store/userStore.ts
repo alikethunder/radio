@@ -8,6 +8,7 @@ export const userStore = createStore('app')({
   id: null,
   name: '',
   email: '',
+  photo: null,
   created: '',
   subscription_plan: {
     name: '',
