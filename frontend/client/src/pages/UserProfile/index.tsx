@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useMemo, useState } from "react"
+import { FC, useCallback, useEffect, useMemo, useRef, useState, LegacyRef } from "react"
 
 import {
   useLoaderData,
@@ -34,6 +34,7 @@ import {
   useImmutableFetcher,
   sortByPriority,
   useImmutableFetcherAndStore,
+  resize_image,
 } from "@/functions"
 
 import { DataTable } from "primereact/datatable"
@@ -58,12 +59,16 @@ export const UserProfile = () => {
 
   const windowSize = useTrackedStore().app.windowSize()
   const isDesktop = useTrackedStore().app.isDesktop()
+  const photo_file_input_ref = useRef<HTMLInputElement>(null)
+
+  const [photo_data_url, set_photo_data_url] = useState<string | undefined>()
+  const [photo_blob, set_photo_blob] = useState<Blob | null>(null)
 
   const [form, set_form] = useState<HTMLFormElement | null>(null)
 
   const user_data = useLoaderData()
 
-  console.log('user_data : ', user_data)
+  //console.log('user_data : ', user_data)
 
   const edit_mode = useTrackedStore().app.FormActionsState_state()
 
@@ -87,9 +92,25 @@ export const UserProfile = () => {
 
   //console.log("errors.name : ", errors.name)
 
-  const onSubmit = (data) => {
+  const onSubmit = useCallback(async (data) => {
     console.log('submit : ', data)
-  }
+
+    const body = new FormData()
+
+    Object.keys(data).map(k => body.set(k, data[k]))
+
+    if (photo_blob) {
+      body.set('photo', photo_blob)
+    }
+
+    console.log('body : ', body.values())
+
+    /* const response = await fetch('', {
+      method: 'POST',
+      body,
+    }) */
+
+  }, [])
 
   //todo add propt to reset and save form if fields changed
   useFormState(form, {
@@ -98,6 +119,8 @@ export const UserProfile = () => {
     },
     reset: () => {
       reset()
+      set_photo_blob(null)
+      set_photo_data_url(undefined)//user_data.photo
     },
   })
 
@@ -122,17 +145,24 @@ export const UserProfile = () => {
 
       <div className="flex flex-column sm:flex-row">
 
-        <div className="profile_picture shadow-2 cursor-pointer select-none w-5rem h-5rem md:w-7rem md:h-7rem border-circle flex align-items-center justify-content-center p-ripple align-self-center" onClick={() => {
-          if (edit_mode == 'edit') {
+        <div
+          style={{ backgroundImage: `url(${photo_data_url})` }}
+          className={`profile_picture shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-circle flex align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode == 'edit' ? 'cursor-pointer' : ''}`}
+          onClick={() => {
+            if (edit_mode == 'edit') {
+              photo_file_input_ref.current?.click()
+            }
+          }}>
 
+          {
+            photo_data_url ? <></> :
+              <i className="pi pi-user text-4xl md:text-6xl"></i>
           }
-        }}>
-
-          <i className="pi pi-user text-4xl md:text-6xl"></i>
 
           {
             edit_mode == 'edit' ?
               <>
+
                 <div className="overlay absolute top-0 bottom-0 right-0 left-0 flex align-items-center justify-content-center text-center">
 
                   <div className="overlay_background surface-900 absolute top-0 bottom-0 right-0 left-0"></div>
@@ -144,13 +174,29 @@ export const UserProfile = () => {
                 </div>
 
                 <Ripple />
+
               </>
               : <></>
           }
 
+          <input
+            ref={photo_file_input_ref}
+            type="file"
+            id="fileElem"
+            accept="image/*"
+            className="hidden"
+            onChange={async (e) => {
+              if (e.target.files?.[0]) {
+                const [blob, data_url] = await resize_image(e.target.files?.[0])
+                set_photo_blob(blob)
+                set_photo_data_url(data_url)
+              }
+            }}
+          />
+
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-2 align-self-start sm:ml-5 mt-3 sm:mt-1 w-25rem" ref={e => set_form(e)}>
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-1 align-self-start sm:ml-5 mt-3 sm:mt-1 w-25rem" ref={e => set_form(e)}>
 
           <Controller
             name="name"

@@ -108,7 +108,7 @@ export const Signin: FC = () => {
     <>
       <div className="sm:px-3 md:px-5 flex justify-content-center align-items-center flex-grow-1">
 
-        <form onSubmit={handleSubmit(onSubmit)} className="sm:border-1 surface-border sm:surface-card border-round py-5 px-4 md:px-5 z-1 sm:shadow-2 w-full md:w-30rem">
+        <form onSubmit={handleSubmit(onSubmit)} className="sm:border-1 surface-border sm:surface-card border-round pb-5 pt-6 px-4 md:px-5 z-1 sm:shadow-2 w-full md:w-30rem">
 
           <div className="flex flex-column">
 
@@ -204,7 +204,7 @@ export const Signin: FC = () => {
               )}
             />
 
-            <div className="flex align-items-center justify-content-between mb-6">
+            <div className="flex align-items-center justify-content-between mb-5">
               <div className="flex align-items-center">
 
                 {
