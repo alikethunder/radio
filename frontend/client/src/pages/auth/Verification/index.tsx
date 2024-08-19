@@ -66,10 +66,13 @@ export const Verification: FC = () => {
     if (res.status == 200) {
       const user = await res.json() as FrontUser
       //console.log('[signup] user : ', user)
-      //@ts-ignore
-      (Object.entries(user)).forEach(entry => (actions.user[entry[0]])(entry[1]));
+      
+      actions.user.update_user_data(user)
+
       actions.auth.signedin(true)
+
       navigate(store.app.prev_pathname())
+
       return
     }
 

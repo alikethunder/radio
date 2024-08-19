@@ -27,6 +27,7 @@ func Initialize() {
 		last_seen text,
 		subscription_plan text,
 		subscription_plan_ends text,
+		photo blob,
 		PRIMARY KEY (id, email)
 	)`).Exec(); err != nil {
 

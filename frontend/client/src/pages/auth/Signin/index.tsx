@@ -68,8 +68,8 @@ export const Signin: FC = () => {
       case 200:
         const user = await res.json() as FrontUser
         //console.log('[signin] user : ', user)
-        //@ts-ignore
-        (Object.entries(user)).forEach(entry => (actions.user[entry[0]])(entry[1]));
+        
+        actions.user.update_user_data(user)
 
         actions.user.email(form.email)
 

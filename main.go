@@ -14,6 +14,7 @@ import (
 	"web_project/controllers"
 	AuthEndpoints "web_project/controllers/auth"
 	PlansEndpoints "web_project/controllers/plans"
+	ProfileEndpoints "web_project/controllers/profile"
 
 	"web_project/functions"
 	"web_project/mailer"
@@ -78,6 +79,10 @@ func main() {
 
 	subscriptionPlans.Get("/get-plans", PlansEndpoints.GetPlans)
 	subscriptionPlans.Get("/get-user-plan", PlansEndpoints.GetUserPlan)
+
+	profile_endpoints := v1.Group("/profile")
+
+	profile_endpoints.Post("/update", ProfileEndpoints.Update)
 
 	app.Use("/reloadws", func(c *fiber.Ctx) error {
 		// IsWebSocketUpgrade returns true if the client

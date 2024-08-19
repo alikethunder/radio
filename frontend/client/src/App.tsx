@@ -129,9 +129,9 @@ export default function App() {
 
       //console.log('[App.tsx] user : ', user)
 
-      actions.auth.signedin(true);
-      //@ts-ignore
-      (Object.entries(user)).forEach(entry => (actions.user[entry[0]])(entry[1]));
+      actions.auth.signedin(true)
+      
+      actions.user.update_user_data(user)
     } catch (e) {
       onLogout()
     }

@@ -27,3 +27,9 @@ export const userStore = createStore('app')({
       name: 'userStore'
     }
   })
+  .extendActions((set, get, api) => ({
+    update_user_data: (user: FrontUser) => {
+      //@ts-ignore
+      Object.keys(user).forEach(key => set[key](user[key]))
+    }
+  }))

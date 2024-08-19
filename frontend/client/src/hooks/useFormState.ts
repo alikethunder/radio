@@ -10,7 +10,9 @@ import {
   FormState
 } from '@/types/FormState'
 
-export const useFormState = (form_actions: FormState) => {
+export const useFormState = (form_actions: FormState, form?: HTMLFormElement, condition?: any) => {
+
+  //console.log('form actions : ', form_actions)
 
   const {
     edit,
@@ -37,7 +39,7 @@ export const useFormState = (form_actions: FormState) => {
       actions.app.FormActionsState_reset(null)
       actions.app.FormActionsState_state('read')
     }
-  }, [])
+  }, [form, condition])
 
 
 

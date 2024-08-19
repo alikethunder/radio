@@ -10,6 +10,7 @@ import {
   Controller,
   useForm
 } from 'react-hook-form'
+
 import { classNames } from 'primereact/utils'
 
 import { Button } from 'primereact/button'
@@ -64,7 +65,7 @@ export const UserProfile = () => {
   const [photo_data_url, set_photo_data_url] = useState<string | undefined>()
   const [photo_blob, set_photo_blob] = useState<Blob | null>(null)
 
-  const [form, set_form] = useState<HTMLFormElement | null>(null)
+  const [form, set_form] = useState<HTMLFormElement>()
 
   const user_data = useLoaderData()
 
@@ -97,36 +98,60 @@ export const UserProfile = () => {
 
     const body = new FormData()
 
-    Object.keys(data).map(k => body.set(k, data[k]))
+    Object.keys(data).map(k => k != 'email' && body.set(k, data[k]))
 
     if (photo_blob) {
       body.set('photo', photo_blob)
+    }
+
+    const id = store.user.id()
+
+    if (id) {
+      body.set('id', id)
     }
 
     if (photo_data_url) {
       actions.user.photo(photo_data_url)
     }
 
-    console.log('body : ', body.values())
+    //console.log('body : ', body.values())
 
-    /* const response = await fetch('', {
+    if (data.email != store.user.email()) {
+      const update_email_resp = await fetch('/api/v1/profile/request-update-email', {
+        method: 'POST',
+        body: JSON.stringify({ email: data.email })
+      })
+    }
+
+    const response = await fetch('/api/v1/profile/update', {
       method: 'POST',
       body,
-    }) */
+    })
 
-  }, [])
+    const user = await response.json()
+
+    //console.log('[UserProfile] submit response : ', response, user)
+
+    actions.user.update_user_data(user)
+
+    actions.app.FormActionsState_state('read')
+
+
+  }, [photo_blob])
 
   //todo add prompt to reset and save form if fields changed
   useFormState({
     submit: () => {
+      console.log('submit : ', form)
       form?.requestSubmit()
+      actions.app.FormActionsState_state('saving')
     },
     reset: () => {
       reset()
       set_photo_blob(null)
       set_photo_data_url(undefined)//user_data.photo
     },
-  })
+  }, form)
 
   return (
     <div
@@ -186,7 +211,7 @@ export const UserProfile = () => {
 
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-1 align-self-start sm:ml-5 mt-3 sm:mt-1 w-25rem" ref={e => set_form(e)}>
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-1 align-self-start sm:ml-5 mt-3 sm:mt-1 w-25rem" ref={e => set_form(e as HTMLFormElement)}>
 
           <Controller
             name="name"

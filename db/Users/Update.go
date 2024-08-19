@@ -6,13 +6,13 @@ import (
 	"strings"
 
 	"web_project/db"
-	"web_project/types"
+	Types "web_project/types"
 
 	"github.com/gocql/gocql"
 )
 
 func Update(user Types.Map, id gocql.UUID, email string) error {
-	fmt.Println("[Update users] incoming user update : ", user)
+	fmt.Println("[Update users] incoming user update : ", user, id, email)
 	if len(user) > 0 {
 
 		var querystring strings.Builder
@@ -21,11 +21,14 @@ func Update(user Types.Map, id gocql.UUID, email string) error {
 
 		var values []interface{}
 
+		delete(user, "id")
+		delete(user, "email")
+
 		i := 0
 
 		for k, v := range user {
 
-			if k != "id" {
+			if k != "id" && k != "email" {
 				querystring.WriteString(k)
 				querystring.WriteString(` = ?`)
 
