@@ -30,9 +30,16 @@ export const FormActionsState: FC = () => {
   const current_page = useStore().app.current_page()
 
   const edit_mode = useStore().app.FormActionsState_state()
+
   const edit = useStore().app.FormActionsState_edit()
   const submit = useStore().app.FormActionsState_submit()
   const reset = useStore().app.FormActionsState_reset()
+
+  const show_actions = useMemo(() => submit || edit || reset, [
+    submit,
+    edit,
+    reset,
+  ])
 
   const navbar_actions = useMemo(() => {
     switch (edit_mode) {
@@ -111,7 +118,7 @@ export const FormActionsState: FC = () => {
   }, [edit_mode])
 
   return (
-    submit ?
+    show_actions ?
       <div className="buttons flex flex-row gap-2 align-items-center pl-2">
         {navbar_actions}
       </div>

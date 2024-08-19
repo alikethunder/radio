@@ -10,31 +10,26 @@ import {
   FormState
 } from '@/types/FormState'
 
-export const useFormState = (form: HTMLFormElement | null, {
-  edit,
-  submit,
-  reset,
-}: {
-  edit?: FormState["edit"],
-  submit?: FormState["submit"],
-  reset?: FormState["reset"],
-}, condition?: any) => {
+export const useFormState = (form_actions: FormState) => {
+
+  const {
+    edit,
+    submit,
+    reset,
+  } = form_actions
 
   useEffect(() => {
 
-    console.log('[useFormActionsState] form : ', form)
-
-    if (condition === undefined ? form : condition) {
-      if (edit) {
-        actions.app.FormActionsState_edit(() => { })
-      }
-      if (submit) {
-        actions.app.FormActionsState_submit(() => { form?.requestSubmit() })
-      }
-      if (reset) {
-        actions.app.FormActionsState_reset(() => { reset() })
-      }
+    if (edit) {
+      actions.app.FormActionsState_edit(edit)
     }
+    if (submit) {
+      actions.app.FormActionsState_submit(submit)
+    }
+    if (reset) {
+      actions.app.FormActionsState_reset(reset)
+    }
+
 
     return () => {
       actions.app.FormActionsState_edit(null)
@@ -42,7 +37,7 @@ export const useFormState = (form: HTMLFormElement | null, {
       actions.app.FormActionsState_reset(null)
       actions.app.FormActionsState_state('read')
     }
-  }, [form, condition])
+  }, [])
 
 
 

@@ -116,8 +116,8 @@ export const UserProfile = () => {
 
   }, [])
 
-  //todo add propt to reset and save form if fields changed
-  useFormState(form, {
+  //todo add prompt to reset and save form if fields changed
+  useFormState({
     submit: () => {
       form?.requestSubmit()
     },
@@ -127,20 +127,6 @@ export const UserProfile = () => {
       set_photo_data_url(undefined)//user_data.photo
     },
   })
-
-  /* useEffect(() => {
-    if (form) {
-      actions.app.FormActionsState_edit(()=>{})
-      actions.app.FormActionsState_submit(() => { form.requestSubmit() })
-      actions.app.FormActionsState_reset(() => { reset() })
-    }
-    return () => {
-      actions.app.FormActionsState_edit(null)
-      actions.app.FormActionsState_submit(null)
-      actions.app.FormActionsState_reset(null)
-
-    }
-  }, [form]) */
 
   return (
     <div
