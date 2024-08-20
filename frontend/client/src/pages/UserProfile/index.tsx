@@ -28,6 +28,7 @@ import './index.sass'
 import {
   actions,
   store,
+  useStore,
   useTrackedStore,
 } from "@/store"
 
@@ -51,6 +52,7 @@ import { Ripple } from "primereact/ripple"
 import { useFormState } from '@/hooks'
 
 import { tooltip_options } from "@/constants/tooltip_options"
+import { FrontUser } from "@/types"
 
 const private_tooltip_options = { ...tooltip_options, position: 'right' } as const
 
@@ -62,12 +64,15 @@ export const UserProfile = () => {
   const isDesktop = useTrackedStore().app.isDesktop()
   const photo_file_input_ref = useRef<HTMLInputElement>(null)
 
-  const [photo_data_url, set_photo_data_url] = useState<string | undefined>()
+  const [profile_photo_exists, set_profile_photo_exists] = useState(true)
+
+  const photo_data_url = useStore().app.user_photo_data_url()
+
   const [photo_blob, set_photo_blob] = useState<Blob | null>(null)
 
   const [form, set_form] = useState<HTMLFormElement>()
 
-  const user_data = useLoaderData()
+  const user_data = useLoaderData() as FrontUser
 
   //console.log('user_data : ', user_data)
 
@@ -121,6 +126,8 @@ export const UserProfile = () => {
         method: 'POST',
         body: JSON.stringify({ email: data.email })
       })
+
+      //show vc popup
     }
 
     const response = await fetch('/api/v1/profile/update', {
@@ -128,28 +135,30 @@ export const UserProfile = () => {
       body,
     })
 
-    const user = await response.json()
+    if (response.status == 200) {
+      const user = await response.json()
 
-    //console.log('[UserProfile] submit response : ', response, user)
+      console.log('[UserProfile] submit response : ', response, user)
 
-    actions.user.update_user_data(user)
+      actions.user.update_user_data(user)
+
+      set_photo_blob(null)
+    }
 
     actions.app.FormActionsState_state('read')
 
 
-  }, [photo_blob])
+  }, [photo_blob, photo_data_url])
 
   //todo add prompt to reset and save form if fields changed
   useFormState({
     submit: () => {
-      console.log('submit : ', form)
+      //console.log('submit : ', form)
       form?.requestSubmit()
       actions.app.FormActionsState_state('saving')
     },
     reset: () => {
       reset()
-      set_photo_blob(null)
-      set_photo_data_url(undefined)//user_data.photo
     },
   }, form)
 
@@ -161,16 +170,28 @@ export const UserProfile = () => {
       <div className="flex flex-column sm:flex-row">
 
         <div
-          style={{ backgroundImage: `url(${photo_data_url})` }}
+          style={{ backgroundImage: `url(${photo_data_url || `/api/v1/files/user/photo/${user_data.id}`})` }}
+
           className={`profile_picture shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-circle flex align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode == 'edit' ? 'cursor-pointer' : ''}`}
+
           onClick={() => {
             if (edit_mode == 'edit') {
               photo_file_input_ref.current?.click()
             }
-          }}>
+          }}
+        >
+          <img
+            style={{ display: 'none' }}
+            src={`/api/v1/files/user/photo/${user_data.id}`}
+
+            onError={({ currentTarget }) => {
+              currentTarget.onerror = null
+              set_profile_photo_exists(false)
+            }}
+          />
 
           {
-            photo_data_url ? <></> :
+            photo_data_url || profile_photo_exists ? <></> :
               <i className="pi pi-user text-4xl md:text-6xl"></i>
           }
 
@@ -204,7 +225,7 @@ export const UserProfile = () => {
               if (e.target.files?.[0]) {
                 const [blob, data_url] = await resize_image(e.target.files?.[0])
                 set_photo_blob(blob)
-                set_photo_data_url(data_url)
+                actions.app.user_photo_data_url(data_url)
               }
             }}
           />

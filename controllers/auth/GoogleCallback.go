@@ -112,7 +112,7 @@ func GoogleCallback(c *fiber.Ctx) error {
 
 		_, rememberme := state["rememberme"]
 
-		cookies.SetAuthCookie(Types.Map{"email": credential["email"], "rememberme": rememberme}, c)
+		cookies.SetAuthCookie(Types.Map{"email": credential["email"], "rememberme": rememberme, "id": user["id"]}, c)
 
 		user["created"] = user["id"].(gocql.UUID).Time()
 		cookies.SetUserCookie(user, c)

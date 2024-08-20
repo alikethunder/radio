@@ -13,12 +13,12 @@ import (
 
 func Index(c *fiber.Ctx) error {
 
-	authCookie := c.Cookies("auth")
+	authCookie := c.Cookies(cookies.AuthCookieName)
 	//fmt.Println("[Index] auth cookie : ", authCookie, authCookie == "")
 
 	if authCookie != "" {
 
-		u := cookies.ParseAuthCookie(c.Cookies("auth"))
+		u := cookies.ParseAuthCookie(c.Cookies(cookies.AuthCookieName))
 
 		user, err := Users.GetUserFields(Types.Map{"email": u["email"]}, "id", "name", "email", "subscription_plan")
 

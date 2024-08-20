@@ -38,7 +38,7 @@ func Verification(c *fiber.Ctx) error {
 
 		Users.Update(Types.Map{"password": p, "verification_code": nil, "last_seen": tm}, user["id"].(gocql.UUID), u["email"].(string))
 
-		cookies.SetAuthCookie(Types.Map{"email": u["email"], "rememberme": u["rememberme"]}, c)
+		cookies.SetAuthCookie(Types.Map{"email": u["email"], "rememberme": u["rememberme"], "id": user["id"]}, c)
 
 		return c.Status(fiber.StatusOK).JSON(Types.Map{"id": user["id"], "created": user["id"].(gocql.UUID).Time(), "name": user["name"]})
 

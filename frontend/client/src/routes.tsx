@@ -68,7 +68,7 @@ export const routes = [
           //own user profile
           if (params.id == store.user.id()) {
             return {
-              //id: store.user.id()
+              id: params.id,
               name: store.user.name(),
               email: store.user.email(),
 

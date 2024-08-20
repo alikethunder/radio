@@ -19,11 +19,11 @@ import (
 // purchase plan
 func Start(c *fiber.Ctx) error {
 
-	authCookie := c.Cookies("auth")
+	authCookie := c.Cookies(cookies.AuthCookieName)
 
 	if authCookie != "" {
 
-		u := cookies.ParseAuthCookie(c.Cookies("auth"))
+		u := cookies.ParseAuthCookie(c.Cookies(cookies.AuthCookieName))
 
 		user, err := Users.GetUserFields(Types.Map{"email": u["email"]}, "id", "name", "email")
 

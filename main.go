@@ -13,6 +13,7 @@ import (
 
 	"web_project/controllers"
 	AuthEndpoints "web_project/controllers/auth"
+	FilesEndpoints "web_project/controllers/files"
 	PlansEndpoints "web_project/controllers/plans"
 	ProfileEndpoints "web_project/controllers/profile"
 
@@ -24,6 +25,7 @@ import (
 	"github.com/gofiber/contrib/websocket"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
+	"github.com/gofiber/fiber/v2/middleware/etag"
 	"github.com/gofiber/template/html/v2"
 
 	//"web_project/settings"
@@ -82,7 +84,15 @@ func main() {
 
 	profile_endpoints := v1.Group("/profile")
 
+	//get user profile by user id
+	//profile_endpoints.Get("/:id")
+
+	//update user profile
 	profile_endpoints.Post("/update", ProfileEndpoints.Update)
+
+	files_endpoints := v1.Group("/files", etag.New())
+	//get user profile photo by user id
+	files_endpoints.Get("/user/photo/:id", FilesEndpoints.GetPhoto)
 
 	app.Use("/reloadws", func(c *fiber.Ctx) error {
 		// IsWebSocketUpgrade returns true if the client

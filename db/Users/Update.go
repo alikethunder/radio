@@ -12,7 +12,9 @@ import (
 )
 
 func Update(user Types.Map, id gocql.UUID, email string) error {
-	fmt.Println("[Update users] incoming user update : ", user, id, email)
+
+	//fmt.Println("[Users.Update] incoming user update : ", user, id, email)
+
 	if len(user) > 0 {
 
 		var querystring strings.Builder

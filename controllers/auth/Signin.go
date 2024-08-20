@@ -36,7 +36,7 @@ func Signin(c *fiber.Ctx) error {
 
 		if correctPassword {
 
-			cookies.SetAuthCookie(Types.Map{"email": u["email"], "rememberme": u["rememberme"]}, c)
+			cookies.SetAuthCookie(Types.Map{"email": u["email"], "rememberme": u["rememberme"], "id": user["id"]}, c)
 
 			//created, _ := gocql.ParseUUID(user["id"].(gocql.UUID))
 

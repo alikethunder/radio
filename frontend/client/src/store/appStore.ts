@@ -34,6 +34,8 @@ type AppStore = {
   FormActionsState_edit: FormState["edit"];
   FormActionsState_submit: FormState["submit"];
   FormActionsState_reset: FormState["reset"];
+
+  user_photo_data_url: null | string;
 }
 
 export const appStore = createStore('app')({
@@ -58,4 +60,5 @@ export const appStore = createStore('app')({
   FormActionsState_submit: null,
   FormActionsState_reset: null,
   FormActionsState_edit: null,
+  user_photo_data_url: null,
 } as AppStore)
