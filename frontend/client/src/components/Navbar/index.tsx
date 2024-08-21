@@ -24,8 +24,6 @@ import { icon_classes } from "@/constants/icon_classes"
 
 export const Navbar: FC = () => {
 
-  const [authPage, checked_auth_page] = usePageInList(auth_routes)
-
   const current_page = useStore().app.current_page()
 
   //console.log('navbar_actions : ', navbar_actions)

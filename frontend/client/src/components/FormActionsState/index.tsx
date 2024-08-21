@@ -25,10 +25,6 @@ if it will be present the buttons will be rendered according to FormActionsState
 
 export const FormActionsState: FC = () => {
 
-  const [authPage, checked_auth_page] = usePageInList(auth_routes)
-
-  const current_page = useStore().app.current_page()
-
   const edit_mode = useStore().app.FormActionsState_state()
 
   const edit = useStore().app.FormActionsState_edit()

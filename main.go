@@ -121,13 +121,13 @@ func main() {
 		)
 		for {
 			if mt, msg, err = c.ReadMessage(); err != nil {
-				log.Println("read:", err)
+				log.Println("[reloadws] read err :", err)
 				break
 			}
 			log.Printf("recv: %s", msg)
 
 			if err = c.WriteMessage(mt, msg); err != nil {
-				log.Println("write:", err)
+				log.Println("[reloadws] write err :", err)
 				break
 			}
 		}
