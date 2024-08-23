@@ -17,11 +17,7 @@ import { Button } from 'primereact/button'
 
 import { InputText } from "primereact/inputtext"
 
-import { CreateNewCard } from '@/components'
-
-import { SmallCardContainer } from "@/layout parts"
-
-import { QueryLink } from "@/components"
+import { confirmDialog } from 'primereact/confirmdialog'
 
 import './index.sass'
 
@@ -86,6 +82,7 @@ export const UserProfile = () => {
     },
     handleSubmit,
     getValues,
+    setValue,
     reset,
     clearErrors,
   } = useForm({
@@ -121,15 +118,6 @@ export const UserProfile = () => {
 
     //console.log('body : ', body.values())
 
-    if (data.email != store.user.email()) {
-      const update_email_resp = await fetch('/api/v1/profile/request-update-email', {
-        method: 'POST',
-        body: JSON.stringify({ email: data.email })
-      })
-
-      //show vc popup
-    }
-
     const response = await fetch('/api/v1/profile/update', {
       method: 'POST',
       body,
@@ -143,6 +131,34 @@ export const UserProfile = () => {
       actions.user.update_user_data(user)
 
       set_photo_blob(null)
+    }
+
+    if (data.email != store.user.email()) {
+
+      confirmDialog({
+        message: <span>Вы точно хотите поменять email адрес <strong>{store.user.email()}</strong> на <strong>{data.email}</strong>?</span>,
+        header: <span className="flex flex-row align-items-center justify-content-center text-2xl sm:text-4xl"><i className="pi pi-question-circle text-4xl sm:text-6xl danger mr-2 text-orange-500"></i>Смена email</span>,
+        acceptLabel: 'Да',
+        rejectLabel: 'Нет',
+        closable: false,
+        closeOnEscape: false,
+        rejectIcon: 'pi pi-times',
+        acceptIcon: 'pi pi-check',
+        acceptClassName: 'shadow_on_hover p-button-danger p-button-outlined p-button-raised',
+        rejectClassName: 'shadow_on_hover p-button-outlined p-button-raised p-button-secondary',
+        headerClassName: 'text-center',
+        contentClassName: 'text-center sm:text-xl -ml-3 bg-transparent',
+        draggable: false,
+        className: 'w-30rem max-w-full mx-7 bg-white',
+        accept: async () => {
+          /* const update_email_resp = await fetch('/api/v1/profile/request-update-email', {
+                  method: 'POST',
+                  body: JSON.stringify({ email: data.email })
+                }) */
+        },
+        reject: () => { setValue('email', store.user.email()) }
+      })
+
     }
 
     actions.app.FormActionsState_state('read')
@@ -232,7 +248,7 @@ export const UserProfile = () => {
 
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-1 align-self-start sm:ml-5 mt-3 sm:mt-1 w-25rem" ref={e => set_form(e as HTMLFormElement)}>
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-1 align-self-start sm:ml-5 mt-3 sm:mt-1 w-25rem max-w-full" ref={e => set_form(e as HTMLFormElement)}>
 
           <Controller
             name="name"
@@ -338,20 +354,6 @@ export const UserProfile = () => {
         </form>
 
       </div>
-      {/* 
-        <QueryLink to={app_routes.signup} className="font-medium no-underline ml-2 text-blue-500 align-self-center">Don't have an account? <span className="font-semibold">Create today!</span></QueryLink>
-
-        <QueryLink to={app_routes.signin} className="font-medium no-underline ml-2 text-blue-500">
-          Already have an account? <span className="font-semibold">
-            Log in
-          </span>
-        </QueryLink> */}
-
-
-      <div className="shadow-3 flex-grow-1 mt-8 flex align-items-center justify-content-center">
-        Editor
-      </div>
-
 
     </div>
   )

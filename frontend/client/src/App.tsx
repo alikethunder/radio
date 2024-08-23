@@ -26,6 +26,8 @@ import { useWindowSize } from "usehooks-ts"
 
 import { Button } from 'primereact/button'
 
+import { ConfirmDialog } from 'primereact/confirmdialog'
+
 import {
   Toasts,
   Navbar,
@@ -130,7 +132,7 @@ export default function App() {
       //console.log('[App.tsx] user : ', user)
 
       actions.auth.signedin(true)
-      
+
       actions.user.update_user_data(user)
     } catch (e) {
       onLogout()
@@ -194,7 +196,7 @@ export default function App() {
 
       {
         false ?
-        //authPage ?
+          //authPage ?
           <></>
           :
           <Navbar />
@@ -231,6 +233,9 @@ export default function App() {
       }
 
       <Toasts />
+
+      <ConfirmDialog />
+
     </PrimeReactProvider>
   )
 }
