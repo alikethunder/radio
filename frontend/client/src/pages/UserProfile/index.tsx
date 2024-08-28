@@ -153,7 +153,7 @@ export const UserProfile = () => {
         accept: async () => {
           const update_email_resp = await fetch('/api/v1/profile/request-update-email', {
                   method: 'POST',
-                  body: JSON.stringify({ email: data.email })
+                  body: JSON.stringify({ new_email: data.email })
                 })
         },
         reject: () => { setValue('email', store.user.email()) }

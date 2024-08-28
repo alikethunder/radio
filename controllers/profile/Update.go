@@ -28,9 +28,9 @@ func Update(c *fiber.Ctx) error {
 
 			photo, err := c.FormFile("photo")
 
-			/* if err != nil {
+			if err != nil {
 				fmt.Println("[ProfileEndpoints.Update] FormFile error : ", err)
-			}  */
+			}
 
 			name := c.FormValue(("name"))
 

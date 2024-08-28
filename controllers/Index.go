@@ -20,7 +20,7 @@ func Index(c *fiber.Ctx) error {
 
 		cookie_user := cookies.ParseAuthCookie(c.Cookies(cookies.AuthCookieName))
 
-		fmt.Println("[Index] cookie_user: ", cookie_user, cookie_user["id"] == nil)
+		//fmt.Println("[Index] cookie_user: ", cookie_user, cookie_user["id"] == nil)
 
 		if cookie_user["id"] != nil {
 
@@ -41,7 +41,7 @@ func Index(c *fiber.Ctx) error {
 			}
 
 		} else {
-			fmt.Println("[Index] ClearAuthCookies : ", cookie_user)
+			//fmt.Println("[Index] ClearAuthCookies : ", cookie_user)
 
 			cookies.ClearAuthCookies(c)
 		}
