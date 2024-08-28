@@ -68,7 +68,9 @@ func RequestUpdateEmail(c *fiber.Ctx) error {
 		/*
 
 
-			4. send email
+			4. send email :
+					a. create Email for update email
+					b. create SendUpdateEmail in mailer
 		*/
 
 		return c.SendStatus(fiber.StatusAccepted)
