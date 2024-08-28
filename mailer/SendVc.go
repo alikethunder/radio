@@ -2,11 +2,7 @@ package mailer
 
 import (
 	"fmt"
-)
-
-const (
-	textBodyTemplate = ` Hello {{}}
-	`
+	Types "web_project/types"
 )
 
 func SendVc(vc string, to string, name string) {
@@ -14,12 +10,9 @@ func SendVc(vc string, to string, name string) {
 
 	subject := "Subject: Verification code \n%s\n\n"
 
-	if err := SendEmail("emails/VerificationCode.html", struct {
-		Name             string
-		VerificationCode string
-	}{
-		Name:             name,
-		VerificationCode: vc,
+	if err := SendEmail("emails/VerificationCode.html", Types.Map{
+		"Name":             name,
+		"VerificationCode": vc,
 	}, []string{to}, subject); err != nil {
 		fmt.Println("[SendVc] error : ", err)
 	}
