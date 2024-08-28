@@ -151,10 +151,10 @@ export const UserProfile = () => {
         draggable: false,
         className: 'w-30rem max-w-full mx-7 bg-white',
         accept: async () => {
-          /* const update_email_resp = await fetch('/api/v1/profile/request-update-email', {
+          const update_email_resp = await fetch('/api/v1/profile/request-update-email', {
                   method: 'POST',
                   body: JSON.stringify({ email: data.email })
-                }) */
+                })
         },
         reject: () => { setValue('email', store.user.email()) }
       })

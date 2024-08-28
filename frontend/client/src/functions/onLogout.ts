@@ -4,6 +4,8 @@ import {
 
 export const onLogout = () => {
 
+  console.log('onLogout')
+
   actions.auth.signedin(false);
 
   //clear user info

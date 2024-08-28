@@ -18,13 +18,13 @@ func Signin(c *fiber.Ctx) error {
 
 	c.Accepts("application/json")
 
-	var u Types.Map
+	var req_json Types.Map
 
-	json.Unmarshal(c.Body(), &u)
+	json.Unmarshal(c.Body(), &req_json)
 
 	//fmt.Println("Signup user : ", u)
 
-	user, err := Users.GetUserFields(Types.Map{"email": u["email"]}, "id", "password", "name")
+	user, err := Users.GetUserFields(Types.Map{"email": req_json["email"]}, "id", "password", "name")
 
 	if err != nil {
 		fmt.Println("[Signin] GetUserFields error : ", err)
@@ -32,17 +32,17 @@ func Signin(c *fiber.Ctx) error {
 
 	if user != nil && user["password"] != "" && user["password"] != nil {
 
-		correctPassword := functions.CheckPasswordHash(u["password"].(string), user["password"].(string))
+		correctPassword := functions.CheckPasswordHash(req_json["password"].(string), user["password"].(string))
 
 		if correctPassword {
 
-			cookies.SetAuthCookie(Types.Map{"email": u["email"], "rememberme": u["rememberme"], "id": user["id"]}, c)
+			cookies.SetAuthCookie(Types.Map{"email": req_json["email"], "rememberme": req_json["rememberme"], "id": user["id"]}, c)
 
 			//created, _ := gocql.ParseUUID(user["id"].(gocql.UUID))
 
 			tm := time.Now().UTC().String()
 
-			Users.Update(Types.Map{"last_seen": tm}, user["id"].(gocql.UUID), u["email"].(string))
+			Users.Update(Types.Map{"last_seen": tm}, user["id"].(gocql.UUID), req_json["email"].(string))
 
 			return c.Status(fiber.StatusOK).JSON(Types.Map{"id": user["id"], "created": user["id"].(gocql.UUID).Time(), "name": user["name"]})
 
@@ -51,9 +51,9 @@ func Signin(c *fiber.Ctx) error {
 			return c.SendStatus(fiber.StatusUnauthorized)
 		}
 
-	} else {
-		//user not exist
-		return c.SendStatus(fiber.StatusForbidden)
 	}
+
+	//user not exist
+	return c.SendStatus(fiber.StatusForbidden)
 
 }

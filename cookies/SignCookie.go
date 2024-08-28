@@ -3,8 +3,11 @@ package cookies
 import (
 	"fmt"
 
+	Types "web_project/types"
+
+	"encoding/base64"
+
 	"github.com/golang-jwt/jwt"
-	"web_project/types"
 )
 
 func SignCookie(m Types.Map) string {
@@ -12,6 +15,7 @@ func SignCookie(m Types.Map) string {
 	// you would like it to contain.
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims(m))
 
+	fmt.Println("HmacSampleSecret : ", base64.URLEncoding.EncodeToString(HmacSampleSecret))
 	// Sign and get the complete encoded token as a string using the secret
 	tokenString, err := token.SignedString(HmacSampleSecret)
 

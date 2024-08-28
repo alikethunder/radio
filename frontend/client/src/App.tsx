@@ -126,6 +126,7 @@ export default function App() {
   useEffect(() => {
     try {
       let user_cookie = getCookie('user') as string
+      console.log('user_cookie : ', user_cookie)
 
       const user = JSON.parse(decodeURIComponent(user_cookie))
 

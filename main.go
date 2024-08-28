@@ -7,6 +7,7 @@ import (
 
 	//"time"
 
+	//"web_project/cookies"
 	"web_project/db"
 	DBPlans "web_project/db/Plans"
 	Users "web_project/db/Users"
@@ -39,6 +40,7 @@ func init() {
 	Users.Initialize()
 	DBPlans.Initialize()
 	mailer.Initialize()
+	//cookies.Initialize()
 }
 
 func main() {
@@ -89,6 +91,7 @@ func main() {
 
 	//update user profile
 	profile_endpoints.Post("/update", ProfileEndpoints.Update)
+	profile_endpoints.Post("/request-update-email", ProfileEndpoints.RequestUpdateEmail)
 
 	files_endpoints := v1.Group("/files", etag.New())
 	//get user profile photo by user id

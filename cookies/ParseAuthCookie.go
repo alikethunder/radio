@@ -21,8 +21,11 @@ func ParseAuthCookie(tokenString string) Types.Map {
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 
 		return Types.Map(claims)
+
 	} else {
-		panic(err)
+		fmt.Println("[ParseAuthCookie] invalid auth cookie : ", err)
+
+		return nil
 	}
 
 }

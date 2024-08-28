@@ -5,7 +5,7 @@ import (
 
 	"web_project/cookies"
 	Users "web_project/db/Users"
-	"web_project/types"
+	Types "web_project/types"
 
 	"github.com/gocql/gocql"
 	"github.com/gofiber/fiber/v2"
@@ -18,22 +18,32 @@ func Index(c *fiber.Ctx) error {
 
 	if authCookie != "" {
 
-		u := cookies.ParseAuthCookie(c.Cookies(cookies.AuthCookieName))
+		cookie_user := cookies.ParseAuthCookie(c.Cookies(cookies.AuthCookieName))
 
-		user, err := Users.GetUserFields(Types.Map{"email": u["email"]}, "id", "name", "email", "subscription_plan")
+		fmt.Println("[Index] cookie_user: ", cookie_user, cookie_user["id"] == nil)
 
-		if err != nil {
-			fmt.Println("[Index] GetUserFields error : ", err)
+		if cookie_user["id"] != nil {
 
-			cookies.ClearAuthCookies(c)
+			user, err := Users.GetUserFields(Types.Map{"email": cookie_user["email"]}, "id", "name", "email", "subscription_plan")
+
+			if err != nil {
+				fmt.Println("[Index] GetUserFields error : ", err)
+
+				cookies.ClearAuthCookies(c)
+
+			} else {
+
+				user["created"] = user["id"].(gocql.UUID).Time()
+
+				cookies.SetUserCookie(user, c)
+
+				cookies.SetAuthCookie(cookie_user, c)
+			}
 
 		} else {
+			fmt.Println("[Index] ClearAuthCookies : ", cookie_user)
 
-			user["created"] = user["id"].(gocql.UUID).Time()
-
-			cookies.SetUserCookie(user, c)
-
-			cookies.SetAuthCookie(u, c)
+			cookies.ClearAuthCookies(c)
 		}
 
 	}
