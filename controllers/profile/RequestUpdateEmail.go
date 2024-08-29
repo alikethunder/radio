@@ -21,7 +21,7 @@ func RequestUpdateEmail(c *fiber.Ctx) error {
 	json.Unmarshal(c.Body(), &req_json)
 
 	//get the auth cookie info
-	cookie_user := cookies.ParseAuthCookie(c.Cookies(cookies.AuthCookieName))
+	cookie_user := cookies.ParseCookie(c.Cookies(cookies.AuthCookieName))
 
 	uuid, err := gocql.ParseUUID(cookie_user["id"].(string))
 
@@ -57,7 +57,7 @@ func RequestUpdateEmail(c *fiber.Ctx) error {
 			}
 
 			//create a change link as signed cookie
-			update_email_uuid := cookies.SignCookie(Types.Map{
+			update_email_hash := cookies.SignCookie(Types.Map{
 				"id":        cookie_user["id"],
 				"old_email": cookie_user["email"],
 				"vc":        vc,
@@ -65,7 +65,7 @@ func RequestUpdateEmail(c *fiber.Ctx) error {
 			})
 
 			//create deny link with old_email, id and vc
-			deny_update_email_uuid := cookies.SignCookie(Types.Map{
+			deny_update_email_hash := cookies.SignCookie(Types.Map{
 				"id":        cookie_user["id"],
 				"old_email": cookie_user["email"],
 				"vc":        vc,
@@ -73,8 +73,8 @@ func RequestUpdateEmail(c *fiber.Ctx) error {
 
 			mailer.SendRequestUpdateEmail(Types.Map{
 				"NewEmail":   req_json["new_email"],
-				"UpdateLink": update_email_uuid,
-				"DenyLink":   deny_update_email_uuid,
+				"UpdateHash": update_email_hash,
+				"DenyHash":   deny_update_email_hash,
 				"Name":       stored_user["name"],
 				"OldEmal":    cookie_user["email"],
 			})

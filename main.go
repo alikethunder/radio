@@ -92,6 +92,7 @@ func main() {
 	//update user profile
 	profile_endpoints.Post("/update", ProfileEndpoints.Update)
 	profile_endpoints.Post("/request-update-email", ProfileEndpoints.RequestUpdateEmail)
+	profile_endpoints.Get("/update-email/:hash", ProfileEndpoints.UpdateEmail)
 
 	files_endpoints := v1.Group("/files", etag.New())
 	//get user profile photo by user id

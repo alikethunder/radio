@@ -20,7 +20,7 @@ func Update(c *fiber.Ctx) error {
 
 	if authCookie != "" {
 
-		u := cookies.ParseAuthCookie(c.Cookies(cookies.AuthCookieName))
+		u := cookies.ParseCookie(c.Cookies(cookies.AuthCookieName))
 
 		id := c.FormValue("id")
 

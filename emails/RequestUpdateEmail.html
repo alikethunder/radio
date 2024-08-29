@@ -7,9 +7,11 @@
     <br />
     <h3>Your requested to update your email address at ${Site name}</h3>
 
-    <span>To update your email from {{.OldEmal}} to {{.NewEmail}} please follow <a href="http://localhost:3000/api/v1/profile/update-email/{{.UpdateLink}}">the link</a></span>
+    <span>To update your email from {{.OldEmal}} to {{.NewEmail}} please follow <a href="http://localhost:3000/api/v1/profile/update-email/{{.UpdateHash}}">the link</a></span>
+    <br>
+    <br>
 
-    <span>If this wasn't you, to prevent it please follow <a href="http://localhost:3000/api/v1/profile/deny-update-email/{{.DenyLink}}">the link</a></span>
+    <span>If this wasn't you, to prevent it please follow <a href="http://localhost:3000/api/v1/profile/update-email/{{.DenyHash}}">the link</a></span>
 </body>
 
 </html>

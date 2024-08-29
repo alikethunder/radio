@@ -3,76 +3,32 @@ package ProfileEndpoints
 import (
 	"fmt"
 
-	Users "web_project/db/Users"
-	Types "web_project/types"
+	"web_project/cookies"
 
 	"github.com/gofiber/fiber/v2"
-
-	"github.com/gocql/gocql"
 )
 
 func UpdateEmail(c *fiber.Ctx) error {
 
-	photo, err := c.FormFile("photo")
+	hash := c.Params("hash")
 
-	if err != nil {
-		fmt.Println("[ProfileEndpoints.Update] FormFile error : ", err)
-	}
+	if hash != "" {
 
-	name := c.FormValue(("name"))
-	email := c.FormValue("email")
-	id := c.FormValue("id")
+		data := cookies.ParseCookie(hash)
 
-	uuid, err := gocql.ParseUUID(id)
+		if data["new_email"] != nil {
+			fmt.Println("[UpdateEmail] update email : ", data)
 
-	if err != nil {
-		fmt.Println("[ProfileEndpoints.Update] ParseUUID error : ", err)
-	}
+		} else {
 
-	user, err := Users.GetUserFields(Types.Map{"id": uuid})
+			fmt.Println("[UpdateEmail] deny update email : ", data)
 
-	if err != nil {
-		fmt.Println("[ProfileEndpoints.Update] GetUserFields error : ", err)
-	}
-
-	user["name"] = name
-
-	if photo != nil {
-		user["photo"] = photo
-	}
-
-	if err := Users.Update(user, uuid, user["email"].(string)); err != nil {
-
-		fmt.Println("[ProfileEndpoints.Update] update user err : ", err)
-		return c.SendStatus(fiber.StatusForbidden)
-	}
-
-	if user["email"] != email {
-		//email was changed
-
-		user["email"] = email
-
-		if err := Users.Delete(user); err != nil {
-			fmt.Println("[ProfileEndpoints.Update] delete user err : ", err)
-		}
-
-		/*
-			todo:
-				1. send vc
-				2. send StatusAccepted to show popup for verification code
-				3. create INSERT function for Users and use instead of Create
-				2. create endpoint /api/v1/profile/request-update-email
-		*/
-
-		_, err := Users.Insert(user)
-
-		if err != nil {
-			fmt.Println("[ProfileEndpoints.Update] Insert user err : ", err)
-			return c.SendStatus(fiber.StatusForbidden)
 		}
 
 	}
 
-	return c.Status(fiber.StatusOK).JSON(user)
+	//return c.Status(fiber.StatusOK).JSON(user)
+
+	return c.SendStatus(fiber.StatusForbidden)
 
 }

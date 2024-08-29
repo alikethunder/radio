@@ -18,7 +18,7 @@ func Index(c *fiber.Ctx) error {
 
 	if authCookie != "" {
 
-		cookie_user := cookies.ParseAuthCookie(c.Cookies(cookies.AuthCookieName))
+		cookie_user := cookies.ParseCookie(c.Cookies(cookies.AuthCookieName))
 
 		//fmt.Println("[Index] cookie_user: ", cookie_user, cookie_user["id"] == nil)
 

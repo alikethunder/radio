@@ -2,12 +2,12 @@ package cookies
 
 import (
 	"fmt"
+	Types "web_project/types"
 
 	"github.com/golang-jwt/jwt"
-	"web_project/types"
 )
 
-func ParseAuthCookie(tokenString string) Types.Map {
+func ParseCookie(tokenString string) Types.Map {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		// Don't forget to validate the alg is what you expect:
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
@@ -23,7 +23,7 @@ func ParseAuthCookie(tokenString string) Types.Map {
 		return Types.Map(claims)
 
 	} else {
-		fmt.Println("[ParseAuthCookie] invalid auth cookie : ", err)
+		fmt.Println("[ParseCookie] invalid auth cookie : ", err)
 
 		return nil
 	}

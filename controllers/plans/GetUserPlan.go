@@ -17,7 +17,7 @@ func GetUserPlan(c *fiber.Ctx) error {
 
 	if authCookie != "" {
 
-		u := cookies.ParseAuthCookie(c.Cookies(cookies.AuthCookieName))
+		u := cookies.ParseCookie(c.Cookies(cookies.AuthCookieName))
 
 		user, err := Users.GetUserFields(Types.Map{"email": u["email"]}, "subscription_plan", "subscription_plan_ends")
 
