@@ -32,21 +32,37 @@ func UpdateEmail(c *fiber.Ctx) error {
 			if user["verification_code"] == data["vc"] && user["email"] == data["old_email"] {
 				//update email by deleting old and inserting new
 				user["email"] = data["new_email"]
+				user["verification_code"] = ""
 
 				if err := db.Delete(
 					"users",
 
 					Types.Map{
 						"id":    user["id"],
-						"email": user["email"],
+						"email": data["old_email"],
 					},
 				); err != nil {
 					fmt.Println("[UpdateEmail] delete error : ", err)
+					return c.SendStatus(fiber.StatusForbidden)
 				}
 
 				if err := db.Insert("users", user); err != nil {
 					fmt.Println("[UpdateEmail] insert error : ", err)
+					return c.SendStatus(fiber.StatusForbidden)
 				}
+
+				//update auth cookie
+				cookies.SetAuthCookie(
+					Types.Map{
+						"id":         data["id"],
+						"email":      data["new_email"],
+						"rememberme": true,
+					},
+
+					c,
+				)
+
+				return c.Redirect("/user-profile/" + data["id"].(string))
 
 			}
 

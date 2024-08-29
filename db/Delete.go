@@ -30,7 +30,12 @@ func Delete(table string, parameters Types.Map) error {
 			i++
 		}
 
-		if err := Session.Query("DELETE FROM "+table+" WHERE "+querystring.String(), values...).Exec(); err != nil {
+		query := "DELETE FROM " + table + " WHERE " + querystring.String()
+
+		/* fmt.Println("[Delete] query : ", query)
+		fmt.Println("[Delete] values : ", values) */
+
+		if err := Session.Query(query, values...).Exec(); err != nil {
 
 			fmt.Printf("[Delete] from table %s with parameters %s, error : %s\n", table, parameters, err)
 

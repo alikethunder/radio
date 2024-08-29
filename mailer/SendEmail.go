@@ -22,7 +22,7 @@ func SendEmail(templateAddress string, data interface{}, to []string, subject st
 	for _, addr := range to {
 
 		if err := C.Mail(from); err != nil {
-			fmt.Println("[mailer initialize] Mail error : ", err)
+			fmt.Println("[SendEmail] Mail error : ", err)
 			log.Panic(err)
 		}
 
