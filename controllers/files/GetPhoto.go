@@ -9,8 +9,6 @@ import (
 	Types "web_project/types"
 
 	"github.com/gofiber/fiber/v2"
-
-	"github.com/gocql/gocql"
 )
 
 func GetPhoto(c *fiber.Ctx) error {
@@ -19,13 +17,8 @@ func GetPhoto(c *fiber.Ctx) error {
 	fmt.Println("[ProfileEndpoints.GetPhoto] id : ", id)
 
 	if id != "" {
-		uuid, err := gocql.ParseUUID(id)
 
-		if err != nil {
-			fmt.Println("[ProfileEndpoints.GetPhoto] ParseUUID error : ", err)
-		}
-
-		user, err := Users.GetUserFields(Types.Map{"id": uuid}, "photo")
+		user, err := Users.GetUserFields(Types.Map{"id": id}, "photo")
 
 		if err != nil {
 			fmt.Println("[ProfileEndpoints.GetPhoto] GetUserFields error : ", err)

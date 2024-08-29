@@ -6,12 +6,11 @@ import (
 	"io"
 
 	"web_project/cookies"
+	"web_project/db"
 	Users "web_project/db/Users"
 	Types "web_project/types"
 
 	"github.com/gofiber/fiber/v2"
-
-	"github.com/gocql/gocql"
 )
 
 func Update(c *fiber.Ctx) error {
@@ -34,13 +33,7 @@ func Update(c *fiber.Ctx) error {
 
 			name := c.FormValue(("name"))
 
-			uuid, err := gocql.ParseUUID(id)
-
-			if err != nil {
-				fmt.Println("[ProfileEndpoints.Update] ParseUUID error : ", err)
-			}
-
-			user, err := Users.GetUserFields(Types.Map{"id": uuid}, "email")
+			user, err := Users.GetUserFields(Types.Map{"id": id}, "email")
 
 			if err != nil {
 				fmt.Println("[ProfileEndpoints.Update] GetUserFields error : ", err)
@@ -64,7 +57,14 @@ func Update(c *fiber.Ctx) error {
 				updated_fields["photo"] = b.Bytes()
 			}
 
-			if err := Users.Update(updated_fields, uuid, user["email"].(string)); err != nil {
+			if err := db.Update(
+				"users",
+				updated_fields,
+				Types.Map{
+					"id":    id,
+					"email": user["email"],
+				},
+			); err != nil {
 
 				fmt.Println("[ProfileEndpoints.Update] update user err : ", err)
 				return c.SendStatus(fiber.StatusForbidden)

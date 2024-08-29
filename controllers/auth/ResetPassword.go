@@ -4,12 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"web_project/db"
 	Users "web_project/db/Users"
 	"web_project/functions"
 	"web_project/mailer"
-	"web_project/types"
+	Types "web_project/types"
 
-	"github.com/gocql/gocql"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -32,7 +32,16 @@ func ResetPassword(c *fiber.Ctx) error {
 	if user != nil {
 		vc := functions.Vc()
 
-		Users.Update(Types.Map{"verification_code": vc}, user["id"].(gocql.UUID), u["email"].(string))
+		db.Update(
+			"users",
+
+			Types.Map{"verification_code": vc},
+
+			Types.Map{
+				"id":    user["id"],
+				"email": u["email"].(string),
+			},
+		)
 
 		mailer.SendVc(vc, u["email"].(string), user["name"].(string))
 

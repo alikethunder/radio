@@ -5,12 +5,12 @@ import (
 	"fmt"
 
 	"web_project/cookies"
+	"web_project/db"
 	Users "web_project/db/Users"
 	"web_project/functions"
 	"web_project/mailer"
 	Types "web_project/types"
 
-	"github.com/gocql/gocql"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -23,65 +23,65 @@ func RequestUpdateEmail(c *fiber.Ctx) error {
 	//get the auth cookie info
 	cookie_user := cookies.ParseCookie(c.Cookies(cookies.AuthCookieName))
 
-	uuid, err := gocql.ParseUUID(cookie_user["id"].(string))
+	stored_user, err := Users.GetUserFields(Types.Map{"email": cookie_user["email"], "id": cookie_user["id"]}, "name")
 
-	if err == nil {
+	fmt.Println("[ProfileEndpoints.RequestUpdateEmail] stored_user : ", stored_user)
 
-		stored_user, err := Users.GetUserFields(Types.Map{"email": cookie_user["email"], "id": uuid}, "name")
-
-		fmt.Println("[ProfileEndpoints.RequestUpdateEmail] stored_user : ", stored_user)
-
-		if err != nil {
-			fmt.Println("[ProfileEndpoints.RequestUpdateEmail] GetUserFields error : ", err)
-		}
-
-		if err != nil && err.Error() == "not found" {
-
-			// user not exist
-			return c.SendStatus(fiber.StatusNotFound)
-
-		} else {
-
-			//user exists
-			//update vc - deny button will clear this and the email will not be updated if there is no vc
-			vc := functions.Vc()
-
-			if err := Users.Update(Types.Map{
-				"verification_code": vc,
-			},
-				uuid,
-				cookie_user["email"].(string)); err != nil {
-
-				fmt.Println("[ProfileEndpoints.RequestUpdateEmail] update user err : ", err)
-				return c.SendStatus(fiber.StatusForbidden)
-			}
-
-			//create a change link as signed cookie
-			update_email_hash := cookies.SignCookie(Types.Map{
-				"id":        cookie_user["id"],
-				"old_email": cookie_user["email"],
-				"vc":        vc,
-				"new_email": req_json["new_email"],
-			})
-
-			//create deny link with old_email, id and vc
-			deny_update_email_hash := cookies.SignCookie(Types.Map{
-				"id":        cookie_user["id"],
-				"old_email": cookie_user["email"],
-				"vc":        vc,
-			})
-
-			mailer.SendRequestUpdateEmail(Types.Map{
-				"NewEmail":   req_json["new_email"],
-				"UpdateHash": update_email_hash,
-				"DenyHash":   deny_update_email_hash,
-				"Name":       stored_user["name"],
-				"OldEmal":    cookie_user["email"],
-			})
-
-			return c.SendStatus(fiber.StatusAccepted)
-
-		}
+	if err != nil {
+		fmt.Println("[ProfileEndpoints.RequestUpdateEmail] GetUserFields error : ", err)
 	}
-	return c.SendStatus(fiber.StatusForbidden)
+
+	if err != nil && err.Error() == "not found" {
+
+		// user not exist
+		return c.SendStatus(fiber.StatusNotFound)
+
+	} else {
+
+		//user exists
+		//update vc - deny button will clear this and the email will not be updated if there is no vc
+		vc := functions.Vc()
+
+		if err := db.Update(
+			"users",
+
+			Types.Map{"verification_code": vc},
+
+			Types.Map{
+				"id":    cookie_user["id"],
+				"email": cookie_user["email"],
+			},
+		); err != nil {
+
+			fmt.Println("[ProfileEndpoints.RequestUpdateEmail] update user err : ", err)
+			return c.SendStatus(fiber.StatusForbidden)
+		}
+
+		//create a change link as signed cookie
+		update_email_hash := cookies.SignCookie(Types.Map{
+			"id":        cookie_user["id"],
+			"old_email": cookie_user["email"],
+			"vc":        vc,
+			"new_email": req_json["new_email"],
+		})
+
+		//create deny link with old_email, id and vc
+		deny_update_email_hash := cookies.SignCookie(Types.Map{
+			"id":        cookie_user["id"],
+			"old_email": cookie_user["email"],
+		})
+
+		mailer.SendRequestUpdateEmail(Types.Map{
+			"NewEmail":   req_json["new_email"],
+			"UpdateHash": update_email_hash,
+			"DenyHash":   deny_update_email_hash,
+			"Name":       stored_user["name"],
+			"OldEmal":    cookie_user["email"],
+		})
+
+		return c.SendStatus(fiber.StatusAccepted)
+
+	}
+
+	//return c.SendStatus(fiber.StatusForbidden)
 }

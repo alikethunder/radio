@@ -45,7 +45,16 @@ func Create(user Types.Map) (Types.Map, error) {
 
 			if !oauth_flow {
 				//update with verification code
-				Update(Types.Map{"verification_code": vc}, u["id"].(gocql.UUID), user["email"].(string))
+				db.Update(
+					"users",
+
+					Types.Map{"verification_code": vc},
+
+					Types.Map{
+						"id":    u["id"],
+						"email": user["email"],
+					},
+				)
 			}
 		} else {
 
@@ -54,10 +63,33 @@ func Create(user Types.Map) (Types.Map, error) {
 
 			if oauth_flow {
 				if u["name"] == "" {
-					Update(Types.Map{"name": user["name"]}, u["id"].(gocql.UUID), user["email"].(string))
+					db.Update(
+						"users",
+
+						Types.Map{
+							"name": user["name"],
+						},
+
+						Types.Map{
+							"id":    u["id"],
+							"email": user["email"],
+						},
+					)
 				}
 			} else {
-				Update(Types.Map{"verification_code": vc, "name": user["name"]}, u["id"].(gocql.UUID), user["email"].(string))
+				db.Update(
+					"users",
+
+					Types.Map{
+						"verification_code": vc,
+						"name":              user["name"],
+					},
+
+					Types.Map{
+						"id":    u["id"],
+						"email": user["email"],
+					},
+				)
 			}
 
 		}

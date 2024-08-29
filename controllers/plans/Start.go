@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"web_project/cookies"
+	"web_project/db"
 	Users "web_project/db/Users"
 	"web_project/functions"
 	"web_project/mailer"
@@ -39,13 +40,13 @@ func Start(c *fiber.Ctx) error {
 
 	}
 
-	var u Types.Map
+	var user_json Types.Map
 
-	json.Unmarshal(c.Body(), &u)
+	json.Unmarshal(c.Body(), &user_json)
 
 	//fmt.Println("ResetPassword user : ", u)
 
-	user, err := Users.GetUserFields(Types.Map{"email": u["email"]}, "id", "name")
+	user, err := Users.GetUserFields(Types.Map{"email": user_json["email"]}, "id", "name")
 
 	if err != nil {
 		fmt.Println("[Start] GetUserFields error : ", err)
@@ -54,9 +55,18 @@ func Start(c *fiber.Ctx) error {
 	if user != nil {
 		vc := functions.Vc()
 
-		Users.Update(Types.Map{"verification_code": vc}, user["id"].(gocql.UUID), u["email"].(string))
+		db.Update(
+			"users",
 
-		mailer.SendVc(vc, u["email"].(string), user["name"].(string))
+			Types.Map{"verification_code": vc},
+
+			Types.Map{
+				"id":    user["id"],
+				"email": user_json["email"],
+			},
+		)
+
+		mailer.SendVc(vc, user_json["email"].(string), user["name"].(string))
 
 		return c.SendStatus(fiber.StatusOK)
 	}

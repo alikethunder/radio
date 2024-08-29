@@ -6,9 +6,10 @@ import (
 	"time"
 
 	"web_project/cookies"
+	"web_project/db"
 	Users "web_project/db/Users"
 	"web_project/functions"
-	"web_project/types"
+	Types "web_project/types"
 
 	"github.com/gocql/gocql"
 	"github.com/gofiber/fiber/v2"
@@ -38,11 +39,18 @@ func Signin(c *fiber.Ctx) error {
 
 			cookies.SetAuthCookie(Types.Map{"email": req_json["email"], "rememberme": req_json["rememberme"], "id": user["id"]}, c)
 
-			//created, _ := gocql.ParseUUID(user["id"].(gocql.UUID))
-
 			tm := time.Now().UTC().String()
 
-			Users.Update(Types.Map{"last_seen": tm}, user["id"].(gocql.UUID), req_json["email"].(string))
+			db.Update(
+				"users",
+
+				Types.Map{"last_seen": tm},
+
+				Types.Map{
+					"id":    user["id"],
+					"email": req_json["email"],
+				},
+			)
 
 			return c.Status(fiber.StatusOK).JSON(Types.Map{"id": user["id"], "created": user["id"].(gocql.UUID).Time(), "name": user["name"]})
 

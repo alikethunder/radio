@@ -4,6 +4,9 @@ import (
 	"fmt"
 
 	"web_project/cookies"
+	"web_project/db"
+	"web_project/db/Users"
+	Types "web_project/types"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -19,10 +22,50 @@ func UpdateEmail(c *fiber.Ctx) error {
 		if data["new_email"] != nil {
 			fmt.Println("[UpdateEmail] update email : ", data)
 
+			user, err := Users.GetUserFields(Types.Map{"id": data["id"], "email": data["old_email"]})
+
+			if err != nil {
+				fmt.Println("[UpdateEmail] get user err : ", err)
+				return c.SendStatus(fiber.StatusForbidden)
+			}
+
+			if user["verification_code"] == data["vc"] && user["email"] == data["old_email"] {
+				//update email by deleting old and inserting new
+				user["email"] = data["new_email"]
+
+				if err := db.Delete(
+					"users",
+
+					Types.Map{
+						"id":    user["id"],
+						"email": user["email"],
+					},
+				); err != nil {
+					fmt.Println("[UpdateEmail] delete error : ", err)
+				}
+
+				if err := db.Insert("users", user); err != nil {
+					fmt.Println("[UpdateEmail] insert error : ", err)
+				}
+
+			}
+
 		} else {
 
 			fmt.Println("[UpdateEmail] deny update email : ", data)
 
+			db.Update(
+				"users",
+
+				Types.Map{"verification_code": ""},
+
+				Types.Map{
+					"id":    data["id"],
+					"email": data["old_email"],
+				},
+			)
+
+			return c.Redirect("/")
 		}
 
 	}
