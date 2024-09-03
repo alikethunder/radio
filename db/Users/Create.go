@@ -17,17 +17,17 @@ import (
 func Create(user Types.Map) (Types.Map, error) {
 
 	//fmt.Println("Create user : ", user)
-	var u Types.Map
 	var err error
 
 	_, oauth_flow := user["oauth"].(bool)
 
-	if u, err = GetUserFields(Types.Map{"email": user["email"]}, "id", "password", "name"); err != nil {
-		//fmt.Println("[Create] GetUserFields error : ", err)
-		u = make(Types.Map)
+	user_db, err := db.Select("users", Types.Map{"email": user["email"]}, "id", "password", "name")
+
+	if user_db == nil {
+		user_db = make(Types.Map)
 	}
 
-	if u["password"] == nil || u["password"] == "" || oauth_flow {
+	if user_db["password"] == nil || user_db["password"] == "" || oauth_flow {
 
 		//tm := time.Now()
 
@@ -37,9 +37,9 @@ func Create(user Types.Map) (Types.Map, error) {
 			//create new user
 			fmt.Println("[Create] create new user")
 
-			u["id"] = gocql.TimeUUID()
+			user_db["id"] = gocql.TimeUUID()
 
-			if err := db.Session.Query(`INSERT INTO users (id, name, email) VALUES (?, ?, ?)`, u["id"], user["name"], user["email"]).Exec(); err != nil {
+			if err := db.Session.Query(`INSERT INTO users (id, name, email) VALUES (?, ?, ?)`, user_db["id"], user["name"], user["email"]).Exec(); err != nil {
 				return nil, err
 			}
 
@@ -51,7 +51,7 @@ func Create(user Types.Map) (Types.Map, error) {
 					Types.Map{"verification_code": vc},
 
 					Types.Map{
-						"id":    u["id"],
+						"id":    user_db["id"],
 						"email": user["email"],
 					},
 				)
@@ -62,7 +62,7 @@ func Create(user Types.Map) (Types.Map, error) {
 			fmt.Println("[Create] update existing user without password")
 
 			if oauth_flow {
-				if u["name"] == "" {
+				if user_db["name"] == "" {
 					db.Update(
 						"users",
 
@@ -71,7 +71,7 @@ func Create(user Types.Map) (Types.Map, error) {
 						},
 
 						Types.Map{
-							"id":    u["id"],
+							"id":    user_db["id"],
 							"email": user["email"],
 						},
 					)
@@ -86,7 +86,7 @@ func Create(user Types.Map) (Types.Map, error) {
 					},
 
 					Types.Map{
-						"id":    u["id"],
+						"id":    user_db["id"],
 						"email": user["email"],
 					},
 				)
@@ -98,7 +98,7 @@ func Create(user Types.Map) (Types.Map, error) {
 			mailer.SendVc(vc, user["email"].(string), user["name"].(string))
 		}
 
-		return GetUserFields(Types.Map{"id": u["id"], "email": user["email"]}, "name", "email", "id")
+		return db.Select("users", Types.Map{"id": user_db["id"], "email": user["email"]}, "name", "email", "id")
 
 	}
 

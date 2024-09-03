@@ -5,7 +5,6 @@ import (
 
 	"web_project/cookies"
 	"web_project/db"
-	"web_project/db/Users"
 	Types "web_project/types"
 
 	"github.com/gofiber/fiber/v2"
@@ -22,10 +21,9 @@ func UpdateEmail(c *fiber.Ctx) error {
 		if data["new_email"] != nil {
 			fmt.Println("[UpdateEmail] update email : ", data)
 
-			user, err := Users.GetUserFields(Types.Map{"id": data["id"], "email": data["old_email"]})
+			user, err := db.Select("users", Types.Map{"id": data["id"], "email": data["old_email"]})
 
 			if err != nil {
-				fmt.Println("[UpdateEmail] get user err : ", err)
 				return c.SendStatus(fiber.StatusForbidden)
 			}
 

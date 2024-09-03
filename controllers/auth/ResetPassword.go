@@ -2,10 +2,8 @@ package AuthEndpoints
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"web_project/db"
-	Users "web_project/db/Users"
 	"web_project/functions"
 	"web_project/mailer"
 	Types "web_project/types"
@@ -23,11 +21,7 @@ func ResetPassword(c *fiber.Ctx) error {
 
 	//fmt.Println("ResetPassword user : ", u)
 
-	user, err := Users.GetUserFields(Types.Map{"email": u["email"]}, "id", "name")
-
-	if err != nil {
-		fmt.Println("[ResetPassword] GetUserFields error : ", err)
-	}
+	user, _ := db.Select("users", Types.Map{"email": u["email"]}, "id", "name")
 
 	if user != nil {
 		vc := functions.Vc()

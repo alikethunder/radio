@@ -7,7 +7,6 @@ import (
 
 	"web_project/cookies"
 	"web_project/db"
-	Users "web_project/db/Users"
 	Types "web_project/types"
 
 	"github.com/gofiber/fiber/v2"
@@ -33,11 +32,7 @@ func Update(c *fiber.Ctx) error {
 
 			name := c.FormValue(("name"))
 
-			user, err := Users.GetUserFields(Types.Map{"id": id}, "email")
-
-			if err != nil {
-				fmt.Println("[ProfileEndpoints.Update] GetUserFields error : ", err)
-			}
+			user, _ := db.Select("users", Types.Map{"id": id}, "email")
 
 			updated_fields := Types.Map{"name": name}
 

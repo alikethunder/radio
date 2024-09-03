@@ -2,12 +2,10 @@ package AuthEndpoints
 
 import (
 	"encoding/json"
-	"fmt"
 	"time"
 
 	"web_project/cookies"
 	"web_project/db"
-	Users "web_project/db/Users"
 	"web_project/functions"
 	Types "web_project/types"
 
@@ -25,11 +23,7 @@ func Verification(c *fiber.Ctx) error {
 
 	//fmt.Println("Signup user : ", u)
 
-	user, err := Users.GetUserFields(Types.Map{"email": user_json["email"]}, "id", "verification_code", "name")
-
-	if err != nil {
-		fmt.Println("[Verification] GetUserFields error : ", err)
-	}
+	user, _ := db.Select("users", Types.Map{"email": user_json["email"]}, "id", "verification_code", "name")
 
 	if user != nil && user["verification_code"] == user_json["verification_code"] {
 

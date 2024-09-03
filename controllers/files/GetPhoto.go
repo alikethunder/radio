@@ -5,7 +5,7 @@ import (
 	"fmt"
 	//"io"
 
-	Users "web_project/db/Users"
+	"web_project/db"
 	Types "web_project/types"
 
 	"github.com/gofiber/fiber/v2"
@@ -18,11 +18,7 @@ func GetPhoto(c *fiber.Ctx) error {
 
 	if id != "" {
 
-		user, err := Users.GetUserFields(Types.Map{"id": id}, "photo")
-
-		if err != nil {
-			fmt.Println("[ProfileEndpoints.GetPhoto] GetUserFields error : ", err)
-		}
+		user, _ := db.Select("users", Types.Map{"id": id}, "photo")
 
 		fmt.Println("[ProfileEndpoints.GetPhoto] photo : ", len(user["photo"].([]byte)))
 

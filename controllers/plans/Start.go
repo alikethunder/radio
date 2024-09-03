@@ -2,11 +2,9 @@ package PlansEndpoints
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"web_project/cookies"
 	"web_project/db"
-	Users "web_project/db/Users"
 	"web_project/functions"
 	"web_project/mailer"
 	Types "web_project/types"
@@ -26,11 +24,7 @@ func Start(c *fiber.Ctx) error {
 
 		u := cookies.ParseCookie(c.Cookies(cookies.AuthCookieName))
 
-		user, err := Users.GetUserFields(Types.Map{"email": u["email"]}, "id", "name", "email")
-
-		if err != nil {
-			fmt.Println("[Index] GetUserFields error : ", err)
-		}
+		user, _ := db.Select("users", Types.Map{"email": u["email"]}, "id", "name", "email")
 
 		user["created"] = user["id"].(gocql.UUID).Time()
 
@@ -46,11 +40,7 @@ func Start(c *fiber.Ctx) error {
 
 	//fmt.Println("ResetPassword user : ", u)
 
-	user, err := Users.GetUserFields(Types.Map{"email": user_json["email"]}, "id", "name")
-
-	if err != nil {
-		fmt.Println("[Start] GetUserFields error : ", err)
-	}
+	user, _ := db.Select("users", Types.Map{"email": user_json["email"]}, "id", "name")
 
 	if user != nil {
 		vc := functions.Vc()

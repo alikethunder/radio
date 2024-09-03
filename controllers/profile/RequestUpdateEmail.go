@@ -6,7 +6,6 @@ import (
 
 	"web_project/cookies"
 	"web_project/db"
-	Users "web_project/db/Users"
 	"web_project/functions"
 	"web_project/mailer"
 	Types "web_project/types"
@@ -23,13 +22,9 @@ func RequestUpdateEmail(c *fiber.Ctx) error {
 	//get the auth cookie info
 	cookie_user := cookies.ParseCookie(c.Cookies(cookies.AuthCookieName))
 
-	stored_user, err := Users.GetUserFields(Types.Map{"email": cookie_user["email"], "id": cookie_user["id"]}, "name")
+	stored_user, err := db.Select("users", Types.Map{"email": cookie_user["email"], "id": cookie_user["id"]}, "name")
 
 	fmt.Println("[ProfileEndpoints.RequestUpdateEmail] stored_user : ", stored_user)
-
-	if err != nil {
-		fmt.Println("[ProfileEndpoints.RequestUpdateEmail] GetUserFields error : ", err)
-	}
 
 	if err != nil && err.Error() == "not found" {
 

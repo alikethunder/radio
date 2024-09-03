@@ -15,7 +15,6 @@ func Update(table string, insert_parameters Types.Map, key_parameters Types.Map)
 	if len(insert_parameters) > 0 && len(key_parameters) > 0 {
 
 		var insertString strings.Builder
-		var keyString strings.Builder
 
 		values := make([]interface{}, len(insert_parameters)+len(key_parameters))
 
@@ -35,14 +34,16 @@ func Update(table string, insert_parameters Types.Map, key_parameters Types.Map)
 			i++
 		}
 
+		insertString.WriteString(" WHERE ")
+
 		j := 0
 		for key, val := range key_parameters {
 
-			keyString.WriteString(key)
-			keyString.WriteString(` = ?`)
+			insertString.WriteString(key)
+			insertString.WriteString(` = ?`)
 
 			if j != len(key_parameters)-1 {
-				keyString.WriteString(" AND ")
+				insertString.WriteString(" AND ")
 			}
 
 			values[i] = val
@@ -51,7 +52,7 @@ func Update(table string, insert_parameters Types.Map, key_parameters Types.Map)
 			i++
 		}
 
-		query := "UPDATE " + table + " SET " + insertString.String() + " WHERE " + keyString.String()
+		query := "UPDATE " + table + " SET " + insertString.String()
 
 		//fmt.Println("[Update] query : ", query)
 		//fmt.Println("[Update] values : ", values)

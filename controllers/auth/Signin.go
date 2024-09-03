@@ -2,12 +2,10 @@ package AuthEndpoints
 
 import (
 	"encoding/json"
-	"fmt"
 	"time"
 
 	"web_project/cookies"
 	"web_project/db"
-	Users "web_project/db/Users"
 	"web_project/functions"
 	Types "web_project/types"
 
@@ -25,11 +23,7 @@ func Signin(c *fiber.Ctx) error {
 
 	//fmt.Println("Signup user : ", u)
 
-	user, err := Users.GetUserFields(Types.Map{"email": req_json["email"]}, "id", "password", "name")
-
-	if err != nil {
-		fmt.Println("[Signin] GetUserFields error : ", err)
-	}
+	user, _ := db.Select("users", Types.Map{"email": req_json["email"]}, "id", "password", "name")
 
 	if user != nil && user["password"] != "" && user["password"] != nil {
 
