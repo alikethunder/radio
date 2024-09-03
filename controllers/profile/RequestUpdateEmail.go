@@ -15,68 +15,74 @@ import (
 
 func RequestUpdateEmail(c *fiber.Ctx) error {
 
-	var req_json Types.Map
+	authCookie := c.Cookies(cookies.AuthCookieName)
 
-	json.Unmarshal(c.Body(), &req_json)
+	if authCookie != "" {
 
-	//get the auth cookie info
-	cookie_user := cookies.ParseCookie(c.Cookies(cookies.AuthCookieName))
+		var req_json Types.Map
 
-	stored_user, err := db.Select("users", Types.Map{"email": cookie_user["email"], "id": cookie_user["id"]}, "name")
+		json.Unmarshal(c.Body(), &req_json)
 
-	fmt.Println("[ProfileEndpoints.RequestUpdateEmail] stored_user : ", stored_user)
+		//get the auth cookie info
+		cookie_user := cookies.ParseCookie(c.Cookies(cookies.AuthCookieName))
 
-	if err != nil && err.Error() == "not found" {
+		stored_user, err := db.Select("users", Types.Map{"email": cookie_user["email"], "id": cookie_user["id"]}, "name")
 
-		// user not exist
-		return c.SendStatus(fiber.StatusNotFound)
+		fmt.Println("[ProfileEndpoints.RequestUpdateEmail] stored_user : ", stored_user)
 
-	} else {
+		if err != nil && err.Error() == "not found" {
 
-		//user exists
-		//update vc - deny button will clear this and the email will not be updated if there is no vc
-		vc := functions.Vc()
+			// user not exist
+			return c.SendStatus(fiber.StatusNotFound)
 
-		if err := db.Update(
-			"users",
+		} else {
 
-			Types.Map{"verification_code": vc},
+			//user exists
+			//update vc - deny button will clear this and the email will not be updated if there is no vc
+			vc := functions.Vc()
 
-			Types.Map{
-				"id":    cookie_user["id"],
-				"email": cookie_user["email"],
-			},
-		); err != nil {
+			if err := db.Update(
+				"users",
 
-			fmt.Println("[ProfileEndpoints.RequestUpdateEmail] update user err : ", err)
-			return c.SendStatus(fiber.StatusForbidden)
+				Types.Map{"verification_code": vc},
+
+				Types.Map{
+					"id":    cookie_user["id"],
+					"email": cookie_user["email"],
+				},
+			); err != nil {
+
+				fmt.Println("[ProfileEndpoints.RequestUpdateEmail] update user err : ", err)
+				return c.SendStatus(fiber.StatusForbidden)
+			}
+
+			//create a change link as signed cookie
+			update_email_hash := cookies.SignCookie(Types.Map{
+				"id":        cookie_user["id"],
+				"old_email": cookie_user["email"],
+				"vc":        vc,
+				"new_email": req_json["new_email"],
+			})
+
+			//create deny link with old_email, id and vc
+			deny_update_email_hash := cookies.SignCookie(Types.Map{
+				"id":        cookie_user["id"],
+				"old_email": cookie_user["email"],
+			})
+
+			mailer.SendRequestUpdateEmail(Types.Map{
+				"NewEmail":   req_json["new_email"],
+				"UpdateHash": update_email_hash,
+				"DenyHash":   deny_update_email_hash,
+				"Name":       stored_user["name"],
+				"OldEmal":    cookie_user["email"],
+			})
+
+			return c.SendStatus(fiber.StatusAccepted)
+
 		}
-
-		//create a change link as signed cookie
-		update_email_hash := cookies.SignCookie(Types.Map{
-			"id":        cookie_user["id"],
-			"old_email": cookie_user["email"],
-			"vc":        vc,
-			"new_email": req_json["new_email"],
-		})
-
-		//create deny link with old_email, id and vc
-		deny_update_email_hash := cookies.SignCookie(Types.Map{
-			"id":        cookie_user["id"],
-			"old_email": cookie_user["email"],
-		})
-
-		mailer.SendRequestUpdateEmail(Types.Map{
-			"NewEmail":   req_json["new_email"],
-			"UpdateHash": update_email_hash,
-			"DenyHash":   deny_update_email_hash,
-			"Name":       stored_user["name"],
-			"OldEmal":    cookie_user["email"],
-		})
-
-		return c.SendStatus(fiber.StatusAccepted)
-
 	}
 
-	//return c.SendStatus(fiber.StatusForbidden)
+	cookies.ClearAuthCookies(c)
+	return c.SendStatus(fiber.StatusUnauthorized)
 }

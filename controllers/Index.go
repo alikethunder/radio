@@ -12,13 +12,10 @@ import (
 func Index(c *fiber.Ctx) error {
 
 	authCookie := c.Cookies(cookies.AuthCookieName)
-	//fmt.Println("[Index] auth cookie : ", authCookie, authCookie == "")
 
 	if authCookie != "" {
 
 		cookie_user := cookies.ParseCookie(c.Cookies(cookies.AuthCookieName))
-
-		//fmt.Println("[Index] cookie_user: ", cookie_user, cookie_user["id"] == nil)
 
 		if cookie_user["id"] != nil {
 
@@ -38,11 +35,11 @@ func Index(c *fiber.Ctx) error {
 			}
 
 		} else {
-			//fmt.Println("[Index] ClearAuthCookies : ", cookie_user)
-
 			cookies.ClearAuthCookies(c)
 		}
 
+	} else {
+		cookies.ClearAuthCookies(c)
 	}
 
 	return c.Render("index", fiber.Map{})

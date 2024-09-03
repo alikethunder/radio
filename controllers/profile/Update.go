@@ -69,5 +69,7 @@ func Update(c *fiber.Ctx) error {
 		}
 
 	}
+
+	cookies.ClearAuthCookies(c)
 	return c.SendStatus(fiber.StatusUnauthorized)
 }

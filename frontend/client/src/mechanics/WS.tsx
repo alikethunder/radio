@@ -6,12 +6,14 @@ import { actions, useTrackedStore, store, useStore } from "@/store"
 
 export const WS: FC = () => {
 
+  const signedin = useStore().auth.signedin()
+
   useEffect(() => {
 
     (async () => {
 
-      if (store.auth.signedin()) {
- 
+      if (signedin) {
+
         const ws = await new Promise((res, rej) => {
           let s = new Sockette(`ws://localhost:${import.meta.env.VITE_DEV_PORT}/ws`, {
             timeout: 5e3,
@@ -38,7 +40,7 @@ export const WS: FC = () => {
         })
       }
     })()
-  }, [useTrackedStore().auth.signedin()])
+  }, [signedin])
 
   return (<></>)
 }
