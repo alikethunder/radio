@@ -1,7 +1,9 @@
 package main
 
 import (
+	"flag"
 	"fmt"
+	"io"
 	"log"
 	"os"
 
@@ -11,12 +13,14 @@ import (
 	"web_project/db"
 	DBPlans "web_project/db/Plans"
 	Users "web_project/db/Users"
+	"web_project/radio"
 
 	"web_project/controllers"
 	AuthEndpoints "web_project/controllers/auth"
 	FilesEndpoints "web_project/controllers/files"
 	PlansEndpoints "web_project/controllers/plans"
 	ProfileEndpoints "web_project/controllers/profile"
+	RadioEndpoints "web_project/controllers/radio"
 
 	"web_project/functions"
 	"web_project/mailer"
@@ -98,6 +102,30 @@ func main() {
 	//get user profile photo by user id
 	files_endpoints.Get("/user/photo/:id", FilesEndpoints.GetPhoto)
 
+	radio_endpoints := v1.Group("/radio")
+
+	fname := flag.String("filename", "audio.mp3", "path of the audio file")
+
+	flag.Parse()
+
+	file, err := os.Open(*fname)
+	if err != nil {
+
+		log.Fatal(err)
+
+	}
+
+	ctn, err := io.ReadAll(file)
+	if err != nil {
+
+		log.Fatal(err)
+
+	}
+
+	go radio.Stream(radio.ConnPool, ctn)
+
+	radio_endpoints.Get("/broadcast/:id", RadioEndpoints.Broadcast)
+
 	app.Use("/reloadws", func(c *fiber.Ctx) error {
 		// IsWebSocketUpgrade returns true if the client
 		// requested upgrade to the WebSocket protocol.
@@ -146,7 +174,7 @@ func main() {
 	app.Get("*", controllers.Index)
 
 	// Start app
-	err := app.Listen(":" + os.Getenv("PORT"))
+	err = app.Listen(":" + os.Getenv("PORT"))
 	if err != nil {
 		fmt.Println("main error : ", err)
 	}
