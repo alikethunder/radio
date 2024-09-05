@@ -28,6 +28,7 @@ func Initialize() {
 		subscription_plan text,
 		subscription_plan_ends text,
 		photo blob,
+		admin boolean,
 		PRIMARY KEY (id, email)
 	)`).Exec(); err != nil {
 

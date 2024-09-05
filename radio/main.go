@@ -76,9 +76,10 @@ func Stream(connectionPool *ConnectionPool, content []byte) {
 
 	for {
 
-		// clear() is a new builtin function introduced in go 1.21. Just reinitialize the buffer if on a lower version.
 		clear(buffer)
+
 		tempfile := bytes.NewReader(content)
+
 		ticker := time.NewTicker(time.Millisecond * DELAY)
 
 		for range ticker.C {
