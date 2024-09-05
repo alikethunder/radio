@@ -20,10 +20,10 @@ Prerequisites
   - npm install in frontend/client
 
   - To create dev server for scylladb:
-    sudo docker run --name scylla_deliver -p 9042:9042 -d scylladb/scylla --smp 1
+    sudo docker run --name scylla_radio -p 9042:9042 -d scylladb/scylla --smp 1
 
   - For first run the following commands from cqlsh from terminal:
-	  $ docker exec -it scylla_deliver cqlsh
+	  $ docker exec -it scylla_radio cqlsh
 
 	  CREATE KEYSPACE IF NOT EXISTS app WITH replication = { 'class' : 'SimpleStrategy', 'replication_factor': 1};
 
