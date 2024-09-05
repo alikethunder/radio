@@ -161,16 +161,6 @@ export default function App() {
 
   }, [windowSize])
 
-  /* const { error: getUserPlanErr, data: subscriptionPlan, isLoading: subscriptionPlanIsLoading } = useImmutableFetcher(signedin ? '/api/v1/purchase-plan/get-user-plan' : null) */
-
-  /* useImmutableFetcherAndStore('/api/v1/purchase-plan/get-plans', "app", "subscription_plans")
-
-  useImmutableFetcherAndStore(
-    signedin ? '/api/v1/purchase-plan/get-user-plan' : null,
-    'user',
-    'subscription_plan'
-  ) */
-
   useEffect(() => {
     //save prev path to redirect after signin/up
     if (

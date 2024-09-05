@@ -18,7 +18,6 @@ import (
 	"web_project/controllers"
 	AuthEndpoints "web_project/controllers/auth"
 	FilesEndpoints "web_project/controllers/files"
-	PlansEndpoints "web_project/controllers/plans"
 	ProfileEndpoints "web_project/controllers/profile"
 	RadioEndpoints "web_project/controllers/radio"
 
@@ -58,7 +57,6 @@ func main() {
 	defer db.Session.Close()
 	defer mailer.C.Quit()
 
-	//fmt.Println(Users.GetAll())
 	//fmt.Println(functions.Vc())
 
 	// Load templates
@@ -83,10 +81,9 @@ func main() {
 	auth.Post("/reset-password", AuthEndpoints.ResetPassword)
 	auth.Post("/google-callback", AuthEndpoints.GoogleCallback)
 
-	subscriptionPlans := v1.Group("/purchase-plan")
+	//subscriptionPlans := v1.Group("/purchase-plan")
 
-	subscriptionPlans.Get("/get-plans", PlansEndpoints.GetPlans)
-	subscriptionPlans.Get("/get-user-plan", PlansEndpoints.GetUserPlan)
+	//subscriptionPlans.Get("/get-plans", PlansEndpoints.GetPlans)
 
 	profile_endpoints := v1.Group("/profile")
 

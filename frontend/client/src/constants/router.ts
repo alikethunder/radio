@@ -47,7 +47,7 @@ export const route_attributes = {
     icon: 'pi-sign-in',
   },
   [app_routes.root]: {
-    name: 'Главная',
-    icon: 'pi-home'
+    name: 'Radio',
+    icon: 'pi-wave-pulse'
   },
 }
