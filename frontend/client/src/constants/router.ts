@@ -13,12 +13,14 @@ export const app_routes = {
   purchase_plan: '/purchase-plan',
   project$id: '/project/:id',
   user_profile$id: '/user-profile/:id',
+  station$id: '/station/:id',
+  "station$id/edit": '/station/:id/edit',
 } as const
 
 export const auth_required_routes = [
   app_routes.project$id,
   app_routes.user_profile$id,
-
+  //app_routes["station$id/edit"],
 ] as const
 
 export const auth_routes = [
@@ -33,6 +35,7 @@ export const unprotectedRoutes = [
   app_routes.root,
   app_routes.purchase_plan,
   ...auth_routes,
+  app_routes.station$id,
 ] as const
 
 export const all_routes = Object.values(app_routes)

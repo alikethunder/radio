@@ -47,12 +47,12 @@ func Select(table string, key_parameters Types.Map, select_parameters ...string)
 
 		selectString.WriteString(` LIMIT 1 ALLOW FILTERING`)
 
-		//fmt.Println("[Update] query : ", query)
+		//fmt.Println("[Update] selectString : ", selectString.String())
 		//fmt.Println("[Update] values : ", values)
 
 		if err := Session.Query(selectString.String(), values...).MapScan(result); err != nil {
 
-			fmt.Printf("[Select] table %s with key_parameters %s and select_parameters %s, error : %s\n", table, key_parameters, select_parameters, err)
+			fmt.Printf("[Select] Error: table %s with key_parameters %s and select_parameters %s : %s\n", table, key_parameters, select_parameters, err)
 
 			return nil, err
 		}

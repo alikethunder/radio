@@ -18,15 +18,16 @@ func GetPhoto(c *fiber.Ctx) error {
 
 	if id != "" {
 
-		user, _ := db.Select("users", Types.Map{"id": id}, "photo")
+		if user, _ := db.Select("users", Types.Map{"id": id}, "photo"); user != nil {
 
-		fmt.Println("[ProfileEndpoints.GetPhoto] photo : ", len(user["photo"].([]byte)))
+			fmt.Println("[ProfileEndpoints.GetPhoto] photo : ", len(user["photo"].([]byte)))
 
-		if len(user["photo"].([]byte)) > 0 {
-			return c.Status(fiber.StatusOK).Send(user["photo"].([]byte))
+			if len(user["photo"].([]byte)) > 0 {
+				return c.Status(fiber.StatusOK).Send(user["photo"].([]byte))
+			}
 		}
 	}
 
-	return c.SendStatus(fiber.StatusNotFound)
+	return c.SendStatus(fiber.StatusBadRequest)
 
 }

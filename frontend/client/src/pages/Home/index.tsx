@@ -1,6 +1,6 @@
 import { FC, useEffect, useMemo } from "react"
 
-import { CreateNewCard } from '@/components'
+import { generatePath } from "react-router-dom"
 
 import { SmallCardContainer } from "@/layout parts"
 
@@ -38,7 +38,7 @@ export const Home = () => {
           } : {}
         }}>
 
-        <QueryLink to={'/station/new'}>
+        <QueryLink to={generatePath(app_routes["station$id/edit"], { id: "new" })}>
           <SmallCardContainer className="flex flex-row overflow-hidden station_card create_station_card align-self-center shadow_on_hover">
 
             <div className="station_card_icon align-self-center flex align-items-center justify-content-center">

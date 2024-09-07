@@ -30,7 +30,7 @@ func Initialize() {
 		broadcasting boolean,
 		tags set<text>,
 		admins set<uuid>,
-		order int,
+		order smallint,
 		PRIMARY KEY (id)
 	)`).Exec(); err != nil {
 

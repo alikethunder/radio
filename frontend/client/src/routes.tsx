@@ -15,6 +15,7 @@ import {
   PurchasePlan,
   Project,
   UserProfile,
+  Station,
 } from '@/pages'
 
 import {
@@ -79,7 +80,7 @@ export const routes = [
 
           //if there is no such project
           return null
-        }
+        },
       },
       {
         path: app_routes.project$id,
@@ -101,6 +102,33 @@ export const routes = [
           //if there is no such project
           return null
         }
+      },
+      {
+        path: app_routes.station$id,
+        element: <Station />,
+        loader(
+          {
+            params,
+            request,
+          }: Loader_params
+        ) {
+          //console.log('station params : ', params)
+          //todo: load station data from db
+
+          //new station
+          if (params.id == 'new') {
+            return params.id
+          }
+
+          //if there is no such station
+          return null
+        },
+        children: [
+          {
+            path: app_routes["station$id/edit"],
+            element: <Station/>
+          }
+        ],
       },
       {
         path: app_routes.signin,

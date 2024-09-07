@@ -100,7 +100,7 @@ export const UserProfile = () => {
 
     const body = new FormData()
 
-    Object.keys(data).map(k => k != 'email' && body.set(k, data[k]))
+    Object.keys(data).forEach(k => k != 'email' && body.set(k, data[k]))
 
     if (photo_blob) {
       body.set('photo', photo_blob)

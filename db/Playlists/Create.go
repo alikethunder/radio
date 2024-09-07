@@ -28,7 +28,7 @@ func Create(playlist string) (string, error) {
 		description text,
 		data blob,
 		image blob,
-		order int,
+		order smallint,
 		price double,
 		tags set<text>,
 		downloads set<uuid>,
