@@ -97,7 +97,7 @@ func main() {
 
 	files_endpoints := v1.Group("/files", etag.New())
 	//get user profile photo by user id
-	files_endpoints.Get("/user/photo/:id", FilesEndpoints.GetPhoto)
+	files_endpoints.Get("/:table/:row_id/:field", FilesEndpoints.GetFile)
 
 	radio_endpoints := v1.Group("/radio")
 

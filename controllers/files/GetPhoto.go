@@ -11,19 +11,21 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func GetPhoto(c *fiber.Ctx) error {
+func GetFile(c *fiber.Ctx) error {
 
-	id := c.Params("id")
-	fmt.Println("[ProfileEndpoints.GetPhoto] id : ", id)
+	row_id := c.Params("row_id")
+	table := c.Params("table")
+	field := c.Params("field")
+	fmt.Printf("[ProfileEndpoints.GetFile] row_id %s, table %s, field %s \n", row_id, table, field)
 
-	if id != "" {
+	if row_id != "" && table != "" && field != "" {
 
-		if user, _ := db.Select("users", Types.Map{"id": id}, "photo"); user != nil {
+		if result, _ := db.Select(table, Types.Map{"id": row_id}, field); result != nil {
 
-			fmt.Println("[ProfileEndpoints.GetPhoto] photo : ", len(user["photo"].([]byte)))
+			fmt.Printf("[ProfileEndpoints.GetFile] %s %d \n", field, len(result[field].([]byte)))
 
-			if len(user["photo"].([]byte)) > 0 {
-				return c.Status(fiber.StatusOK).Send(user["photo"].([]byte))
+			if len(result[field].([]byte)) > 0 {
+				return c.Status(fiber.StatusOK).Send(result[field].([]byte))
 			}
 		}
 	}
