@@ -1,4 +1,4 @@
 @function sizeRelativeToCardHeight($ratio)
   
-  @return calc(var(--SmallCardContainer_width) * $ratio)
+  @return calc(var(--SmallCardContainer_width) * var(--card-ratio) * $ratio)
   

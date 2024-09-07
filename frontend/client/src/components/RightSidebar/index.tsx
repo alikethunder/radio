@@ -86,7 +86,7 @@ export const RightSidebar: FC = () => {
               <div className="flex">
                 <Button
                   //todo: projects quantity like "My projects (5)"
-                  label="Мои компании"
+                  label="My stations"
                   text
                   raised
                   icon={`${icon_classes} pi-briefcase`}
