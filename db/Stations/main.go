@@ -16,7 +16,8 @@ import (
 	broadcasting boolean, 	on/off
 	tags set<text>,					station tags
 	admins set<uuid>, 			who can alter station
-	order int,							order of stations to render
+	order smallint,					order of stations to render
+	likes int,							how many times was added to favorites
 */
 
 func Initialize() {
@@ -31,6 +32,7 @@ func Initialize() {
 		tags set<text>,
 		admins set<uuid>,
 		order smallint,
+		likes int,
 		PRIMARY KEY (id)
 	)`).Exec(); err != nil {
 

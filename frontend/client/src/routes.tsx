@@ -1,13 +1,13 @@
 import React from "react"
 import { redirect, RouteObject, } from "react-router-dom"
-import App from "./App"
+import App from "@/App"
 
 import {
   Signin,
   Signup,
   Verification,
   ResetPassword,
-} from "./pages/auth"
+} from "@/pages/auth"
 
 import {
   Home,
@@ -25,7 +25,7 @@ import {
 import {
   actions,
   store
-} from './store'
+} from '@/store'
 
 import {
   FrontUser,
@@ -65,7 +65,7 @@ export const routes = [
           }: Loader_params
         ) {
           //console.log('user_profile params : ', params, request)
-          
+
           //own user profile
           if (params.id == store.user.id()) {
             return {
@@ -123,12 +123,6 @@ export const routes = [
           //if there is no such station
           return null
         },
-        children: [
-          {
-            path: app_routes["station$id/edit"],
-            element: <Station/>
-          }
-        ],
       },
       {
         path: app_routes.signin,

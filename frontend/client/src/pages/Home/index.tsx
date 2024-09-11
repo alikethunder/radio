@@ -38,7 +38,7 @@ export const Home = () => {
           } : {}
         }}>
 
-        <QueryLink to={generatePath(app_routes["station$id/edit"], { id: "new" })}>
+        <QueryLink to={generatePath(`${app_routes["station$id"]}/${'?edit'/* app_routes.edit */}`, { id: "new" })}>
           <SmallCardContainer className="flex flex-row overflow-hidden station_card create_station_card align-self-center shadow_on_hover">
 
             <div className="station_card_icon align-self-center flex align-items-center justify-content-center">

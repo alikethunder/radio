@@ -49,6 +49,7 @@ import { useFormState } from '@/hooks'
 
 import { tooltip_options } from "@/constants/tooltip_options"
 import { FrontUser } from "@/types"
+import { setForm } from "@/functions/setForm"
 
 const private_tooltip_options = { ...tooltip_options, position: 'right' } as const
 
@@ -58,6 +59,7 @@ export const Station = () => {
 
   const windowSize = useTrackedStore().app.windowSize()
   const isDesktop = useTrackedStore().app.isDesktop()
+
   const photo_file_input_ref = useRef<HTMLInputElement>(null)
 
   const [profile_photo_exists, set_profile_photo_exists] = useState(true)
@@ -66,19 +68,21 @@ export const Station = () => {
 
   const [photo_blob, set_photo_blob] = useState<Blob | null>(null)
 
-  const [form, set_form] = useState<HTMLFormElement>()
+  const station_data = useLoaderData() as FrontUser
 
-  const user_data = useLoaderData() as FrontUser
-
-  //console.log('user_data : ', user_data)
+  //console.log('station_data : ', station_data)
 
   const edit_mode = useTrackedStore().app.FormActionsState_state()
+
+  console.log('[Station] edit_mode : ', edit_mode)
 
   const {
     control,
     formState: {
       errors,
       isDirty,
+      defaultValues,
+      isSubmitting,
     },
     handleSubmit,
     getValues,
@@ -88,13 +92,13 @@ export const Station = () => {
   } = useForm({
     mode: 'onTouched',
     defaultValues: {
-      name: user_data?.name,
+      name: station_data?.name,
     }
   })
 
   //console.log("errors.name : ", errors.name)
 
-  const onSubmit = useCallback(async (data) => {
+  const onSubmit = useCallback(async (data: any) => {
     console.log('submit : ', data)
 
     const body = new FormData()
@@ -140,15 +144,10 @@ export const Station = () => {
 
   //todo add prompt to reset and save form if fields changed
   useFormState({
-    submit: () => {
-      //console.log('submit : ', form)
-      form?.requestSubmit()
-      actions.app.FormActionsState_state('saving')
-    },
     reset: () => {
       reset()
     },
-  }, form)
+  }, isSubmitting)
 
   return (
     <div
@@ -158,7 +157,7 @@ export const Station = () => {
       <div className="flex flex-column sm:flex-row">
 
         <div
-          style={{ backgroundImage: `url(${photo_data_url || `/api/v1/files/user/photo/${user_data.id}`})` }}
+          style={{ backgroundImage: `url(${photo_data_url || `/api/v1/files/station/avatar/${station_data.id}`})` }}
 
           className={`profile_picture shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-circle flex align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode == 'edit' ? 'cursor-pointer' : ''}`}
 
@@ -170,7 +169,7 @@ export const Station = () => {
         >
           <img
             style={{ display: 'none' }}
-            src={`/api/v1/files/user/photo/${user_data.id}`}
+            src={`/api/v1/files/station/avatar/${station_data.id}`}
 
             onError={({ currentTarget }) => {
               currentTarget.onerror = null
@@ -220,7 +219,7 @@ export const Station = () => {
 
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-1 align-self-start sm:ml-5 mt-3 sm:mt-1 w-25rem max-w-full" ref={e => set_form(e as HTMLFormElement)}>
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-1 align-self-start sm:ml-5 mt-3 sm:mt-1 w-25rem max-w-full" ref={setForm}>
 
           <Controller
             name="name"

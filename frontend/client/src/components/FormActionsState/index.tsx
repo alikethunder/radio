@@ -7,7 +7,7 @@ import {
   logout,
 } from '@/functions'
 
-import { actions, useStore } from "@/store"
+import { actions, useStore, store } from "@/store"
 
 import { usePageInList } from '@/hooks'
 
@@ -52,8 +52,7 @@ export const FormActionsState: FC = () => {
           severity={`warning`}
 
           onClick={() => {
-            actions.app.FormActionsState_state('edit')
-            edit?.()
+            store.app.FormActionsState_edit()?.()
           }}
         />
         break;
@@ -72,7 +71,7 @@ export const FormActionsState: FC = () => {
             severity={`success`}
             size="small"
 
-            onClick={() => submit?.()}
+            onClick={() => store.app.FormActionsState_submit()?.()}
           />
 
           <Button
@@ -88,8 +87,7 @@ export const FormActionsState: FC = () => {
             size="small"
 
             onClick={() => {
-              actions.app.FormActionsState_state('read')
-              reset?.()
+              store.app.FormActionsState_reset()?.()
             }}
           />
         </>

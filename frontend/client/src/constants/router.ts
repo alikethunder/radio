@@ -14,13 +14,11 @@ export const app_routes = {
   project$id: '/project/:id',
   user_profile$id: '/user-profile/:id',
   station$id: '/station/:id',
-  "station$id/edit": '/station/:id/edit',
 } as const
 
 export const auth_required_routes = [
   app_routes.project$id,
   app_routes.user_profile$id,
-  //app_routes["station$id/edit"],
 ] as const
 
 export const auth_routes = [

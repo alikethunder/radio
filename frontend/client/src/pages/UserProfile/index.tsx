@@ -49,6 +49,7 @@ import { useFormState } from '@/hooks'
 
 import { tooltip_options } from "@/constants/tooltip_options"
 import { FrontUser } from "@/types"
+import { setForm } from "@/functions/setForm"
 
 const private_tooltip_options = { ...tooltip_options, position: 'right' } as const
 
@@ -66,8 +67,6 @@ export const UserProfile = () => {
 
   const [photo_blob, set_photo_blob] = useState<Blob | null>(null)
 
-  const [form, set_form] = useState<HTMLFormElement>()
-
   const user_data = useLoaderData() as FrontUser
 
   //console.log('user_data : ', user_data)
@@ -76,10 +75,7 @@ export const UserProfile = () => {
 
   const {
     control,
-    formState: {
-      errors,
-      isDirty,
-    },
+    formState: { errors, isDirty, defaultValues, isSubmitting },
     handleSubmit,
     getValues,
     setValue,
@@ -95,7 +91,7 @@ export const UserProfile = () => {
 
   //console.log("errors.name : ", errors.name)
 
-  const onSubmit = useCallback(async (data) => {
+  const onSubmit = useCallback(async (data: any) => {
     console.log('submit : ', data)
 
     const body = new FormData()
@@ -152,31 +148,30 @@ export const UserProfile = () => {
         className: 'w-30rem max-w-full mx-7 bg-white',
         accept: async () => {
           const update_email_resp = await fetch('/api/v1/profile/request-update-email', {
-                  method: 'POST',
-                  body: JSON.stringify({ new_email: data.email })
-                })
+            method: 'POST',
+            body: JSON.stringify({ new_email: data.email })
+          })
         },
         reject: () => { setValue('email', store.user.email()) }
       })
 
     }
 
-    actions.app.FormActionsState_state('read')
-
+/* 
+    // simulate saving 
+    await new Promise(res => setTimeout(() => {
+      res(true)
+    }, 4000))
+ */
 
   }, [photo_blob, photo_data_url])
 
   //todo add prompt to reset and save form if fields changed
   useFormState({
-    submit: () => {
-      //console.log('submit : ', form)
-      form?.requestSubmit()
-      actions.app.FormActionsState_state('saving')
-    },
     reset: () => {
       reset()
     },
-  }, form)
+  }, isSubmitting)
 
   return (
     <div
@@ -248,7 +243,7 @@ export const UserProfile = () => {
 
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-1 align-self-start sm:ml-5 mt-3 sm:mt-1 w-25rem max-w-full" ref={e => set_form(e as HTMLFormElement)}>
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-1 align-self-start sm:ml-5 mt-3 sm:mt-1 w-25rem max-w-full" ref={setForm}>
 
           <Controller
             name="name"

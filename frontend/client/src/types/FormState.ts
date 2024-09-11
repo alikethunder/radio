@@ -1,6 +1,7 @@
 export type FormState = {
   state?: 'read' | 'edit' | 'saving';
-  edit?: (() => void) | null;
-  submit?: (() => void) | null;
-  reset?: (() => void) | null
+  edit?: (() => void);
+  submit?: (() => void);
+  reset?: (() => void);
+  form?: HTMLFormElement;
 }
