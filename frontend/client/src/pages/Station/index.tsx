@@ -68,13 +68,13 @@ export const Station = () => {
 
   const [photo_blob, set_photo_blob] = useState<Blob | null>(null)
 
-  const station_data = useLoaderData() as FrontUser
+  const station_data = useLoaderData()
 
   //console.log('station_data : ', station_data)
 
-  const edit_mode = useTrackedStore().app.FormActionsState_state()
+  const edit_mode = useStore().app.FormActionsState_edit_mode()
 
-  console.log('[Station] edit_mode : ', edit_mode)
+  //console.log('[Station] edit_mode : ', edit_mode)
 
   const {
     control,
@@ -144,9 +144,7 @@ export const Station = () => {
 
   //todo add prompt to reset and save form if fields changed
   useFormState({
-    reset: () => {
-      reset()
-    },
+    reset,
   }, isSubmitting)
 
   return (
@@ -159,10 +157,10 @@ export const Station = () => {
         <div
           style={{ backgroundImage: `url(${photo_data_url || `/api/v1/files/station/avatar/${station_data.id}`})` }}
 
-          className={`profile_picture shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-circle flex align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode == 'edit' ? 'cursor-pointer' : ''}`}
+          className={`profile_picture shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-circle flex align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode ? 'cursor-pointer' : ''}`}
 
           onClick={() => {
-            if (edit_mode == 'edit') {
+            if (edit_mode) {
               photo_file_input_ref.current?.click()
             }
           }}
@@ -179,11 +177,11 @@ export const Station = () => {
 
           {
             photo_data_url || profile_photo_exists ? <></> :
-              <i className="pi pi-user text-4xl md:text-6xl"></i>
+              <i className="pi pi-wave-pulse text-4xl md:text-6xl"></i>
           }
 
           {
-            edit_mode == 'edit' ?
+            edit_mode ?
               <>
 
                 <div className="overlay absolute top-0 bottom-0 right-0 left-0 flex align-items-center justify-content-center text-center">
@@ -251,7 +249,7 @@ export const Station = () => {
                     field.onChange(e.target.value)
                   }}
                   onBlur={field.onBlur}
-                  disabled={edit_mode != 'edit'}
+                  disabled={!edit_mode}
                   pt={{
                     root: {
                       onInput: (e) => {

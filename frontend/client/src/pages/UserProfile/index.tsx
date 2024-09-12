@@ -71,7 +71,7 @@ export const UserProfile = () => {
 
   //console.log('user_data : ', user_data)
 
-  const edit_mode = useTrackedStore().app.FormActionsState_state()
+  const edit_mode = useStore().app.FormActionsState_edit_mode()
 
   const {
     control,
@@ -157,20 +157,18 @@ export const UserProfile = () => {
 
     }
 
-/* 
-    // simulate saving 
-    await new Promise(res => setTimeout(() => {
-      res(true)
-    }, 4000))
- */
+    /* 
+        // simulate saving 
+        await new Promise(res => setTimeout(() => {
+          res(true)
+        }, 4000))
+     */
 
   }, [photo_blob, photo_data_url])
 
   //todo add prompt to reset and save form if fields changed
   useFormState({
-    reset: () => {
-      reset()
-    },
+    reset,
   }, isSubmitting)
 
   return (
@@ -183,10 +181,10 @@ export const UserProfile = () => {
         <div
           style={{ backgroundImage: `url(${photo_data_url || `/api/v1/files/users/${user_data.id}/photo`})` }}
 
-          className={`profile_picture shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-circle flex align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode == 'edit' ? 'cursor-pointer' : ''}`}
+          className={`profile_picture shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-circle flex align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode ? 'cursor-pointer' : ''}`}
 
           onClick={() => {
-            if (edit_mode == 'edit') {
+            if (edit_mode) {
               photo_file_input_ref.current?.click()
             }
           }}
@@ -207,7 +205,7 @@ export const UserProfile = () => {
           }
 
           {
-            edit_mode == 'edit' ?
+            edit_mode ?
               <>
 
                 <div className="overlay absolute top-0 bottom-0 right-0 left-0 flex align-items-center justify-content-center text-center">
@@ -275,7 +273,7 @@ export const UserProfile = () => {
                     field.onChange(e.target.value)
                   }}
                   onBlur={field.onBlur}
-                  disabled={edit_mode != 'edit'}
+                  disabled={!edit_mode}
                   pt={{
                     root: {
                       onInput: (e) => {
@@ -332,7 +330,7 @@ export const UserProfile = () => {
                     onInput={() => clearErrors('email')}
                     onChange={(e) => field.onChange(e.target.value)}
                     onBlur={field.onBlur}
-                    disabled={edit_mode != 'edit'}
+                    disabled={!edit_mode}
                     autoComplete="email"
 
                     onInvalid={e => (e.target as HTMLInputElement).setCustomValidity('Enter an email that contains "@" Example: info@roshni.nl')}

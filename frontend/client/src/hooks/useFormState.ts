@@ -10,7 +10,12 @@ import {
 import {
   FormState
 } from '@/types/FormState'
-import { useSearchParams } from "react-router-dom"
+
+import {
+  useLoaderData,
+  useSearchParams,
+  useNavigate,
+} from "react-router-dom"
 
 //condition - condition to rerun useEffect
 
@@ -30,17 +35,30 @@ export const useFormState = (form_actions: FormState, isSubmitting: boolean, con
 
   const edit_mode = useMemo(() => search.has('edit'), [search])
 
+  const loader_data = useLoaderData() as {
+    id?: string;
+  }
+
+  const navigate = useNavigate()
+
+  //console.log('[useFormState] loader_data : ', loader_data)
+
+  //console.log('[useFormState] edit_mode : ', edit_mode)
+
   useEffect(() => {
 
     actions.app.FormActionsState_state(isSubmitting ? 'saving' : edit_mode ? 'edit' : 'read')
 
   }, [edit_mode, isSubmitting])
 
+
   useEffect(() => {
 
     actions.app.FormActionsState_edit(async () => {
+
       set_search(search => {
         search.set('edit', '')
+
         return search
       })
 
@@ -48,6 +66,14 @@ export const useFormState = (form_actions: FormState, isSubmitting: boolean, con
         await edit()
       }
     })
+
+    return () => {
+      actions.app.FormActionsState_edit(undefined)
+    }
+  }, [form, condition, edit])
+
+
+  useEffect(() => {
 
     actions.app.FormActionsState_submit(async () => {
 
@@ -58,11 +84,22 @@ export const useFormState = (form_actions: FormState, isSubmitting: boolean, con
       }
 
       set_search(search => {
+        //console.log('[useFormState] FormActionsState_submit delete edit ')
+
         search.delete('edit')
+
         return search
       })
 
     })
+
+    return () => {
+      actions.app.FormActionsState_submit(undefined)
+    }
+  }, [form, condition, submit])
+
+
+  useEffect(() => {
 
     actions.app.FormActionsState_reset(async () => {
 
@@ -71,16 +108,21 @@ export const useFormState = (form_actions: FormState, isSubmitting: boolean, con
       }
 
       set_search(search => {
+        //console.log('[useFormState] FormActionsState_reset delete edit ')
+
         search.delete('edit')
+
         return search
       })
+
+      if (loader_data.id == 'new') {
+        navigate(-1)
+      }
     })
 
     return () => {
-      actions.app.FormActionsState_edit(undefined)
-      actions.app.FormActionsState_submit(undefined)
       actions.app.FormActionsState_reset(undefined)
     }
-  }, [form, condition])
+  }, [form, condition, reset])
 
 }

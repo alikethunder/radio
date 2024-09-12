@@ -114,10 +114,13 @@ export const routes = [
         ) {
           //console.log('station params : ', params)
           //todo: load station data from db
+          const { id } = params
 
-          //new station
-          if (params.id == 'new') {
-            return params.id
+          if (id == 'new') {
+            //new station
+            return { id }
+          } else {
+            
           }
 
           //if there is no such station

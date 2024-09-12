@@ -108,7 +108,8 @@ export default function App() {
   const [current_route, checked_current_route] = usePageInList(all_routes)
   useEffect(() => {
     if (checked_current_route && current_route) {
-      console.log('current page : ', current_route)
+      //console.log('current page : ', current_route)
+      
       actions.app.current_page(route_attributes[current_route] ?? '')
     }
   }, [
@@ -168,6 +169,8 @@ export default function App() {
       && checked_auth_page
       && !authPage
     ) {
+      //console.log('[App] set prev_pathname : ', pathname)
+
       actions.app.prev_pathname(pathname)
     }
   }, [
