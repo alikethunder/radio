@@ -168,7 +168,11 @@ export const UserProfile = () => {
 
   //todo add prompt to reset and save form if fields changed
   useFormState({
-    reset,
+    reset() {
+      set_photo_data_url(null)
+      set_photo_blob(null)
+      reset()
+    },
   }, isSubmitting)
 
   return (
