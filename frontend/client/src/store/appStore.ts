@@ -35,8 +35,6 @@ type AppStore = {
   FormActionsState_submit: FormState["submit"];
   FormActionsState_reset: FormState["reset"];
   FormActionsState_form: FormState["form"];
-
-  user_photo_data_url: null | string;
 }
 
 export const appStore = createStore('app')({
@@ -62,7 +60,6 @@ export const appStore = createStore('app')({
   FormActionsState_reset: undefined,
   FormActionsState_edit: undefined,
   FormActionsState_form: undefined,
-  user_photo_data_url: null,
 } as AppStore)
   .extendSelectors((state, get, api) => ({
     FormActionsState_edit_mode: () => get.FormActionsState_state() == 'edit'

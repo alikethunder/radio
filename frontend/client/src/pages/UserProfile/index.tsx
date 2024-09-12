@@ -63,7 +63,7 @@ export const UserProfile = () => {
 
   const [profile_photo_exists, set_profile_photo_exists] = useState(true)
 
-  const photo_data_url = useStore().app.user_photo_data_url()
+  const [photo_data_url, set_photo_data_url] = useState<string | null>(null)
 
   const [photo_blob, set_photo_blob] = useState<Blob | null>(null)
 
@@ -234,7 +234,7 @@ export const UserProfile = () => {
               if (e.target.files?.[0]) {
                 const [blob, data_url] = await resize_image(e.target.files?.[0])
                 set_photo_blob(blob)
-                actions.app.user_photo_data_url(data_url)
+                set_photo_data_url(data_url)
               }
             }}
           />

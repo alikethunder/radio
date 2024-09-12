@@ -55,6 +55,8 @@ const private_tooltip_options = { ...tooltip_options, position: 'right' } as con
 
 export const Station = () => {
 
+  const station_data = useLoaderData()
+
   const navigate = useNavigate()
 
   const windowSize = useTrackedStore().app.windowSize()
@@ -64,11 +66,9 @@ export const Station = () => {
 
   const [profile_photo_exists, set_profile_photo_exists] = useState(true)
 
-  const photo_data_url = useStore().app.user_photo_data_url()
+  const [photo_data_url, set_photo_data_url] = useState<string | null>(null)
 
   const [photo_blob, set_photo_blob] = useState<Blob | null>(null)
-
-  const station_data = useLoaderData()
 
   //console.log('station_data : ', station_data)
 
@@ -92,7 +92,7 @@ export const Station = () => {
   } = useForm({
     mode: 'onTouched',
     defaultValues: {
-      name: station_data?.name,
+      name: station_data?.name ?? '',
     }
   })
 
@@ -155,7 +155,7 @@ export const Station = () => {
       <div className="flex flex-column sm:flex-row">
 
         <div
-          style={{ backgroundImage: `url(${photo_data_url || `/api/v1/files/station/avatar/${station_data.id}`})` }}
+          style={{ backgroundImage: `url(${photo_data_url || `/api/v1/files/stations/avatar/${station_data.id}`})` }}
 
           className={`profile_picture shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-circle flex align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode ? 'cursor-pointer' : ''}`}
 
@@ -167,7 +167,7 @@ export const Station = () => {
         >
           <img
             style={{ display: 'none' }}
-            src={`/api/v1/files/station/avatar/${station_data.id}`}
+            src={`/api/v1/files/stations/avatar/${station_data.id}`}
 
             onError={({ currentTarget }) => {
               currentTarget.onerror = null
@@ -210,7 +210,7 @@ export const Station = () => {
               if (e.target.files?.[0]) {
                 const [blob, data_url] = await resize_image(e.target.files?.[0])
                 set_photo_blob(blob)
-                actions.app.user_photo_data_url(data_url)
+                set_photo_data_url(data_url)
               }
             }}
           />

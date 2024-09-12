@@ -51,7 +51,6 @@ export const useFormState = (form_actions: FormState, isSubmitting: boolean, con
 
   }, [edit_mode, isSubmitting])
 
-
   useEffect(() => {
 
     actions.app.FormActionsState_edit(async () => {
@@ -124,5 +123,16 @@ export const useFormState = (form_actions: FormState, isSubmitting: boolean, con
       actions.app.FormActionsState_reset(undefined)
     }
   }, [form, condition, reset])
+
+  useEffect(() => {
+    return () => {
+      //state to 'read' on page change
+      set_search(search => {
+        search.delete('edit')
+
+        return search
+      })
+    }
+  }, [])
 
 }
