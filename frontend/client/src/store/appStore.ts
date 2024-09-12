@@ -35,6 +35,7 @@ type AppStore = {
   FormActionsState_submit: FormState["submit"];
   FormActionsState_reset: FormState["reset"];
   FormActionsState_form: FormState["form"];
+  FormActionsState_isValid: boolean;
 }
 
 export const appStore = createStore('app')({
@@ -60,6 +61,7 @@ export const appStore = createStore('app')({
   FormActionsState_reset: undefined,
   FormActionsState_edit: undefined,
   FormActionsState_form: undefined,
+  FormActionsState_isValid: false,
 } as AppStore)
   .extendSelectors((state, get, api) => ({
     FormActionsState_edit_mode: () => get.FormActionsState_state() == 'edit'

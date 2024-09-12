@@ -30,6 +30,7 @@ export const FormActionsState: FC = () => {
   const edit = useStore().app.FormActionsState_edit()
   const submit = useStore().app.FormActionsState_submit()
   const reset = useStore().app.FormActionsState_reset()
+  const isValid = useStore().app.FormActionsState_isValid()
 
   const show_actions = useMemo(() => submit || edit || reset, [
     submit,
@@ -71,6 +72,8 @@ export const FormActionsState: FC = () => {
             severity={`success`}
             size="small"
 
+            disabled={!isValid}
+
             onClick={() => store.app.FormActionsState_submit()?.()}
           />
 
@@ -109,7 +112,7 @@ export const FormActionsState: FC = () => {
 
       default: return null
     }
-  }, [edit_mode])
+  }, [edit_mode, isValid])
 
   return (
     show_actions ?

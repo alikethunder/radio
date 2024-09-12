@@ -12,6 +12,10 @@ import {
 } from '@/types/FormState'
 
 import {
+  FormState as rhf_formState
+} from 'react-hook-form'
+
+import {
   useLoaderData,
   useSearchParams,
   useNavigate,
@@ -19,7 +23,7 @@ import {
 
 //condition - condition to rerun useEffect
 
-export const useFormState = (form_actions: FormState, isSubmitting: boolean, condition?: any) => {
+export const useFormState = (form_actions: FormState, formState: rhf_formState<any>, condition?: any) => {
 
   //console.log('form actions : ', form_actions)
 
@@ -28,6 +32,12 @@ export const useFormState = (form_actions: FormState, isSubmitting: boolean, con
     submit,
     reset,
   } = form_actions
+
+  const { isSubmitting, isValid } = formState
+
+  useEffect(() => {
+    actions.app.FormActionsState_isValid(isValid)
+  }, [isValid])
 
   const form = useStore().app.FormActionsState_form()
 
@@ -75,27 +85,28 @@ export const useFormState = (form_actions: FormState, isSubmitting: boolean, con
   useEffect(() => {
 
     actions.app.FormActionsState_submit(async () => {
+      if (isValid) {
+        await form?.requestSubmit()
 
-      await form?.requestSubmit()
+        if (submit) {
+          await submit()
+        }
 
-      if (submit) {
-        await submit()
+        set_search(search => {
+          //console.log('[useFormState] FormActionsState_submit delete edit ')
+
+          search.delete('edit')
+
+          return search
+        })
       }
-
-      set_search(search => {
-        //console.log('[useFormState] FormActionsState_submit delete edit ')
-
-        search.delete('edit')
-
-        return search
-      })
 
     })
 
     return () => {
       actions.app.FormActionsState_submit(undefined)
     }
-  }, [form, condition, submit])
+  }, [form, condition, submit, isValid])
 
 
   useEffect(() => {

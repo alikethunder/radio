@@ -75,7 +75,7 @@ export const UserProfile = () => {
 
   const {
     control,
-    formState: { errors, isDirty, defaultValues, isSubmitting },
+    formState,
     handleSubmit,
     getValues,
     setValue,
@@ -89,7 +89,9 @@ export const UserProfile = () => {
     }
   })
 
-  //console.log("errors.name : ", errors.name)
+  const {errors} = formState
+
+  //console.log("errors : ", errors)
 
   const onSubmit = useCallback(async (data: any) => {
     console.log('submit : ', data)
@@ -173,7 +175,7 @@ export const UserProfile = () => {
       set_photo_blob(null)
       reset()
     },
-  }, isSubmitting)
+  }, formState)
 
   return (
     <div
@@ -250,7 +252,7 @@ export const UserProfile = () => {
           <Controller
             name="name"
             control={control}
-            rules={{ required: 'Project name cannot be empty' }}
+            rules={{ required: 'Name cannot be empty' }}
             render={({ field, fieldState }) => (
               <>
                 <label

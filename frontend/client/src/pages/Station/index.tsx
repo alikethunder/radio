@@ -66,9 +66,9 @@ export const Station = () => {
 
   const [profile_photo_exists, set_profile_photo_exists] = useState(true)
 
-  const [photo_data_url, set_photo_data_url] = useState<string | null>(null)
+  const [avatar_data_url, set_avatar_data_url] = useState<string | null>(null)
 
-  const [photo_blob, set_photo_blob] = useState<Blob | null>(null)
+  const [avatar_blob, set_avatar_blob] = useState<Blob | null>(null)
 
   //console.log('station_data : ', station_data)
 
@@ -78,12 +78,7 @@ export const Station = () => {
 
   const {
     control,
-    formState: {
-      errors,
-      isDirty,
-      defaultValues,
-      isSubmitting,
-    },
+    formState,
     handleSubmit,
     getValues,
     setValue,
@@ -96,6 +91,8 @@ export const Station = () => {
     }
   })
 
+  const { errors } = formState
+
   //console.log("errors.name : ", errors.name)
 
   const onSubmit = useCallback(async (data: any) => {
@@ -105,8 +102,8 @@ export const Station = () => {
 
     Object.keys(data).forEach(k => body.set(k, data[k]))
 
-    if (photo_blob) {
-      body.set('photo', photo_blob)
+    if (avatar_blob) {
+      body.set('photo', avatar_blob)
     }
 
     const id = store.user.id()
@@ -115,8 +112,8 @@ export const Station = () => {
       body.set('id', id)
     }
 
-    if (photo_data_url) {
-      actions.user.photo(photo_data_url)
+    if (avatar_data_url) {
+      actions.user.photo(avatar_data_url)
     }
 
     //console.log('body : ', body.values())
@@ -133,23 +130,23 @@ export const Station = () => {
 
       actions.user.update_user_data(user)
 
-      set_photo_blob(null)
+      set_avatar_blob(null)
     }
 
 
-    actions.app.FormActionsState_state('read')
+    //actions.app.FormActionsState_state('read')
 
 
-  }, [photo_blob, photo_data_url])
+  }, [avatar_blob, avatar_data_url])
 
   //todo add prompt to reset and save form if fields changed
   useFormState({
     reset() {
-      set_photo_data_url(null)
-      set_photo_blob(null)
+      set_avatar_data_url(null)
+      set_avatar_blob(null)
       reset()
     },
-  }, isSubmitting)
+  }, formState)
 
   return (
     <div
@@ -159,7 +156,7 @@ export const Station = () => {
       <div className="flex flex-column sm:flex-row">
 
         <div
-          style={{ backgroundImage: `url(${photo_data_url || `/api/v1/files/stations/avatar/${station_data.id}`})` }}
+          style={{ backgroundImage: `url(${avatar_data_url || `/api/v1/files/stations/avatar/${station_data.id}`})` }}
 
           className={`profile_picture shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-circle flex align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode ? 'cursor-pointer' : ''}`}
 
@@ -180,7 +177,7 @@ export const Station = () => {
           />
 
           {
-            photo_data_url || profile_photo_exists ? <></> :
+            avatar_data_url || profile_photo_exists ? <></> :
               <i className="pi pi-wave-pulse text-4xl md:text-6xl"></i>
           }
 
@@ -213,8 +210,8 @@ export const Station = () => {
             onChange={async (e) => {
               if (e.target.files?.[0]) {
                 const [blob, data_url] = await resize_image(e.target.files?.[0])
-                set_photo_blob(blob)
-                set_photo_data_url(data_url)
+                set_avatar_blob(blob)
+                set_avatar_data_url(data_url)
               }
             }}
           />
@@ -226,7 +223,7 @@ export const Station = () => {
           <Controller
             name="name"
             control={control}
-            rules={{ required: 'Project name cannot be empty' }}
+            rules={{ required: 'Radiostation name cannot be empty' }}
             render={({ field, fieldState }) => (
               <>
                 <label
@@ -238,7 +235,7 @@ export const Station = () => {
                     'text-600'
                   )}
                 >
-                  <small>Имя</small>
+                  <small>Radiostation name</small>
                 </label>
 
                 <InputText
