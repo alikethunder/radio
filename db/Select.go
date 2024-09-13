@@ -28,7 +28,9 @@ func Select(table string, key_parameters Types.Map, select_parameters ...string)
 			selectString.WriteString(`*`)
 		}
 
-		selectString.WriteString(` FROM users WHERE `)
+		selectString.WriteString(` FROM `)
+		selectString.WriteString(table)
+		selectString.WriteString(` WHERE `)
 		values := make([]interface{}, len(key_parameters))
 
 		i := 0
@@ -47,8 +49,8 @@ func Select(table string, key_parameters Types.Map, select_parameters ...string)
 
 		selectString.WriteString(` LIMIT 1 ALLOW FILTERING`)
 
-		//fmt.Println("[Update] selectString : ", selectString.String())
-		//fmt.Println("[Update] values : ", values)
+		fmt.Println("[Select] selectString : ", selectString.String())
+		fmt.Println("[Select] values : ", values)
 
 		if err := Session.Query(selectString.String(), values...).MapScan(result); err != nil {
 

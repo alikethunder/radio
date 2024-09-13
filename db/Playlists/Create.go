@@ -12,7 +12,7 @@ import (
 	description text,			track description
 	data blob,						track blob
 	image blob,						track image
-	order int,						order in which track is played
+	track_order int,						order in which track is played
 *	links ,								links to distribution platforms
 	price double,					track price
 	tags set<text>,				tags

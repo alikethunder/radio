@@ -106,21 +106,26 @@ export const routes = [
       {
         path: app_routes.station$id,
         element: <Station />,
-        loader(
+        loader: async (
           {
             params,
             request,
           }: Loader_params
-        ) {
+        ) => {
           //console.log('station params : ', params)
           //todo: load station data from db
           const { id } = params
 
           if (id == 'new') {
             //new station
-            return { id }
+            return {
+              id,
+            }
           } else {
-            
+            const resp = await fetch(`/api/v1/radio/${id}`)
+            const station = await resp.json()
+
+            return station
           }
 
           //if there is no such station

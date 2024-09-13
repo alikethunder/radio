@@ -10,31 +10,30 @@ import (
 	id uuid, 								station id
 	name text,  						station name
 	description text, 			station description
-	playlist uuid, 					station playlist table
+	playlist uuid, 					station playlist table 'playlist_${uuid}'
 	avatar blob, 						station icon image
 	background blob, 				station background image
 	broadcasting boolean, 	on/off
 	tags set<text>,					station tags
 	admins set<uuid>, 			who can alter station
-	order smallint,					order of stations to render
+	render_order smallint,					order of stations to render
 	likes int,							how many times was added to favorites
 */
 
 func Initialize() {
 	if err := db.Session.Query(`CREATE TABLE IF NOT EXISTS stations (
-		id uuid,
+		id uuid PRIMARY KEY,
 		name text,
 		description text,
-		playlist uuid,
+		playlist text,
 		avatar blob,
 		background blob,
 		broadcasting boolean,
 		tags set<text>,
 		admins set<uuid>,
-		order smallint,
-		likes int,
-		PRIMARY KEY (id)
-	)`).Exec(); err != nil {
+		render_order smallint,
+		likes int
+	) WITH caching = {'enabled': 'true'};`).Exec(); err != nil {
 
 		log.Fatal("create stations TABLE err : ", err)
 	}

@@ -1,6 +1,7 @@
 import { FC, useCallback, useEffect, useMemo, useRef, useState, LegacyRef } from "react"
 
 import {
+  generatePath,
   useLoaderData,
   useNavigate,
   useParams,
@@ -103,35 +104,28 @@ export const Station = () => {
     Object.keys(data).forEach(k => body.set(k, data[k]))
 
     if (avatar_blob) {
-      body.set('photo', avatar_blob)
+      body.set('avatar', avatar_blob)
     }
 
-    const id = store.user.id()
-
-    if (id) {
-      body.set('id', id)
-    }
-
-    if (avatar_data_url) {
-      actions.user.photo(avatar_data_url)
+    if (station_data.id != 'new') {
+      body.set('id', station_data.id)
     }
 
     //console.log('body : ', body.values())
 
-    const response = await fetch('/api/v1/profile/update', {
+    const resp = await fetch('/api/v1/radio/update', {
       method: 'POST',
       body,
     })
 
-    if (response.status == 200) {
-      const user = await response.json()
-
-      console.log('[UserProfile] submit response : ', response, user)
-
-      actions.user.update_user_data(user)
-
+    if (resp.status == 200) {
+      const id = await resp.text()
+      navigate(generatePath(app_routes["station$id"], { id }))
       set_avatar_blob(null)
+    } else {
+
     }
+
 
 
   }, [avatar_blob, avatar_data_url])

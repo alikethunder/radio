@@ -12,6 +12,7 @@ import (
 	//"web_project/cookies"
 	"web_project/db"
 	DBPlans "web_project/db/Plans"
+	"web_project/db/Stations"
 	Users "web_project/db/Users"
 	"web_project/radio"
 
@@ -43,7 +44,7 @@ func init() {
 	Users.Initialize()
 	DBPlans.Initialize()
 	mailer.Initialize()
-	//cookies.Initialize()
+	Stations.Initialize()
 }
 
 func main() {
@@ -122,6 +123,10 @@ func main() {
 	go radio.Stream(radio.ConnPool, ctn)
 
 	radio_endpoints.Get("/broadcast/:id", RadioEndpoints.Broadcast)
+
+	radio_endpoints.Post("/update", RadioEndpoints.Update)
+
+	radio_endpoints.Get("/:id", RadioEndpoints.GetStation)
 
 	app.Use("/reloadws", func(c *fiber.Ctx) error {
 		// IsWebSocketUpgrade returns true if the client

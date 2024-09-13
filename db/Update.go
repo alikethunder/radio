@@ -6,10 +6,14 @@ import (
 	Types "web_project/types"
 )
 
-func Update(table string, insert_parameters Types.Map, key_parameters Types.Map) error {
+func Update(table string, orig_insert_parameters Types.Map, key_parameters Types.Map) error {
 
-	for k := range key_parameters {
-		delete(insert_parameters, k)
+	insert_parameters := make(Types.Map)
+
+	for k, v := range orig_insert_parameters {
+		if _, ok := key_parameters[k]; !ok {
+			insert_parameters[k] = v
+		}
 	}
 
 	if len(insert_parameters) > 0 && len(key_parameters) > 0 {
