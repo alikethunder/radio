@@ -1,56 +1,31 @@
 package ProfileEndpoints
 
 import (
-	"bytes"
 	"fmt"
-	"io"
 
 	"web_project/cookies"
 	"web_project/db"
+	"web_project/functions"
 	Types "web_project/types"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-func Update(c *fiber.Ctx) error {
+func Update(ctx *fiber.Ctx) error {
 
-	authCookie := c.Cookies(cookies.AuthCookieName)
+	authCookie := ctx.Cookies(cookies.AuthCookieName)
 
 	if authCookie != "" {
 
-		u := cookies.ParseCookie(c.Cookies(cookies.AuthCookieName))
+		u := cookies.ParseCookie(ctx.Cookies(cookies.AuthCookieName))
 
-		id := c.FormValue("id")
+		id := ctx.FormValue("id")
 
 		if u["id"] == id {
 
-			photo, err := c.FormFile("photo")
-
-			if err != nil {
-				fmt.Println("[ProfileEndpoints.Update] FormFile error : ", err)
-			}
-
-			name := c.FormValue(("name"))
+			updated_fields := functions.ParseForm(ctx, []string{"name"}, []string{"photo"})
 
 			user, _ := db.Select("users", Types.Map{"id": id}, "email")
-
-			updated_fields := Types.Map{"name": name}
-
-			if photo != nil {
-				b := bytes.NewBuffer(nil)
-
-				photo_file, err := photo.Open()
-
-				if err != nil {
-					fmt.Println("[ProfileEndpoints.Update] photo.Open error : ", err)
-				}
-
-				if _, err := io.Copy(b, photo_file); err != nil {
-					fmt.Println("[ProfileEndpoints.Update] io.Copy error : ", err)
-				}
-
-				updated_fields["photo"] = b.Bytes()
-			}
 
 			if err := db.Update(
 				"users",
@@ -62,14 +37,14 @@ func Update(c *fiber.Ctx) error {
 			); err != nil {
 
 				fmt.Println("[ProfileEndpoints.Update] update user err : ", err)
-				return c.SendStatus(fiber.StatusForbidden)
+				return ctx.SendStatus(fiber.StatusForbidden)
 			}
 
-			return c.Status(fiber.StatusOK).JSON(Types.Map{"name": name})
+			return ctx.Status(fiber.StatusOK).JSON(Types.Map{"name": updated_fields["name"]})
 		}
 
 	}
 
-	cookies.ClearAuthCookies(c)
-	return c.SendStatus(fiber.StatusUnauthorized)
+	cookies.ClearAuthCookies(ctx)
+	return ctx.SendStatus(fiber.StatusUnauthorized)
 }

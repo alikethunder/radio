@@ -134,9 +134,6 @@ export const Station = () => {
     }
 
 
-    //actions.app.FormActionsState_state('read')
-
-
   }, [avatar_blob, avatar_data_url])
 
   //todo add prompt to reset and save form if fields changed
