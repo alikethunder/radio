@@ -19,7 +19,7 @@ func Index(c *fiber.Ctx) error {
 
 		if cookie_user["id"] != nil {
 
-			user, err := db.Select("users", Types.Map{"email": cookie_user["email"]}, "id", "name", "email", "subscription_plan")
+			user, err := db.SelectRow("users", Types.Map{"email": cookie_user["email"]}, "id", "name", "email", "subscription_plan")
 
 			if err != nil {
 

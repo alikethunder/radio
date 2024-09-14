@@ -24,7 +24,7 @@ func Start(c *fiber.Ctx) error {
 
 		u := cookies.ParseCookie(c.Cookies(cookies.AuthCookieName))
 
-		user, _ := db.Select("users", Types.Map{"email": u["email"]}, "id", "name", "email")
+		user, _ := db.SelectRow("users", Types.Map{"email": u["email"]}, "id", "name", "email")
 
 		user["created"] = user["id"].(gocql.UUID).Time()
 
@@ -40,7 +40,7 @@ func Start(c *fiber.Ctx) error {
 
 	//fmt.Println("ResetPassword user : ", u)
 
-	user, _ := db.Select("users", Types.Map{"email": user_json["email"]}, "id", "name")
+	user, _ := db.SelectRow("users", Types.Map{"email": user_json["email"]}, "id", "name")
 
 	if user != nil {
 		vc := functions.Vc()

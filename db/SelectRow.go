@@ -6,7 +6,7 @@ import (
 	Types "web_project/types"
 )
 
-func Select(table string, key_parameters Types.Map, select_parameters ...string) (Types.Map, error) {
+func SelectRow(table string, key_parameters Types.Map, select_parameters ...string) (Types.Map, error) {
 
 	if len(key_parameters) > 0 {
 		result := make(Types.Map)
@@ -49,12 +49,12 @@ func Select(table string, key_parameters Types.Map, select_parameters ...string)
 
 		selectString.WriteString(` LIMIT 1 ALLOW FILTERING`)
 
-		//fmt.Println("[Select] selectString : ", selectString.String())
-		//fmt.Println("[Select] values : ", values)
+		//fmt.Println("[SelectRow] selectString : ", selectString.String())
+		//fmt.Println("[SelectRow] values : ", values)
 
 		if err := Session.Query(selectString.String(), values...).MapScan(result); err != nil {
 
-			fmt.Printf("[Select] Error: table %s with key_parameters %s and select_parameters %s : %s\n", table, key_parameters, select_parameters, err)
+			fmt.Printf("[SelectRow] Error: table %s with key_parameters %s and select_parameters %s : %s\n", table, key_parameters, select_parameters, err)
 
 			return nil, err
 		}
@@ -62,5 +62,5 @@ func Select(table string, key_parameters Types.Map, select_parameters ...string)
 		return result, nil
 	}
 
-	return nil, fmt.Errorf("[Select] Error: Not enough key parameters; Parameters: table %s with key_parameters %s and select_parameters %s", table, key_parameters, select_parameters)
+	return nil, fmt.Errorf("[SelectRow] Error: Not enough key parameters; Parameters: table %s with key_parameters %s and select_parameters %s", table, key_parameters, select_parameters)
 }

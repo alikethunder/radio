@@ -25,7 +25,7 @@ func Update(ctx *fiber.Ctx) error {
 
 			updated_fields := functions.ParseForm(ctx, []string{"name"}, []string{"photo"})
 
-			user, _ := db.Select("users", Types.Map{"id": id}, "email")
+			user, _ := db.SelectRow("users", Types.Map{"id": id}, "email")
 
 			if err := db.Update(
 				"users",

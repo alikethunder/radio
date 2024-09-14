@@ -15,7 +15,7 @@ func GetStation(ctx *fiber.Ctx) error {
 
 	id := ctx.Params("id")
 
-	station, err := db.Select("stations", Types.Map{"id": id})
+	station, err := db.SelectRow("stations", Types.Map{"id": id})
 
 	if err == nil {
 		return ctx.Status(fiber.StatusOK).JSON(station)

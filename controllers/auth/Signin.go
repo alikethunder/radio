@@ -23,7 +23,7 @@ func Signin(c *fiber.Ctx) error {
 
 	//fmt.Println("Signup user : ", u)
 
-	user, _ := db.Select("users", Types.Map{"email": req_json["email"]}, "id", "password", "name")
+	user, _ := db.SelectRow("users", Types.Map{"email": req_json["email"]}, "id", "password", "name")
 
 	if user != nil && user["password"] != "" && user["password"] != nil {
 

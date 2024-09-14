@@ -20,7 +20,7 @@ func GetFile(c *fiber.Ctx) error {
 
 	if row_id != "" && table != "" && field != "" {
 
-		if result, _ := db.Select(table, Types.Map{"id": row_id}, field); result != nil {
+		if result, _ := db.SelectRow(table, Types.Map{"id": row_id}, field); result != nil {
 
 			fmt.Printf("[FilesEndpoints.GetFile] %s %d \n", field, len(result[field].([]byte)))
 

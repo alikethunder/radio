@@ -21,7 +21,7 @@ func Create(user Types.Map) (Types.Map, error) {
 
 	_, oauth_flow := user["oauth"].(bool)
 
-	user_db, err := db.Select("users", Types.Map{"email": user["email"]}, "id", "password", "name")
+	user_db, err := db.SelectRow("users", Types.Map{"email": user["email"]}, "id", "password", "name")
 
 	if user_db == nil {
 		user_db = make(Types.Map)
@@ -98,7 +98,7 @@ func Create(user Types.Map) (Types.Map, error) {
 			mailer.SendVc(vc, user["email"].(string), user["name"].(string))
 		}
 
-		return db.Select("users", Types.Map{"id": user_db["id"], "email": user["email"]}, "name", "email", "id")
+		return db.SelectRow("users", Types.Map{"id": user_db["id"], "email": user["email"]}, "name", "email", "id")
 
 	}
 

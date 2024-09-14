@@ -21,7 +21,7 @@ func UpdateEmail(c *fiber.Ctx) error {
 		if data["new_email"] != nil {
 			fmt.Println("[UpdateEmail] update email : ", data)
 
-			user, err := db.Select("users", Types.Map{"id": data["id"], "email": data["old_email"]})
+			user, err := db.SelectRow("users", Types.Map{"id": data["id"], "email": data["old_email"]})
 
 			if err != nil {
 				return c.SendStatus(fiber.StatusForbidden)

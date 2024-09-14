@@ -23,7 +23,7 @@ func Verification(c *fiber.Ctx) error {
 
 	//fmt.Println("Signup user : ", u)
 
-	user, _ := db.Select("users", Types.Map{"email": user_json["email"]}, "id", "verification_code", "name")
+	user, _ := db.SelectRow("users", Types.Map{"email": user_json["email"]}, "id", "verification_code", "name")
 
 	if user != nil && user["verification_code"] == user_json["verification_code"] {
 

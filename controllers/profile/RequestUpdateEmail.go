@@ -26,7 +26,7 @@ func RequestUpdateEmail(c *fiber.Ctx) error {
 		//get the auth cookie info
 		cookie_user := cookies.ParseCookie(c.Cookies(cookies.AuthCookieName))
 
-		stored_user, err := db.Select("users", Types.Map{"email": cookie_user["email"], "id": cookie_user["id"]}, "name")
+		stored_user, err := db.SelectRow("users", Types.Map{"email": cookie_user["email"], "id": cookie_user["id"]}, "name")
 
 		fmt.Println("[ProfileEndpoints.RequestUpdateEmail] stored_user : ", stored_user)
 

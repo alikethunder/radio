@@ -22,13 +22,13 @@ func Update(ctx *fiber.Ctx) error {
 
 		cookie_user := cookies.ParseCookie(ctx.Cookies(cookies.AuthCookieName))
 
-		db_user, _ := db.Select("users", Types.Map{"id": cookie_user["id"]}, "admin")
+		db_user, _ := db.SelectRow("users", Types.Map{"id": cookie_user["id"]}, "admin")
 
 		station_id := ctx.FormValue("id")
 
 		//fmt.Printf("[RadioEndpoints.Update] station_id =  %s \n", station_id)
 
-		station, _ := db.Select("stations", Types.Map{"id": station_id}, "admins")
+		station, _ := db.SelectRow("stations", Types.Map{"id": station_id}, "admins")
 
 		fmt.Println("[RadioEndpoints.Update] station :", station)
 

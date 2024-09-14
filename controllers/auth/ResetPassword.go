@@ -21,7 +21,7 @@ func ResetPassword(c *fiber.Ctx) error {
 
 	//fmt.Println("ResetPassword user : ", u)
 
-	user, _ := db.Select("users", Types.Map{"email": u["email"]}, "id", "name")
+	user, _ := db.SelectRow("users", Types.Map{"email": u["email"]}, "id", "name")
 
 	if user != nil {
 		vc := functions.Vc()
