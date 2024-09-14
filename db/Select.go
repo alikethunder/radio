@@ -49,8 +49,8 @@ func Select(table string, key_parameters Types.Map, select_parameters ...string)
 
 		selectString.WriteString(` LIMIT 1 ALLOW FILTERING`)
 
-		fmt.Println("[Select] selectString : ", selectString.String())
-		fmt.Println("[Select] values : ", values)
+		//fmt.Println("[Select] selectString : ", selectString.String())
+		//fmt.Println("[Select] values : ", values)
 
 		if err := Session.Query(selectString.String(), values...).MapScan(result); err != nil {
 

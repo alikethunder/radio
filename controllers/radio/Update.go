@@ -35,15 +35,19 @@ func Update(ctx *fiber.Ctx) error {
 
 			updated_fields := functions.ParseForm(ctx, []string{"name"}, []string{"avatar"})
 
-			if updated_fields["id"] == nil {
-				updated_fields["id"] = gocql.TimeUUID()
+			//fmt.Println("[RadioEndpoints.Update] updated_fields :", updated_fields)
+
+			if station_id == "" {
+				station_id = gocql.TimeUUID().String()
 			}
+
+			//fmt.Printf("[RadioEndpoints.Update] station_id =  %s \n", station_id)
 
 			err := db.Update(
 				"stations",
 				updated_fields,
 				Types.Map{
-					"id": updated_fields["id"],
+					"id": station_id,
 				},
 			)
 
@@ -53,7 +57,7 @@ func Update(ctx *fiber.Ctx) error {
 				return ctx.SendStatus(fiber.StatusForbidden)
 			}
 
-			return ctx.Status(fiber.StatusOK).Send([]byte(updated_fields["id"].(gocql.UUID).String()))
+			return ctx.Status(fiber.StatusOK).Send([]byte(station_id))
 		}
 
 	}

@@ -58,6 +58,8 @@ export const Station = () => {
 
   const station_data = useLoaderData()
 
+  //console.log('station_data : ', station_data)
+
   const navigate = useNavigate()
 
   const windowSize = useTrackedStore().app.windowSize()
@@ -70,8 +72,6 @@ export const Station = () => {
   const [avatar_data_url, set_avatar_data_url] = useState<string | null>(null)
 
   const [avatar_blob, set_avatar_blob] = useState<Blob | null>(null)
-
-  //console.log('station_data : ', station_data)
 
   const edit_mode = useStore().app.FormActionsState_edit_mode()
 
@@ -111,7 +111,7 @@ export const Station = () => {
       body.set('id', station_data.id)
     }
 
-    //console.log('body : ', body.values())
+    //console.log('id : ', station_data.id)
 
     const resp = await fetch('/api/v1/radio/update', {
       method: 'POST',
@@ -128,7 +128,7 @@ export const Station = () => {
 
 
 
-  }, [avatar_blob, avatar_data_url])
+  }, [avatar_blob, avatar_data_url, station_data])
 
   //todo add prompt to reset and save form if fields changed
   useFormState({
@@ -147,7 +147,7 @@ export const Station = () => {
       <div className="flex flex-column sm:flex-row">
 
         <div
-          style={{ backgroundImage: `url(${avatar_data_url || `/api/v1/files/stations/avatar/${station_data.id}`})` }}
+          style={{ backgroundImage: `url(${avatar_data_url || `/api/v1/files/stations/${station_data.id}/avatar`})` }}
 
           className={`profile_picture shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-circle flex align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode ? 'cursor-pointer' : ''}`}
 
@@ -159,7 +159,7 @@ export const Station = () => {
         >
           <img
             style={{ display: 'none' }}
-            src={`/api/v1/files/stations/avatar/${station_data.id}`}
+            src={`/api/v1/files/stations/${station_data.id}/avatar`}
 
             onError={({ currentTarget }) => {
               currentTarget.onerror = null
