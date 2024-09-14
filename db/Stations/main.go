@@ -25,7 +25,6 @@ func Initialize() {
 		id uuid PRIMARY KEY,
 		name text,
 		description text,
-		playlist text,
 		avatar blob,
 		background blob,
 		broadcasting boolean,

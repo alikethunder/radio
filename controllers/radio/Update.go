@@ -6,6 +6,7 @@ import (
 	"slices"
 	"web_project/cookies"
 	"web_project/db"
+	"web_project/db/Playlists"
 	"web_project/functions"
 	Types "web_project/types"
 
@@ -29,7 +30,7 @@ func Update(ctx *fiber.Ctx) error {
 
 		station, _ := db.Select("stations", Types.Map{"id": station_id}, "admins")
 
-		//fmt.Println("[RadioEndpoints.Update] station :", station)
+		fmt.Println("[RadioEndpoints.Update] station :", station)
 
 		if db_user["admin"] == true || (station["admins"] != nil && slices.Contains(station["admins"].([]string), cookie_user["id"].(string))) {
 
@@ -38,7 +39,11 @@ func Update(ctx *fiber.Ctx) error {
 			//fmt.Println("[RadioEndpoints.Update] updated_fields :", updated_fields)
 
 			if station_id == "" {
+				//new station
 				station_id = gocql.TimeUUID().String()
+
+				//create playlist
+				Playlists.Create(station_id)
 			}
 
 			//fmt.Printf("[RadioEndpoints.Update] station_id =  %s \n", station_id)

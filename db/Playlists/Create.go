@@ -7,41 +7,43 @@ import (
 )
 
 /*
-	id uuid, 							track id
-	name text,						track name
-	description text,			track description
-	data blob,						track blob
-	image blob,						track image
-	track_order int,						order in which track is played
-*	links ,								links to distribution platforms
-	price double,					track price
-	tags set<text>,				tags
-	downloads set<uuid>,	ids of users that downloaded
-	downloadable boolean, if track can be downloaded
+	id text, 								playlist_${station_id}
+	name text,							track name
+	description text,				track description
+	data blob,							track blob
+	image blob,							track image
+	track_order int,				order in which track is played
+*	links ,									links to distribution platforms
+	price double,						track price
+	tags set<text>,					tags
+	downloads set<uuid>,		ids of users that downloaded
+	downloadable boolean, 	if track can be downloaded
+	likes	int,							how many people liked track
+	video boolean,					if track is video
 */
 
-func Create(playlist string) (string, error) {
-	id := "playlist_" + playlist
+func Create(station_id string) error {
+	id := PlaylistId(station_id)
+	fmt.Printf("[Playlists.Create] id %s \n", id)
 	if err := db.Session.Query(`CREATE TABLE IF NOT EXISTS ` + id + ` (
-		id uuid,
+		id text PRIMARY KEY,
 		name text,
 		description text,
 		data blob,
 		image blob,
-		order smallint,
+		play_order smallint,
 		price double,
 		tags set<text>,
 		downloads set<uuid>,
 		downloadable boolean,
-		PRIMARY KEY (id)
-	)`).Exec(); err != nil {
+		likes	int,
+		video boolean
+	) WITH caching = {'enabled': 'true'};`).Exec(); err != nil {
 
-		log.Fatal("create stations TABLE err : ", err)
-		return "", err
+		log.Fatal("create playlist_ TABLE err : ", err)
+		return err
 	}
 
-	fmt.Printf("playlist %s TABLE CREATED /n", id)
-
-	return id, nil
+	return nil
 
 }
