@@ -23,9 +23,11 @@ import {
   useLog,
 } from '@/hooks'
 
+import { Station } from "@/types"
+
 export const Home = () => {
 
-  const stations = useLoaderData()
+  const stations = useLoaderData() as Station[]
 
   useLog('[Home] stations : ', stations)
 
@@ -40,7 +42,6 @@ export const Home = () => {
 
   return (
     <div className="sm:py-5 py-4 sm:px-6 px-4 w-full h-full overflow-y-auto page home_page flex-grow-1 flex flex-column">
-
 
       <div className="stations_list"
         //@ts-ignore
@@ -64,42 +65,23 @@ export const Home = () => {
           </SmallCardContainer>
         </QueryLink>
 
-        <SmallCardContainer className="flex flex-row pt-1 overflow-hidden radio_card align-items-center">
+        {
+          stations?.map(station =>
+            <SmallCardContainer className="flex flex-row pt-1 overflow-hidden radio_card align-items-center">
 
-          <div className="station_info">
-
-            <div className="radio_card_icon"><i className="pi pi-folder-plus" style={{ fontSize: '2rem' }}></i></div>
-
-            <div className="radio_card_header align-self-center font-semibold">
-            </div>
-
-          </div>
-        </SmallCardContainer>
-
-        <SmallCardContainer className="flex flex-row pt-1 overflow-hidden radio_card align-items-center">
-
-          <div className="radio_card_icon"><i className="pi pi-folder-plus" style={{ fontSize: '2rem' }}></i></div>
-
-          <div className="radio_card_header align-self-center font-semibold">
-
-          </div>
-        </SmallCardContainer>
-
-        <SmallCardContainer className="flex flex-row pt-1 overflow-hidden radio_card align-items-center">
-
-          <div className="radio_card_icon"><i className="pi pi-folder-plus" style={{ fontSize: '2rem' }}></i></div>
-
-          <div className="radio_card_header align-self-center font-semibold">
-
-          </div>
-        </SmallCardContainer>
+              <div className="station_info">
 
 
+                <div className="radio_card_icon"><i className="pi pi-folder-plus" style={{ fontSize: '2rem' }}></i></div>
 
+                <div className="radio_card_header align-self-center font-semibold">
+                </div>
+
+              </div>
+            </SmallCardContainer>
+          )}
 
       </div>
-
-
 
     </div >
   )

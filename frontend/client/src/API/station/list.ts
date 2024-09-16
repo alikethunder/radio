@@ -1,9 +1,11 @@
 import { objectToQuery } from "@/functions/objectToQuery"
 
-export const list = async (parameters?: {
+import { Station } from "@/types"
+
+export const list: (parameters?: {
   offset?: number,
   limit?: number,
-}) => {
+}) => Promise<Station[]> = async (parameters) => {
   const resp = await fetch(`/api/v1/radio/list?${objectToQuery(parameters ?? {})}`)
 
   if (resp.status == 200) {
@@ -11,5 +13,5 @@ export const list = async (parameters?: {
     return json
   }
 
-  return {}
+  return []
 }
