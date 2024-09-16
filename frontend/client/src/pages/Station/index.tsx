@@ -49,16 +49,20 @@ import { Ripple } from "primereact/ripple"
 import { useFormState } from '@/hooks'
 
 import { tooltip_options } from "@/constants/tooltip_options"
-import { FrontUser } from "@/types"
+
+import {
+  Station as StationType
+} from "@/types"
+
 import { setForm } from "@/functions/setForm"
 
 const private_tooltip_options = { ...tooltip_options, position: 'right' } as const
 
 export const Station = () => {
 
-  const station_data = useLoaderData()
+  const station = useLoaderData() as StationType
 
-  //console.log('station_data : ', station_data)
+  //console.log('station : ', station)
 
   const navigate = useNavigate()
 
@@ -88,7 +92,7 @@ export const Station = () => {
   } = useForm({
     mode: 'onTouched',
     defaultValues: {
-      name: station_data?.name ?? '',
+      name: station?.name ?? '',
     }
   })
 
@@ -107,11 +111,11 @@ export const Station = () => {
       body.set('avatar', avatar_blob)
     }
 
-    if (station_data.id != 'new') {
-      body.set('id', station_data.id)
+    if (station.id != 'new') {
+      body.set('id', station.id)
     }
 
-    //console.log('id : ', station_data.id)
+    //console.log('id : ', station.id)
 
     const resp = await fetch('/api/v1/radio/update', {
       method: 'POST',
@@ -128,7 +132,7 @@ export const Station = () => {
 
 
 
-  }, [avatar_blob, avatar_data_url, station_data])
+  }, [avatar_blob, avatar_data_url, station])
 
   //todo add prompt to reset and save form if fields changed
   useFormState({
@@ -147,7 +151,7 @@ export const Station = () => {
       <div className="flex flex-column sm:flex-row">
 
         <div
-          style={{ backgroundImage: `url(${avatar_data_url || `/api/v1/files/stations/${station_data.id}/avatar`})` }}
+          style={{ backgroundImage: `url(${avatar_data_url || `/api/v1/files/stations/${station.id}/avatar`})` }}
 
           className={`profile_picture shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-circle flex align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode ? 'cursor-pointer' : ''}`}
 
@@ -159,7 +163,7 @@ export const Station = () => {
         >
           <img
             style={{ display: 'none' }}
-            src={`/api/v1/files/stations/${station_data.id}/avatar`}
+            src={`/api/v1/files/stations/${station.id}/avatar`}
 
             onError={({ currentTarget }) => {
               currentTarget.onerror = null

@@ -110,7 +110,7 @@ export default function App() {
     if (checked_current_route && current_route) {
       //console.log('current page : ', current_route)
       
-      actions.app.current_page(route_attributes[current_route] ?? '')
+      actions.app.current_page(route_attributes[current_route] ?? {})
     }
   }, [
     current_route, checked_current_route

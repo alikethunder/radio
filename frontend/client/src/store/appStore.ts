@@ -26,8 +26,8 @@ type AppStore = {
   leftSidebarOpened: boolean;
   prev_pathname: string;
   current_page: {
-    name: string;
-    icon: string;
+    name?: string;
+    icon?: string;
   };
 
   FormActionsState_state: FormState["state"];

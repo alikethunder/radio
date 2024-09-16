@@ -131,6 +131,10 @@ export const routes = [
             const resp = await fetch(`/api/v1/radio/${id}`)
             const station = await resp.json()
 
+            actions.app.current_page({
+              name: station?.name
+            })
+
             return station
           }
 

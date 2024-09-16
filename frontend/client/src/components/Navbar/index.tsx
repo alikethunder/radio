@@ -14,10 +14,12 @@ import { usePageInList } from '@/hooks'
 import {
   app_routes,
   auth_routes,
+  route_attributes,
 } from '@/constants/router'
 
 import {
   FormActionsState,
+  QueryLink,
 } from '@/components'
 
 import { icon_classes } from "@/constants/icon_classes"
@@ -33,8 +35,24 @@ export const Navbar: FC = () => {
 
       <div className="left h-full flex ">
 
-        <div className="lobster_font align-self-center ml-3 md:ml-5 text-xl md:text-2xl flex align-items-center text-secondary">
-          <i className={`${icon_classes} ${current_page?.icon} mr-2`}></i>
+        <QueryLink to={app_routes.root}
+          onClick={() => actions.app.rightSidebarOpened(false)}>
+          <Button
+            label={`Radio`}
+            text
+            raised
+            icon={`${icon_classes} pi-wave-pulse`}
+            className="border-noround w-full h-full px-4 text-secondary lobster_font text-xl shadow_on_hover text-xl md:text-2xl"
+          />
+        </QueryLink>
+
+        <div className="lobster_font align-self-center ml-2 md:ml-4 flex align-items-center text-secondary">
+          {
+            current_page?.icon ?
+              <i className={`${icon_classes} ${current_page?.icon} mr-2`}></i>
+              : <></>
+          }
+
           {
             current_page?.name ?? ''
           }

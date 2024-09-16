@@ -5,7 +5,7 @@ import { Sidebar } from 'primereact/sidebar'
 
 import {
   QueryLink,
-} from '@/components/QueryLink'
+} from '@/components'
 
 import {
   logout,
@@ -60,16 +60,7 @@ export const RightSidebar: FC = () => {
       }}
     >
       <div className="top flex flex-column">
-        <QueryLink to={app_routes.root}
-          onClick={() => actions.app.rightSidebarOpened(false)}>
-          <Button
-            label={route_attributes[app_routes.root].name}
-            text
-            raised
-            icon={`${icon_classes} ${route_attributes[app_routes.root].icon}`}
-            className="border-noround w-full h-full px-2 text-secondary lobster_font text-xl shadow_on_hover"
-          />
-        </QueryLink>
+        
         {
           signedin ?
             <>

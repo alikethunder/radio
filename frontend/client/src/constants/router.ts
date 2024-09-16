@@ -1,3 +1,5 @@
+import { Station } from "@/types"
+import { useLoaderData } from "react-router-dom"
 
 /* 
 routes transformation for name
@@ -47,8 +49,11 @@ export const route_attributes = {
     name: 'Вход',
     icon: 'pi-sign-in',
   },
-  [app_routes.root]: {
-    name: 'Radio',
-    icon: 'pi-wave-pulse'
+  [app_routes.station$id]: {
+    name: () => {
+      const station = useLoaderData() as Station
+      console.log(station)
+      return station?.name
+    }
   },
 }
