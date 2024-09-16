@@ -67,17 +67,32 @@ export const Home = () => {
 
         {
           stations?.map(station =>
-            <SmallCardContainer className="flex flex-row pt-1 overflow-hidden radio_card align-items-center">
+            <SmallCardContainer className="flex flex-row overflow-hidden station_card align-items-center text-secondary shadow_on_hover">
 
-              <div className="station_info">
+              <div
+                style={{
+                  ...station.avatar ? { backgroundImage: `url(/api/v1/files/stations/${station.id}/avatar)` } : {},
+                }}
+                className="station_card_icon radio_card_icon align-self-center flex align-items-center justify-content-center" >
 
-
-                <div className="radio_card_icon"><i className="pi pi-folder-plus" style={{ fontSize: '2rem' }}></i></div>
-
-                <div className="radio_card_header align-self-center font-semibold">
-                </div>
+                {
+                  station.avatar ?
+                    <></>
+                    :
+                    <i className="pi pi-wave-pulse " style={{ fontSize: '2rem' }}></i>
+                }
 
               </div>
+
+              <div className="station_info flex flex-column flex-grow-1">
+
+                <QueryLink to={generatePath(app_routes["station$id"], { id: station.id })} className="radio_card_header align-self-center font-semibold text-secondary">
+                  {station.name}
+                </QueryLink>
+
+
+              </div>
+
             </SmallCardContainer>
           )}
 

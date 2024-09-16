@@ -10,11 +10,15 @@
   @media screen and (min-width: 576px) and (min-height: 576px)
     grid-gap: 15px 15px
 
-  .station_card 
+  .station_card
     padding-right: sizeRelativeToCardHeight(.1)
     .station_card_icon
       width: sizeRelativeToCardHeight(1)
       height: sizeRelativeToCardHeight(1)
+      background-position: center
+      background-repeat: no-repeat
+      background-size: contain
+      flex-shrink: 0
 
     .station_card_header
       font-size: sizeRelativeToCardHeight(.24)
