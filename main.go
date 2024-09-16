@@ -126,9 +126,9 @@ func main() {
 
 	radio_endpoints.Post("/update", RadioEndpoints.Update)
 
-	radio_endpoints.Get("/:id", RadioEndpoints.GetStation)
-
 	radio_endpoints.Get("/list", RadioEndpoints.ListStations)
+
+	radio_endpoints.Get("/:id", RadioEndpoints.GetStation)
 
 	app.Use("/reloadws", func(c *fiber.Ctx) error {
 		// IsWebSocketUpgrade returns true if the client

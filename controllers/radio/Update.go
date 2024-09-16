@@ -44,6 +44,9 @@ func Update(ctx *fiber.Ctx) error {
 
 				//create playlist
 				Playlists.Create(station_id)
+
+				updated_fields["render_order"], _ = db.Count("stations", "*", Types.Map{})
+
 			}
 
 			//fmt.Printf("[RadioEndpoints.Update] station_id =  %s \n", station_id)
