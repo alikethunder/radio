@@ -8,6 +8,7 @@ import {
   useBlocker,
   matchPath,
   useMatch,
+  useLoaderData,
 } from "react-router-dom"
 
 import { PrimeReactProvider } from 'primereact/api'
@@ -41,7 +42,7 @@ import {
   getCookie,
 } from "./functions"
 
-import { usePageInList } from '@/hooks'
+import { useLog, usePageInList } from '@/hooks'
 
 import {
   WS,
@@ -106,11 +107,17 @@ export default function App() {
 
   //check what route is active and set appropriate current page
   const [current_route, checked_current_route] = usePageInList(all_routes)
+
   useEffect(() => {
     if (checked_current_route && current_route) {
-      //console.log('current page : ', current_route)
+
+      const current_route_attrs = route_attributes[current_route]
+
+      //console.log('current page : ', current_route_attrs)
       
-      actions.app.current_page(route_attributes[current_route] ?? {})
+      if (current_route_attrs) {
+        actions.app.current_page(current_route_attrs)
+      }
     }
   }, [
     current_route, checked_current_route

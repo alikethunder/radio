@@ -47,6 +47,10 @@ export const routes = [
   {
     path: app_routes.root,
     element: <App />,
+    loader() {
+      actions.app.current_page({})
+      return null
+    },
     children: [
       {
         path: app_routes.root,
@@ -127,7 +131,8 @@ export const routes = [
             return {
               id,
             }
-          } else {
+          }
+          try {
             const resp = await fetch(`/api/v1/radio/${id}`)
             const station = await resp.json()
 
@@ -136,10 +141,13 @@ export const routes = [
             })
 
             return station
+          } catch (e) {
+            console.log(`[router ${request.url}] error : `, e)
+
+            //if there is no such station
+            return null
           }
 
-          //if there is no such station
-          return null
         },
       },
       {

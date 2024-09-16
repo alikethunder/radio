@@ -49,11 +49,4 @@ export const route_attributes = {
     name: 'Вход',
     icon: 'pi-sign-in',
   },
-  [app_routes.station$id]: {
-    name: () => {
-      const station = useLoaderData() as Station
-      console.log(station)
-      return station?.name
-    }
-  },
 }
