@@ -21,9 +21,9 @@ import {
   useNavigate,
 } from "react-router-dom"
 
-//condition - condition to rerun useEffect
+//show - to show form actions
 
-export const useFormState = (form_actions: FormState, formState: rhf_formState<any>, condition?: any) => {
+export const useFormState = (form_actions: FormState, formState: rhf_formState<any>, show?: any) => {
 
   //console.log('form actions : ', form_actions)
 
@@ -38,6 +38,13 @@ export const useFormState = (form_actions: FormState, formState: rhf_formState<a
   useEffect(() => {
     actions.app.FormActionsState_isValid(isValid)
   }, [isValid])
+
+  useEffect(() => {
+    actions.app.FormActionsState_show(Boolean(show))
+    return () => {
+      actions.app.FormActionsState_show(false)
+    }
+  }, [show])
 
   const form = useStore().app.FormActionsState_form()
 
@@ -79,7 +86,7 @@ export const useFormState = (form_actions: FormState, formState: rhf_formState<a
     return () => {
       actions.app.FormActionsState_edit(undefined)
     }
-  }, [form, condition, edit])
+  }, [form, edit])
 
 
   useEffect(() => {
@@ -106,7 +113,7 @@ export const useFormState = (form_actions: FormState, formState: rhf_formState<a
     return () => {
       actions.app.FormActionsState_submit(undefined)
     }
-  }, [form, condition, submit, isValid])
+  }, [form, submit, isValid])
 
 
   useEffect(() => {
@@ -133,7 +140,7 @@ export const useFormState = (form_actions: FormState, formState: rhf_formState<a
     return () => {
       actions.app.FormActionsState_reset(undefined)
     }
-  }, [form, condition, reset])
+  }, [form, reset])
 
   useEffect(() => {
     return () => {

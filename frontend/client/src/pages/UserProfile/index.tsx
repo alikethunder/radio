@@ -67,7 +67,7 @@ export const UserProfile = () => {
 
   const [photo_blob, set_photo_blob] = useState<Blob | null>(null)
 
-  const user_data = useLoaderData() as FrontUser
+  const user_data = useLoaderData() as FrontUser & { own_profile?: boolean }
 
   //console.log('user_data : ', user_data)
 
@@ -89,7 +89,7 @@ export const UserProfile = () => {
     }
   })
 
-  const {errors} = formState
+  const { errors } = formState
 
   //console.log("errors : ", errors)
 
@@ -175,7 +175,7 @@ export const UserProfile = () => {
       set_photo_blob(null)
       reset()
     },
-  }, formState)
+  }, formState, user_data.own_profile)
 
   return (
     <div
