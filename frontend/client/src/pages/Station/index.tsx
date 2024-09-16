@@ -30,9 +30,6 @@ import {
 } from "@/store"
 
 import {
-  useImmutableFetcher,
-  sortByPriority,
-  useImmutableFetcherAndStore,
   resize_image,
 } from "@/functions"
 
@@ -46,7 +43,10 @@ import {
 
 import { Ripple } from "primereact/ripple"
 
-import { useFormState } from '@/hooks'
+import {
+  useFormState,
+  useFetcher,
+} from '@/hooks'
 
 import { tooltip_options } from "@/constants/tooltip_options"
 
@@ -55,6 +55,10 @@ import {
 } from "@/types"
 
 import { setForm } from "@/functions/setForm"
+
+import { useAsyncMemo } from "use-async-memo"
+
+import { admin } from "@/constants/api"
 
 const private_tooltip_options = { ...tooltip_options, position: 'right' } as const
 
@@ -79,7 +83,9 @@ export const Station = () => {
 
   const edit_mode = useStore().app.FormActionsState_edit_mode()
 
-  //console.log('[Station] edit_mode : ', edit_mode)
+  const is_admin = useStore().user.admin() || useFetcher(`${admin}${station.id}`, { revalidateOnMount: true })?.data
+
+  //console.log('[Station] is_admin : ', is_admin)
 
   const {
     control,
@@ -141,7 +147,7 @@ export const Station = () => {
       set_avatar_blob(null)
       reset()
     },
-  }, formState, /* !!!add true for admins */)
+  }, formState, is_admin)
 
   return (
     <div

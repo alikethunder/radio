@@ -5,10 +5,9 @@ import (
 
 	"github.com/goccy/go-json"
 	"github.com/gofiber/fiber/v2"
-	"web_project/types"
 )
 
-func SetUserCookie(u Types.Map, c *fiber.Ctx) {
+func SetUserCookie(u fiber.Map, c *fiber.Ctx) {
 	cookie := new(fiber.Cookie)
 
 	cookie.Name = UserCookieName

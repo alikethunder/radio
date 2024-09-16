@@ -7,7 +7,6 @@ import (
 	"web_project/cookies"
 	"web_project/db"
 	"web_project/functions"
-	Types "web_project/types"
 
 	"github.com/gocql/gocql"
 	"github.com/gofiber/fiber/v2"
@@ -17,13 +16,13 @@ func Signin(c *fiber.Ctx) error {
 
 	c.Accepts("application/json")
 
-	var req_json Types.Map
+	var req_json fiber.Map
 
 	json.Unmarshal(c.Body(), &req_json)
 
 	//fmt.Println("Signup user : ", u)
 
-	user, _ := db.SelectRow("users", Types.Map{"email": req_json["email"]}, "id", "password", "name")
+	user, _ := db.SelectRow("users", fiber.Map{"email": req_json["email"]}, "id", "password", "name")
 
 	if user != nil && user["password"] != "" && user["password"] != nil {
 
@@ -31,22 +30,22 @@ func Signin(c *fiber.Ctx) error {
 
 		if correctPassword {
 
-			cookies.SetAuthCookie(Types.Map{"email": req_json["email"], "rememberme": req_json["rememberme"], "id": user["id"]}, c)
+			cookies.SetAuthCookie(fiber.Map{"email": req_json["email"], "rememberme": req_json["rememberme"], "id": user["id"]}, c)
 
 			tm := time.Now().UTC().String()
 
 			db.Update(
 				"users",
 
-				Types.Map{"last_seen": tm},
+				fiber.Map{"last_seen": tm},
 
-				Types.Map{
+				fiber.Map{
 					"id":    user["id"],
 					"email": req_json["email"],
 				},
 			)
 
-			return c.Status(fiber.StatusOK).JSON(Types.Map{"id": user["id"], "created": user["id"].(gocql.UUID).Time(), "name": user["name"]})
+			return c.Status(fiber.StatusOK).JSON(fiber.Map{"id": user["id"], "created": user["id"].(gocql.UUID).Time(), "name": user["name"]})
 
 		} else {
 			//wrong password

@@ -2,10 +2,11 @@ package mailer
 
 import (
 	"fmt"
-	Types "web_project/types"
+
+	"github.com/gofiber/fiber/v2"
 )
 
-func SendRequestUpdateEmail(credentials Types.Map) {
+func SendRequestUpdateEmail(credentials fiber.Map) {
 	//send verification code (vc) to user (name) email (to)
 
 	subject := "Subject: Email update \n%s\n\n"

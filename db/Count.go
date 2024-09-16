@@ -3,10 +3,11 @@ package db
 import (
 	"fmt"
 	"strings"
-	Types "web_project/types"
+
+	"github.com/gofiber/fiber/v2"
 )
 
-func Count(table string, column string, where_parameters Types.Map) (int, error) {
+func Count(table string, column string, where_parameters fiber.Map) (int, error) {
 
 	// column == "*" || column name
 

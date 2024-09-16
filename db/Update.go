@@ -3,12 +3,13 @@ package db
 import (
 	"fmt"
 	"strings"
-	Types "web_project/types"
+
+	"github.com/gofiber/fiber/v2"
 )
 
-func Update(table string, orig_insert_parameters Types.Map, key_parameters Types.Map) error {
+func Update(table string, orig_insert_parameters fiber.Map, key_parameters fiber.Map) error {
 
-	insert_parameters := make(Types.Map)
+	insert_parameters := make(fiber.Map)
 
 	for k, v := range orig_insert_parameters {
 		if _, ok := key_parameters[k]; !ok {

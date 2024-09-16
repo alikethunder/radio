@@ -6,7 +6,6 @@ import (
 	"web_project/cookies"
 	"web_project/db"
 	"web_project/functions"
-	Types "web_project/types"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -25,12 +24,12 @@ func Update(ctx *fiber.Ctx) error {
 
 			updated_fields := functions.ParseForm(ctx, []string{"name"}, []string{"photo"})
 
-			user, _ := db.SelectRow("users", Types.Map{"id": id}, "email")
+			user, _ := db.SelectRow("users", fiber.Map{"id": id}, "email")
 
 			if err := db.Update(
 				"users",
 				updated_fields,
-				Types.Map{
+				fiber.Map{
 					"id":    id,
 					"email": user["email"],
 				},
@@ -40,7 +39,7 @@ func Update(ctx *fiber.Ctx) error {
 				return ctx.SendStatus(fiber.StatusForbidden)
 			}
 
-			return ctx.Status(fiber.StatusOK).JSON(Types.Map{"name": updated_fields["name"]})
+			return ctx.Status(fiber.StatusOK).JSON(fiber.Map{"name": updated_fields["name"]})
 		}
 
 	}

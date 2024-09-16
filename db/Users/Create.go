@@ -4,7 +4,6 @@ import (
 	"web_project/db"
 	"web_project/functions"
 	"web_project/mailer"
-	Types "web_project/types"
 
 	"errors"
 	//"time"
@@ -12,19 +11,20 @@ import (
 	"fmt"
 
 	"github.com/gocql/gocql"
+	"github.com/gofiber/fiber/v2"
 )
 
-func Create(user Types.Map) (Types.Map, error) {
+func Create(user fiber.Map) (fiber.Map, error) {
 
 	//fmt.Println("Create user : ", user)
 	var err error
 
 	_, oauth_flow := user["oauth"].(bool)
 
-	user_db, err := db.SelectRow("users", Types.Map{"email": user["email"]}, "id", "password", "name")
+	user_db, err := db.SelectRow("users", fiber.Map{"email": user["email"]}, "id", "password", "name")
 
 	if user_db == nil {
-		user_db = make(Types.Map)
+		user_db = make(fiber.Map)
 	}
 
 	if user_db["password"] == nil || user_db["password"] == "" || oauth_flow {
@@ -48,9 +48,9 @@ func Create(user Types.Map) (Types.Map, error) {
 				db.Update(
 					"users",
 
-					Types.Map{"verification_code": vc},
+					fiber.Map{"verification_code": vc},
 
-					Types.Map{
+					fiber.Map{
 						"id":    user_db["id"],
 						"email": user["email"],
 					},
@@ -66,11 +66,11 @@ func Create(user Types.Map) (Types.Map, error) {
 					db.Update(
 						"users",
 
-						Types.Map{
+						fiber.Map{
 							"name": user["name"],
 						},
 
-						Types.Map{
+						fiber.Map{
 							"id":    user_db["id"],
 							"email": user["email"],
 						},
@@ -80,12 +80,12 @@ func Create(user Types.Map) (Types.Map, error) {
 				db.Update(
 					"users",
 
-					Types.Map{
+					fiber.Map{
 						"verification_code": vc,
 						"name":              user["name"],
 					},
 
-					Types.Map{
+					fiber.Map{
 						"id":    user_db["id"],
 						"email": user["email"],
 					},
@@ -98,7 +98,7 @@ func Create(user Types.Map) (Types.Map, error) {
 			mailer.SendVc(vc, user["email"].(string), user["name"].(string))
 		}
 
-		return db.SelectRow("users", Types.Map{"id": user_db["id"], "email": user["email"]}, "name", "email", "id")
+		return db.SelectRow("users", fiber.Map{"id": user_db["id"], "email": user["email"]}, "name", "email", "id")
 
 	}
 

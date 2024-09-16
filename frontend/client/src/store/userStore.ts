@@ -15,11 +15,13 @@ export const userStore = createStore('app')({
     ends: ''
   },
   subscription_plan_loading: '',
+  admin: false,
 } as unknown as (FrontUser & {
   subscription_plan: {
     name: string;
     ends: string;
-  }
+  };
+  admin: boolean;
 }),
   {
     persist: {

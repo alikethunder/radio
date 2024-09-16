@@ -36,17 +36,13 @@ import {
   RightSidebar,
   RestrictedPage,
   QueryLink,
-} from './components'
-
-import {
-  getCookie,
-} from "./functions"
+} from '@/components'
 
 import { useLog, usePageInList } from '@/hooks'
 
 import {
   WS,
-} from './mechanics'
+} from '@/mechanics'
 
 import {
   FrontUser,
@@ -61,10 +57,8 @@ import {
 
 import {
   onLogout,
-  useImmutableFetcher,
-  sortByPriority,
-  useImmutableFetcherAndStore,
-} from './functions'
+  getCookie,
+} from '@/functions'
 
 import {
   all_routes,
@@ -72,6 +66,8 @@ import {
   auth_routes,
   route_attributes,
 } from '@/constants/router'
+
+import { admin } from "@/API/profile/admin"
 
 //console.log('typeof window : ', typeof window)
 
@@ -114,7 +110,7 @@ export default function App() {
       const current_route_attrs = route_attributes[current_route]
 
       //console.log('current page : ', current_route_attrs)
-      
+
       if (current_route_attrs) {
         actions.app.current_page(current_route_attrs)
       }
@@ -149,6 +145,10 @@ export default function App() {
 
     set_checked_signin(true)
 
+  }, [])
+
+  useEffect(() => {
+    admin().then(r => actions.user.admin(r))
   }, [])
 
   useEffect(() => {

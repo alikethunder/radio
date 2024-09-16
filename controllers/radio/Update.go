@@ -8,7 +8,6 @@ import (
 	"web_project/db"
 	"web_project/db/Playlists"
 	"web_project/functions"
-	Types "web_project/types"
 
 	"github.com/gocql/gocql"
 	"github.com/gofiber/fiber/v2"
@@ -22,13 +21,13 @@ func Update(ctx *fiber.Ctx) error {
 
 		cookie_user := cookies.ParseCookie(ctx.Cookies(cookies.AuthCookieName))
 
-		db_user, _ := db.SelectRow("users", Types.Map{"id": cookie_user["id"]}, "admin")
+		db_user, _ := db.SelectRow("users", fiber.Map{"id": cookie_user["id"]}, "admin")
 
 		station_id := ctx.FormValue("id")
 
 		//fmt.Printf("[RadioEndpoints.Update] station_id =  %s \n", station_id)
 
-		station, _ := db.SelectRow("stations", Types.Map{"id": station_id}, "admins")
+		station, _ := db.SelectRow("stations", fiber.Map{"id": station_id}, "admins")
 
 		fmt.Println("[RadioEndpoints.Update] station :", station)
 
@@ -45,7 +44,7 @@ func Update(ctx *fiber.Ctx) error {
 				//create playlist
 				Playlists.Create(station_id)
 
-				updated_fields["render_order"], _ = db.Count("stations", "*", Types.Map{})
+				updated_fields["render_order"], _ = db.Count("stations", "*", fiber.Map{})
 
 			}
 
@@ -54,7 +53,7 @@ func Update(ctx *fiber.Ctx) error {
 			err := db.Update(
 				"stations",
 				updated_fields,
-				Types.Map{
+				fiber.Map{
 					"id": station_id,
 				},
 			)

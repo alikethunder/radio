@@ -3,12 +3,11 @@ package cookies
 import (
 	"fmt"
 
-	Types "web_project/types"
-
+	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt"
 )
 
-func SignCookie(m Types.Map) string {
+func SignCookie(m fiber.Map) string {
 	// Create a new token object, specifying signing method and the claims
 	// you would like it to contain.
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims(m))

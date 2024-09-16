@@ -29,9 +29,6 @@ import {
 } from "@/store"
 
 import {
-  useImmutableFetcher,
-  sortByPriority,
-  useImmutableFetcherAndStore,
   resize_image,
 } from "@/functions"
 

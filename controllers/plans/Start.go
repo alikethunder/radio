@@ -7,7 +7,6 @@ import (
 	"web_project/db"
 	"web_project/functions"
 	"web_project/mailer"
-	Types "web_project/types"
 
 	"github.com/gocql/gocql"
 	"github.com/gofiber/fiber/v2"
@@ -24,7 +23,7 @@ func Start(c *fiber.Ctx) error {
 
 		u := cookies.ParseCookie(c.Cookies(cookies.AuthCookieName))
 
-		user, _ := db.SelectRow("users", Types.Map{"email": u["email"]}, "id", "name", "email")
+		user, _ := db.SelectRow("users", fiber.Map{"email": u["email"]}, "id", "name", "email")
 
 		user["created"] = user["id"].(gocql.UUID).Time()
 
@@ -34,13 +33,13 @@ func Start(c *fiber.Ctx) error {
 
 	}
 
-	var user_json Types.Map
+	var user_json fiber.Map
 
 	json.Unmarshal(c.Body(), &user_json)
 
 	//fmt.Println("ResetPassword user : ", u)
 
-	user, _ := db.SelectRow("users", Types.Map{"email": user_json["email"]}, "id", "name")
+	user, _ := db.SelectRow("users", fiber.Map{"email": user_json["email"]}, "id", "name")
 
 	if user != nil {
 		vc := functions.Vc()
@@ -48,9 +47,9 @@ func Start(c *fiber.Ctx) error {
 		db.Update(
 			"users",
 
-			Types.Map{"verification_code": vc},
+			fiber.Map{"verification_code": vc},
 
-			Types.Map{
+			fiber.Map{
 				"id":    user["id"],
 				"email": user_json["email"],
 			},

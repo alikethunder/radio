@@ -4,14 +4,13 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-	Types "web_project/types"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-func ParseForm(ctx *fiber.Ctx, fields []string, files []string) Types.Map {
+func ParseForm(ctx *fiber.Ctx, fields []string, files []string) fiber.Map {
 
-	result := Types.Map{}
+	result := fiber.Map{}
 
 	for _, field := range fields {
 		result[field] = ctx.FormValue(field)

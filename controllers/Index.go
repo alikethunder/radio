@@ -3,7 +3,6 @@ package controllers
 import (
 	"web_project/cookies"
 	"web_project/db"
-	Types "web_project/types"
 
 	"github.com/gocql/gocql"
 	"github.com/gofiber/fiber/v2"
@@ -19,7 +18,7 @@ func Index(c *fiber.Ctx) error {
 
 		if cookie_user["id"] != nil {
 
-			user, err := db.SelectRow("users", Types.Map{"email": cookie_user["email"]}, "id", "name", "email", "subscription_plan")
+			user, err := db.SelectRow("users", fiber.Map{"email": cookie_user["email"]}, "id", "name", "email", "subscription_plan")
 
 			if err != nil {
 

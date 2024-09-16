@@ -7,9 +7,9 @@ import useSWRImmutable from 'swr/immutable'
 
 export const fetcher = (url: string) => fetch(url).then(r => r.json())
 
-export const useFetcher = (url: string | null) => useSWR(url, fetcher)
+export const useFetcher = (url: string | null, options?: any) => useSWR(url, fetcher, options)
 
-export const useImmutableFetcher = (url: string | null) => useSWRImmutable(url, fetcher)
+export const useImmutableFetcher = (url: string | null, options?: any) => useSWRImmutable(url, fetcher, options)
 
 export const useImmutableFetcherAndStore = (url: string | null, store: Stores, ...keys: string[]) => {
   const { error, data, isLoading } = useSWRImmutable(url, (url: string) => fetch(url).then(r => r.json()))

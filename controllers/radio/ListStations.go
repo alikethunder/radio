@@ -4,14 +4,13 @@ import (
 	//"fmt"
 
 	"web_project/db"
-	Types "web_project/types"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 func ListStations(ctx *fiber.Ctx) error {
 
-	var stations []Types.Map
+	var stations []fiber.Map
 
 	/* offset := 0
 
@@ -28,7 +27,7 @@ func ListStations(ctx *fiber.Ctx) error {
 	iter := db.Session.Query(`SELECT * FROM stations`).Iter()
 
 	for {
-		station := make(Types.Map)
+		station := make(fiber.Map)
 		if !iter.MapScan(station) {
 			break
 		}

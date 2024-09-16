@@ -4,10 +4,9 @@ import (
 	//"fmt"
 
 	"github.com/gofiber/fiber/v2"
-	"web_project/types"
 )
 
-func SetAuthCookie(u Types.Map, c *fiber.Ctx) {
+func SetAuthCookie(u fiber.Map, c *fiber.Ctx) {
 	cookie := new(fiber.Cookie)
 
 	cookie.Name = AuthCookieName

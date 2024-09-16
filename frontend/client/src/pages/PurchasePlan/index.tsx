@@ -20,9 +20,7 @@ import {
 } from "@/store"
 
 import {
-  useImmutableFetcher,
   sortByPriority,
-  useImmutableFetcherAndStore,
 } from "@/functions"
 
 import { DataTable } from "primereact/datatable"

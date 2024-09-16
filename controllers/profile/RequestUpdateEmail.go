@@ -8,7 +8,6 @@ import (
 	"web_project/db"
 	"web_project/functions"
 	"web_project/mailer"
-	Types "web_project/types"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -19,14 +18,14 @@ func RequestUpdateEmail(c *fiber.Ctx) error {
 
 	if authCookie != "" {
 
-		var req_json Types.Map
+		var req_json fiber.Map
 
 		json.Unmarshal(c.Body(), &req_json)
 
 		//get the auth cookie info
 		cookie_user := cookies.ParseCookie(c.Cookies(cookies.AuthCookieName))
 
-		stored_user, err := db.SelectRow("users", Types.Map{"email": cookie_user["email"], "id": cookie_user["id"]}, "name")
+		stored_user, err := db.SelectRow("users", fiber.Map{"email": cookie_user["email"], "id": cookie_user["id"]}, "name")
 
 		fmt.Println("[ProfileEndpoints.RequestUpdateEmail] stored_user : ", stored_user)
 
@@ -44,9 +43,9 @@ func RequestUpdateEmail(c *fiber.Ctx) error {
 			if err := db.Update(
 				"users",
 
-				Types.Map{"verification_code": vc},
+				fiber.Map{"verification_code": vc},
 
-				Types.Map{
+				fiber.Map{
 					"id":    cookie_user["id"],
 					"email": cookie_user["email"],
 				},
@@ -57,7 +56,7 @@ func RequestUpdateEmail(c *fiber.Ctx) error {
 			}
 
 			//create a change link as signed cookie
-			update_email_hash := cookies.SignCookie(Types.Map{
+			update_email_hash := cookies.SignCookie(fiber.Map{
 				"id":        cookie_user["id"],
 				"old_email": cookie_user["email"],
 				"vc":        vc,
@@ -65,12 +64,12 @@ func RequestUpdateEmail(c *fiber.Ctx) error {
 			})
 
 			//create deny link with old_email, id and vc
-			deny_update_email_hash := cookies.SignCookie(Types.Map{
+			deny_update_email_hash := cookies.SignCookie(fiber.Map{
 				"id":        cookie_user["id"],
 				"old_email": cookie_user["email"],
 			})
 
-			mailer.SendRequestUpdateEmail(Types.Map{
+			mailer.SendRequestUpdateEmail(fiber.Map{
 				"NewEmail":   req_json["new_email"],
 				"UpdateHash": update_email_hash,
 				"DenyHash":   deny_update_email_hash,

@@ -3,13 +3,14 @@ package db
 import (
 	"fmt"
 	"strings"
-	Types "web_project/types"
+
+	"github.com/gofiber/fiber/v2"
 )
 
-func SelectRow(table string, key_parameters Types.Map, select_parameters ...string) (Types.Map, error) {
+func SelectRow(table string, key_parameters fiber.Map, select_parameters ...string) (fiber.Map, error) {
 
 	if len(key_parameters) > 0 {
-		result := make(Types.Map)
+		result := make(fiber.Map)
 
 		var selectString strings.Builder
 

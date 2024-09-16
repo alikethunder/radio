@@ -6,7 +6,6 @@ import (
 	//"io"
 
 	"web_project/db"
-	Types "web_project/types"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -20,7 +19,7 @@ func GetFile(c *fiber.Ctx) error {
 
 	if row_id != "" && table != "" && field != "" {
 
-		if result, _ := db.SelectRow(table, Types.Map{"id": row_id}, field); result != nil {
+		if result, _ := db.SelectRow(table, fiber.Map{"id": row_id}, field); result != nil {
 
 			fmt.Printf("[FilesEndpoints.GetFile] %s %d \n", field, len(result[field].([]byte)))
 

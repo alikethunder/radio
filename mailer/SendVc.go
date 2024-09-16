@@ -2,7 +2,8 @@ package mailer
 
 import (
 	"fmt"
-	Types "web_project/types"
+
+	"github.com/gofiber/fiber/v2"
 )
 
 func SendVc(vc string, to string, name string) {
@@ -10,7 +11,7 @@ func SendVc(vc string, to string, name string) {
 
 	subject := "Subject: Verification code \n%s\n\n"
 
-	if err := SendEmail("emails/VerificationCode.html", Types.Map{
+	if err := SendEmail("emails/VerificationCode.html", fiber.Map{
 		"Name":             name,
 		"VerificationCode": vc,
 	}, []string{to}, subject); err != nil {

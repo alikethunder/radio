@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	Users "web_project/db/Users"
-	"web_project/types"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -14,7 +13,7 @@ func Signup(c *fiber.Ctx) error {
 
 	c.Accepts("application/json")
 
-	var u Types.Map
+	var u fiber.Map
 
 	json.Unmarshal(c.Body(), &u)
 

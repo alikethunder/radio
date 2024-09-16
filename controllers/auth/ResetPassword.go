@@ -6,7 +6,6 @@ import (
 	"web_project/db"
 	"web_project/functions"
 	"web_project/mailer"
-	Types "web_project/types"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -15,13 +14,13 @@ func ResetPassword(c *fiber.Ctx) error {
 
 	c.Accepts("application/json")
 
-	var u Types.Map
+	var u fiber.Map
 
 	json.Unmarshal(c.Body(), &u)
 
 	//fmt.Println("ResetPassword user : ", u)
 
-	user, _ := db.SelectRow("users", Types.Map{"email": u["email"]}, "id", "name")
+	user, _ := db.SelectRow("users", fiber.Map{"email": u["email"]}, "id", "name")
 
 	if user != nil {
 		vc := functions.Vc()
@@ -29,9 +28,9 @@ func ResetPassword(c *fiber.Ctx) error {
 		db.Update(
 			"users",
 
-			Types.Map{"verification_code": vc},
+			fiber.Map{"verification_code": vc},
 
-			Types.Map{
+			fiber.Map{
 				"id":    user["id"],
 				"email": u["email"].(string),
 			},

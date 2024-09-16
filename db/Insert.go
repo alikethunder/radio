@@ -3,10 +3,11 @@ package db
 import (
 	"fmt"
 	"strings"
-	Types "web_project/types"
+
+	"github.com/gofiber/fiber/v2"
 )
 
-func Insert(table string, parameters Types.Map) error {
+func Insert(table string, parameters fiber.Map) error {
 
 	if len(parameters) > 0 {
 

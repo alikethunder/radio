@@ -5,7 +5,6 @@ import (
 
 	"web_project/cookies"
 	"web_project/db"
-	Types "web_project/types"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -21,7 +20,7 @@ func UpdateEmail(c *fiber.Ctx) error {
 		if data["new_email"] != nil {
 			fmt.Println("[UpdateEmail] update email : ", data)
 
-			user, err := db.SelectRow("users", Types.Map{"id": data["id"], "email": data["old_email"]})
+			user, err := db.SelectRow("users", fiber.Map{"id": data["id"], "email": data["old_email"]})
 
 			if err != nil {
 				return c.SendStatus(fiber.StatusForbidden)
@@ -35,7 +34,7 @@ func UpdateEmail(c *fiber.Ctx) error {
 				if err := db.Delete(
 					"users",
 
-					Types.Map{
+					fiber.Map{
 						"id":    user["id"],
 						"email": data["old_email"],
 					},
@@ -51,7 +50,7 @@ func UpdateEmail(c *fiber.Ctx) error {
 
 				//update auth cookie
 				cookies.SetAuthCookie(
-					Types.Map{
+					fiber.Map{
 						"id":         data["id"],
 						"email":      data["new_email"],
 						"rememberme": true,
@@ -71,9 +70,9 @@ func UpdateEmail(c *fiber.Ctx) error {
 			db.Update(
 				"users",
 
-				Types.Map{"verification_code": ""},
+				fiber.Map{"verification_code": ""},
 
-				Types.Map{
+				fiber.Map{
 					"id":    data["id"],
 					"email": data["old_email"],
 				},

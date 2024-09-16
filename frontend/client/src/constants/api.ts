@@ -1,0 +1,1 @@
+export const admin = `/api/v1/profile/admin/`

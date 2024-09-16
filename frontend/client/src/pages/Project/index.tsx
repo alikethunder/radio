@@ -29,12 +29,6 @@ import {
   useTrackedStore,
 } from "@/store"
 
-import {
-  useImmutableFetcher,
-  sortByPriority,
-  useImmutableFetcherAndStore,
-} from "@/functions"
-
 import { DataTable } from "primereact/datatable"
 import { Column } from "primereact/column"
 import { Tooltip } from "primereact/tooltip"

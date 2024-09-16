@@ -6,7 +6,6 @@ import (
 	"github.com/gocql/gocql" */
 	//"fmt"
 	"web_project/db"
-	Types "web_project/types"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -15,7 +14,7 @@ func GetStation(ctx *fiber.Ctx) error {
 
 	id := ctx.Params("id")
 
-	station, err := db.SelectRow("stations", Types.Map{"id": id})
+	station, err := db.SelectRow("stations", fiber.Map{"id": id})
 
 	if err == nil {
 		return ctx.Status(fiber.StatusOK).JSON(station)
