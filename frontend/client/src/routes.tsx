@@ -46,18 +46,15 @@ type Loader_params = { params: { [param: string]: string; }, request: Request }
 export const routes = [
   {
     path: app_routes.root,
-    loader: async ({ request }: Loader_params) => {
-
-      if (location.pathname == '/') {
-        const stations = await stations_list(/* 0, 32 */)
-        return stations
-      }
-      return {}
-    },
     element: <App />,
     children: [
       {
         path: app_routes.root,
+        loader: async ({ request }: Loader_params) => {
+
+          const stations = await stations_list(/* 0, 32 */)
+          return stations
+        },
         element: <Home />
       },
       {

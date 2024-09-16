@@ -1,6 +1,9 @@
 import { FC, useEffect, useMemo } from "react"
 
-import { generatePath } from "react-router-dom"
+import {
+  useLoaderData,
+  generatePath,
+} from "react-router-dom"
 
 import { SmallCardContainer } from "@/layout parts"
 
@@ -16,7 +19,15 @@ import {
   useStore,
 } from "@/store"
 
+import {
+  useLog,
+} from '@/hooks'
+
 export const Home = () => {
+
+  const stations = useLoaderData()
+
+  useLog('[Home] stations : ', stations)
 
   const windowSize = useStore().app.windowSize()
   const isDesktop = useStore().app.isDesktop()
@@ -24,6 +35,8 @@ export const Home = () => {
   const width = useMemo(() =>
     isDesktop ? windowSize.width * .21 : Math.min(windowSize.width, windowSize.height) * .8
     , [isDesktop, windowSize])
+
+
 
   return (
     <div className="sm:py-5 py-4 sm:px-6 px-4 w-full h-full overflow-y-auto page home_page flex-grow-1 flex flex-column">
