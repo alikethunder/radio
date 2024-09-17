@@ -48,6 +48,7 @@ export const routes = [
     path: app_routes.root,
     element: <App />,
     loader() {
+      //console.log('root loader')
       actions.app.current_page({})
       return null
     },

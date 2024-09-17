@@ -89,11 +89,16 @@ export const Station = () => {
   const root_admin = useStore().user.admin()
 
   useEffect(() => {
+    //console.log('signedin, root_admin: ', signedin, root_admin)
+    
     if (signedin) {
       if (root_admin) {
         set_is_admin(true)
       } else {
-        admin(station.id).then(r => set_is_admin(r))
+        admin(station.id).then(r => {
+          //parameters can change during call, so they're requested again from store
+          set_is_admin(store.auth.signedin() && (r || store.user.admin()))
+        })
       }
     } else {
       set_is_admin(false)

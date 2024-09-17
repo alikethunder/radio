@@ -49,4 +49,5 @@ export const route_attributes = {
     name: 'Вход',
     icon: 'pi-sign-in',
   },
+  [app_routes.root]: {},
 }

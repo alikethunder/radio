@@ -40,6 +40,8 @@ export const useFormState = (form_actions: FormState, formState: rhf_formState<a
   }, [isValid])
 
   useEffect(() => {
+    //console.log('show : ', show)
+    
     actions.app.FormActionsState_show(Boolean(show))
     return () => {
       actions.app.FormActionsState_show(false)
