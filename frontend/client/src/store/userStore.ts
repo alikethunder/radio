@@ -4,7 +4,7 @@ import {
   FrontUser,
 } from '@/types'
 
-export const userStore = createStore('app')({
+const initialState = {
   id: null,
   name: '',
   email: '',
@@ -16,7 +16,10 @@ export const userStore = createStore('app')({
   },
   subscription_plan_loading: '',
   admin: false,
-} as unknown as (FrontUser & {
+}
+
+
+export const userStore = createStore('app')(initialState as unknown as (FrontUser & {
   subscription_plan: {
     name: string;
     ends: string;
@@ -29,6 +32,17 @@ export const userStore = createStore('app')({
       name: 'userStore'
     }
   })
+  .extendActions((set, get, api) => ({
+    reset: () => {
+      Object.getOwnPropertyNames(set)
+        .filter(n => ![
+          'mergeState',
+          'state'
+        ].includes(n))
+        //@ts-ignore
+        .forEach(n => set[n](initialState[n]))
+    },
+  }))
   .extendActions((set, get, api) => ({
     update_user_data: (user: FrontUser) => {
       //@ts-ignore

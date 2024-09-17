@@ -6,7 +6,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func SetAuthCookie(u fiber.Map, c *fiber.Ctx) {
+func SetAuthCookie(u fiber.Map, c *fiber.Ctx) *fiber.Cookie {
 	cookie := new(fiber.Cookie)
 
 	cookie.Name = AuthCookieName
@@ -17,6 +17,8 @@ func SetAuthCookie(u fiber.Map, c *fiber.Ctx) {
 
 	cookie.SameSite = "Strict"
 
+	cookie.Path = "/"
+
 	if u["rememberme"].(bool) {
 		cookie.MaxAge = MaxAge
 	}
@@ -26,4 +28,6 @@ func SetAuthCookie(u fiber.Map, c *fiber.Ctx) {
 	//fmt.Println("[SetAuthCookie] cookie : ", cookie)
 
 	c.Cookie(cookie)
+
+	return cookie
 }

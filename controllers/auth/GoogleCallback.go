@@ -111,12 +111,14 @@ func GoogleCallback(c *fiber.Ctx) error {
 
 		_, rememberme := state["rememberme"]
 
-		cookies.SetAuthCookie(fiber.Map{"email": credential["email"], "rememberme": rememberme, "id": user["id"]}, c)
+		auth_cookie := cookies.SetAuthCookie(fiber.Map{"email": credential["email"], "rememberme": rememberme, "id": user["id"]}, c)
 
 		user["created"] = user["id"].(gocql.UUID).Time()
 		cookies.SetUserCookie(user, c)
 
-		return c.Redirect(state["redirect_to"].(string))
+		fmt.Println("[GoogleCallback] auth cookie : ", auth_cookie.Value)
+
+		return c.Redirect(state["redirect_to"].(string) + "?auth=" + auth_cookie.Value)
 	}
 
 	return nil

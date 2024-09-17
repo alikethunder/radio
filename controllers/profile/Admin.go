@@ -7,6 +7,7 @@ import (
 	"web_project/cookies"
 	"web_project/db"
 
+	"github.com/gocql/gocql"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -35,7 +36,9 @@ func Admin(ctx *fiber.Ctx) error {
 
 			station, _ := db.SelectRow("stations", fiber.Map{"id": id}, "admins")
 
-			if slices.Contains(station["admins"].([]string), cookie_user["id"].(string)) {
+			uuid, _ := gocql.ParseUUID(cookie_user["id"].(string))
+
+			if slices.Contains(station["admins"].([]gocql.UUID), uuid) {
 				return ctx.SendStatus(fiber.StatusOK)
 			}
 

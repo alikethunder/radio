@@ -45,7 +45,6 @@ import { Ripple } from "primereact/ripple"
 
 import {
   useFormState,
-  useFetcher,
 } from '@/hooks'
 
 import { tooltip_options } from "@/constants/tooltip_options"
@@ -58,7 +57,7 @@ import { setForm } from "@/functions/setForm"
 
 import { useAsyncMemo } from "use-async-memo"
 
-import { admin } from "@/constants/api"
+import { admin } from "@/API/profile/admin"
 
 const private_tooltip_options = { ...tooltip_options, position: 'right' } as const
 
@@ -83,7 +82,23 @@ export const Station = () => {
 
   const edit_mode = useStore().app.FormActionsState_edit_mode()
 
-  const is_admin = useStore().user.admin() || useFetcher(`${admin}${station.id}`, { revalidateOnMount: true })?.data
+  const [is_admin, set_is_admin] = useState(false)
+
+  const signedin = useStore().auth.signedin()
+
+  const root_admin = useStore().user.admin()
+
+  useEffect(() => {
+    if (signedin) {
+      if (root_admin) {
+        set_is_admin(true)
+      } else {
+        admin(station.id).then(r => set_is_admin(r))
+      }
+    } else {
+      set_is_admin(false)
+    }
+  }, [station, signedin, root_admin])
 
   //console.log('[Station] is_admin : ', is_admin)
 

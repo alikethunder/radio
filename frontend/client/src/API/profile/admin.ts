@@ -1,6 +1,4 @@
-import { admin as admin_url } from '@/constants/api'
-
 export const admin = async (id?: string) => {
-  const resp = await fetch(`${admin_url}${id ?? 'root'}`)
+  const resp = await fetch(`/api/v1/profile/admin/${id ?? 'root'}`)
   return resp.status == 200
 }

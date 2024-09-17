@@ -8,7 +8,7 @@ import {
   useBlocker,
   matchPath,
   useMatch,
-  useLoaderData,
+  useSearchParams,
 } from "react-router-dom"
 
 import { PrimeReactProvider } from 'primereact/api'
@@ -77,6 +77,15 @@ export default function App() {
 
   const navigate = useNavigate()
   const { pathname } = useLocation()
+
+  const [search, set_search] = useSearchParams()
+
+  useEffect(() => {
+    set_search(search => {
+      search.delete('auth')
+      return search
+    })
+  }, [])
 
   const windowSize = useWindowSize()
 
@@ -148,7 +157,9 @@ export default function App() {
   }, [])
 
   useEffect(() => {
-    admin().then(r => actions.user.admin(r))
+    if (store.auth.signedin()) {
+      admin().then(r => actions.user.admin(r))
+    }
   }, [])
 
   useEffect(() => {

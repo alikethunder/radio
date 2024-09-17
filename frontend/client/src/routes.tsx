@@ -128,6 +128,13 @@ export const routes = [
 
           if (id == 'new') {
             //new station
+
+            const is_admin = store.user.admin()
+            console.log('[router Station] admin : ', is_admin)
+            if (!is_admin) {
+              return redirect('/')
+            }
+
             return {
               id,
             }
