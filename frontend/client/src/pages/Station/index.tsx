@@ -90,7 +90,7 @@ export const Station = () => {
 
   useEffect(() => {
     //console.log('signedin, root_admin: ', signedin, root_admin)
-    
+
     if (signedin) {
       if (root_admin) {
         set_is_admin(true)
@@ -170,6 +170,7 @@ export const Station = () => {
   }, formState, is_admin)
 
   return (
+    /* background here */
     <div
       className=" w-full overflow-y-auto page user_profile_page flex-grow-1 flex flex-column text-800 md:py-4 py-3 md:px-4 px-3"
     >
@@ -256,7 +257,7 @@ export const Station = () => {
                     'text-600'
                   )}
                 >
-                  <small>Radiostation name</small>
+                  <small>Radiostation</small>
                 </label>
 
                 <InputText
@@ -287,12 +288,29 @@ export const Station = () => {
             )}
           />
 
-
-
-
         </form>
 
       </div>
+
+      {/* Playlist */}
+      <DataTable value={[]} sortField="order" sortOrder={1} stripedRows>
+
+        <Column field="image" header="Image" ></Column>
+
+        <Column field="order" header="Order" sortable ></Column>
+
+        <Column field="track" header="Track" sortable ></Column>
+
+        <Column field="artist" header="artist" sortable ></Column>
+
+        <Column field="track_time" header="Track time" sortable></Column>
+
+        <Column field="time_to_play" header="Time to play (local PC time)"></Column>
+
+        <Column field="downloads" header="Downloads" sortable></Column>
+
+        <Column field="likes" header="Likes" sortable></Column>
+      </DataTable>
 
     </div>
   )
