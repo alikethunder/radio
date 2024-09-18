@@ -41,8 +41,13 @@ func Update(ctx *fiber.Ctx) error {
 				//new station
 				station_id = gocql.TimeUUID().String()
 
+				playlist_id := functions.TableId("playlist", station_id)
+
+				//chat_id := functions.TableId("chat", station_id)
+				//Chats.Create(chat_id)
+
 				//create playlist
-				Playlists.Create(station_id)
+				Playlists.Create(playlist_id)
 
 				updated_fields["render_order"], _ = db.Count("stations", "*", fiber.Map{})
 

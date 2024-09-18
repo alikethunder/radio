@@ -22,8 +22,7 @@ import (
 	video boolean,					if track is video
 */
 
-func Create(station_id string) error {
-	id := PlaylistId(station_id)
+func Create(id string) error {
 	fmt.Printf("[Playlists.Create] id %s \n", id)
 	if err := db.Session.Query(`CREATE TABLE IF NOT EXISTS ` + id + ` (
 		id text PRIMARY KEY,
