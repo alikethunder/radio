@@ -157,6 +157,7 @@ export default function App() {
   }, [])
 
   useEffect(() => {
+    //check if user is root admin
     if (store.auth.signedin()) {
       admin().then(r => actions.user.admin(r))
     }

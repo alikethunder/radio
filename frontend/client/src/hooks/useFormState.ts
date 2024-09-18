@@ -23,7 +23,7 @@ import {
 
 //show - to show form actions
 
-export const useFormState = (form_actions: FormState, formState: rhf_formState<any>, show?: any) => {
+export const useFormState = (form_actions: FormState, formState: { isValid: boolean; isSubmitting: boolean; }, show?: any) => {
 
   //console.log('form actions : ', form_actions)
 
@@ -41,7 +41,7 @@ export const useFormState = (form_actions: FormState, formState: rhf_formState<a
 
   useEffect(() => {
     //console.log('show : ', show)
-    
+
     actions.app.FormActionsState_show(Boolean(show))
     return () => {
       actions.app.FormActionsState_show(false)

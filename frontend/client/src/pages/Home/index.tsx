@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo } from "react"
+import { FC, useEffect, useMemo, useState } from "react"
 
 import {
   useLoaderData,
@@ -20,6 +20,10 @@ import {
 } from "@/store"
 
 import {
+  useFormState,
+} from '@/hooks'
+
+import {
   useLog,
 } from '@/hooks'
 
@@ -38,8 +42,35 @@ export const Home = () => {
     isDesktop ? windowSize.width * .21 : Math.min(windowSize.width, windowSize.height) * .8
     , [isDesktop, windowSize])
 
+  const edit_mode = useStore().app.FormActionsState_edit_mode()
+
   const signedin = useStore().auth.signedin()
 
+  const root_admin = useStore().user.admin()
+
+  const [formState, set_formState] = useState({
+    isValid: true,
+    isSubmitting: false,
+  })
+
+  useFormState({
+    submit() {
+      //submit reorder of stations
+      set_formState(fs=>{
+        fs.isSubmitting = true
+        return fs
+      })
+
+      set_formState(fs=>{
+        fs.isSubmitting = false
+        return fs
+      })
+    },
+    reset() {
+      //reset order of stations
+
+    },
+  }, formState, root_admin)
 
   return (
     <div className="sm:py-5 py-4 sm:px-6 px-4 w-full h-full overflow-y-auto page home_page flex-grow-1 flex flex-column">
@@ -54,7 +85,7 @@ export const Home = () => {
         }}>
 
         {
-          signedin ?
+          edit_mode ?
             <QueryLink to={generatePath(`${app_routes["station$id"]}/${'?edit'/* app_routes.edit */}`, { id: "new" })}>
               <SmallCardContainer className="flex flex-row overflow-hidden station_card create_station_card align-self-center shadow_on_hover">
 
