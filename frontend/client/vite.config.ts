@@ -5,6 +5,7 @@ import commonjs from 'vite-plugin-commonjs'
 import autoprefixer from 'autoprefixer'
 import * as path from 'path'
 import svgr from '@svgr/rollup'
+import injectHTML from 'vite-plugin-html-inject'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -12,10 +13,11 @@ export default defineConfig({
     sourcemap: true,
     chunkSizeWarningLimit: 1500,
     target: 'es2015',
-    outDir: '../../public' 
+    outDir: '../../public'
   },
   plugins: [
-    react(), 
+    injectHTML(),
+    react(),
     viteTsconfigPaths(),
     svgr(),
     commonjs(),
@@ -23,14 +25,14 @@ export default defineConfig({
   css: {
     postcss: {
       plugins: [
-        autoprefixer({}) 
+        autoprefixer({})
       ],
     }
   },
   resolve: {
     alias: [
-      {find: '@', replacement: path.resolve(__dirname, './src'),},
-      {find: '&', replacement: path.resolve(__dirname, '../../'),},
+      { find: '@', replacement: path.resolve(__dirname, './src'), },
+      { find: '&', replacement: path.resolve(__dirname, '../../'), },
     ]
   },
   base: "/",

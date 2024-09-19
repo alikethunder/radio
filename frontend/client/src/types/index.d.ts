@@ -1,5 +1,7 @@
 //import { Entries } from 'type-fest'
 
+import type { read as Read, Reader, Config } from '@types/jsmediatags'
+
 declare global {
   interface Window {
     secret?: string;
@@ -8,6 +10,11 @@ declare global {
     google?: any;
     settings: {
 
+    };
+    jsmediatags: {
+      read: Read;
+      Reader: Reader;
+      Config: Config;
     };
   }
   interface ObjectConstructor {

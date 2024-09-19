@@ -20,6 +20,8 @@ import { InputText } from "primereact/inputtext"
 
 import { confirmDialog } from 'primereact/confirmdialog'
 
+import { FileUpload } from 'primereact/fileupload'
+
 import './index.sass'
 
 import {
@@ -74,11 +76,15 @@ export const Station = () => {
 
   const photo_file_input_ref = useRef<HTMLInputElement>(null)
 
+  const tracks_input_ref = useRef<HTMLInputElement>(null)
+
   const [profile_photo_exists, set_profile_photo_exists] = useState(true)
 
   const [avatar_data_url, set_avatar_data_url] = useState<string | null>(null)
 
   const [avatar_blob, set_avatar_blob] = useState<Blob | null>(null)
+
+  const [tracks_to_upload, set_tracks_to_upload] = useState()
 
   const edit_mode = useStore().app.FormActionsState_edit_mode()
 
@@ -160,6 +166,71 @@ export const Station = () => {
 
   }, [avatar_blob, avatar_data_url, station])
 
+  const file_reader = new FileReader()
+
+  const get_track_duration = useCallback(async (file: File) => {
+
+    file_reader.readAsArrayBuffer(file)
+
+    return await new Promise((res, rej) => {
+      file_reader.onloadend = (e) => {
+        const ctx = new AudioContext()
+
+        const audioArrayBuffer = e.target?.result as ArrayBuffer
+
+        ctx.decodeAudioData(audioArrayBuffer, data => {
+          //success
+          const duration = data.duration
+
+          //console.log('Audio file duration: ', duration, duration.toFixed(3))
+
+          res(duration.toFixed(3))
+        }, er => {
+          //error
+          console.error("[Station] get_track_duration something wrong with file: ", er)
+          rej(er)
+        })
+
+      }
+    })
+  }, [])
+
+  const get_track_metadata = async (file: File) => {
+    window.jsmediatags.read(file, {
+      onSuccess(tag) {
+        console.log("[Station] onSuccess get_track_metadata : ", tag)
+      },
+      onError(er) {
+        console.log("[Station] onError get_track_metadata : ", er)
+
+      }
+    })
+  }
+
+  const addTracks = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('[Station] addTracks : ', e.target.files)
+
+    if (e.target.files?.length) {
+      for (const file of e.target.files) {
+        const duration = await get_track_duration(e.target.files[0])
+
+        console.log('duration : ', duration)
+
+        get_track_metadata(file)
+
+        //*get track data, image, name, artist, size
+
+      }
+
+
+
+
+      /* const [blob, data_url] = await resize_image(e.target.files?.[0])
+      set_avatar_blob(blob)
+      set_avatar_data_url(data_url) */
+    }
+  }
+
   //todo add prompt to reset and save form if fields changed
   useFormState({
     reset() {
@@ -182,7 +253,7 @@ export const Station = () => {
 
           className={`profile_picture shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-circle flex align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode ? 'cursor-pointer' : ''}`}
 
-          onClick={() => {
+          onClick={(e: React.MouseEvent) => {
             if (edit_mode) {
               photo_file_input_ref.current?.click()
             }
@@ -292,26 +363,52 @@ export const Station = () => {
 
       </div>
 
-      {/* Playlist */}
-      <DataTable value={[]} sortField="order" sortOrder={1} stripedRows>
 
-        <Column field="image" header="Image" ></Column>
+      {
+        edit_mode ?
+          <>
 
-        <Column field="order" header="Order" sortable ></Column>
+            {/* Upload tracks */}
 
-        <Column field="track" header="Track" sortable ></Column>
+            <Button className="track_uploader" label="Upload tracks" onClick={e => {
+              if (edit_mode) {
+                tracks_input_ref.current?.click()
+              }
+            }}>
 
-        <Column field="artist" header="artist" sortable ></Column>
+              <input
+                ref={tracks_input_ref}
+                type="file"
+                id="tracks_input"
+                className="hidden"
+                multiple
+                onChange={addTracks}
+              />
+            </Button>
 
-        <Column field="track_time" header="Track time" sortable></Column>
+            {/* Playlist */}
+            < DataTable value={[]} sortField="order" sortOrder={1} stripedRows>
 
-        <Column field="time_to_play" header="Time to play (local PC time)"></Column>
+              <Column field="order" header="Order" sortable ></Column>
 
-        <Column field="downloads" header="Downloads" sortable></Column>
+              <Column field="image" header="Image" ></Column>
 
-        <Column field="likes" header="Likes" sortable></Column>
-      </DataTable>
+              <Column field="track" header="Track" sortable ></Column>
 
-    </div>
+              <Column field="artist" header="artist" sortable ></Column>
+
+              <Column field="track_time" header="Track time" sortable></Column>
+
+              <Column field="time_to_play" header="Time to play (local PC time)"></Column>
+
+              <Column field="downloads" header="Downloads" sortable></Column>
+
+              <Column field="likes" header="Likes" sortable></Column>
+            </DataTable>
+          </>
+          : <></>
+      }
+
+    </div >
   )
 }

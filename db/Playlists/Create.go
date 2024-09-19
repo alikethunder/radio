@@ -8,7 +8,8 @@ import (
 
 /*
 	id text, 								playlist_${station_id}
-	name text,							track name
+	track text,							track name
+	artist text,						artist name
 	description text,				track description
 	data blob,							track blob
 	image blob,							track image
@@ -20,13 +21,15 @@ import (
 	downloadable boolean, 	if track can be downloaded
 	likes	int,							how many people liked track
 	video boolean,					if track is video
+	duration smallint, 			track duration in secs
 */
 
 func Create(id string) error {
 	fmt.Printf("[Playlists.Create] id %s \n", id)
 	if err := db.Session.Query(`CREATE TABLE IF NOT EXISTS ` + id + ` (
 		id text PRIMARY KEY,
-		name text,
+		track text,
+		artist text,
 		description text,
 		data blob,
 		image blob,
@@ -36,7 +39,8 @@ func Create(id string) error {
 		downloads set<uuid>,
 		downloadable boolean,
 		likes	int,
-		video boolean
+		video boolean,
+		duration smallint,
 	) WITH caching = {'enabled': 'true'};`).Exec(); err != nil {
 
 		log.Fatal("create playlist_ TABLE err : ", err)
