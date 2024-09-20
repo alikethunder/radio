@@ -76,16 +76,18 @@ import { admin } from "@/API/profile/admin"
 export default function App() {
 
   const navigate = useNavigate()
-  const { pathname } = useLocation()
+  const { pathname, search } = useLocation()
 
-  const [search, set_search] = useSearchParams()
+  const [searchParams, set_search] = useSearchParams()
 
   useEffect(() => {
-    set_search(search => {
-      search.delete('auth')
-      return search
-    })
-  }, [])
+    setTimeout(() => {
+      if (searchParams.has('auth')) {
+        searchParams.delete('auth')
+        set_search(searchParams, { replace: true })
+      }
+    }, 1000)
+  }, [searchParams, search])
 
   const windowSize = useWindowSize()
 

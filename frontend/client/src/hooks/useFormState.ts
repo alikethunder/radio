@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react"
+import { useCallback, useEffect, useMemo } from "react"
 
 import {
   actions,
@@ -39,18 +39,26 @@ export const useFormState = (form_actions: FormState, formState: { isValid: bool
     actions.app.FormActionsState_isValid(isValid)
   }, [isValid])
 
+  const [search, set_search] = useSearchParams()
+
   useEffect(() => {
     //console.log('show : ', show)
 
     actions.app.FormActionsState_show(Boolean(show))
+    if (!show) {
+      set_search(search => {
+
+        search.delete('edit')
+
+        return search
+      })
+    }
     return () => {
       actions.app.FormActionsState_show(false)
     }
   }, [show])
 
   const form = useStore().app.FormActionsState_form()
-
-  const [search, set_search] = useSearchParams()
 
   const edit_mode = useMemo(() => search.has('edit'), [search])
 
@@ -66,9 +74,15 @@ export const useFormState = (form_actions: FormState, formState: { isValid: bool
 
   useEffect(() => {
 
-    actions.app.FormActionsState_state(isSubmitting ? 'saving' : edit_mode ? 'edit' : 'read')
+    actions.app.FormActionsState_state(
+      isSubmitting ? 'saving'
+        :
+        (
+          edit_mode ? 'edit' : 'read'
+        )
+    )
 
-  }, [edit_mode, isSubmitting])
+  }, [edit_mode, isSubmitting, show])
 
   useEffect(() => {
 
@@ -102,7 +116,6 @@ export const useFormState = (form_actions: FormState, formState: { isValid: bool
         }
 
         set_search(search => {
-          //console.log('[useFormState] FormActionsState_submit delete edit ')
 
           search.delete('edit')
 
@@ -115,7 +128,7 @@ export const useFormState = (form_actions: FormState, formState: { isValid: bool
     return () => {
       actions.app.FormActionsState_submit(undefined)
     }
-  }, [form, submit, isValid])
+  }, [form, submit, isValid,])
 
 
   useEffect(() => {
@@ -127,7 +140,6 @@ export const useFormState = (form_actions: FormState, formState: { isValid: bool
       }
 
       set_search(search => {
-        //console.log('[useFormState] FormActionsState_reset delete edit ')
 
         search.delete('edit')
 
@@ -142,12 +154,13 @@ export const useFormState = (form_actions: FormState, formState: { isValid: bool
     return () => {
       actions.app.FormActionsState_reset(undefined)
     }
-  }, [form, reset])
+  }, [form, reset,])
 
   useEffect(() => {
     return () => {
       //state to 'read' on page change
       set_search(search => {
+
         search.delete('edit')
 
         return search

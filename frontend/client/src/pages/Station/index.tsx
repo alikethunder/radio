@@ -126,6 +126,7 @@ export const Station = () => {
     defaultValues: {
       name: station?.name ?? '',
       external_enable: station?.external_enable ?? false,
+      external: station?.external ?? '',
     }
   })
 
@@ -368,30 +369,62 @@ export const Station = () => {
             )}
           />
 
-          <div className="external_container flex flex-row align-items-center">
-            {/* input field for link */}
-            <Controller
-              name="external_enable"
-              control={control}
-              render={({ field }) => (
-                <>
-                  <InputSwitch
-                    inputId={field.name}
-                    checked={field.value}
-                    inputRef={field.ref}
-                    className="mr-2"
-                    onChange={(e) => {
-                      field.onChange(e.checked)
-                    }} />
-                  <label htmlFor={field.name} className="cursor-pointer">Use external source</label>
-                </>
-              )}
-            />
+          {
+            edit_mode ?
+              <div className="external_container flex flex-row align-items-center">
+                {/* input field for link */}
+                <Controller
+                  name="external"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <>
+                      <label
+                        htmlFor={field.name}
+                        className={classNames(
+                          'text-600'
+                        )}
+                      >
+                        <small>External source</small>
+                      </label>
 
-            {/* broadcasting switch */}
+                      <InputText
+                        id={field.name}
+                        value={field.value}
+                        className={classNames(
+                          {
+                          },
+                        )}
+                        onChange={field.onChange}
+                        onBlur={field.onBlur}
+                      />
+                    </>
+                  )}
+                />
 
 
-          </div>
+                {/* broadcasting switch */}
+                <Controller
+                  name="external_enable"
+                  control={control}
+                  render={({ field }) => (
+                    <>
+                      <InputSwitch
+                        inputId={field.name}
+                        checked={field.value}
+                        inputRef={field.ref}
+                        className="mr-2"
+                        onChange={(e) => {
+                          field.onChange(e.checked)
+                        }} />
+                      <label htmlFor={field.name} className="cursor-pointer">Use external source</label>
+                    </>
+                  )}
+                />
+
+
+              </div>
+              : <></>
+          }
 
         </form>
 
