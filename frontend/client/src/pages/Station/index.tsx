@@ -196,14 +196,18 @@ export const Station = () => {
   }, [])
 
   const get_track_metadata = async (file: File) => {
-    window.jsmediatags.read(file, {
-      onSuccess(tag) {
-        console.log("[Station] onSuccess get_track_metadata : ", tag)
-      },
-      onError(er) {
-        console.log("[Station] onError get_track_metadata : ", er)
 
-      }
+    return await new Promise((res, rej) => {
+      window.jsmediatags.read(file, {
+        onSuccess(tag: any) {
+          console.log("[Station] onSuccess get_track_metadata : ", tag)
+          res(tag)
+        },
+        onError(er: Error) {
+          console.log("[Station] onError get_track_metadata : ", er)
+          rej(er)
+        }
+      })
     })
   }
 
@@ -216,7 +220,11 @@ export const Station = () => {
 
         console.log('duration : ', duration)
 
-        get_track_metadata(file)
+        const metadata = await get_track_metadata(file) as any
+
+        const blob = metadata.picture
+
+        console.log('metadata : ', metadata)
 
         //*get track data, image, name, artist, size
 
