@@ -9,7 +9,8 @@ import {
 
 import {
   Controller,
-  useForm
+  useForm,
+  useWatch
 } from 'react-hook-form'
 
 import { classNames } from 'primereact/utils'
@@ -121,6 +122,7 @@ export const Station = () => {
     setValue,
     reset,
     clearErrors,
+    watch,
   } = useForm({
     mode: 'onTouched',
     defaultValues: {
@@ -250,6 +252,17 @@ export const Station = () => {
     },
   }, formState, is_admin)
 
+  const external = useWatch({
+    control,
+    name: 'external'
+  })
+
+  useEffect(() => {
+    if (!external) {
+      setValue("external_enable", false)
+    }
+  }, [external])
+
   return (
     /* background here */
     <div
@@ -335,7 +348,8 @@ export const Station = () => {
                     {
                       'p-error': errors[field.name]
                     },
-                    'text-600'
+                    'text-600',
+                    "select-none",
                   )}
                 >
                   <small>Radiostation</small>
@@ -371,7 +385,7 @@ export const Station = () => {
 
           {
             edit_mode ?
-              <div className="external_container flex flex-row align-items-center">
+              <div className="flex flex-column gap-1">
                 {/* input field for link */}
                 <Controller
                   name="external"
@@ -380,11 +394,32 @@ export const Station = () => {
                     <>
                       <label
                         htmlFor={field.name}
-                        className={classNames(
-                          'text-600'
-                        )}
+                        className='text-600 select-none flex align-items-center'
                       >
                         <small>External source</small>
+
+                        <Controller
+                          name="external_enable"
+                          control={control}
+                          render={({ field: switch_field, }) => (
+                            <InputSwitch
+                              inputId={switch_field.name}
+                              checked={switch_field.value}
+                              inputRef={switch_field.ref}
+                              className="origin-center"
+                              onChange={switch_field.onChange}
+                              disabled={!external}
+                              pt={{
+                                root: {
+                                  style: {
+                                    transform: 'scale(0.6)'
+                                  }
+                                }
+                              }}
+                            />
+                          )}
+                        />
+
                       </label>
 
                       <InputText
@@ -400,28 +435,6 @@ export const Station = () => {
                     </>
                   )}
                 />
-
-
-                {/* broadcasting switch */}
-                <Controller
-                  name="external_enable"
-                  control={control}
-                  render={({ field }) => (
-                    <>
-                      <InputSwitch
-                        inputId={field.name}
-                        checked={field.value}
-                        inputRef={field.ref}
-                        className="mr-2"
-                        onChange={(e) => {
-                          field.onChange(e.checked)
-                        }} />
-                      <label htmlFor={field.name} className="cursor-pointer">Use external source</label>
-                    </>
-                  )}
-                />
-
-
               </div>
               : <></>
           }

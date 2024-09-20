@@ -12,10 +12,6 @@ import {
 } from '@/types/FormState'
 
 import {
-  FormState as rhf_formState
-} from 'react-hook-form'
-
-import {
   useLoaderData,
   useSearchParams,
   useNavigate,
@@ -45,14 +41,7 @@ export const useFormState = (form_actions: FormState, formState: { isValid: bool
     //console.log('show : ', show)
 
     actions.app.FormActionsState_show(Boolean(show))
-    if (!show) {
-      set_search(search => {
 
-        search.delete('edit')
-
-        return search
-      })
-    }
     return () => {
       actions.app.FormActionsState_show(false)
     }
@@ -75,11 +64,13 @@ export const useFormState = (form_actions: FormState, formState: { isValid: bool
   useEffect(() => {
 
     actions.app.FormActionsState_state(
-      isSubmitting ? 'saving'
-        :
-        (
-          edit_mode ? 'edit' : 'read'
-        )
+      show ? (
+        isSubmitting ? 'saving'
+          :
+          (
+            edit_mode ? 'edit' : 'read'
+          )
+      ) : 'read'
     )
 
   }, [edit_mode, isSubmitting, show])
