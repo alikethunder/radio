@@ -20,7 +20,7 @@ import { InputText } from "primereact/inputtext"
 
 import { confirmDialog } from 'primereact/confirmdialog'
 
-import { FileUpload } from 'primereact/fileupload'
+import { InputSwitch } from "primereact/inputswitch"
 
 import './index.sass'
 
@@ -125,6 +125,7 @@ export const Station = () => {
     mode: 'onTouched',
     defaultValues: {
       name: station?.name ?? '',
+      external_enable: station?.external_enable ?? false,
     }
   })
 
@@ -366,6 +367,31 @@ export const Station = () => {
               </>
             )}
           />
+
+          <div className="external_container flex flex-row align-items-center">
+            {/* input field for link */}
+            <Controller
+              name="external_enable"
+              control={control}
+              render={({ field }) => (
+                <>
+                  <InputSwitch
+                    inputId={field.name}
+                    checked={field.value}
+                    inputRef={field.ref}
+                    className="mr-2"
+                    onChange={(e) => {
+                      field.onChange(e.checked)
+                    }} />
+                  <label htmlFor={field.name} className="cursor-pointer">Use external source</label>
+                </>
+              )}
+            />
+
+            {/* broadcasting switch */}
+
+
+          </div>
 
         </form>
 
