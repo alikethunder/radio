@@ -104,6 +104,7 @@ func main() {
 	files_endpoints := v1.Group("/files", etag.New())
 	//get user profile photo by user id
 	files_endpoints.Get("/:table/:row_id/:field", FilesEndpoints.GetFile)
+	files_endpoints.Post("/:table/:row_id/:field", FilesEndpoints.Upload)
 
 	radio_endpoints := v1.Group("/radio")
 

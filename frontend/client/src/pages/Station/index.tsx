@@ -5,6 +5,7 @@ import {
   useLoaderData,
   useNavigate,
   useParams,
+  useSearchParams,
 } from "react-router-dom"
 
 import {
@@ -67,6 +68,17 @@ const private_tooltip_options = { ...tooltip_options, position: 'right' } as con
 export const Station = () => {
 
   const station = useLoaderData() as StationType
+
+  const [search, set_search] = useSearchParams()
+
+  useEffect(() => {
+    if (station.id == 'new') {
+      set_search(s => {
+        s.set('edit', '')
+        return s
+      })
+    }
+  }, [station.id])
 
   //console.log('station : ', station)
 
@@ -139,34 +151,42 @@ export const Station = () => {
   const onSubmit = useCallback(async (data: any) => {
     console.log('submit : ', data)
 
-    const body = new FormData()
-
-    Object.keys(data).forEach(k => body.set(k, data[k]))
-
-    if (avatar_blob) {
-      body.set('avatar', avatar_blob)
-    }
-
-    if (station.id != 'new') {
-      body.set('id', station.id)
-    }
-
-    //console.log('id : ', station.id)
+    const { id } = station
 
     const resp = await fetch('/api/v1/radio/update', {
       method: 'POST',
-      body,
+      body: JSON.stringify({ ...data, ...id == 'new' ? {} : { id } }),
     })
 
     if (resp.status == 200) {
-      const id = await resp.text()
-      navigate(generatePath(app_routes["station$id"], { id }))
-      set_avatar_blob(null)
+
+      if (avatar_blob) {
+
+        const body = new FormData()
+
+        body.set('avatar', avatar_blob)
+
+        const resp = await fetch(`/api/v1/files/stations/${id}/avatar`, {
+          method: 'POST',
+          body,
+        })
+
+        if (resp.status != 200) {
+          console.log(`[Station] avatar upload error : `, resp)
+        } else {
+          set_avatar_blob(null)
+        }
+
+      }
+
+      if (id == 'new') {
+        const id = await resp.text()
+        navigate(generatePath(app_routes["station$id"], { id }))
+      }
+
     } else {
-
+      console.log(`[Station] update error : `, resp)
     }
-
-
 
   }, [avatar_blob, avatar_data_url, station])
 

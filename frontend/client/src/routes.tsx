@@ -56,7 +56,7 @@ export const routes = [
       {
         path: app_routes.root,
         loader: async ({ request }: Loader_params) => {
-          console.log('root admin : ', store.user.admin())
+          console.log('[loader Home] root admin : ', store.user.admin())
 
           const stations = await stations_list(/* 0, 32 */)
           return stations
@@ -132,7 +132,7 @@ export const routes = [
             //new station
 
             const is_admin = store.user.admin()
-            console.log('[router Station] admin : ', is_admin)
+            console.log('[loader Station] root admin : ', is_admin)
             if (!is_admin) {
               return redirect('/')
             }
@@ -154,7 +154,7 @@ export const routes = [
             console.log(`[router ${request.url}] error : `, e)
 
             //if there is no such station
-            return null
+            return redirect(app_routes.root)
           }
 
         },

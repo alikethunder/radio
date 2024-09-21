@@ -1,6 +1,7 @@
 package RadioEndpoints
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"slices"
@@ -23,25 +24,33 @@ func Update(ctx *fiber.Ctx) error {
 
 		db_user, _ := db.SelectRow("users", fiber.Map{"id": cookie_user["id"]}, "admin")
 
-		station_id := ctx.FormValue("id")
+		var updated_fields fiber.Map
+
+		is_admin := db_user["admin"].(bool)
+
+		json.Unmarshal(ctx.Body(), &updated_fields)
+
+		fmt.Println("[RadioEndpoints.Update] updated_fields :", updated_fields)
 
 		//fmt.Printf("[RadioEndpoints.Update] station_id =  %s \n", station_id)
 
-		station, _ := db.SelectRow("stations", fiber.Map{"id": station_id}, "admins")
+		if !is_admin && updated_fields["id"] != nil {
 
-		fmt.Println("[RadioEndpoints.Update] station :", station)
+			station, _ := db.SelectRow("stations", fiber.Map{"id": updated_fields["id"]}, "admins")
 
-		if db_user["admin"] == true || (station["admins"] != nil && slices.Contains(station["admins"].([]string), cookie_user["id"].(string))) {
+			fmt.Println("[RadioEndpoints.Update] station :", station)
 
-			updated_fields := functions.ParseForm(ctx, []string{"name"}, []string{"avatar"})
+			is_admin = station["admins"] != nil && slices.Contains(station["admins"].([]string), cookie_user["id"].(string))
 
-			//fmt.Println("[RadioEndpoints.Update] updated_fields :", updated_fields)
+		}
 
-			if station_id == "" {
+		if is_admin {
+
+			if updated_fields["id"] == nil {
 				//new station
-				station_id = gocql.TimeUUID().String()
+				updated_fields["id"] = gocql.TimeUUID().String()
 
-				playlist_id := functions.TableId("playlist", station_id)
+				playlist_id := functions.TableId("playlist", updated_fields["id"].(string))
 
 				//chat_id := functions.TableId("chat", station_id)
 				//Chats.Create(chat_id)
@@ -59,7 +68,7 @@ func Update(ctx *fiber.Ctx) error {
 				"stations",
 				updated_fields,
 				fiber.Map{
-					"id": station_id,
+					"id": updated_fields["id"],
 				},
 			)
 
@@ -69,7 +78,7 @@ func Update(ctx *fiber.Ctx) error {
 				return ctx.SendStatus(fiber.StatusForbidden)
 			}
 
-			return ctx.Status(fiber.StatusOK).Send([]byte(station_id))
+			return ctx.Status(fiber.StatusOK).Send([]byte(updated_fields["id"].(string)))
 		}
 
 	}

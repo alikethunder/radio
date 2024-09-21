@@ -151,7 +151,8 @@ export const useFormState = (form_actions: FormState, formState: { isValid: bool
     return () => {
       //state to 'read' on page change
       set_search(search => {
-
+        //console.log('[useFormState] delete edit in return useEffect')
+        
         search.delete('edit')
 
         return search
