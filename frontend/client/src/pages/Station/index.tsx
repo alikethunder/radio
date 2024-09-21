@@ -465,7 +465,7 @@ export const Station = () => {
 
 
       {
-        edit_mode ?
+        edit_mode && false ?
           <>
 
             {/* Upload tracks */}
