@@ -21,38 +21,47 @@ func Upload(ctx *fiber.Ctx) error {
 
 	if row_id != "" && table != "" && field != "" {
 
-		if result, _ := db.SelectRow(table, fiber.Map{"id": row_id}, "id"); result != nil {
+		admin := db.CheckRootAdmin(ctx)
 
-			//!!!check if user admin first
+		if !admin {
+			admin = db.CheckPermission(ctx, table, row_id, "admins")
+		}
 
-			if blob, err := ctx.FormFile(field); err == nil {
+		if admin {
 
-				bts := bytes.NewBuffer(nil)
+			if result, _ := db.SelectRow(table, fiber.Map{"id": row_id}, "id"); result != nil {
 
-				file_bts, err := blob.Open()
+				//!!!check if user admin first
 
-				if err != nil {
-					fmt.Println("[FilesEndpoints.Upload] photo.Open error : ", err)
-				}
+				if blob, err := ctx.FormFile(field); err == nil {
 
-				if _, err := io.Copy(bts, file_bts); err == nil {
+					bts := bytes.NewBuffer(nil)
 
-					if err := db.Update(
-						table,
-						fiber.Map{
-							field: bts.Bytes(),
-						},
-						fiber.Map{"id": row_id},
-					); err == nil {
-						return ctx.SendStatus(fiber.StatusOK)
+					file_bts, err := blob.Open()
+
+					if err != nil {
+						fmt.Println("[FilesEndpoints.Upload] photo.Open error : ", err)
+					}
+
+					if _, err := io.Copy(bts, file_bts); err == nil {
+
+						if err := db.Update(
+							table,
+							fiber.Map{
+								field: bts.Bytes(),
+							},
+							fiber.Map{"id": row_id},
+						); err == nil {
+							return ctx.SendStatus(fiber.StatusOK)
+						}
+
+					} else {
+						fmt.Println("[FilesEndpoints.Upload] io.Copy error : ", err)
 					}
 
 				} else {
-					fmt.Println("[FilesEndpoints.Upload] io.Copy error : ", err)
+					fmt.Println("[FilesEndpoints.Upload] FormFile error : ", err)
 				}
-
-			} else {
-				fmt.Println("[FilesEndpoints.Upload] FormFile error : ", err)
 			}
 		}
 	}

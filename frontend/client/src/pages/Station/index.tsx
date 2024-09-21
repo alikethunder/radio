@@ -153,9 +153,9 @@ export const Station = () => {
 
     const { id } = station
 
-    const resp = await fetch('/api/v1/radio/update', {
+    const resp = await fetch(`/api/v1/radio/update/${id}`, {
       method: 'POST',
-      body: JSON.stringify({ ...data, ...id == 'new' ? {} : { id } }),
+      body: JSON.stringify(data),
     })
 
     if (resp.status == 200) {

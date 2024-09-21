@@ -130,7 +130,7 @@ func main() {
 
 	radio_endpoints.Get("/broadcast/:id", RadioEndpoints.Broadcast)
 
-	radio_endpoints.Post("/update", RadioEndpoints.Update)
+	radio_endpoints.Post("/update/:id", RadioEndpoints.Update)
 
 	radio_endpoints.Get("/list", RadioEndpoints.ListStations)
 
