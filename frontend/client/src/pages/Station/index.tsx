@@ -294,7 +294,7 @@ export const Station = () => {
         <div
           style={{ backgroundImage: `url(${avatar_data_url || `/api/v1/files/stations/${station.id}/avatar`})` }}
 
-          className={`profile_picture shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-circle flex align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode ? 'cursor-pointer' : ''}`}
+          className={`profile_picture shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-round-xl flex align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode ? 'cursor-pointer' : ''}`}
 
           onClick={(e: React.MouseEvent) => {
             if (edit_mode) {
