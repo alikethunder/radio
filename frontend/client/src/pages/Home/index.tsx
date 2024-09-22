@@ -56,12 +56,12 @@ export const Home = () => {
   useFormState({
     submit() {
       //submit reorder of stations
-      set_formState(fs=>{
+      set_formState(fs => {
         fs.isSubmitting = true
         return fs
       })
 
-      set_formState(fs=>{
+      set_formState(fs => {
         fs.isSubmitting = false
         return fs
       })

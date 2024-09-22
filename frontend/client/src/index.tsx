@@ -26,8 +26,6 @@ const router = createBrowserRouter(routes as RouteObject[], {
 
 actions.app.router(router)
 
-const routerProvider = <RouterProvider router={router} />
-
 //hydrateRoot(document.getElementById("app")!, routerProvider)
 
-createRoot(document.getElementById("app")!).render(routerProvider)
+createRoot(document.getElementById("app")!).render(<RouterProvider router={router} />)

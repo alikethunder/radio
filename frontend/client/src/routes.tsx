@@ -52,16 +52,21 @@ export const routes = [
       actions.app.current_page({})
       return null
     },
+    shouldRevalidate: (o) => {
+      //console.log(o)
+      return false
+    },
     children: [
       {
         path: app_routes.root,
         loader: async ({ request }: Loader_params) => {
           console.log('[loader Home] root admin : ', store.user.admin())
 
-          const stations = await stations_list(/* 0, 32 */)
+          const stations = await stations_list()
           return stations
         },
-        element: <Home />
+        element: <Home />,
+        shouldRevalidate: () => false,
       },
       {
         path: app_routes.purchase_plan,
@@ -158,6 +163,7 @@ export const routes = [
           }
 
         },
+        shouldRevalidate: () => false,
       },
       {
         path: app_routes.signin,

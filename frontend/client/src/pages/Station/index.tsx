@@ -76,7 +76,7 @@ export const Station = () => {
       set_search(s => {
         s.set('edit', '')
         return s
-      })
+      }, { replace: true })
     }
   }, [station.id])
 

@@ -83,7 +83,7 @@ export const useFormState = (form_actions: FormState, formState: { isValid: bool
         search.set('edit', '')
 
         return search
-      })
+      }, { replace: true })
 
       if (edit) {
         await edit()
@@ -111,7 +111,7 @@ export const useFormState = (form_actions: FormState, formState: { isValid: bool
           search.delete('edit')
 
           return search
-        })
+        }, { replace: true })
       }
 
     })
@@ -135,7 +135,7 @@ export const useFormState = (form_actions: FormState, formState: { isValid: bool
         search.delete('edit')
 
         return search
-      })
+      }, { replace: true })
 
       if (loader_data.id == 'new') {
         navigate(-1)
@@ -152,11 +152,11 @@ export const useFormState = (form_actions: FormState, formState: { isValid: bool
       //state to 'read' on page change
       set_search(search => {
         //console.log('[useFormState] delete edit in return useEffect')
-        
+
         search.delete('edit')
 
         return search
-      })
+      }, { replace: true })
     }
   }, [])
 

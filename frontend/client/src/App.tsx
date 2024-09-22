@@ -76,7 +76,12 @@ import { admin } from "@/API/profile/admin"
 export default function App() {
 
   const navigate = useNavigate()
-  const { pathname, search } = useLocation()
+
+  const location = useLocation()
+
+  const { pathname, search } = location
+
+  //useEffect(() => { console.log('location : ', location, location.key) }, [location])
 
   const [searchParams, set_search] = useSearchParams()
 
