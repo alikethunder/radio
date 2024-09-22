@@ -24,6 +24,8 @@ import { confirmDialog } from 'primereact/confirmdialog'
 
 import { InputSwitch } from "primereact/inputswitch"
 
+import { Tag } from 'primereact/tag'
+
 import './index.sass'
 
 import {
@@ -141,6 +143,7 @@ export const Station = () => {
       name: station?.name ?? '',
       external_enable: station?.external_enable ?? false,
       external: station?.external ?? '',
+      broadcasting: station?.broadcasting ?? false,
     }
   })
 
@@ -370,9 +373,63 @@ export const Station = () => {
                     },
                     'text-600',
                     "select-none",
+                    'flex',
+                    'align-items-center'
                   )}
                 >
                   <small>Radiostation</small>
+
+                  {
+                    edit_mode ?
+                      <Controller
+                        name="broadcasting"
+                        control={control}
+                        render={({ field: switch_field, }) => (
+                          <>
+                            <InputSwitch
+                              inputId={switch_field.name}
+                              checked={switch_field.value}
+                              inputRef={switch_field.ref}
+                              className="origin-center"
+                              onChange={switch_field.onChange}
+                              disabled={!external}
+                              pt={{
+                                root: {
+                                  style: {
+                                    transform: 'scale(0.6)'
+                                  },
+                                  className: classNames({
+
+                                  })
+                                }
+                              }}
+                            />
+
+                            <label htmlFor={switch_field.name} className="cursor-pointer ml-0">
+                              <Tag
+                                value={switch_field.value ? 'on' : 'off'}
+                                severity={switch_field.value ? 'success' : null}
+                                pt={{
+                                  root: {
+                                    className: classNames({
+                                      'surface-300': !switch_field.value
+                                    },
+                                      'py-05',
+                                    ),
+                                  },
+                                  value: {
+                                    style: {
+                                      lineHeight: 1.25,
+                                    }
+                                  }
+                                }}
+                              />
+                            </label>
+                          </>
+                        )}
+                      />
+                      : <></>
+                  }
                 </label>
 
                 <InputText
@@ -403,6 +460,8 @@ export const Station = () => {
             )}
           />
 
+
+
           {
             edit_mode ?
               <div className="flex flex-column gap-1">
@@ -416,27 +475,53 @@ export const Station = () => {
                         htmlFor={field.name}
                         className='text-600 select-none flex align-items-center'
                       >
-                        <small>External source</small>
+                        <small>External</small>
 
                         <Controller
                           name="external_enable"
                           control={control}
                           render={({ field: switch_field, }) => (
-                            <InputSwitch
-                              inputId={switch_field.name}
-                              checked={switch_field.value}
-                              inputRef={switch_field.ref}
-                              className="origin-center"
-                              onChange={switch_field.onChange}
-                              disabled={!external}
-                              pt={{
-                                root: {
-                                  style: {
-                                    transform: 'scale(0.6)'
+                            <>
+                              <InputSwitch
+                                inputId={switch_field.name}
+                                checked={switch_field.value}
+                                inputRef={switch_field.ref}
+                                className="origin-center"
+                                onChange={switch_field.onChange}
+                                disabled={!external}
+                                pt={{
+                                  root: {
+                                    style: {
+                                      transform: 'scale(0.6)'
+                                    },
+                                    className: classNames({
+
+                                    })
                                   }
-                                }
-                              }}
-                            />
+                                }}
+                              />
+
+                              <label htmlFor={switch_field.name} className="cursor-pointer ml-0">
+                                <Tag
+                                  value={switch_field.value ? 'on' : 'off'}
+                                  severity={switch_field.value ? 'success' : null}
+                                  pt={{
+                                    root: {
+                                      className: classNames({
+                                        'surface-300': !switch_field.value
+                                      },
+                                        'py-05',
+                                      ),
+                                    },
+                                    value: {
+                                      style: {
+                                        lineHeight: 1.25,
+                                      }
+                                    }
+                                  }}
+                                />
+                              </label>
+                            </>
                           )}
                         />
 
