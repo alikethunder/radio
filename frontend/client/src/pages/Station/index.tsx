@@ -26,6 +26,8 @@ import { InputSwitch } from "primereact/inputswitch"
 
 import { Tag } from 'primereact/tag'
 
+import { Editor } from 'primereact/editor'
+
 import './index.sass'
 
 import {
@@ -357,7 +359,7 @@ export const Station = () => {
 
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-1 align-self-start sm:ml-5 mt-3 sm:mt-1 w-25rem max-w-full" ref={setForm}>
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-1 align-self-start sm:ml-5 mt-3 sm:mt-1 max-w-full" ref={setForm}>
 
           <Controller
             name="name"
@@ -439,6 +441,8 @@ export const Station = () => {
                     {
                       'p-invalid': fieldState.error,
                     },
+                    'max-w-full',
+                    'align-self-start',
                   )}
                   onChange={(e) => {
                     field.onChange(e.target.value)
@@ -460,12 +464,16 @@ export const Station = () => {
             )}
           />
 
+          <Editor value="Always bet on Prime!" readOnly={!edit_mode} style={{ height: '320px' }} /* headerTemplate={<span className="ql-formats">
+            <button className="ql-bold" aria-label="Bold"></button>
+            <button className="ql-italic" aria-label="Italic"></button>
+            <button className="ql-underline" aria-label="Underline"></button>
+          </span>} */ />
 
 
           {
             edit_mode ?
               <div className="flex flex-column gap-1">
-                {/* input field for link */}
                 <Controller
                   name="external"
                   control={control}
