@@ -289,7 +289,7 @@ export const Station = () => {
   return (
     /* background here */
     <div
-      className=" w-full overflow-y-auto page user_profile_page flex-grow-1 flex flex-column text-800 md:py-4 py-3 md:px-4 px-3"
+      className=" w-full overflow-y-auto page station_page flex-grow-1 flex flex-column text-800 md:py-4 py-3 md:px-4 px-3"
     >
 
       <div className="flex flex-column sm:flex-row">
@@ -297,7 +297,7 @@ export const Station = () => {
         <div
           style={{ backgroundImage: `url(${avatar_data_url || `/api/v1/files/stations/${station.id}/avatar`})` }}
 
-          className={`profile_picture shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-round-xl flex align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode ? 'cursor-pointer' : ''}`}
+          className={`avatar_picture shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-round-xl flex align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode ? 'cursor-pointer' : ''}`}
 
           onClick={(e: React.MouseEvent) => {
             if (edit_mode) {
