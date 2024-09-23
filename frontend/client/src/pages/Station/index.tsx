@@ -71,6 +71,17 @@ import { admin } from "@/API/profile/admin"
 
 const private_tooltip_options = { ...tooltip_options, position: 'right' } as const
 
+const tags_colors = [
+  'blue-700',
+  'green-700',
+  'yellow-700',
+  'cyan-700',
+  'indigo-700',
+  'teal-600',
+  'orange-600',
+  'red-600'
+] as const
+
 export const Station = () => {
 
   const station = useLoaderData() as StationType
@@ -298,6 +309,34 @@ export const Station = () => {
     name: 'description',
   })
 
+  const get_random_from_length = useCallback((length: number) => {
+    return length ?
+      Math.floor(Math.random() * length)
+      : 0
+  }, [])
+
+  const get_random_color = useCallback(() => {
+    return tags_colors[get_random_from_length(tags_colors.length)]
+  }, [])
+
+  const tags_tag = useCallback((item: any) => <Tag
+    value={item}
+    pt={{
+      root: {
+        className: classNames({},
+          'py-05',
+          //'px-1',
+          'cursor-default',
+          'select-none',
+          `bg-${get_random_color()}`,
+        ),
+        style: {
+          lineHeight: 1.25,
+        }
+      },
+    }}
+  />, [])
+
   return (
     /* background here */
     <div
@@ -474,72 +513,65 @@ export const Station = () => {
             )}
           />
 
-          <Controller
-            name="tags"
-            control={control}
-            render={({ field }) => (
-              <>
+          {
+            edit_mode ?
+              <Controller
+                name="tags"
+                control={control}
+                render={({ field }) => (
+                  <>
 
-                <label
-                  htmlFor={field.name}
-                  className={classNames(
-                    {
-                      'p-error': errors[field.name]
-                    },
-                    'text-600',
-                    "select-none",
-                    'flex',
-                    'align-items-center'
-                  )}
-                >
-                  <small>Tags</small>
-                </label>
-
-                <Chips
-                  value={field.value}
-                  onChange={field.onChange}
-                  disabled={!edit_mode}
-                  allowDuplicate={false}
-
-                  pt={{
-                    token: {
-                      className: classNames({
-
-                      },
-                        'p-0',
-                        //'bg-none',
-                        'bg-primary',
-                        'ml-1'
-                      ),
-                    },
-                    removeTokenIcon: {
-                      className: classNames({},
-                        'ml-0',
-                        'mr-1'
-                      )
-                    }
-                  }}
-
-                  itemTemplate={(item) =>
-                    <Tag
-                      value={item}
-                      pt={{
-                        root: {
-                          className: classNames(/* {
-                            'surface-300': !switch_field.value
-                          }, */
-                            'py-05',
-                          ),
-                          style: {
-                            lineHeight: 1.25,
-                          }
+                    <label
+                      htmlFor={field.name}
+                      className={classNames(
+                        {
+                          'p-error': errors[field.name]
                         },
+                        'text-600',
+                        "select-none",
+                        'flex',
+                        'align-items-center'
+                      )}
+                    >
+                      <small>Tags</small>
+                    </label>
+
+                    <Chips
+                      value={field.value}
+                      onChange={field.onChange}
+                      disabled={!edit_mode}
+                      allowDuplicate={false}
+
+                      pt={{
+                        token: {
+                          className: classNames({
+
+                          },
+                            'p-0',
+                            //'bg-none',
+                            'bg-primary',
+                            'ml-1'
+                          ),
+                        },
+                        removeTokenIcon: {
+                          className: classNames({},
+                            'ml-0',
+                            'mr-1'
+                          )
+                        }
                       }}
+
+                      itemTemplate={tags_tag}
                     />
-                  }
-                />
-              </>
-            )} />
+                  </>
+                )} />
+              :
+              <div className="flex gap-1">
+                {
+                  station.tags.map(tags_tag)
+                }
+              </div>
+          }
 
           {/* Read only editor */}
           <Editor
