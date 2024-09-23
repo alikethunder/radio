@@ -505,26 +505,42 @@ export const Station = () => {
             }}
 
             headerTemplate={
-              <span
-                className={`ql-formats`}
-              >
+              <>
+                <span className={`ql-formats`} >
 
-                <select className="ql-size">
+                  <select className="ql-size">
 
-                  <option selected></option>
-                  <option value="large"></option>
-                  <option value="huge"></option>
-                </select>
+                    <option selected></option>
+                    <option value="large"></option>
+                    <option value="huge"></option>
+                  </select>
 
-                <button className="ql-bold" aria-label="Bold"></button>
+                </span>
 
-                <button className="ql-italic" aria-label="Italic"></button>
+                <span className={`ql-formats`} >
 
-                <button className="ql-underline" aria-label="Underline"></button>
+                  <button className="ql-bold" aria-label="Bold"></button>
 
-                <button className="ql-link" aria-label="Link"></button>
+                  <button className="ql-italic" aria-label="Italic"></button>
 
-              </span>
+                  <button className="ql-underline" aria-label="Underline"></button>
+
+                </span>
+
+                <span className={`ql-formats`} >
+
+                  <button className="ql-list" value={'ordered'} aria-label="Ordered List"></button>
+
+                  <button className="ql-list" value={'bullet'} aria-label="Unordered List"></button>
+
+                </span>
+
+                <span className={`ql-formats`} >
+
+                  <button className="ql-link" aria-label="Link"></button>
+
+                </span>
+              </>
             }
 
             pt={{
