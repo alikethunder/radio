@@ -28,6 +28,8 @@ import { Tag } from 'primereact/tag'
 
 import { Editor } from 'primereact/editor'
 
+import { Chips } from 'primereact/chips'
+
 import './index.sass'
 
 import {
@@ -146,7 +148,8 @@ export const Station = () => {
       external_enable: station?.external_enable ?? false,
       external: station?.external ?? '',
       broadcasting: station?.broadcasting ?? false,
-      description: station?.description ?? ''
+      description: station?.description ?? '',
+      tags: station?.tags ?? [],
     }
   })
 
@@ -274,6 +277,7 @@ export const Station = () => {
     reset() {
       set_avatar_data_url(null)
       set_avatar_blob(null)
+      setValue('description', station.description)
       reset()
     },
   }, formState, is_admin)
@@ -469,6 +473,35 @@ export const Station = () => {
               </>
             )}
           />
+
+          <Controller
+            name="tags"
+            control={control}
+            render={({ field }) => (
+              <>
+
+                <label
+                  htmlFor={field.name}
+                  className={classNames(
+                    {
+                      'p-error': errors[field.name]
+                    },
+                    'text-600',
+                    "select-none",
+                    'flex',
+                    'align-items-center'
+                  )}
+                >
+                  <small>Tags</small>
+                </label>
+                
+                <Chips
+                  value={field.value}
+                  onChange={field.onChange}
+                  disabled={!edit_mode}
+                />
+              </>
+            )} />
 
           {/* Read only editor */}
           <Editor
