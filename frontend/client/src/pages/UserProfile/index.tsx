@@ -17,6 +17,10 @@ import { Button } from 'primereact/button'
 
 import { InputText } from "primereact/inputtext"
 
+import { IconField } from 'primereact/iconfield'
+
+import { InputIcon } from 'primereact/inputicon'
+
 import { confirmDialog } from 'primereact/confirmdialog'
 
 import './index.sass'
@@ -318,8 +322,8 @@ export const UserProfile = () => {
                   <small>E-mail </small> <i className="pi pi-lock text-xs" ></i>
                 </label>
 
-                <span className="p-input-icon-left">
-                  <i className="pi pi-envelope"></i>
+                <IconField iconPosition="left">
+                  <InputIcon className="pi pi-envelope"></InputIcon>
 
                   <InputText
                     type="email"
@@ -339,7 +343,7 @@ export const UserProfile = () => {
                     onInvalid={e => (e.target as HTMLInputElement).setCustomValidity('Enter an email that contains "@" Example: info@roshni.nl')}
 
                   />
-                </span>
+                </IconField>
 
                 <small className={`p-error`}>{errors?.[field.name]?.message ?? ' '}</small>
               </>

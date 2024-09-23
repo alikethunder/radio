@@ -10,6 +10,10 @@ import { Checkbox } from 'primereact/checkbox'
 import { Password } from "primereact/password"
 import { Toast } from 'primereact/toast'
 
+import { IconField } from 'primereact/iconfield'
+
+import { InputIcon } from 'primereact/inputicon'
+
 import {
   QueryLink,
   GoogleOAuth,
@@ -68,7 +72,7 @@ export const Signin: FC = () => {
       case 200:
         const user = await res.json() as FrontUser
         //console.log('[signin] user : ', user)
-        
+
         actions.user.update_user_data(user)
 
         actions.user.email(form.email)
@@ -124,8 +128,8 @@ export const Signin: FC = () => {
               }}
               render={({ field, fieldState }) => (
                 <>
-                  <span className="p-input-icon-left w-full mb-1">
-                    <i className="pi pi-envelope"></i>
+                  <IconField iconPosition="left">
+                    <InputIcon className="pi pi-envelope"></InputIcon>
 
                     <InputText
                       ref={emailRef}
@@ -141,7 +145,7 @@ export const Signin: FC = () => {
                       onInvalid={e => (e.target as HTMLInputElement).setCustomValidity('Enter an email that contains "@" Example: info@roshni.nl')}
 
                     />
-                  </span>
+                  </IconField>
 
                   <small className={`p-error ml-2 pl-1 mb-2`}>{errors?.[field.name]?.message ?? ' '}</small>
                 </>
@@ -160,44 +164,48 @@ export const Signin: FC = () => {
               }}
               render={({ field, fieldState }) => (
                 <>
-                  <span className={`p-input-icon-left w-full mb-1`}>
-
-                    <i className="pi pi-lock z-2"></i>
+                  <IconField iconPosition="left" className="w-full">
+                    <InputIcon className="pi pi-lock z-2"></InputIcon>
 
                     <Password
                       ref={passwordRef}
                       inputId={field.name}
                       value={field.value}
                       /* type={`${showPass ? 'text' : 'password'}`}  */
-                      placeholder="Пароль"
-
-                      className={classNames("w-full", { 'p-invalid': fieldState.error })}
+                      placeholder="Password"
 
                       onChange={(e) => field.onChange(e.target.value)}
 
                       toggleMask
-                      inputClassName={classNames("w-full", { 'p-invalid': fieldState.error })}
 
                       pt={{
-                        input: () => ({
+                        root: {
+                          className: classNames("w-full", { 'p-invalid': fieldState.error })
+                        },
+                        iconField: {
+                          root: {
+                            className: classNames('w-full'),
+                          }
+                        },
+                        input: {
                           style: {
                             paddingLeft: '2.2rem',
                           },
                           autoComplete: 'current-password',
-                        }),
-                        showIcon: () => ({
+                          className: classNames("w-full", { 'p-invalid': fieldState.error })
+                        },
+                        showIcon: {
                           className: 'cursor-pointer'
-                        }),
-                        hideIcon: () => ({
+                        },
+                        hideIcon: {
                           className: 'cursor-pointer'
-                        })
+                        }
                       }}
 
                       feedback={false}
 
                     />
-
-                  </span>
+                  </IconField>
 
                   <small className={`p-error ml-2 pl-1 mb-2`}>{errors?.[field.name]?.message ?? ' '}</small>
                 </>
