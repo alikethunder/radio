@@ -37,7 +37,7 @@ body
 .p-inputtext.p-disabled
   opacity: 1
 
-.p-inputtext:not(:disabled):not(.p-invalid)
+.p-inputtext:not(:disabled):not(.p-invalid):not([data-p-disabled="true"])
   outline: 0 none
   outline-offset: 0
   box-shadow: 0 0 5px 1px var(--blue-400)
@@ -63,3 +63,6 @@ label, .p-error
 
 small.p-error
   height: 17px
+
+.bg-none
+  background: none

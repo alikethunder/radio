@@ -494,11 +494,49 @@ export const Station = () => {
                 >
                   <small>Tags</small>
                 </label>
-                
+
                 <Chips
                   value={field.value}
                   onChange={field.onChange}
                   disabled={!edit_mode}
+                  allowDuplicate={false}
+
+                  pt={{
+                    token: {
+                      className: classNames({
+
+                      },
+                        'p-0',
+                        //'bg-none',
+                        'bg-primary',
+                        'ml-1'
+                      ),
+                    },
+                    removeTokenIcon: {
+                      className: classNames({},
+                        'ml-0',
+                        'mr-1'
+                      )
+                    }
+                  }}
+
+                  itemTemplate={(item) =>
+                    <Tag
+                      value={item}
+                      pt={{
+                        root: {
+                          className: classNames(/* {
+                            'surface-300': !switch_field.value
+                          }, */
+                            'py-05',
+                          ),
+                          style: {
+                            lineHeight: 1.25,
+                          }
+                        },
+                      }}
+                    />
+                  }
                 />
               </>
             )} />
