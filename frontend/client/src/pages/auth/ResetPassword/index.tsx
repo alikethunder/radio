@@ -6,9 +6,10 @@ import {
 
 import { Button } from 'primereact/button'
 import { InputText } from 'primereact/inputtext'
-import { Checkbox } from 'primereact/checkbox'
-import { Password } from "primereact/password"
-import { Toast, ToastMessage } from 'primereact/toast'
+
+import { IconField } from 'primereact/iconfield'
+
+import { InputIcon } from 'primereact/inputicon'
 
 import {
   QueryLink
@@ -116,8 +117,8 @@ export const ResetPassword: FC = () => {
               }}
               render={({ field, fieldState }) => (
                 <>
-                  <span className="p-input-icon-left w-full mb-1">
-                    <i className="pi pi-envelope"></i>
+                  <IconField iconPosition="left">
+                    <InputIcon className="pi pi-envelope"></InputIcon>
 
                     <InputText
                       ref={emailRef}
@@ -133,7 +134,7 @@ export const ResetPassword: FC = () => {
                       onInvalid={e => (e.target as HTMLInputElement).setCustomValidity('Enter an email that contains "@" Example: info@roshni.nl')}
 
                     />
-                  </span>
+                  </IconField>
 
                   <small className={`p-error ml-2 pl-1 mb-2`}>{errors?.[field.name]?.message ?? ' '}</small>
                 </>

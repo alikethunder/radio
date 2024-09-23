@@ -244,11 +244,13 @@ export default function App() {
 
       {
         checked_signin ?
-          <RestrictedPage>
+          <>
+            <RestrictedPage>
 
-            <Outlet />
+              <Outlet />
 
-          </RestrictedPage>
+            </RestrictedPage>
+          </>
           : <></>
       }
 

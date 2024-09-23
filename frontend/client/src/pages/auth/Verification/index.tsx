@@ -14,6 +14,10 @@ import { Checkbox } from 'primereact/checkbox'
 import { Password } from "primereact/password"
 import { Divider } from 'primereact/divider'
 
+import { IconField } from 'primereact/iconfield'
+
+import { InputIcon } from 'primereact/inputicon'
+
 import { classNames } from 'primereact/utils'
 
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
@@ -66,7 +70,7 @@ export const Verification: FC = () => {
     if (res.status == 200) {
       const user = await res.json() as FrontUser
       //console.log('[signup] user : ', user)
-      
+
       actions.user.update_user_data(user)
 
       actions.auth.signedin(true)
@@ -150,8 +154,8 @@ export const Verification: FC = () => {
             rules={{ required: 'Please, enter verification code' }}
             render={({ field, fieldState }) => (
               <>
-                <span className="p-input-icon-left w-full mb-1">
-                  <i className="pi pi-key"></i>
+                <IconField iconPosition="left">
+                  <InputIcon className="pi pi-key"></InputIcon>
 
                   <InputText
                     type="text"
@@ -166,7 +170,7 @@ export const Verification: FC = () => {
                     ref={verification_codeRef}
                     keyfilter="pnum"
                   />
-                </span>
+                </IconField>
 
                 <small className={`p-error ml-2 pl-1 mb-2`}>{errors?.[field.name]?.message ?? ' '}</small>
               </>
@@ -185,9 +189,8 @@ export const Verification: FC = () => {
             }}
             render={({ field, fieldState }) => (
               <>
-                <span className={`p-input-icon-left w-full mb-1`}>
-
-                  <i className="pi pi-lock z-2"></i>
+                <IconField iconPosition="left">
+                  <InputIcon className="pi pi-lock z-2"></InputIcon>
 
                   <Password
                     ref={passwordRef}
@@ -195,14 +198,19 @@ export const Verification: FC = () => {
                     value={field.value}
                     placeholder="Password"
 
-                    className={classNames("w-full", { 'p-invalid': fieldState.error })}
-
                     onChange={(e) => field.onChange(e.target.value)}
 
                     toggleMask
-                    inputClassName={classNames("w-full", { 'p-invalid': fieldState.error })}
 
                     pt={{
+                      root: {
+                        className: classNames("w-full", { 'p-invalid': fieldState.error })
+                      },
+                      iconField: {
+                        root: {
+                          className: classNames('w-full'),
+                        }
+                      },
                       input: (state) => ({
                         style: {
                           paddingLeft: '2.5rem',
@@ -210,8 +218,9 @@ export const Verification: FC = () => {
                         },
                         autoComplete: 'new-password',
                         className: classNames({
-                          'border-noround-top border-top-none': state?.state.overlayVisible
-                        })
+                          'border-noround-top border-top-none': state?.state.overlayVisible,
+                          'p-invalid': fieldState.error,
+                        }, "w-full")
                       }),
                       panel: () => ({
                         className: 'above px-0 pt-3 pb-0 border-noround-bottom border-primary border-1 border-bottom-none shadow-none'
@@ -253,7 +262,7 @@ export const Verification: FC = () => {
                     appendTo='self'
                   />
 
-                </span>
+                </IconField>
 
                 <small className={`p-error ml-2 pl-1 mb-2`}>{errors?.[field.name]?.message ?? ' '}</small>
               </>

@@ -8,7 +8,6 @@ import { Button } from 'primereact/button'
 import { InputText } from 'primereact/inputtext'
 import { Checkbox } from 'primereact/checkbox'
 import { Password } from "primereact/password"
-import { Toast } from 'primereact/toast'
 
 import { IconField } from 'primereact/iconfield'
 
@@ -164,7 +163,7 @@ export const Signin: FC = () => {
               }}
               render={({ field, fieldState }) => (
                 <>
-                  <IconField iconPosition="left" className="w-full">
+                  <IconField iconPosition="left">
                     <InputIcon className="pi pi-lock z-2"></InputIcon>
 
                     <Password

@@ -13,6 +13,10 @@ import { Button } from 'primereact/button'
 import { InputText } from 'primereact/inputtext'
 import { Checkbox } from 'primereact/checkbox'
 
+import { IconField } from 'primereact/iconfield'
+
+import { InputIcon } from 'primereact/inputicon'
+
 import { classNames } from 'primereact/utils'
 
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
@@ -61,7 +65,7 @@ export const Signup: FC = () => {
     if (res.status == 200) {
       const user = await res.json() as FrontUser
       //console.log('[signup] user : ', user)
-      
+
       actions.user.update_user_data(user)
 
       //show VerificationToast
@@ -98,8 +102,8 @@ export const Signup: FC = () => {
             rules={{ required: 'Please, enter your name' }}
             render={({ field, fieldState }) => (
               <>
-                <span className="p-input-icon-left w-full mb-1">
-                  <i className="pi pi-user"></i>
+                <IconField iconPosition="left">
+                  <InputIcon className="pi pi-user"></InputIcon>
 
                   <InputText
                     type="text"
@@ -110,7 +114,7 @@ export const Signup: FC = () => {
                     onChange={(e) => field.onChange(e.target.value)}
                     autoComplete="name"
                   />
-                </span>
+                </IconField>
 
                 <small className={`p-error ml-2 pl-1 mb-2`}>{errors?.[field.name]?.message ?? ' '}</small>
               </>
@@ -129,8 +133,8 @@ export const Signup: FC = () => {
             }}
             render={({ field, fieldState }) => (
               <>
-                <span className="p-input-icon-left w-full mb-1">
-                  <i className="pi pi-envelope"></i>
+                <IconField iconPosition="left">
+                  <InputIcon className="pi pi-envelope"></InputIcon>
 
                   <InputText
                     ref={emailRef}
@@ -143,7 +147,7 @@ export const Signup: FC = () => {
                     onChange={(e) => field.onChange(e.target.value)}
                     autoComplete="email"
                   />
-                </span>
+                </IconField>
 
                 <small className={`p-error ml-2 pl-1 mb-2`}>{errors?.[field.name]?.message ?? ' '}</small>
               </>
@@ -185,8 +189,8 @@ export const Signup: FC = () => {
           <Button
             type="submit"
             label="Sign Up"
-              outlined
-              raised
+            outlined
+            raised
             icon={`${icon_classes} ${isSubmitting ? 'pi-spin pi-sync' : 'pi-send'}`}
             className="w-full mb-4 shadow_on_hover"
             iconPos="right"
