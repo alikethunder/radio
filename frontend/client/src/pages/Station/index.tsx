@@ -146,6 +146,7 @@ export const Station = () => {
       external_enable: station?.external_enable ?? false,
       external: station?.external ?? '',
       broadcasting: station?.broadcasting ?? false,
+      description: station?.description ?? ''
     }
   })
 
@@ -288,6 +289,11 @@ export const Station = () => {
     }
   }, [external])
 
+  const description = useWatch({
+    control,
+    name: 'description',
+  })
+
   return (
     /* background here */
     <div
@@ -299,7 +305,7 @@ export const Station = () => {
         <div
           style={{ backgroundImage: `url(${avatar_data_url || `/api/v1/files/stations/${station.id}/avatar`})` }}
 
-          className={`avatar_picture shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-round-xl flex align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode ? 'cursor-pointer' : ''}`}
+          className={`avatar_picture shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-round-xl flex flex-shrink-0 align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode ? 'cursor-pointer' : ''}`}
 
           onClick={(e: React.MouseEvent) => {
             if (edit_mode) {
@@ -464,12 +470,79 @@ export const Station = () => {
             )}
           />
 
-          <Editor value="Always bet on Prime!" readOnly={!edit_mode} style={{ height: '320px' }} /* headerTemplate={<span className="ql-formats">
-            <button className="ql-bold" aria-label="Bold"></button>
-            <button className="ql-italic" aria-label="Italic"></button>
-            <button className="ql-underline" aria-label="Underline"></button>
-          </span>} */ />
+          {/* Read only editor */}
+          <Editor
+            value={description}
+            style={{
+              height: '320px',
+              ...edit_mode ? {
+                display: 'none'
+              } : {},
+            }}
+            readOnly
+            headerTemplate={<></>}
+            pt={{
+              toolbar: {
+                style: {
+                  display: 'none'
+                }
+              },
+              content: {
+                style: {
+                  border: '1px solid #dfe7ef',
+                  borderRadius: '6px',
+                  padding: '1px',
+                },
+              }
+            }}
+          />
 
+          {/* Edit only editor */}
+          <Editor
+            value={description}
+            style={{
+              height: '320px',
+            }}
+
+            headerTemplate={
+              <span
+                className={`ql-formats`}
+              >
+
+                <select className="ql-size">
+
+                  <option selected></option>
+                  <option value="large"></option>
+                  <option value="huge"></option>
+                </select>
+
+                <button className="ql-bold" aria-label="Bold"></button>
+
+                <button className="ql-italic" aria-label="Italic"></button>
+
+                <button className="ql-underline" aria-label="Underline"></button>
+
+                <button className="ql-link" aria-label="Link"></button>
+
+              </span>
+            }
+
+            pt={{
+              root: {
+                style: {
+                  //height: '320px',
+                  ...edit_mode ? {} : {
+                    display: 'none'
+                  },
+                }
+              }
+            }}
+
+            onTextChange={e => {
+              console.log('description : ', e.htmlValue)
+              setValue('description', e.htmlValue ?? '')
+            }}
+          />
 
           {
             edit_mode ?
