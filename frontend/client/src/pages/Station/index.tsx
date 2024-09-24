@@ -576,12 +576,6 @@ export const Station = () => {
           {/* Read only editor */}
           <Editor
             value={description}
-            style={{
-              height: '320px',
-              ...edit_mode ? {
-                display: 'none'
-              } : {},
-            }}
             readOnly
             headerTemplate={<></>}
             pt={{
@@ -591,10 +585,17 @@ export const Station = () => {
                 }
               },
               content: {
+                className: classNames({},
+                  'mt-2'
+                ),
                 style: {
+                  height: '320px',
                   border: '1px solid #dfe7ef',
                   borderRadius: '6px',
                   padding: '1px',
+                  ...edit_mode ? {
+                    display: 'none'
+                  } : {},
                 },
               }
             }}
@@ -648,8 +649,10 @@ export const Station = () => {
 
             pt={{
               root: {
+                className: classNames({},
+                  'mt-2'
+                ),
                 style: {
-                  //height: '320px',
                   ...edit_mode ? {} : {
                     display: 'none'
                   },
