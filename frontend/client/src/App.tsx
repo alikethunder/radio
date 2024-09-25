@@ -36,6 +36,7 @@ import {
   RightSidebar,
   RestrictedPage,
   QueryLink,
+  Player,
 } from '@/components'
 
 import { useLog, usePageInList } from '@/hooks'
@@ -214,13 +215,7 @@ export default function App() {
     }}>
       {/*  <WS /> */}
 
-      {
-        false ?
-          //authPage ?
-          <></>
-          :
-          <Navbar />
-      }
+      <Navbar />
 
       {
         is_project_page ?
@@ -253,6 +248,8 @@ export default function App() {
           </>
           : <></>
       }
+
+      <Player />
 
       <Toasts />
 
