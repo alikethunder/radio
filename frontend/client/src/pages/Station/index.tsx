@@ -329,6 +329,7 @@ export const Station = () => {
           'cursor-default',
           'select-none',
           `bg-${get_random_color()}`,
+          'shadow-2',
         ),
         style: {
           lineHeight: 1.25,
@@ -466,6 +467,7 @@ export const Station = () => {
                                       'surface-300': !switch_field.value
                                     },
                                       'py-05',
+                                      'shadow-2',
                                     ),
                                   },
                                   value: {
@@ -492,6 +494,7 @@ export const Station = () => {
                     },
                     'max-w-full',
                     'align-self-start',
+                    'shadow-2',
                   )}
                   onChange={(e) => {
                     field.onChange(e.target.value)
@@ -586,7 +589,8 @@ export const Station = () => {
               },
               content: {
                 className: classNames({},
-                  'mt-2'
+                  'mt-2',
+                  'shadow-2',
                 ),
                 style: {
                   height: '320px',
@@ -650,7 +654,8 @@ export const Station = () => {
             pt={{
               root: {
                 className: classNames({},
-                  'mt-2'
+                  'shadow-2',
+                  'mt-2',
                 ),
                 style: {
                   ...edit_mode ? {} : {
