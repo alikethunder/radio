@@ -3,8 +3,9 @@ import { mapValuesKey } from 'zustand-x'
 import { appStore } from './appStore'
 import { authStore } from './authStore'
 import { persistedAppStore } from './persistedAppStore'
-import {userStore} from './userStore'
+import { userStore } from './userStore'
 import { toastStore } from './toastStore'
+import { playerStore } from './playerStore'
 
 // Global store
 export const rootStore = {
@@ -13,8 +14,8 @@ export const rootStore = {
   persistedApp: persistedAppStore,
   user: userStore,
   toast: toastStore,
-  /* combobox: comboboxStore,
-  contextMenu: contextMenuStore,
+  player: playerStore,
+  /*contextMenu: contextMenuStore,
   editor: editorStore,
   modal: modalStore,
   repo: repoStore,

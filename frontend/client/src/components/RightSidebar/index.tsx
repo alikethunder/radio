@@ -136,7 +136,7 @@ export const RightSidebar: FC = () => {
                 actions.app.rightSidebarOpened(false)
               }}
               iconPos="right"
-              className="border-noround gray-800 text-left lobster_font text-xl shadow_on_hover"
+              className="border-noround text-gray-800 text-left lobster_font text-xl shadow_on_hover"
             />
             : <></>
         }
