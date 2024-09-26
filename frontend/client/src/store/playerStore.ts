@@ -7,11 +7,13 @@ import {
 const initialState = {
   volume: 100,
   prev_volume: 100,
+  current_station: null,
 }
 
 type Player = {
   volume: NumRange<101>,
   prev_volume: NumRange<101>,
+  current_station: string | null,
 }
 
 export const playerStore = createStore('app')(initialState,

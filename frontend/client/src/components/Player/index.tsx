@@ -39,35 +39,67 @@ export const Player: FC = () => {
 
   const volume = useStore().player.volume()
 
+  const current_station = useStore().player.current_station()
 
   //console.log('navbar_actions : ', navbar_actions)
 
   return (
     <div className="flex flex-row flex-shrink-0 shadow-3 h-7rem justify-content-center bg-white py-2 gap-3">
 
-      <div className="flex flex-column justify-content-between align-items-center py-2 text-gray-500">
-        {/* volume icon */}
+      <div className="player_station_avatar w-6rem h-6rem shadow-2 bg-no-repeat bg-contain bg-center flex-shrink-0 border-round-xl">
+        {/* current station avatar */}
+      </div>
+
+      <div className="flex flex-column justify-content-between">
+
         <Button
-          icon={`pi pi-${volume ? 'volume-up' : 'volume-off'}`}
+          className="shadow_on_hover p-0 flex-shrink-0"
+
           rounded
           outlined
           raised
-          aria-label="volume"
-          className={`p-0 w-2rem h-2rem shadow_on_hover`}
-          severity={`warning`}
+          aria-label="Play"
+          tooltip="Play"
+          severity="info"
+          tooltipOptions={tltp_options}
+          icon={`pi text-3xl ${playing ? 'pi-pause' : 'pi-play'}`}
 
-          onClick={() => {
-            const v = store.player.volume()
-            if (v) {
-              actions.player.prev_volume(v)
-              actions.player.volume(0)
-            } else {
-              actions.player.volume(store.player.prev_volume())
+          pt={{
+            icon: {
+              style: {
+                paddingLeft: playing ? '0' : '4px',
+              }
             }
           }}
+
+          onClick={() => set_playing(p => !p)}
         />
 
-        {volume}
+        <div className="flex justify-content-between align-items-center text-gray-500 w-4rem">
+          {/* volume icon */}
+          <Button
+            icon={`pi pi-${volume ? 'volume-up' : 'volume-off'}`}
+            rounded
+            outlined
+            raised
+            aria-label="volume"
+            className={`p-0 w-2rem h-2rem shadow_on_hover`}
+            severity={`warning`}
+
+            onClick={() => {
+              const v = store.player.volume()
+              if (v) {
+                actions.player.prev_volume(v)
+                actions.player.volume(0)
+              } else {
+                actions.player.volume(store.player.prev_volume() ?? 100)
+              }
+            }}
+          />
+
+          {volume}
+
+        </div>
 
       </div>
 
@@ -75,7 +107,7 @@ export const Player: FC = () => {
         value={volume}
         onChange={(e) => actions.player.volume(e.value as number)}
         orientation="vertical"
-        className="h-5rem align-self-center"
+        className="h-5rem align-self-center -ml-2"
         pt={{
           range: {
             style: {
@@ -93,71 +125,36 @@ export const Player: FC = () => {
         }}
       />
 
-      <div className="player_station_avatar w-6rem h-6rem shadow-2 bg-no-repeat bg-contain bg-center flex-shrink-0 border-round-xl">
-        {/* current station avatar */}
-      </div>
+      <div className="flex flex-column">
 
-      <div className="player_main_content flex flex-column">
+        <div className="player_station">
+          {/* current station name */}
 
-        <div className="player_controls flex flex-row">
+          {/*  likes*/}
 
-          <Button
-            className="shadow_on_hover p-0 mt-2 flex-shrink-0"
-
-            rounded
-            outlined
-            raised
-            aria-label="Play"
-            tooltip="Play"
-            severity="info"
-            tooltipOptions={tltp_options}
-            icon={`pi text-2xl ${playing ? 'pi-pause' : 'pi-play'}`}
-
-            pt={{
-              icon: {
-                style: {
-                  paddingLeft: playing ? '0' : '2px',
-                }
-              }
-            }}
-
-            onClick={() => set_playing(p => !p)}
-          />
-
-          <div className="flex flex-column">
-
-            <div className="player_station">
-              {/* current station name */}
-
-              {/*  likes*/}
-
-              {/* listeners */}
-            </div>
-
-            <div className="player_track">
-              {/* current artist - track name */}
-
-              {/* likes */}
-
-              {/* downloads  if downloadable */}
-            </div>
-
-            <div className="player_station_tags">
-              {/* current station tags (clickable, opens the main page with search with clicked tag)  */}
-            </div>
-
-          </div>
-
-          <div className="flex flex-column">
-            {/* history button */}
-
-            {/* random station */}
-
-            {/* random with similar tag */}
-          </div>
-
+          {/* listeners */}
         </div>
 
+        <div className="player_track">
+          {/* current artist - track name */}
+
+          {/* likes */}
+
+          {/* downloads  if downloadable */}
+        </div>
+
+        <div className="player_station_tags">
+          {/* current station tags (clickable, opens the main page with search with clicked tag)  */}
+        </div>
+
+      </div>
+
+      <div className="flex flex-column">
+        {/* history button */}
+
+        {/* random station */}
+
+        {/* random with similar tag */}
       </div>
 
     </div>
