@@ -175,6 +175,13 @@ export const Station = () => {
 
     if (resp.status == 200) {
 
+      //*! update station in list
+
+      if (id != 'new' && store.player.current_station()?.id == id) {
+        // *! update current station if it's this station 
+        //actions.player.current_station()
+      }
+
       if (avatar_blob) {
 
         const body = new FormData()
@@ -404,7 +411,6 @@ export const Station = () => {
               }
             }}
           />
-
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-1 align-self-start sm:ml-5 mt-3 sm:mt-1 max-w-full" ref={setForm}>

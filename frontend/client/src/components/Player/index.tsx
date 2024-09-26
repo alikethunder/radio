@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react"
+import { FC, LegacyRef, useEffect, useRef, useState } from "react"
 
 //import { TabMenu } from 'primereact/tabmenu'
 import { Button } from 'primereact/button'
@@ -36,6 +36,8 @@ export const Player: FC = () => {
 
   const current_page = useStore().app.current_page()
 
+  const [audio_ref, set_audio_ref] = useState<HTMLAudioElement | null>(null)
+
   const playing = useStore().player.playing()
 
   const volume = useStore().player.volume()
@@ -44,14 +46,46 @@ export const Player: FC = () => {
 
   //console.log('navbar_actions : ', navbar_actions)
 
-  return (
-    <div className="flex flex-row flex-shrink-0 shadow-3 h-7rem justify-content-center bg-white p-2 gap-3">
+  useEffect(() => {
+    actions.player.playing(false)
+  }, [])
 
-      <div className="player_station_avatar w-6rem h-6rem shadow-2 bg-no-repeat bg-contain bg-center flex-shrink-0 border-round-xl">
+  useEffect(() => {
+    if (current_station && audio_ref) {
+      if (playing) {
+        audio_ref.src = current_station.external_enable ? current_station.external : ''
+        audio_ref.play()
+      } else {
+        audio_ref.pause()
+      }
+    }
+  }, [playing, current_station])
+
+  useEffect(() => {
+    if (audio_ref) {
+      audio_ref.volume = volume / 100
+    }
+  }, [volume, audio_ref])
+
+  return (
+    <div className="flex flex-row flex-shrink-0 shadow-3 h-7rem justify-content-center bg-white p-1 sm:p-2 gap-3">
+
+      <audio
+        src=""
+        style={{
+          display: 'none'
+        }}
+        ref={e => set_audio_ref(e)}
+      />
+
+      <div
+        className="player_station_avatar w-4rem h-4rem sm:w-6rem sm:h-6rem shadow-2 bg-no-repeat bg-contain bg-center flex-shrink-0 border-round-xl"
+        style={{ backgroundImage: current_station ? `url(/api/v1/files/stations/${current_station?.id}/avatar)` : '' }}
+      >
         {/* current station avatar */}
       </div>
 
-      <div className="flex flex-column justify-content-between">
+      <div className="flex flex-column justify-content-between -ml-2 sm:ml-0">
 
         <Button
           className="shadow_on_hover p-0 flex-shrink-0"
@@ -104,7 +138,9 @@ export const Player: FC = () => {
 
       <Slider
         value={volume}
-        onChange={(e) => actions.player.volume(e.value as NumRange<101>)}
+        onChange={(e) => {
+          actions.player.volume(e.value as NumRange<101>)
+        }}
         orientation="vertical"
         className="h-5rem align-self-center -ml-2"
         pt={{
