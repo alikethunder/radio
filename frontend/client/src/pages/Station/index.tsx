@@ -65,22 +65,13 @@ import {
 
 import { setForm } from "@/functions/setForm"
 
-import { useAsyncMemo } from "use-async-memo"
-
 import { admin } from "@/API/profile/admin"
 
-const private_tooltip_options = { ...tooltip_options, position: 'right' } as const
+import {
+  StationTag,
+} from '@/components'
 
-const tags_colors = [
-  'blue-700',
-  'green-700',
-  'yellow-700',
-  'cyan-700',
-  'indigo-700',
-  'teal-600',
-  'orange-600',
-  'red-600'
-] as const
+const private_tooltip_options = { ...tooltip_options, position: 'right' } as const
 
 export const Station = () => {
 
@@ -309,35 +300,6 @@ export const Station = () => {
     name: 'description',
   })
 
-  const get_random_from_length = useCallback((length: number) => {
-    return length ?
-      Math.floor(Math.random() * length)
-      : 0
-  }, [])
-
-  const get_random_color = useCallback(() => {
-    return tags_colors[get_random_from_length(tags_colors.length)]
-  }, [])
-
-  const tags_tag = useCallback((item: any) => <Tag
-    value={item}
-    pt={{
-      root: {
-        className: classNames({},
-          'py-05',
-          //'px-1',
-          'cursor-default',
-          'select-none',
-          `bg-${get_random_color()}`,
-          'shadow-2',
-        ),
-        style: {
-          lineHeight: 1.25,
-        }
-      },
-    }}
-  />, [])
-
   return (
     /* background here */
     <div
@@ -349,7 +311,7 @@ export const Station = () => {
         <div
           style={{ backgroundImage: `url(${avatar_data_url || `/api/v1/files/stations/${station.id}/avatar`})` }}
 
-          className={`avatar_picture shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-round-xl flex flex-shrink-0 align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode ? 'cursor-pointer' : ''}`}
+          className={`element_with_overlay shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-round-xl flex flex-shrink-0 align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode ? 'cursor-pointer' : ''}`}
 
           onClick={(e: React.MouseEvent) => {
             if (edit_mode) {
@@ -564,14 +526,14 @@ export const Station = () => {
                         }
                       }}
 
-                      itemTemplate={tags_tag}
+                      itemTemplate={tag => <StationTag tag={tag} />}
                     />
                   </>
                 )} />
               :
               <div className="flex gap-1">
                 {
-                  station.tags.map(tags_tag)
+                  station.tags.map(tag => <StationTag tag={tag} />)
                 }
               </div>
           }

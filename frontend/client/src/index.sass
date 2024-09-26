@@ -69,3 +69,12 @@ small.p-error
 
 .cursor-default
   cursor: default
+
+.element_with_overlay
+  .overlay_background, .overlay_text
+    opacity: 0
+  &:hover
+    .overlay_background
+      opacity: .5
+    .overlay_text
+      opacity: 1

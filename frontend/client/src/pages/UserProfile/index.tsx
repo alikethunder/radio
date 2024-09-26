@@ -188,7 +188,7 @@ export const UserProfile = () => {
         <div
           style={{ backgroundImage: `url(${photo_data_url || `/api/v1/files/users/${user_data.id}/photo`})` }}
 
-          className={`avatar_picture shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-circle flex align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode ? 'cursor-pointer' : ''}`}
+          className={`element_with_overlay shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-circle flex align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode ? 'cursor-pointer' : ''}`}
 
           onClick={() => {
             if (edit_mode) {

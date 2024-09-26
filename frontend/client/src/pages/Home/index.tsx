@@ -7,6 +7,8 @@ import {
 
 import { SmallCardContainer } from "@/layout parts"
 
+import { Ripple } from "primereact/ripple"
+
 import { QueryLink } from "@/components"
 import './index.sass'
 
@@ -15,6 +17,7 @@ import {
 } from '@/constants/router'
 
 import {
+  actions,
   store,
   useStore,
 } from "@/store"
@@ -47,6 +50,10 @@ export const Home = () => {
   const signedin = useStore().auth.signedin()
 
   const root_admin = useStore().user.admin()
+
+  const playing = useStore().player.playing()
+
+  const current_station = useStore().player.current_station()
 
   const [formState, set_formState] = useState({
     isValid: true,
@@ -103,13 +110,13 @@ export const Home = () => {
 
         {
           stations?.map(station =>
-            <SmallCardContainer className="flex flex-row overflow-hidden station_card align-items-center text-secondary shadow_on_hover">
+            <SmallCardContainer className="flex flex-row overflow-hidden station_card align-items-center text-secondary shadow_on_hover element_with_overlay">
 
               <div
                 style={{
                   ...station.avatar ? { backgroundImage: `url(/api/v1/files/stations/${station.id}/avatar)` } : {},
                 }}
-                className="station_card_icon radio_card_icon align-self-center flex align-items-center justify-content-center" >
+                className="station_card_icon radio_card_icon align-self-center flex align-items-center justify-content-center p-ripple " >
 
                 {
                   station.avatar ?
@@ -117,6 +124,27 @@ export const Home = () => {
                     :
                     <i className="pi pi-wave-pulse " style={{ fontSize: '2rem' }}></i>
                 }
+
+                <div
+                  className="overlay absolute top-0 bottom-0 right-0 left-0 flex align-items-center justify-content-center text-center cursor-pointer"
+                  onClick={() => {
+                    if (store.player.playing() && store.player.current_station()?.id == station.id) {
+                      actions.player.playing(false)
+                    } else {
+                      actions.player.playing(true)
+                      actions.player.current_station(station)
+                    }
+                  }}>
+
+                  <div className="overlay_background surface-900 absolute top-0 bottom-0 right-0 left-0"></div>
+
+                  <div className="overlay_text text-white font-semibold z-1">
+                    <i className={`pi ${current_station?.id == station.id && playing ? 'pi-pause' : 'pi-play'}`} style={{ fontSize: '2rem' }}></i>
+                  </div>
+
+                </div>
+
+                <Ripple />
 
               </div>
 

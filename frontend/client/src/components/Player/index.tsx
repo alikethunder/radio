@@ -16,7 +16,7 @@ import {
 } from '@/constants/router'
 
 import {
-  FormActionsState,
+  StationTag,
   QueryLink,
 } from '@/components'
 
@@ -28,6 +28,7 @@ import { icon_classes } from "@/constants/icon_classes"
 
 import { tooltip_options } from "@/constants/tooltip_options"
 import { classNames } from "primereact/utils"
+import { NumRange } from "@/types/generics/range"
 
 const tltp_options = { ...tooltip_options, position: 'top' } as const
 
@@ -35,7 +36,7 @@ export const Player: FC = () => {
 
   const current_page = useStore().app.current_page()
 
-  const [playing, set_playing] = useState(false)
+  const playing = useStore().player.playing()
 
   const volume = useStore().player.volume()
 
@@ -58,10 +59,8 @@ export const Player: FC = () => {
           rounded
           outlined
           raised
-          aria-label="Play"
-          tooltip="Play"
+          aria-label={`${playing ? 'Pause' : 'Play'}`}
           severity="info"
-          tooltipOptions={tltp_options}
           icon={`pi text-3xl ${playing ? 'pi-pause' : 'pi-play'}`}
 
           pt={{
@@ -72,7 +71,7 @@ export const Player: FC = () => {
             }
           }}
 
-          onClick={() => set_playing(p => !p)}
+          onClick={() => actions.player.switch_playing()}
         />
 
         <div className="flex justify-content-between align-items-center text-gray-500 w-4rem">
@@ -105,7 +104,7 @@ export const Player: FC = () => {
 
       <Slider
         value={volume}
-        onChange={(e) => actions.player.volume(e.value as number)}
+        onChange={(e) => actions.player.volume(e.value as NumRange<101>)}
         orientation="vertical"
         className="h-5rem align-self-center -ml-2"
         pt={{
@@ -125,10 +124,11 @@ export const Player: FC = () => {
         }}
       />
 
-      <div className="flex flex-column">
+      <div className="flex flex-column w-15rem">
 
         <div className="player_station">
           {/* current station name */}
+          {current_station?.name}
 
           {/*  likes*/}
 
@@ -143,8 +143,12 @@ export const Player: FC = () => {
           {/* downloads  if downloadable */}
         </div>
 
-        <div className="player_station_tags">
+        <div className="flex flex-row gap-1">
           {/* current station tags (clickable, opens the main page with search with clicked tag)  */}
+          {
+            current_station?.tags.map(tag => <StationTag tag={tag} />)
+          }
+
         </div>
 
       </div>
