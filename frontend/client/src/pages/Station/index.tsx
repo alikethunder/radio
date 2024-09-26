@@ -115,6 +115,10 @@ export const Station = () => {
 
   const root_admin = useStore().user.admin()
 
+  const playing = useStore().player.playing()
+
+  const current_station = useStore().player.current_station()
+
   useEffect(() => {
     //console.log('signedin, root_admin: ', signedin, root_admin)
 
@@ -308,63 +312,95 @@ export const Station = () => {
 
       <div className="flex flex-column sm:flex-row">
 
-        <div
-          style={{ backgroundImage: `url(${avatar_data_url || `/api/v1/files/stations/${station.id}/avatar`})` }}
+        <div className="flex flex-row sm:flex-column align-items-center gap-4">
 
-          className={`element_with_overlay shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-round-xl flex flex-shrink-0 align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode ? 'cursor-pointer' : ''}`}
+          <div
+            style={{ backgroundImage: `url(${avatar_data_url || `/api/v1/files/stations/${station.id}/avatar`})` }}
 
-          onClick={(e: React.MouseEvent) => {
-            if (edit_mode) {
-              photo_file_input_ref.current?.click()
-            }
-          }}
-        >
-          <img
-            style={{ display: 'none' }}
-            src={`/api/v1/files/stations/${station.id}/avatar`}
+            className={`element_with_overlay shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-round-xl flex flex-shrink-0 align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode ? 'cursor-pointer' : ''}`}
 
-            onError={({ currentTarget }) => {
-              currentTarget.onerror = null
-              set_profile_photo_exists(false)
+            onClick={(e: React.MouseEvent) => {
+              if (edit_mode) {
+                photo_file_input_ref.current?.click()
+              }
             }}
-          />
+          >
+            <img
+              style={{ display: 'none' }}
+              src={`/api/v1/files/stations/${station.id}/avatar`}
 
-          {
-            avatar_data_url || profile_photo_exists ? <></> :
-              <i className="pi pi-wave-pulse text-4xl md:text-6xl"></i>
-          }
+              onError={({ currentTarget }) => {
+                currentTarget.onerror = null
+                set_profile_photo_exists(false)
+              }}
+            />
 
-          {
-            edit_mode ?
-              <>
+            {
+              avatar_data_url || profile_photo_exists ? <></> :
+                <i className="pi pi-wave-pulse text-4xl md:text-6xl"></i>
+            }
 
-                <div className="overlay absolute top-0 bottom-0 right-0 left-0 flex align-items-center justify-content-center text-center">
+            {
+              edit_mode ?
+                <>
 
-                  <div className="overlay_background surface-900 absolute top-0 bottom-0 right-0 left-0"></div>
+                  <div className="overlay absolute top-0 bottom-0 right-0 left-0 flex align-items-center justify-content-center text-center">
 
-                  <div className="overlay_text text-white font-semibold z-1">
-                    Choose image
+                    <div className="overlay_background surface-900 absolute top-0 bottom-0 right-0 left-0"></div>
+
+                    <div className="overlay_text text-white font-semibold z-1">
+                      Choose image
+                    </div>
+
                   </div>
 
-                </div>
+                  <Ripple />
 
-                <Ripple />
+                </>
+                : <></>
+            }
 
-              </>
-              : <></>
-          }
+            <input
+              ref={photo_file_input_ref}
+              type="file"
+              id="fileElem"
+              accept="image/*"
+              className="hidden"
+              onChange={async (e) => {
+                if (e.target.files?.[0]) {
+                  const [blob, data_url] = await resize_image(e.target.files?.[0])
+                  set_avatar_blob(blob)
+                  set_avatar_data_url(data_url)
+                }
+              }}
+            />
 
-          <input
-            ref={photo_file_input_ref}
-            type="file"
-            id="fileElem"
-            accept="image/*"
-            className="hidden"
-            onChange={async (e) => {
-              if (e.target.files?.[0]) {
-                const [blob, data_url] = await resize_image(e.target.files?.[0])
-                set_avatar_blob(blob)
-                set_avatar_data_url(data_url)
+          </div>
+
+          <Button
+            className="shadow_on_hover p-0 flex-shrink-0 w-4rem md:w-5rem h-4rem md:h-5rem"
+
+            rounded
+            outlined
+            raised
+            aria-label={`${playing && current_station?.id == station.id ? 'Pause' : 'Play'}`}
+            severity="info"
+            icon={`pi text-4xl ${playing && current_station?.id == station.id ? 'pi-pause' : 'pi-play'}`}
+
+            pt={{
+              icon: {
+                style: {
+                  paddingLeft: playing && current_station?.id == station.id ? '0' : '4px',
+                }
+              }
+            }}
+
+            onClick={() => {
+              if (store.player.playing() && store.player.current_station()?.id == station.id) {
+                actions.player.playing(false)
+              } else {
+                actions.player.playing(true)
+                actions.player.current_station(station)
               }
             }}
           />

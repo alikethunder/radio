@@ -45,7 +45,7 @@ export const Player: FC = () => {
   //console.log('navbar_actions : ', navbar_actions)
 
   return (
-    <div className="flex flex-row flex-shrink-0 shadow-3 h-7rem justify-content-center bg-white py-2 gap-3">
+    <div className="flex flex-row flex-shrink-0 shadow-3 h-7rem justify-content-center bg-white p-2 gap-3">
 
       <div className="player_station_avatar w-6rem h-6rem shadow-2 bg-no-repeat bg-contain bg-center flex-shrink-0 border-round-xl">
         {/* current station avatar */}
