@@ -12,6 +12,7 @@ import (
 	//"web_project/cookies"
 	"web_project/db"
 	DBPlans "web_project/db/Plans"
+	"web_project/db/StationTags"
 	"web_project/db/Stations"
 	Users "web_project/db/Users"
 	"web_project/radio"
@@ -21,6 +22,7 @@ import (
 	FilesEndpoints "web_project/controllers/files"
 	ProfileEndpoints "web_project/controllers/profile"
 	RadioEndpoints "web_project/controllers/radio"
+	StationTagsEndpoints "web_project/controllers/tags"
 
 	"web_project/functions"
 	"web_project/mailer"
@@ -45,6 +47,7 @@ func init() {
 	DBPlans.Initialize()
 	mailer.Initialize()
 	Stations.Initialize()
+	StationTags.Initialize()
 }
 
 func main() {
@@ -135,6 +138,12 @@ func main() {
 	radio_endpoints.Get("/list", RadioEndpoints.ListStations)
 
 	radio_endpoints.Get("/:id", RadioEndpoints.GetStation)
+
+	tags_endpoints := v1.Group("/tags")
+
+	tags_endpoints.Get("/", StationTagsEndpoints.ListTags)
+
+	tags_endpoints.Post("/", StationTagsEndpoints.SaveTags)
 
 	app.Use("/reloadws", func(c *fiber.Ctx) error {
 		// IsWebSocketUpgrade returns true if the client

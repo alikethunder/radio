@@ -95,6 +95,14 @@ export default function App() {
     }, 1000)
   }, [searchParams, search])
 
+  useEffect(() => {
+    (async () => {
+      const resp = await fetch('/api/v1/tags/')
+      const json = await resp.json()
+      actions.app.station_tags(json ?? [])
+    })()
+  }, [])
+
   const windowSize = useWindowSize()
 
   const [checked_signin, set_checked_signin] = useState(false)

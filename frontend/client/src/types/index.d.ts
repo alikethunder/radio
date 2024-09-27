@@ -45,3 +45,4 @@ export type FrontUser = (Pick<User, 'name' | 'email' | 'created' | 'photo'>) & {
 export type VerificationUser = (Pick<User, 'verification_code' | 'name' | 'email' | 'created'>) & { id: string | null }
 
 export type { Station } from './station'
+export type { StationTag } from './StationTag'

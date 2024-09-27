@@ -14,6 +14,8 @@ import {
   useWatch
 } from 'react-hook-form'
 
+import { useDebounceCallback } from 'usehooks-ts'
+
 import { classNames } from 'primereact/utils'
 
 import { Button } from 'primereact/button'
@@ -70,6 +72,8 @@ import { admin } from "@/API/profile/admin"
 import {
   StationTag,
 } from '@/components'
+
+import { random_station_tag_color } from "@/functions/random_station_tag_color"
 
 const private_tooltip_options = { ...tooltip_options, position: 'right' } as const
 
@@ -311,6 +315,26 @@ export const Station = () => {
     name: 'description',
   })
 
+  const change_station_tags = useDebounceCallback(async (e, field) => {
+    field.onChange(e)
+
+    console.log(e.value)
+
+    const new_tags = (e.value as string[])?.filter(name => !store.app.get_station_tag(name)).map(name => ({
+      name,
+      color: random_station_tag_color()
+    }))
+
+    if (new_tags?.length) {
+      console.log('new_tags : ', new_tags)
+
+      const resp = await fetch('/api/v1/tags/', {
+        method: 'POST',
+        body: JSON.stringify({})
+      })
+    }
+  })
+
   return (
     /* background here */
     <div
@@ -545,7 +569,7 @@ export const Station = () => {
 
                     <Chips
                       value={field.value}
-                      onChange={field.onChange}
+                      onChange={e => change_station_tags(e, field)}
                       disabled={!edit_mode}
                       allowDuplicate={false}
 

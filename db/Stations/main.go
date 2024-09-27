@@ -40,11 +40,6 @@ func Initialize() {
 
 		log.Fatal("create stations TABLE err : ", err)
 	}
-	/*
-		if err := db.Session.Query(`CREATE INDEX ON users(password)`).Exec(); err != nil {
-
-			log.Fatal("create INDEX on users err : ", err)
-		} */
 
 	fmt.Println("stations TABLE CREATED")
 }

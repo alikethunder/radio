@@ -12,6 +12,10 @@ import {
   FormState
 } from '@/types/FormState'
 
+import {
+  StationTag,
+} from '@/types'
+
 type AppStore = {
   isClient: boolean;
   router: ReturnType<typeof createBrowserRouter> | null;
@@ -37,6 +41,7 @@ type AppStore = {
   FormActionsState_form: FormState["form"];
   FormActionsState_isValid: boolean;
   FormActionsState_show: boolean;
+  station_tags: StationTag[];
 }
 
 export const appStore = createStore('app')({
@@ -64,7 +69,12 @@ export const appStore = createStore('app')({
   FormActionsState_form: undefined,
   FormActionsState_isValid: false,
   FormActionsState_show: false,
+  station_tags: [],
 } as AppStore)
   .extendSelectors((state, get, api) => ({
-    FormActionsState_edit_mode: () => get.FormActionsState_state() == 'edit'
+    FormActionsState_edit_mode: () => get.FormActionsState_state() == 'edit',
+    get_station_tag(name: string) {
+      console.log('get_station_tag : ', name, get.station_tags())
+      return get.station_tags()?.find(t => t.name == name)
+    },
   }))

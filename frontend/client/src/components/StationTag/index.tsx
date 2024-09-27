@@ -1,31 +1,14 @@
-import { FC, useEffect } from "react"
+import { FC, useCallback, useEffect } from "react"
 
 import { Tag } from 'primereact/tag'
 
 import { classNames } from 'primereact/utils'
 
-const tags_colors = [
-  'blue-700',
-  'green-700',
-  'yellow-700',
-  'cyan-700',
-  'indigo-700',
-  'teal-600',
-  'orange-600',
-  'red-600'
-] as const
-
-const get_random_from_length = (length: number) => {
-  return length ?
-    Math.floor(Math.random() * length)
-    : 0
-}
-
-const get_random_color = () => {
-  return tags_colors[get_random_from_length(tags_colors.length)]
-}
-
 export const StationTag: FC<{ tag: string }> = ({ tag }) => {
+
+  const get_random_color = useCallback(() => {
+    return 
+  }, [])
 
   return (
     <Tag
