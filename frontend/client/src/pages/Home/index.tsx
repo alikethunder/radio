@@ -9,6 +9,8 @@ import { SmallCardContainer } from "@/layout parts"
 
 import { Ripple } from "primereact/ripple"
 
+import { classNames } from 'primereact/utils'
+
 import { QueryLink } from "@/components"
 import './index.sass'
 
@@ -110,7 +112,18 @@ export const Home = () => {
 
         {
           stations?.map(station =>
-            <SmallCardContainer className="flex flex-row overflow-hidden station_card align-items-center text-secondary shadow_on_hover element_with_overlay">
+            <SmallCardContainer className={classNames({
+              'current_station active_element': current_station?.id == station.id,
+            },
+              'flex',
+              'flex-row',
+              'overflow-hidden',
+              'station_card',
+              'align-items-center',
+              'text-secondary',
+              'shadow_on_hover',
+              'element_with_overlay',
+            )}>
 
               <div
                 style={{

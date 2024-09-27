@@ -47,7 +47,7 @@ body
   box-shadow: 0 0 5px 1px var(--pink-400)
 
 .shadow_on_hover
-  &:hover, &:focus
+  &:hover, &:focus, &.active_element
     box-shadow: 0 0 5px 1px!important
 
 .p-icon-field-left>.p-inputtext
@@ -73,7 +73,7 @@ small.p-error
 .element_with_overlay
   .overlay_background, .overlay_text
     opacity: 0
-  &:hover
+  &:hover, &.current_station
     .overlay_background
       opacity: .5
     .overlay_text
