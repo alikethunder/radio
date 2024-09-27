@@ -575,7 +575,7 @@ export const Station = () => {
               :
               <div className="flex gap-1">
                 {
-                  station.tags.map(tag => <StationTag tag={tag} />)
+                  station?.tags?.map(tag => <StationTag tag={tag} />)
                 }
               </div>
           }
