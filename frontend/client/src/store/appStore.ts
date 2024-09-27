@@ -78,3 +78,8 @@ export const appStore = createStore('app')({
       return get.station_tags()?.find(t => t.name == name)
     },
   }))
+  .extendActions((set, get, api) => ({
+    update_tags: (tags: StationTag[]) => {
+      set.station_tags([...get.station_tags(), ...tags].filter((t, i, a) => i === a.indexOf(t)))
+    },
+  }))

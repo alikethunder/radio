@@ -330,8 +330,12 @@ export const Station = () => {
 
       const resp = await fetch('/api/v1/tags/', {
         method: 'POST',
-        body: JSON.stringify({})
+        body: JSON.stringify(new_tags)
       })
+
+      const json = await resp.json()
+
+      actions.app.update_tags(json)
     }
   })
 

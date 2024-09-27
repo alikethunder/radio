@@ -4,12 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"web_project/cookies"
 	"web_project/db"
-	"web_project/db/Playlists"
-	"web_project/functions"
 
-	"github.com/gocql/gocql"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -25,24 +21,32 @@ func SaveTags(ctx *fiber.Ctx) error {
 
 	if admin {
 
-		var tags fiber.Map
+		var tags []fiber.Map
+		var err error
 
 		json.Unmarshal(ctx.Body(), &tags)
-		//!! finish ASAP
-		fmt.Println("[RadioEndpoints.Update] updated_fields :", updated_fields)
 
-		if err := db.Update(
-			"stations",
-			updated_fields,
-			fiber.Map{
-				"id": id,
-			},
-		); err == nil {
+		fmt.Println("[StationTagsEndpoints.SaveTags] tags :", tags)
 
-			return ctx.Status(fiber.StatusOK).Send([]byte(id))
+		for _, tag := range tags {
+			if err = db.Update(
+				"station_tags",
+				tag,
+				fiber.Map{
+					"name": tag["name"],
+				},
+			); err != nil {
+				fmt.Println("[StationTagsEndpoints.SaveTags] Error tag, err :", tag, err)
+			}
 		}
+
+		if err != nil {
+			return ctx.SendStatus(fiber.StatusUnauthorized)
+		}
+
+		return ctx.Status(fiber.StatusOK).JSON(tags)
+
 	}
 
-	cookies.ClearAuthCookies(ctx)
 	return ctx.SendStatus(fiber.StatusUnauthorized)
 }

@@ -11,6 +11,7 @@ func Update(table string, orig_insert_parameters fiber.Map, key_parameters fiber
 
 	insert_parameters := make(fiber.Map)
 
+	//create insert map without key_parameters
 	for k, v := range orig_insert_parameters {
 		if _, ok := key_parameters[k]; !ok {
 			insert_parameters[k] = v

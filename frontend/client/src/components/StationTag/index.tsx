@@ -1,14 +1,13 @@
-import { FC, useCallback, useEffect } from "react"
+import { FC, useCallback, useEffect, useMemo } from "react"
 
 import { Tag } from 'primereact/tag'
 
 import { classNames } from 'primereact/utils'
+import { useStore } from "@/store"
 
 export const StationTag: FC<{ tag: string }> = ({ tag }) => {
 
-  const get_random_color = useCallback(() => {
-    return 
-  }, [])
+  const color = useStore().app.get_station_tag(tag)?.color
 
   return (
     <Tag
@@ -20,7 +19,7 @@ export const StationTag: FC<{ tag: string }> = ({ tag }) => {
             //'px-1',
             'cursor-default',
             'select-none',
-            `bg-${get_random_color()}`,
+            `bg-${color}`,
             'shadow-2',
           ),
           style: {
