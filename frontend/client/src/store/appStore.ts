@@ -74,7 +74,6 @@ export const appStore = createStore('app')({
   .extendSelectors((state, get, api) => ({
     FormActionsState_edit_mode: () => get.FormActionsState_state() == 'edit',
     get_station_tag(name: string) {
-      console.log('get_station_tag : ', name, get.station_tags())
       return get.station_tags()?.find(t => t.name == name)
     },
   }))

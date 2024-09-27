@@ -181,7 +181,20 @@ export const Station = () => {
 
       //*! update station in list
 
-      if (id != 'new' && store.player.current_station()?.id == id) {
+      if (id != 'new') {
+        console.log('station before : ', JSON.stringify(station.tags))
+        Object.entries(data).map(entry => {
+          station[entry[0]] = entry[1]
+        })
+        console.log('station after : ', JSON.stringify(station.tags))
+
+        if (store.player.current_station()?.id === id) {
+          console.log('current station before : ', JSON.stringify(store.player.current_station()?.tags))
+
+          actions.player.current_station(station)
+
+          console.log('current station after : ', JSON.stringify(store.player.current_station()?.tags))
+        }
         // *! update current station if it's this station 
         //actions.player.current_station()
       }
