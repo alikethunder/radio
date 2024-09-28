@@ -174,12 +174,12 @@ export const Home = () => {
 
                   <div className="flex flex-column justify-content-center flex-grow-1">
 
-                    <QueryLink to={generatePath(app_routes["station$id"], { id: station.id })} className="font-semibold text-secondary text-center station_name mb-1">
+                    <QueryLink to={generatePath(app_routes["station$id"], { id: station.id })} className="font-semibold text-secondary text-center station_name mb-1  text-hidden-overflow line-clamp-3">
                       {station.name}
                     </QueryLink>
                   </div>
 
-                  <div className="station_tags text-center">
+                  <div className="station_tags_container text-center text-hidden-overflow line-clamp-2">
                     {
                       station.tags.map(tag => <StationTag tag={tag} />)
                     }

@@ -175,7 +175,7 @@ export const Player: FC = () => {
           {/* current station name */}
           {
             current_station ?
-              <QueryLink to={generatePath(app_routes["station$id"], { id: current_station?.id })} className="radio_card_header align-self-center font-semibold text-secondary">
+              <QueryLink to={generatePath(app_routes["station$id"], { id: current_station?.id })} className="radio_card_header align-self-center font-semibold text-secondary text-hidden-overflow line-clamp-2 text-center">
                 {current_station?.name}
               </QueryLink>
               : <></>
@@ -193,7 +193,7 @@ export const Player: FC = () => {
           {/* downloads  if downloadable */}
         </div>
 
-        <div className="flex flex-row flex-wrap-reverse gap-1 h-3rem max-w-15rem overflow-hidden align-items-start">
+        <div className="station_tags_container text-hidden-overflow line-clamp-2 max-w-15rem text-center">
           {/* current station tags (clickable, opens the main page with search with clicked tag)  */}
           {
             current_station?.tags.map(tag => <StationTag tag={tag} />)
