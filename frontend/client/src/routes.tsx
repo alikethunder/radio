@@ -41,6 +41,10 @@ import {
   list as stations_list,
 } from '@/API/station/list'
 
+import {
+  get_station,
+} from '@/API/station/get_station'
+
 type Loader_params = { params: { [param: string]: string; }, request: Request }
 
 export const routes = [
@@ -147,8 +151,8 @@ export const routes = [
             }
           }
           try {
-            const resp = await fetch(`/api/v1/radio/${id}`)
-            const station = await resp.json()
+
+            const station = await get_station(id)
 
             actions.app.current_page({
               name: station?.name

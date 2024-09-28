@@ -182,18 +182,20 @@ export const Station = () => {
       //*! update station in list
 
       if (id != 'new') {
-        console.log('station before : ', JSON.stringify(station.tags))
+        //console.log('station before : ', JSON.stringify(station.tags))
+
         Object.entries(data).map(entry => {
           station[entry[0]] = entry[1]
         })
-        console.log('station after : ', JSON.stringify(station.tags))
+
+        //console.log('station after : ', JSON.stringify(station.tags))
 
         if (store.player.current_station()?.id === id) {
-          console.log('current station before : ', JSON.stringify(store.player.current_station()?.tags))
+          //console.log('current station before : ', JSON.stringify(store.player.current_station()?.tags))
 
           actions.player.current_station(station)
 
-          console.log('current station after : ', JSON.stringify(store.player.current_station()?.tags))
+          //console.log('current station after : ', JSON.stringify(store.player.current_station()?.tags))
         }
         // *! update current station if it's this station 
         //actions.player.current_station()
@@ -331,7 +333,7 @@ export const Station = () => {
   const change_station_tags = useDebounceCallback(async (e, field) => {
     field.onChange(e)
 
-    console.log(e.value)
+    //console.log(e.value)
 
     const new_tags = (e.value as string[])?.filter(name => !store.app.get_station_tag(name)).map(name => ({
       name,
@@ -339,7 +341,7 @@ export const Station = () => {
     }))
 
     if (new_tags?.length) {
-      console.log('new_tags : ', new_tags)
+      //console.log('new_tags : ', new_tags)
 
       const resp = await fetch('/api/v1/tags/', {
         method: 'POST',

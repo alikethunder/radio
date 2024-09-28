@@ -70,6 +70,8 @@ import {
 
 import { admin } from "@/API/profile/admin"
 
+import { get_station } from "@/API/station/get_station"
+
 //console.log('typeof window : ', typeof window)
 
 /* import favicon from './assets/favicon.ico' */
@@ -101,6 +103,17 @@ export default function App() {
       const json = await resp.json()
       actions.app.station_tags(json ?? [])
     })()
+  }, [])
+
+  useEffect(() => {
+    console.log('get station')
+    const current_station = store.player.current_station()
+    if (current_station?.id) {
+      (async () => {
+        const station = await get_station(current_station.id)
+        actions.player.current_station(station)
+      })()
+    }
   }, [])
 
   const windowSize = useWindowSize()
