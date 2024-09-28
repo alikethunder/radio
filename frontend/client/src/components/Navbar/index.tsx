@@ -54,8 +54,6 @@ export const Navbar: FC = () => {
     actions.app.search_station_tags([...store.app.search_station_tags(), tag])
   }, [])
 
-  //console.log('navbar_actions : ', navbar_actions)
-
   return (
     <>
       <div className="flex flex-shrink-0  shadow-2 h-3rem sm:h-4rem justify-content-between bg-white border-bottom-1 border-solid border-100">
@@ -193,7 +191,6 @@ export const Navbar: FC = () => {
             <div className="flex flex-wrap gap-2">
               {
                 filtered_tags?.map(tag => <StationTag tag={tag} onClick={() => {
-                  console.log('click tag: ', tag)
                   add_tag_to_search(tag)
                   set_tags_input_value('')
                 }} />)
@@ -202,33 +199,6 @@ export const Navbar: FC = () => {
           </OverlayPanel>
 
         </div>
-
-
-        {/*  <Chips
-          value={search_station_tags}
-          onChange={e => actions.app.search_station_tags(e.value ?? [])}
-          allowDuplicate={false}
-
-          pt={{
-            token: {
-              className: classNames({
-
-              },
-                'p-0',
-                'bg-primary',
-                'ml-1'
-              ),
-            },
-            removeTokenIcon: {
-              className: classNames({},
-                'ml-0',
-                'mr-1'
-              )
-            }
-          }}
-
-          itemTemplate={tag => <StationTag tag={tag} />}
-        /> */}
 
       </Panel>
     </>
