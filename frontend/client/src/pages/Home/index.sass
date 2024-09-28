@@ -5,10 +5,17 @@
   display: grid
   justify-content: space-evenly
   grid-template-columns: repeat(auto-fill, 9rem)
-  grid-template-rows: repeat(auto-fill, 10rem)
+  grid-template-rows: repeat(auto-fill, 13.5rem)
 
-  .station_name
+  .station_name, .station_tags
     overflow: hidden
     display: -webkit-box
     -webkit-box-orient: vertical
+  
+  .station_name
     -webkit-line-clamp: 3
+  
+  .station_tags
+    -webkit-line-clamp: 2
+    .p-tag
+      margin: 0.125rem

@@ -85,7 +85,7 @@ export const Home = () => {
   return (
     <div className="sm:py-5 py-4 sm:px-6 px-4 w-full h-full overflow-y-auto page home_page flex-grow-1 flex flex-column">
 
-      <div className={`stations_list gap-3 ${edit_mode ? 'row-gap-8' : ''}`}>
+      <div className={`stations_list gap-2 column-gap-3 ${edit_mode ? 'row-gap-8' : ''}`}>
 
         {
           edit_mode ?
@@ -126,7 +126,7 @@ export const Home = () => {
                 'shadow_on_hover',
                 'element_with_overlay',
                 'w-9rem',
-                'h-10rem',
+                'h-13rem',
                 'flex-shrink-0 shadow-2 border-round',
               )}>
 
@@ -170,27 +170,36 @@ export const Home = () => {
                   {/* likes listeners */}
                 </div>
 
-                <div className="flex flex-column justify-content-center flex-grow-1 px-1 pb-1">
+                <div className="flex flex-column justify-content-between flex-grow-1 px-1 pb-1">
 
-                  <QueryLink to={generatePath(app_routes["station$id"], { id: station.id })} className="align-self-center font-semibold text-secondary text-center station_name">
-                    {station.name}
-                  </QueryLink>
+                  <div className="flex flex-column justify-content-center flex-grow-1">
 
+                    <QueryLink to={generatePath(app_routes["station$id"], { id: station.id })} className="font-semibold text-secondary text-center station_name mb-1">
+                      {station.name}
+                    </QueryLink>
+                  </div>
 
+                  <div className="station_tags text-center">
+                    {
+                      station.tags.map(tag => <StationTag tag={tag} />)
+                    }
+                  </div>
                 </div>
 
               </div>
 
-              {
-                edit_mode ?
-                  <div className="flex flex-row flex-wrap align-items-start gap-2">
+              <div className="flex flex-row flex-wrap align-items-start gap-1 overflow-hidden h-3rem">
 
-                    <StationTag tag="Broadcasting" color={station.broadcasting ? 'green-400' : 'surface-300'} />
+                {
+                  edit_mode ?
+                    <>
+                      <StationTag tag="Broadcasting" color={station.broadcasting ? 'green-400' : 'surface-300'} />
 
-                    <StationTag tag="External" color={station.external && station.external_enable ? 'green-400' : 'surface-300'} />
-                  </div>
-                  : <></>
-              }
+                      <StationTag tag="External" color={station.external && station.external_enable ? 'green-400' : 'surface-300'} />
+                    </>
+                    : <></>
+                }
+              </div>
             </div>
           )}
 
