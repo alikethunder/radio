@@ -5,13 +5,20 @@ import { Tag } from 'primereact/tag'
 import { classNames } from 'primereact/utils'
 import { useStore } from "@/store"
 
-export const StationTag: FC<{ tag: string; color?: string; }> = ({ tag, color }) => {
+type Props = {
+  tag: string;
+  color?: string;
+  onClick?: () => void;
+}
+
+export const StationTag: FC<Props> = ({ tag, color, onClick }) => {
 
   const result_color = color ?? useStore().app.get_station_tag(tag)?.color
 
   return (
     <Tag
       value={tag}
+      {...onClick ? { onClick } : {}}
       pt={{
         root: {
           className: classNames({

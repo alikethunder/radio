@@ -589,7 +589,6 @@ export const Station = () => {
                     <Chips
                       value={field.value}
                       onChange={e => change_station_tags(e, field)}
-                      disabled={!edit_mode}
                       allowDuplicate={false}
 
                       pt={{
@@ -598,7 +597,6 @@ export const Station = () => {
 
                           },
                             'p-0',
-                            //'bg-none',
                             'bg-primary',
                             'ml-1'
                           ),

@@ -58,6 +58,8 @@ export const Home = () => {
 
   const current_station = useStore().player.current_station()
 
+  const search_station_tags = useStore().app.search_station_tags()
+
   const [formState, set_formState] = useState({
     isValid: true,
     isSubmitting: false,
@@ -81,6 +83,16 @@ export const Home = () => {
 
     },
   }, formState, root_admin)
+
+  const searched_stations = useMemo(() => {
+    let result = stations
+
+    if (search_station_tags.length) {
+      result = result.filter(station => search_station_tags.every(tag => station.tags.includes(tag)))
+    }
+
+    return result
+  }, [stations, search_station_tags])
 
   return (
     <div className="sm:py-5 py-4 sm:px-6 px-4 w-full h-full overflow-y-auto page home_page flex-grow-1 flex flex-column">
@@ -112,7 +124,7 @@ export const Home = () => {
         }
 
         {
-          stations?.map(station =>
+          searched_stations?.map(station =>
             <div className="flex flex-column gap-2 w-9rem">
 
               <div className={classNames({
