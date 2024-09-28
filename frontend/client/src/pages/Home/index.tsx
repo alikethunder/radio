@@ -58,7 +58,7 @@ export const Home = () => {
 
   const current_station = useStore().player.current_station()
 
-  const search_station_tags = useStore().app.search_station_tags()
+  const search_station_tags = useStore().persistedApp.search_station_tags()
 
   const [formState, set_formState] = useState({
     isValid: true,
@@ -95,7 +95,7 @@ export const Home = () => {
   }, [stations, search_station_tags])
 
   return (
-    <div className="sm:py-5 py-4 sm:px-6 px-4 w-full h-full overflow-y-auto page home_page flex-grow-1 flex flex-column">
+    <div className="sm:py-5 py-3 sm:px-6 px-2 w-full h-full overflow-y-auto page home_page flex-grow-1 flex flex-column">
 
       <div className={`stations_list gap-2 column-gap-3 ${edit_mode ? 'row-gap-8' : ''}`}>
 

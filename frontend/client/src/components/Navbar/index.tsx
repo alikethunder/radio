@@ -42,16 +42,18 @@ export const Navbar: FC = () => {
 
   const station_tags = useStore().app.station_tags().map(t => t.name)
 
-  const search_station_tags = useStore().app.search_station_tags()
+  const search_station_tags = useStore().persistedApp.search_station_tags()
 
   const [tags_input_value, set_tags_input_value] = useState('')
 
   const overlay_panel = useRef<OverlayPanel | null>(null)
 
+  const search_panel_collapsed = useStore().persistedApp.search_panel_collapsed()
+
   const filtered_tags = useMemo(() => station_tags.filter(tag => tag.includes(tags_input_value) && !search_station_tags.includes(tag)), [tags_input_value, station_tags, search_station_tags])
 
   const add_tag_to_search = useCallback((tag: string) => {
-    actions.app.search_station_tags([...store.app.search_station_tags(), tag])
+    actions.persistedApp.search_station_tags([...store.persistedApp.search_station_tags(), tag])
   }, [])
 
   return (
@@ -92,8 +94,13 @@ export const Navbar: FC = () => {
             className={`p-0 w-2rem h-2rem shadow_on_hover align-self-center`}
             severity={`info`}
 
+            disabled={Boolean(search_station_tags.length)}
+
             onClick={(e) => {
-              store.app.search_panel()?.toggle(e)
+              if (!search_station_tags.length) {
+                store.persistedApp.search_panel()?.toggle(e)
+                actions.persistedApp.search_panel_collapsed(!store.persistedApp.search_panel_collapsed())
+              }
             }}
           />
 
@@ -112,8 +119,11 @@ export const Navbar: FC = () => {
       </div>
 
       <Panel
-        ref={e => actions.app.search_panel(e)}
+        ref={e => actions.persistedApp.search_panel(e)}
         toggleable
+
+        collapsed={search_panel_collapsed}
+
         pt={{
           header: {
             style: {
@@ -125,6 +135,14 @@ export const Navbar: FC = () => {
             className: classNames({},
               'shadow-2',
             )
+          },
+          content: {
+            //panel content
+            className: classNames({},
+              'flex',
+              'flex-column',
+              'p-2',
+            )
           }
         }}
       >
@@ -132,7 +150,7 @@ export const Navbar: FC = () => {
         {/* text search */}
 
         {/* tags search */}
-        <div className="flex flex-column ">
+        <div className="flex flex-column gap-2">
 
           <div className="flex gap-2">
             {/* searched tags */}
@@ -145,14 +163,14 @@ export const Navbar: FC = () => {
                   <i
                     className="pi pi-times text-white cursor-pointer ml-1"
                     onClick={() => {
-                      actions.app.search_station_tags(store.app.search_station_tags().filter(t => t != tag))
+                      actions.persistedApp.search_station_tags(store.persistedApp.search_station_tags().filter(t => t != tag))
                     }} />
                 </div>
               )
             }
           </div>
 
-          <IconField className="w-13rem">
+          <IconField className="max-w-full w-20rem">
 
             {
               tags_input_value ?
@@ -161,7 +179,8 @@ export const Navbar: FC = () => {
             }
 
             <InputText
-              placeholder="Search tags"
+              placeholder="Search in tags"
+              className="w-full"
               value={tags_input_value}
               onChange={(e) => set_tags_input_value(e.target.value)}
               onFocus={(e) => overlay_panel.current?.show(e, e.target)}

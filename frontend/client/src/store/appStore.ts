@@ -16,8 +16,6 @@ import {
   StationTag,
 } from '@/types'
 
-import { Panel } from 'primereact/panel'
-
 type AppStore = {
   isClient: boolean;
   router: ReturnType<typeof createBrowserRouter> | null;
@@ -43,9 +41,7 @@ type AppStore = {
   FormActionsState_form: FormState["form"];
   FormActionsState_isValid: boolean;
   FormActionsState_show: boolean;
-  station_tags: StationTag[];
-  search_panel: Panel | null;
-  search_station_tags: string[],
+  station_tags: StationTag[]; //all possible station tags
 }
 
 const initial_state = {
@@ -74,8 +70,6 @@ const initial_state = {
   FormActionsState_isValid: false,
   FormActionsState_show: false,
   station_tags: [],
-  search_panel: null,
-  search_station_tags: [],
 } as AppStore
 
 export const appStore = createStore('app')(initial_state)
