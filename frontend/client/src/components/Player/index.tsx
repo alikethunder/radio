@@ -1,5 +1,9 @@
 import { FC, LegacyRef, useEffect, useRef, useState } from "react"
 
+import {
+  generatePath,
+} from "react-router-dom"
+
 //import { TabMenu } from 'primereact/tabmenu'
 import { Button } from 'primereact/button'
 
@@ -165,12 +169,17 @@ export const Player: FC = () => {
         }}
       />
 
-      <div className="flex flex-column w-15rem">
+      <div className="flex flex-column w-15rem justify-content-between">
 
         <div className="player_station">
           {/* current station name */}
-          {current_station?.name}
-
+          {
+            current_station ?
+              <QueryLink to={generatePath(app_routes["station$id"], { id: current_station?.id })} className="radio_card_header align-self-center font-semibold text-secondary">
+                {current_station?.name}
+              </QueryLink>
+              : <></>
+          }
           {/*  likes*/}
 
           {/* listeners */}
@@ -184,7 +193,7 @@ export const Player: FC = () => {
           {/* downloads  if downloadable */}
         </div>
 
-        <div className="flex flex-row gap-1">
+        <div className="flex flex-row flex-wrap-reverse gap-1 h-3rem max-w-15rem overflow-hidden align-items-start">
           {/* current station tags (clickable, opens the main page with search with clicked tag)  */}
           {
             current_station?.tags.map(tag => <StationTag tag={tag} />)
