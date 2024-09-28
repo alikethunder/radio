@@ -122,6 +122,9 @@ export const Navbar: FC = () => {
           },
           toggleableContent: {
             //panel content
+            className: classNames({},
+              'shadow-2',
+            )
           }
         }}
       >
@@ -135,7 +138,17 @@ export const Navbar: FC = () => {
             {/* searched tags */}
 
             {
-              search_station_tags?.map(tag => <StationTag tag={tag} />)
+              search_station_tags?.map(tag =>
+                <div className="flex surface-300 border-round align-items-center pr-1">
+                  <StationTag tag={tag} />
+
+                  <i
+                    className="pi pi-times text-white cursor-pointer ml-1"
+                    onClick={() => {
+                      actions.app.search_station_tags(store.app.search_station_tags().filter(t => t != tag))
+                    }} />
+                </div>
+              )
             }
           </div>
 
@@ -148,6 +161,7 @@ export const Navbar: FC = () => {
             }
 
             <InputText
+              placeholder="Search tags"
               value={tags_input_value}
               onChange={(e) => set_tags_input_value(e.target.value)}
               onFocus={(e) => overlay_panel.current?.show(e, e.target)}
@@ -190,10 +204,13 @@ export const Navbar: FC = () => {
           >
             <div className="flex flex-wrap gap-2">
               {
-                filtered_tags?.map(tag => <StationTag tag={tag} onClick={() => {
-                  add_tag_to_search(tag)
-                  set_tags_input_value('')
-                }} />)
+                filtered_tags?.map(tag => <StationTag
+                  tag={tag}
+                  onClick={() => {
+                    add_tag_to_search(tag)
+                    set_tags_input_value('')
+                  }}
+                />)
               }
             </div>
           </OverlayPanel>
