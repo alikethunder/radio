@@ -3,26 +3,12 @@
 
 .home_page .stations_list
   display: grid
-  justify-content: space-between
-  grid-gap: 20px 5px
-  grid-template-columns: repeat(auto-fill, var(--SmallCardContainer_width))
-  grid-template-rows: repeat(auto-fill, sizeRelativeToCardWidth(var(--card-ratio)))
-  @media screen and (min-width: 576px) and (min-height: 576px)
-    grid-gap: 15px 15px
+  justify-content: space-evenly
+  grid-template-columns: repeat(auto-fill, 9rem)
+  grid-template-rows: repeat(auto-fill, 10rem)
 
-  .station_card
-    padding-right: sizeRelativeToCardHeight(.1)
-    .station_card_icon
-      width: sizeRelativeToCardHeight(1)
-      height: sizeRelativeToCardHeight(1)
-      background-position: center
-      background-repeat: no-repeat
-      background-size: contain
-      flex-shrink: 0
-
-    .station_card_header
-      font-size: sizeRelativeToCardHeight(.24)
-
-    &.create_station_card
-      .station_card_header
-        font-size: sizeRelativeToCardHeight(.32)
+  .station_name
+    overflow: hidden
+    display: -webkit-box
+    -webkit-box-orient: vertical
+    -webkit-line-clamp: 3

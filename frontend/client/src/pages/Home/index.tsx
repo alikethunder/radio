@@ -11,7 +11,8 @@ import { Ripple } from "primereact/ripple"
 
 import { classNames } from 'primereact/utils'
 
-import { QueryLink } from "@/components"
+import { QueryLink, StationTag } from "@/components"
+
 import './index.sass'
 
 import {
@@ -84,19 +85,12 @@ export const Home = () => {
   return (
     <div className="sm:py-5 py-4 sm:px-6 px-4 w-full h-full overflow-y-auto page home_page flex-grow-1 flex flex-column">
 
-      <div className="stations_list"
-        //@ts-ignore
-        style={{
-          ...width ? {
-            '--SmallCardContainer_width': `${width}px`,
-            '--card-ratio': `${.25}`
-          } : {}
-        }}>
+      <div className={`stations_list gap-3 ${edit_mode ? 'row-gap-8' : ''}`}>
 
         {
           edit_mode ?
-            <QueryLink to={generatePath(`${app_routes["station$id"]}/${'?edit'/* app_routes.edit */}`, { id: "new" })}>
-              <SmallCardContainer className="flex flex-row overflow-hidden station_card create_station_card align-self-center shadow_on_hover">
+            <QueryLink to={generatePath(`${app_routes["station$id"]}/${'?edit'/* app_routes.edit */}`, { id: "new" })} className="flex flex-column gap-2">
+              <div className="flex flex-row overflow-hidden flex-shrink-0 shadow-2 border-round align-self-center shadow_on_hover w-9rem h-10rem">
 
                 <div className="station_card_icon align-self-center flex align-items-center justify-content-center">
                   <i className="pi pi-plus-circle" style={{ fontSize: '2rem' }}></i>
@@ -105,72 +99,99 @@ export const Home = () => {
                 <div className="station_card_header align-self-center font-semibold flex-grow-1 text-center lobster_font">
                   Create new radio
                 </div>
-              </SmallCardContainer>
+              </div>
+
+              <div className="flex flex-row flex-wrap align-items-start gap-1">
+
+                <StationTag tag="A" color="" />
+
+                <StationTag tag="A" color="" />
+              </div>
             </QueryLink>
             : <></>
         }
 
         {
           stations?.map(station =>
-            <SmallCardContainer className={classNames({
-              'current_station active_element': current_station?.id == station.id,
-            },
-              'flex',
-              'flex-row',
-              'overflow-hidden',
-              'station_card',
-              'align-items-center',
-              'text-secondary',
-              'shadow_on_hover',
-              'element_with_overlay',
-            )}>
+            <div className="flex flex-column gap-2 w-9rem">
 
-              <div
-                style={{
-                  ...station.avatar ? { backgroundImage: `url(/api/v1/files/stations/${station.id}/avatar)` } : {},
-                }}
-                className="station_card_icon radio_card_icon align-self-center flex align-items-center justify-content-center p-ripple " >
+              <div className={classNames({
+                'current_station active_element': current_station?.id == station.id,
+              },
+                'flex',
+                'flex-column',
+                'gap-1',
+                'overflow-hidden',
+                'text-secondary',
+                'shadow_on_hover',
+                'element_with_overlay',
+                'w-9rem',
+                'h-10rem',
+                'flex-shrink-0 shadow-2 border-round',
+              )}>
 
-                {
-                  station.avatar ?
-                    <></>
-                    :
-                    <i className="pi pi-wave-pulse " style={{ fontSize: '2rem' }}></i>
-                }
+                <div className="flex flex-row gap-1">
+                  <div
+                    style={{
+                      ...station.avatar ? { backgroundImage: `url(/api/v1/files/stations/${station.id}/avatar)` } : {},
+                    }}
+                    className="w-full h-5rem flex align-items-center justify-content-center p-ripple  bg-no-repeat bg-contain bg-center surface-100" >
 
-                <div
-                  className="overlay absolute top-0 bottom-0 right-0 left-0 flex align-items-center justify-content-center text-center cursor-pointer"
-                  onClick={() => {
-                    if (store.player.playing() && store.player.current_station()?.id == station.id) {
-                      actions.player.playing(false)
-                    } else {
-                      actions.player.playing(true)
-                      actions.player.current_station(station)
+                    {
+                      station.avatar ?
+                        <></>
+                        :
+                        <i className="pi pi-wave-pulse " style={{ fontSize: '2rem' }}></i>
                     }
-                  }}>
 
-                  <div className="overlay_background surface-900 absolute top-0 bottom-0 right-0 left-0"></div>
+                    <div
+                      className="overlay absolute top-0 bottom-0 right-0 left-0 flex align-items-center justify-content-center text-center cursor-pointer"
+                      onClick={() => {
+                        if (store.player.playing() && store.player.current_station()?.id == station.id) {
+                          actions.player.playing(false)
+                        } else {
+                          actions.player.playing(true)
+                          actions.player.current_station(station)
+                        }
+                      }}>
 
-                  <div className="overlay_text text-white font-semibold z-1">
-                    <i className={`pi ${current_station?.id == station.id && playing ? 'pi-pause' : 'pi-play'}`} style={{ fontSize: '2rem' }}></i>
+                      <div className="overlay_background surface-900 absolute top-0 bottom-0 right-0 left-0"></div>
+
+                      <div className="overlay_text text-white font-semibold z-1">
+                        <i className={`pi ${current_station?.id == station.id && playing ? 'pi-pause' : 'pi-play'}`} style={{ fontSize: '2rem' }}></i>
+                      </div>
+
+                    </div>
+
+                    <Ripple />
+
                   </div>
+
+                  {/* likes listeners */}
+                </div>
+
+                <div className="flex flex-column justify-content-center flex-grow-1 px-1 pb-1">
+
+                  <QueryLink to={generatePath(app_routes["station$id"], { id: station.id })} className="align-self-center font-semibold text-secondary text-center station_name">
+                    {station.name}
+                  </QueryLink>
+
 
                 </div>
 
-                <Ripple />
-
               </div>
 
-              <div className="station_info flex flex-column flex-grow-1">
+              {
+                edit_mode ?
+                  <div className="flex flex-row flex-wrap align-items-start gap-2">
 
-                <QueryLink to={generatePath(app_routes["station$id"], { id: station.id })} className="radio_card_header align-self-center font-semibold text-secondary">
-                  {station.name}
-                </QueryLink>
+                    <StationTag tag="Broadcasting" color={station.broadcasting ? 'green-400' : 'surface-300'} />
 
-
-              </div>
-
-            </SmallCardContainer>
+                    <StationTag tag="External" color={station.external && station.external_enable ? 'green-400' : 'surface-300'} />
+                  </div>
+                  : <></>
+              }
+            </div>
           )}
 
       </div>

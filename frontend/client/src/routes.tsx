@@ -56,7 +56,7 @@ export const routes = [
       actions.app.current_page({})
       return null
     },
-    shouldRevalidate: (o) => {
+    shouldRevalidate: (/* o */) => {
       //console.log(o)
       return false
     },
