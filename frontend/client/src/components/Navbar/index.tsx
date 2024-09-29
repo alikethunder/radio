@@ -140,7 +140,9 @@ export const Navbar: FC = () => {
             //panel content
             className: classNames({},
               'flex',
-              'flex-column',
+              'flex-row',
+              'flex-wrap-reverse',
+              'justify-content-center',
               'p-2',
             )
           }
@@ -152,7 +154,7 @@ export const Navbar: FC = () => {
         {/* tags search */}
         <div className="flex flex-column gap-2">
 
-          <div className="flex gap-2">
+          <div className="flex flex-row gap-2 h-3rem align-items-start">
             {/* searched tags */}
 
             {
@@ -162,7 +164,7 @@ export const Navbar: FC = () => {
 
                   <i
                     className="pi pi-times text-white cursor-pointer ml-1"
-                    onClick={() => {
+                    onClick={(e) => {
                       actions.persistedApp.search_station_tags(store.persistedApp.search_station_tags().filter(t => t != tag))
                     }} />
                 </div>
@@ -182,8 +184,14 @@ export const Navbar: FC = () => {
               placeholder="Search in tags"
               className="w-full"
               value={tags_input_value}
+              disabled={!filtered_tags.length}
+
               onChange={(e) => set_tags_input_value(e.target.value)}
-              onFocus={(e) => overlay_panel.current?.show(e, e.target)}
+
+              onFocus={(e) => {
+                overlay_panel.current?.show(e, e.target)
+              }}
+
               onKeyUp={(e) => {
                 const exact = filtered_tags.find(t => t === (e.target as HTMLInputElement).value)
 
@@ -218,20 +226,28 @@ export const Navbar: FC = () => {
                   'w-11',
                   'mx-3',
                 )
+              },
+              content: {
+                className: classNames({},
+                  "flex flex-wrap gap-2 p-2",
+                )
               }
             }}
           >
-            <div className="flex flex-wrap gap-2">
-              {
-                filtered_tags?.map(tag => <StationTag
-                  tag={tag}
-                  onClick={() => {
-                    add_tag_to_search(tag)
-                    set_tags_input_value('')
-                  }}
-                />)
-              }
-            </div>
+            {
+              filtered_tags?.map(tag => <StationTag
+                tag={tag}
+                onClick={() => {
+                  add_tag_to_search(tag)
+                  set_tags_input_value('')
+
+                  if (filtered_tags.length == 1) {
+                    //hide if it's the last tag and panel will be empty
+                    overlay_panel.current?.hide()
+                  }
+                }}
+              />)
+            }
           </OverlayPanel>
 
         </div>
