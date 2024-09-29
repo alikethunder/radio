@@ -84,6 +84,10 @@ export const Home = () => {
     },
   }, formState, root_admin)
 
+  const search_stations_text = useStore().persistedApp.search_stations_text()
+
+  const search_stations_text_array = useMemo(() => search_stations_text.replaceAll(',', '').replaceAll('-', '').replaceAll('_', '').split(' '), [search_stations_text])
+
   const searched_stations = useMemo(() => {
     let result = stations
 
@@ -91,8 +95,12 @@ export const Home = () => {
       result = result.filter(station => search_station_tags.every(tag => station.tags.includes(tag)))
     }
 
+    if (search_stations_text_array.length) {
+      result = result.filter(station => search_stations_text_array.every(w => station.description.toLowerCase().includes(w)) || search_stations_text_array.some(w => station.name.toLowerCase().includes(w)))
+    }
+
     return result
-  }, [stations, search_station_tags])
+  }, [stations, search_station_tags, search_stations_text_array])
 
   return (
     <div className="sm:py-5 py-3 sm:px-6 px-2 w-full h-full overflow-y-auto page home_page flex-grow-1 flex flex-column">

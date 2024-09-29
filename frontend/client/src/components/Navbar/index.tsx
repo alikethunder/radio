@@ -14,6 +14,8 @@ import { InputIcon } from "primereact/inputicon"
 
 import { classNames } from 'primereact/utils'
 
+import { Badge } from 'primereact/badge'
+
 import {
   logout,
 } from '@/functions'
@@ -48,6 +50,8 @@ export const Navbar: FC = () => {
 
   const overlay_panel = useRef<OverlayPanel | null>(null)
 
+  const search_stations_text = useStore().persistedApp.search_stations_text()
+
   const search_panel_collapsed = useStore().persistedApp.search_panel_collapsed()
 
   const filtered_tags = useMemo(() => station_tags.filter(tag => tag.includes(tags_input_value) && !search_station_tags.includes(tag)), [tags_input_value, station_tags, search_station_tags])
@@ -55,6 +59,8 @@ export const Navbar: FC = () => {
   const add_tag_to_search = useCallback((tag: string) => {
     actions.persistedApp.search_station_tags([...store.persistedApp.search_station_tags(), tag])
   }, [])
+
+  const search_button_badge_value = useMemo(() => search_station_tags.length, [search_station_tags,])
 
   return (
     <>
@@ -86,23 +92,40 @@ export const Navbar: FC = () => {
           </div>
 
           <Button
-            icon="pi pi-search"
+            //icon={`pi pi-search-${search_panel_collapsed ? 'plus' : 'minus'}`}
             rounded
             outlined
             raised
-            aria-label="Search stations"
-            className={`p-0 w-2rem h-2rem shadow_on_hover align-self-center`}
+            aria-label="Open search stations panel"
+            className={`p-0 w-2rem h-2rem shadow_on_hover align-self-center flex justify-content-center align-items-center`}
             severity={`info`}
 
-            disabled={Boolean(search_station_tags.length)}
-
             onClick={(e) => {
-              if (!search_station_tags.length) {
-                store.persistedApp.search_panel()?.toggle(e)
-                actions.persistedApp.search_panel_collapsed(!store.persistedApp.search_panel_collapsed())
-              }
+              store.persistedApp.search_panel()?.toggle(e)
+              actions.persistedApp.search_panel_collapsed(!store.persistedApp.search_panel_collapsed())
             }}
-          />
+          >
+            <i className={`pi pi-search-${search_panel_collapsed ? 'plus' : 'minus'} p-overlay-badge`}>
+              <Badge
+                value={search_button_badge_value}
+                severity="warning"
+                style={{
+                  fontSize: '0.6rem',
+                  lineHeight: '.7rem',
+                  height: '0.8rem',
+                  width: '.8rem',
+                  minWidth: '.8rem',
+                  right: '.1rem',
+                  top: '.1rem',
+                  ...search_button_badge_value ? {} : {
+                    display: 'none'
+                  },
+                }}
+                className="p-0"
+              />
+            </i>
+
+          </Button>
 
           <FormActionsState />
 
@@ -144,17 +167,35 @@ export const Navbar: FC = () => {
               'flex-wrap-reverse',
               'justify-content-center',
               'p-2',
+              'gap-4',
             )
           }
         }}
       >
 
         {/* text search */}
+        <IconField className="max-w-full w-20rem align-self-start">
+
+          {
+            search_stations_text ?
+              <InputIcon className="pi pi-times cursor-pointer" onClick={() => actions.persistedApp.search_stations_text('')} />
+              : <></>
+          }
+
+          <InputText
+            placeholder="Search station name and description"
+            className="w-full"
+            value={search_stations_text}
+
+            onChange={(e) => actions.persistedApp.search_stations_text(e.target.value)}
+          />
+
+        </IconField>
 
         {/* tags search */}
-        <div className="flex flex-column gap-2">
+        <div className="flex flex-column gap-2 max-w-full w-20rem">
 
-          <div className="flex flex-row gap-2 h-3rem align-items-start">
+          <div className="flex flex-row flex-wrap gap-2 align-items-start">
             {/* searched tags */}
 
             {
@@ -172,7 +213,7 @@ export const Navbar: FC = () => {
             }
           </div>
 
-          <IconField className="max-w-full w-20rem">
+          <IconField className="">
 
             {
               tags_input_value ?
@@ -181,7 +222,7 @@ export const Navbar: FC = () => {
             }
 
             <InputText
-              placeholder="Search in tags"
+              placeholder="Search station tags"
               className="w-full"
               value={tags_input_value}
               disabled={!filtered_tags.length}
