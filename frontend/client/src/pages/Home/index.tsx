@@ -86,7 +86,7 @@ export const Home = () => {
 
   const search_stations_text = useStore().persistedApp.search_stations_text()
 
-  const search_stations_text_array = useMemo(() => search_stations_text.replaceAll(',', '').replaceAll('-', '').replaceAll('_', '').split(' '), [search_stations_text])
+  const search_stations_text_array = useMemo(() => search_stations_text.replaceAll(',', '').replaceAll('-', '').replaceAll('_', '').split(' ').filter(w => !!w), [search_stations_text])
 
   const searched_stations = useMemo(() => {
     let result = stations
