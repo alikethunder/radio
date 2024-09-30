@@ -200,14 +200,16 @@ export const Navbar: FC = () => {
 
             {
               search_station_tags?.map(tag =>
-                <div className="flex surface-300 border-round align-items-center pr-1">
+                <div className="flex surface-300 border-round align-items-center hover:overflow-hidden">
                   <StationTag tag={tag} disable_link />
 
-                  <i
-                    className="pi pi-times text-white cursor-pointer ml-1"
-                    onClick={(e) => {
-                      actions.persistedApp.search_station_tags(store.persistedApp.search_station_tags().filter(t => t != tag))
-                    }} />
+                  <div className="flex align-items-center justify-content-center cursor-pointer shadow_on_hover align-self-stretch px-05 border-round">
+                    <i
+                      className="pi pi-times-circle text-white"
+                      onClick={(e) => {
+                        actions.persistedApp.search_station_tags(store.persistedApp.search_station_tags().filter(t => t != tag))
+                      }} />
+                  </div>
                 </div>
               )
             }

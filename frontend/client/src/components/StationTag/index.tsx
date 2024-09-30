@@ -46,12 +46,11 @@ export const StationTag: FC<Props> = ({ tag, color, onClick, disable_link }) => 
         root: {
           className: classNames({
             'opacity-0': (color ?? 'nullish') != 'nullish' && !color?.length,
-            'cursor-pointer shadow_on_hover': !tag_is_in_search && !disable_link,
+            'cursor-pointer shadow_on_hover shadow-2': !tag_is_in_search && !disable_link,
           },
             'py-05',
             'select-none',
             color?.includes('surface') ? color : `bg-${result_color}`,
-            'shadow-2',
             'text-sm',
             'font-medium',
             `${disable_link ? '' : (tag_is_in_search ? 'opacity-70' : '')}`
