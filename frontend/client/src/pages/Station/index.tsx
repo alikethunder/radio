@@ -75,6 +75,8 @@ import {
 
 import { random_station_tag_color } from "@/functions/random_station_tag_color"
 
+import { StationTagRemoveTokenIcon } from "@/layout parts"
+
 const private_tooltip_options = { ...tooltip_options, position: 'right' } as const
 
 export const Station = () => {
@@ -568,7 +570,7 @@ export const Station = () => {
               <Controller
                 name="tags"
                 control={control}
-                render={({ field }) => (
+                render={({ field, }) => (
                   <>
 
                     <label
@@ -590,6 +592,13 @@ export const Station = () => {
                       value={field.value}
                       onChange={e => change_station_tags(e, field)}
                       allowDuplicate={false}
+                      removable
+
+                      removeIcon={<StationTagRemoveTokenIcon onClick={e => {
+                        if (e) {
+                          setValue(field.name, field.value.filter(v => v != (e.target as HTMLElement).closest('.p-chips-token')?.querySelector('.p-tag-value')?.textContent))
+                        }
+                      }} />}
 
                       pt={{
                         token: {
@@ -597,16 +606,11 @@ export const Station = () => {
 
                           },
                             'p-0',
-                            'bg-primary',
-                            'ml-1'
+                            'ml-1',
+                            'bg-red-600',
+                            'border-round',
                           ),
                         },
-                        removeTokenIcon: {
-                          className: classNames({},
-                            'ml-0',
-                            'mr-1'
-                          )
-                        }
                       }}
 
                       itemTemplate={tag => <StationTag tag={tag} disable_link />}

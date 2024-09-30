@@ -1,2 +1,2 @@
 export { SmallCardContainer } from './SmallCardContainer'
-//export {} from './'
+export { StationTagRemoveTokenIcon } from './StationTagRemoveTokenIcon'
