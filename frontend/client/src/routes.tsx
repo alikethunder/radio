@@ -67,7 +67,7 @@ export const routes = [
           console.log('[loader Home] root admin : ', store.user.admin())
 
           const stations = await stations_list()
-          return stations
+          return stations //[...stations, ...stations, ...stations, ...stations]
         },
         element: <Home />,
         shouldRevalidate: () => false,

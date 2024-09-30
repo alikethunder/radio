@@ -20,7 +20,11 @@ import {
   logout,
 } from '@/functions'
 
-import { actions, store, useStore } from "@/store"
+import {
+  actions,
+  store,
+  useStore,
+} from "@/store"
 
 import { usePageInList } from '@/hooks'
 
@@ -55,10 +59,6 @@ export const Navbar: FC = () => {
   const search_panel_collapsed = useStore().persistedApp.search_panel_collapsed()
 
   const filtered_tags = useMemo(() => station_tags.filter(tag => tag.includes(tags_input_value) && !search_station_tags.includes(tag)), [tags_input_value, station_tags, search_station_tags])
-
-  const add_tag_to_search = useCallback((tag: string) => {
-    actions.persistedApp.search_station_tags([...store.persistedApp.search_station_tags(), tag])
-  }, [])
 
   const search_button_badge_value = useMemo(() => search_station_tags.length, [search_station_tags,])
 
@@ -201,7 +201,7 @@ export const Navbar: FC = () => {
             {
               search_station_tags?.map(tag =>
                 <div className="flex surface-300 border-round align-items-center pr-1">
-                  <StationTag tag={tag} />
+                  <StationTag tag={tag} disable_link />
 
                   <i
                     className="pi pi-times text-white cursor-pointer ml-1"
@@ -242,12 +242,12 @@ export const Navbar: FC = () => {
                 ) {
                   if (filtered_tags.length == 1) {
 
-                    add_tag_to_search(filtered_tags[0])
+                    actions.persistedApp.add_tag_to_search(filtered_tags[0])
                     set_tags_input_value('')
 
                   } else if (exact) {
 
-                    add_tag_to_search(exact)
+                    actions.persistedApp.add_tag_to_search(exact)
                     set_tags_input_value('')
                   }
                 }
@@ -279,7 +279,7 @@ export const Navbar: FC = () => {
               filtered_tags?.map(tag => <StationTag
                 tag={tag}
                 onClick={() => {
-                  add_tag_to_search(tag)
+                  actions.persistedApp.add_tag_to_search(tag)
                   set_tags_input_value('')
 
                   if (filtered_tags.length == 1) {

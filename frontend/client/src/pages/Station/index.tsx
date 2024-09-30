@@ -352,7 +352,7 @@ export const Station = () => {
 
       actions.app.update_tags(json)
     }
-  })
+  }, 50)
 
   return (
     /* background here */
@@ -609,7 +609,7 @@ export const Station = () => {
                         }
                       }}
 
-                      itemTemplate={tag => <StationTag tag={tag} />}
+                      itemTemplate={tag => <StationTag tag={tag} disable_link />}
                     />
                   </>
                 )} />

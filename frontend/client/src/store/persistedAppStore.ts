@@ -25,3 +25,12 @@ export const persistedAppStore = createStore('app')(initial_state,
       name: 'persistedApp'
     }
   })
+  .extendActions((set, get, api) => ({
+    add_tag_to_search: (tag: string) => {
+      const cur_tags = get.search_station_tags()
+      
+      if (!cur_tags.includes(tag)) {
+        set.search_station_tags([...cur_tags, tag])
+      }
+    },
+  }))
