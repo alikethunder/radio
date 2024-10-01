@@ -34,6 +34,7 @@ import {
 } from '@/hooks'
 
 import { Station } from "@/types"
+import { useDebounceCallback } from "usehooks-ts"
 
 export const Home = () => {
 
@@ -124,6 +125,15 @@ export const Home = () => {
 
   useLog('searched_stations_with_mode : ', searched_stations_with_mode)
 
+  const play_click = useDebounceCallback((station) => {
+    if (store.player.playing() && store.player.current_station()?.id == station.id) {
+      actions.player.playing(false)
+    } else {
+      actions.player.playing(true)
+      actions.player.current_station(station)
+    }
+  }, 50)
+
   return (
     <div className="sm:py-5 py-3 sm:px-6 px-2 w-full h-full overflow-y-auto page home_page flex-grow-1 flex flex-column">
 
@@ -174,7 +184,12 @@ export const Home = () => {
 
                 <div className="flex flex-row gap-1">
                   <div
-                    className="w-full h-5rem flex align-items-center justify-content-center p-ripple relative surface-100" >
+                    className="w-full h-5rem flex align-items-center justify-content-center p-ripple relative surface-100"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      play_click(station)
+                    }} >
 
                     <i className="pi pi-wave-pulse " style={{ fontSize: '2rem' }}></i>
 
@@ -199,13 +214,10 @@ export const Home = () => {
 
                     <div
                       className="overlay absolute top-0 bottom-0 right-0 left-0 flex align-items-center justify-content-center text-center cursor-pointer"
-                      onClick={() => {
-                        if (store.player.playing() && store.player.current_station()?.id == station.id) {
-                          actions.player.playing(false)
-                        } else {
-                          actions.player.playing(true)
-                          actions.player.current_station(station)
-                        }
+                      onClick={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        play_click(station)
                       }}>
 
                       <div className="overlay_background surface-900 absolute top-0 bottom-0 right-0 left-0"></div>
