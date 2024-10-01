@@ -88,24 +88,19 @@ export const Home = () => {
 
   const search_stations_text_array = useMemo(() => search_stations_text.replaceAll(',', '').replaceAll('-', '').replaceAll('_', '').split(' ').filter(w => !!w), [search_stations_text])
 
-  const searched_stations = useMemo(() => {
-    let result = stations
+  const tags_searched_stations = useMemo(() => search_station_tags.length ? stations.filter(station => search_station_tags.every(tag => station.tags.includes(tag))) : stations, [search_station_tags, stations])
 
-    if (search_station_tags.length) {
-      result = result.filter(station => search_station_tags.every(tag => station.tags.includes(tag)))
-    }
+  const text_searched_stations = useMemo(() => search_stations_text_array.length ? tags_searched_stations.filter(station => search_stations_text_array.every(w => station.description.toLowerCase().includes(w)) || search_stations_text_array.some(w => station.name.toLowerCase().includes(w))) : tags_searched_stations, [search_stations_text_array, tags_searched_stations])
 
-    if (search_stations_text_array.length) {
-      result = result.filter(station => search_stations_text_array.every(w => station.description.toLowerCase().includes(w)) || search_stations_text_array.some(w => station.name.toLowerCase().includes(w)))
-    }
-
-    return result
-  }, [stations, search_station_tags, search_stations_text_array])
+  const searched_stations_with_mode = useMemo(() => edit_mode ? text_searched_stations : text_searched_stations.filter(station => station.broadcasting), [
+    text_searched_stations,
+    edit_mode,
+  ])
 
   return (
     <div className="sm:py-5 py-3 sm:px-6 px-2 w-full h-full overflow-y-auto page home_page flex-grow-1 flex flex-column">
 
-      <div className={`stations_list gap-2 column-gap-3 ${edit_mode ? 'row-gap-8' : ''}`}>
+      <div className={`stations_list row-gap-2 column-gap-3 ${edit_mode ? 'row-gap-7' : ''}`}>
 
         {
           edit_mode ?
@@ -132,7 +127,7 @@ export const Home = () => {
         }
 
         {
-          searched_stations?.map(station =>
+          searched_stations_with_mode?.map(station =>
             <div className="flex flex-column gap-2 w-9rem">
 
               <div className={classNames({
@@ -208,18 +203,16 @@ export const Home = () => {
 
               </div>
 
-              <div className="flex flex-row flex-wrap align-items-start gap-1 overflow-hidden h-3rem">
+              {
+                edit_mode ?
+                  <div className="flex flex-row flex-wrap flex-shrink-0 align-items-start gap-1 overflow-hidden h-3rem">
 
-                {
-                  edit_mode ?
-                    <>
-                      <StationTag tag="Broadcasting" color={station.broadcasting ? 'green-400' : 'surface-300'} />
+                    <StationTag tag="Broadcasting" color={station.broadcasting ? 'green-400' : 'surface-300'} disable_link />
 
-                      <StationTag tag="External" color={station.external && station.external_enable ? 'green-400' : 'surface-300'} />
-                    </>
-                    : <></>
-                }
-              </div>
+                    <StationTag tag="External" color={station.external && station.external_enable ? 'green-400' : 'surface-300'} disable_link />
+                  </div>
+                  : <></>
+              }
             </div>
           )}
 

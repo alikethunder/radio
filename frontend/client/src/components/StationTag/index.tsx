@@ -11,7 +11,7 @@ import {
   store,
   useStore,
 } from "@/store"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { app_routes } from "@/constants/router"
 
 type Props = {
@@ -25,13 +25,15 @@ export const StationTag: FC<Props> = ({ tag, color, onClick, disable_link }) => 
 
   const navigate = useNavigate()
 
+  const { pathname } = useLocation()
+
   const result_color = color ?? useStore().app.get_station_tag(tag)?.color
 
   const search_station_tags = useStore().persistedApp.search_station_tags()
 
   const tag_is_in_search = useMemo(() => search_station_tags.includes(tag), [search_station_tags])
 
-  const click = useDebounceCallback((e) => {
+  const click = useCallback(useDebounceCallback((e) => {
     if (onClick) {
       onClick()
     }
@@ -40,12 +42,14 @@ export const StationTag: FC<Props> = ({ tag, color, onClick, disable_link }) => 
 
       actions.persistedApp.add_tag_to_search(tag)
 
-      navigate(app_routes.root)
+      if (pathname != app_routes.root) {
+        navigate(app_routes.root)
+      }
 
       store.persistedApp.search_panel()?.expand(e)
       actions.persistedApp.search_panel_collapsed(false)
     }
-  }, 100)
+  }, 100), [pathname])
 
   return (
     <Tag
