@@ -20,7 +20,7 @@ export const app_routes = {
 
 export const auth_required_routes = [
   app_routes.project$id,
-  app_routes.user_profile$id,
+  //app_routes.user_profile$id,
 ] as const
 
 export const auth_routes = [

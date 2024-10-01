@@ -98,6 +98,7 @@ export const routes = [
             }
           } else {
             //todo: load public user data from db
+            
           }
 
           //if there is no such project

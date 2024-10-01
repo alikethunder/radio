@@ -176,7 +176,7 @@ export const UserProfile = () => {
       set_photo_blob(null)
       reset()
     },
-  }, formState, user_data.own_profile)
+  }, formState, user_data?.own_profile)
 
   return (
     <div
@@ -186,7 +186,7 @@ export const UserProfile = () => {
       <div className="flex flex-column sm:flex-row">
 
         <div
-          style={{ backgroundImage: `url(${photo_data_url || `/api/v1/files/users/${user_data.id}/photo`})` }}
+          style={{ backgroundImage: `url(${photo_data_url || `/api/v1/files/users/${user_data?.id}/photo`})` }}
 
           className={`element_with_overlay shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-circle flex align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode ? 'cursor-pointer' : ''}`}
 
@@ -198,7 +198,7 @@ export const UserProfile = () => {
         >
           <img
             style={{ display: 'none' }}
-            src={`/api/v1/files/users/${user_data.id}/photo`}
+            src={`/api/v1/files/users/${user_data?.id}/photo`}
 
             onError={({ currentTarget }) => {
               currentTarget.onerror = null
@@ -295,61 +295,63 @@ export const UserProfile = () => {
               </>
             )}
           />
+          {
+            user_data?.own_profile ?
+              <Controller
+                name="email"
+                control={control}
+                rules={{
+                  required: 'Please, enter your e-mail',
+                  pattern: {
+                    value: /\S+@\S+\.\S+/,
+                    message: "Please, enter your real e-mail",
+                  },
+                }}
+                render={({ field, fieldState }) => (
+                  <>
+                    <label
+                      htmlFor={field.name}
+                      className={classNames(
+                        {
+                          'p-error': errors[field.name]
+                        },
+                        'text-600'
+                      )}
+                    >
+                      <Tooltip content="Видно только вам" target='.pi-lock' {...private_tooltip_options} />
 
-          <Controller
-            name="email"
-            control={control}
-            rules={{
-              required: 'Please, enter your e-mail',
-              pattern: {
-                value: /\S+@\S+\.\S+/,
-                message: "Please, enter your real e-mail",
-              },
-            }}
-            render={({ field, fieldState }) => (
-              <>
-                <label
-                  htmlFor={field.name}
-                  className={classNames(
-                    {
-                      'p-error': errors[field.name]
-                    },
-                    'text-600'
-                  )}
-                >
-                  <Tooltip content="Видно только вам" target='.pi-lock' {...private_tooltip_options} />
+                      <small>E-mail </small> <i className="pi pi-lock text-xs" ></i>
+                    </label>
 
-                  <small>E-mail </small> <i className="pi pi-lock text-xs" ></i>
-                </label>
+                    <IconField iconPosition="left">
+                      <InputIcon className="pi pi-envelope"></InputIcon>
 
-                <IconField iconPosition="left">
-                  <InputIcon className="pi pi-envelope"></InputIcon>
+                      <InputText
+                        type="email"
+                        id={field.name}
+                        value={field.value}
 
-                  <InputText
-                    type="email"
-                    id={field.name}
-                    value={field.value}
+                        className={classNames(
+                          "w-full",
+                          { 'p-invalid': fieldState.error }
+                        )}
+                        onInput={() => clearErrors('email')}
+                        onChange={(e) => field.onChange(e.target.value)}
+                        onBlur={field.onBlur}
+                        disabled={!edit_mode}
+                        autoComplete="email"
 
-                    className={classNames(
-                      "w-full",
-                      { 'p-invalid': fieldState.error }
-                    )}
-                    onInput={() => clearErrors('email')}
-                    onChange={(e) => field.onChange(e.target.value)}
-                    onBlur={field.onBlur}
-                    disabled={!edit_mode}
-                    autoComplete="email"
+                        onInvalid={e => (e.target as HTMLInputElement).setCustomValidity('Enter an email that contains "@" Example: info@roshni.nl')}
 
-                    onInvalid={e => (e.target as HTMLInputElement).setCustomValidity('Enter an email that contains "@" Example: info@roshni.nl')}
+                      />
+                    </IconField>
 
-                  />
-                </IconField>
-
-                <small className={`p-error`}>{errors?.[field.name]?.message ?? ' '}</small>
-              </>
-            )}
-          />
-
+                    <small className={`p-error`}>{errors?.[field.name]?.message ?? ' '}</small>
+                  </>
+                )}
+              />
+              : <></>
+          }
 
         </form>
 

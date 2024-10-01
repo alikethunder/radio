@@ -155,6 +155,12 @@ export const Navbar: FC = () => {
         collapsed={search_panel_collapsed}
 
         pt={{
+          root: {
+            className: classNames({
+              'hidden': !show_stations_search,
+            },
+            )
+          },
           header: {
             style: {
               display: 'none'
