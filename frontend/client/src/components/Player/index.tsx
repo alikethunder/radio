@@ -71,11 +71,11 @@ export const Player: FC = () => {
     }
   }, [volume, audio_ref])
 
-  const [avatar_exists, set_avatar_exists] = useState(true)
+  const [avatar_not_exists, set_avatar_not_exists] = useState('')
 
   useEffect(() => {
     if (current_station) {
-      set_avatar_exists(true)
+      set_avatar_not_exists(e=>e == current_station.id ? e : '')
     }
   }, [current_station])
 
@@ -94,21 +94,24 @@ export const Player: FC = () => {
         className="player_station_avatar w-4rem h-4rem sm:w-6rem sm:h-6rem shadow-2 bg-no-repeat bg-contain bg-center flex-shrink-0 border-round-xl flex align-items-center justify-content-center"
         style={{ backgroundImage: current_station ? `url(/api/v1/files/stations/${current_station?.id}/avatar)` : '' }}
       >
-        <img
-          style={{ display: 'none' }}
-          src={`/api/v1/files/stations/${current_station?.id}/avatar`}
+        {
+          current_station ?
+            <img
+              style={{ display: 'none' }}
+              src={`/api/v1/files/stations/${current_station?.id}/avatar`}
 
-          onError={({ currentTarget }) => {
-            currentTarget.onerror = null
-            set_avatar_exists(false)
-          }}
-        />
+              onError={({ currentTarget }) => {
+                set_avatar_not_exists(current_station.id)
+              }}
+            />
+            : <></>
+        }
 
         {
-          avatar_exists ?
-            <></>
-            :
+          avatar_not_exists == current_station?.id ?
             <i className="pi pi-wave-pulse text-secondary" style={{ fontSize: '4rem' }}></i>
+            :
+            <></>
         }
       </div>
 
