@@ -83,7 +83,7 @@ export const Navbar: FC = () => {
             />
           </QueryLink>
 
-          <div className="lobster_font align-self-center flex align-items-center text-secondary max-h-full text-overflow-ellipsis">
+          <div className="lobster_font align-self-center text-secondary max-h-full text-overflow-ellipsis text_hidden_overflow line-clamp-2">
             {
               current_page?.icon ?
                 <i className={`${icon_classes} ${current_page?.icon} mr-2`}></i>
