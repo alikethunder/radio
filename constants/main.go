@@ -12,4 +12,5 @@ var Public_Station_Props = [...]string{
 	"tags",
 	"admins",
 	"broadcasting",
+	//"avatar",
 }

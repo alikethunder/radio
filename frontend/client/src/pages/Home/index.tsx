@@ -174,17 +174,28 @@ export const Home = () => {
 
                 <div className="flex flex-row gap-1">
                   <div
-                    style={{
-                      ...station.avatar ? { backgroundImage: `url(/api/v1/files/stations/${station.id}/avatar)` } : {},
-                    }}
-                    className="w-full h-5rem flex align-items-center justify-content-center p-ripple  bg-no-repeat bg-contain bg-center surface-100" >
+                    className="w-full h-5rem flex align-items-center justify-content-center p-ripple relative surface-100" >
 
-                    {
-                      station.avatar ?
-                        <></>
-                        :
-                        <i className="pi pi-wave-pulse " style={{ fontSize: '2rem' }}></i>
-                    }
+                    <i className="pi pi-wave-pulse " style={{ fontSize: '2rem' }}></i>
+
+                    <div className="absolute w-full h-full top-0 left-0 bg-no-repeat bg-contain bg-center surface-100 station_image"
+                      style={{
+                        backgroundImage: `url(/api/v1/files/stations/${station.id}/avatar)`,
+                      }} >
+
+                      <img
+                        style={{ display: 'none' }}
+                        src={`/api/v1/files/stations/${station.id}/avatar`}
+
+                        onError={({ currentTarget }) => {
+                          currentTarget.onerror = null
+
+                          const p = currentTarget.closest('.station_image') as HTMLElement
+
+                          if (p) p.style.display = 'none'
+                        }}
+                      />
+                    </div>
 
                     <div
                       className="overlay absolute top-0 bottom-0 right-0 left-0 flex align-items-center justify-content-center text-center cursor-pointer"
