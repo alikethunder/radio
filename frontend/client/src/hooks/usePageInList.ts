@@ -7,7 +7,7 @@ import {
 } from '@/constants/router'
 
 /* 
-checks if the page is auth page and returns its match if it's one,
+checks if the page is in list of pages and returns its match if it's one,
 or null | undefined if it's not
 */
 export const usePageInList = (pages: typeof all_routes, path_to_check?: string): [PathMatch<string> | string | null | undefined, boolean] => {

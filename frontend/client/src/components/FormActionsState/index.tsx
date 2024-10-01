@@ -44,7 +44,7 @@ export const FormActionsState: FC = () => {
           aria-label="Редактировать"
           tooltip="Редактировать"
           tooltipOptions={tooltip_options}
-          className={`p-0 w-2rem h-2rem shadow_on_hover`}
+          className={`p-0 w-2rem h-2rem shadow_on_hover flex-shrink-0`}
           severity={`warning`}
 
           onClick={() => {
@@ -63,7 +63,7 @@ export const FormActionsState: FC = () => {
             aria-label="Сохранить"
             tooltip="Сохранить"
             tooltipOptions={tooltip_options}
-            className={`p-0 w-2rem h-2rem shadow_on_hover`}
+            className={`p-0 w-2rem h-2rem shadow_on_hover flex-shrink-0`}
             severity={`success`}
             size="small"
 
@@ -80,7 +80,7 @@ export const FormActionsState: FC = () => {
             aria-label="Отменить"
             tooltip="Отменить"
             tooltipOptions={tooltip_options}
-            className="p-0 w-2rem h-2rem shadow_on_hover"
+            className="p-0 w-2rem h-2rem shadow_on_hover flex-shrink-0"
             severity='danger'
             size="small"
 
@@ -100,7 +100,7 @@ export const FormActionsState: FC = () => {
           aria-label="Сохраняется"
           tooltip="Сохраняется"
           tooltipOptions={tooltip_options}
-          className="p-0 w-2rem h-2rem cursor-wait"
+          className="p-0 w-2rem h-2rem cursor-wait flex-shrink-0"
           severity='help'
         />
         break;
@@ -111,7 +111,7 @@ export const FormActionsState: FC = () => {
 
   return (
     show ?
-      <div className="buttons flex flex-row gap-2 align-items-center pl-2">
+      <div className="buttons flex flex-row flex-shrink-0 gap-1 sm:gap-2 align-items-center">
         {navbar_actions}
       </div>
       : <></>

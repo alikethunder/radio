@@ -64,11 +64,13 @@ export const Navbar: FC = () => {
 
   const search_button_badge_value = useMemo(() => search_station_tags.length, [search_station_tags,])
 
+  const [show_stations_search, checked_show_stations_search] = usePageInList([app_routes.root, app_routes.station$id])
+
   return (
     <>
-      <div className="flex flex-shrink-0  shadow-2 h-3rem sm:h-4rem justify-content-between bg-white border-bottom-1 border-solid border-100">
+      <div className="flex flex-shrink-0  shadow-2 h-3rem sm:h-4rem justify-content-between bg-white border-bottom-1 border-solid border-100 border-top-none border-left-none border-right-none">
 
-        <div className="left h-full flex ">
+        <div className="left h-full flex gap-1 sm:gap-2">
 
           <QueryLink to={app_routes.root}
             onClick={() => actions.app.rightSidebarOpened(false)}>
@@ -81,7 +83,7 @@ export const Navbar: FC = () => {
             />
           </QueryLink>
 
-          <div className="lobster_font align-self-center ml-2 md:ml-3 flex align-items-center text-secondary">
+          <div className="lobster_font align-self-center flex align-items-center text-secondary max-h-full text-overflow-ellipsis">
             {
               current_page?.icon ?
                 <i className={`${icon_classes} ${current_page?.icon} mr-2`}></i>
@@ -93,42 +95,45 @@ export const Navbar: FC = () => {
             }
           </div>
 
-          <Button
-            //icon={`pi pi-search-${search_panel_collapsed ? 'plus' : 'minus'}`}
-            rounded
-            outlined
-            raised
-            aria-label="Open search stations panel"
-            className={`p-0 w-2rem h-2rem shadow_on_hover align-self-center flex justify-content-center align-items-center`}
-            severity={`info`}
+          {
+            show_stations_search ?
+              <Button
+                //icon={`pi pi-search-${search_panel_collapsed ? 'plus' : 'minus'}`}
+                rounded
+                outlined
+                raised
+                aria-label="Open search stations panel"
+                className={`p-0 w-2rem h-2rem shadow_on_hover align-self-center flex flex-shrink-0 justify-content-center align-items-center`}
+                severity={`info`}
 
-            onClick={(e) => {
-              store.persistedApp.search_panel()?.toggle(e)
-              actions.persistedApp.search_panel_collapsed(!store.persistedApp.search_panel_collapsed())
-            }}
-          >
-            <i className={`pi pi-search-${search_panel_collapsed ? 'plus' : 'minus'} p-overlay-badge`}>
-              <Badge
-                value={search_button_badge_value}
-                severity="warning"
-                style={{
-                  fontSize: '0.6rem',
-                  lineHeight: '.7rem',
-                  height: '0.8rem',
-                  width: '.8rem',
-                  minWidth: '.8rem',
-                  right: '.1rem',
-                  top: '.1rem',
-                  ...search_button_badge_value ? {} : {
-                    display: 'none'
-                  },
+                onClick={(e) => {
+                  store.persistedApp.search_panel()?.toggle(e)
+                  actions.persistedApp.search_panel_collapsed(!store.persistedApp.search_panel_collapsed())
                 }}
-                className="p-0"
-              />
-            </i>
+              >
+                <i className={`pi pi-search-${search_panel_collapsed ? 'plus' : 'minus'} p-overlay-badge`}>
+                  <Badge
+                    value={search_button_badge_value}
+                    severity="warning"
+                    style={{
+                      fontSize: '0.6rem',
+                      lineHeight: '.7rem',
+                      height: '0.8rem',
+                      width: '.8rem',
+                      minWidth: '.8rem',
+                      right: '.1rem',
+                      top: '.1rem',
+                      ...search_button_badge_value ? {} : {
+                        display: 'none'
+                      },
+                    }}
+                    className="p-0"
+                  />
+                </i>
 
-          </Button>
-
+              </Button>
+              : <></>
+          }
           <FormActionsState />
 
         </div>
