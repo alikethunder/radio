@@ -71,6 +71,14 @@ export const Player: FC = () => {
     }
   }, [volume, audio_ref])
 
+  const [avatar_exists, set_avatar_exists] = useState(true)
+
+  useEffect(() => {
+    if (current_station) {
+      set_avatar_exists(true)
+    }
+  }, [current_station])
+
   return (
     <div className="flex flex-row flex-shrink-0 shadow-3 h-7rem justify-content-center bg-white p-1 sm:p-2 gap-3">
 
@@ -86,8 +94,18 @@ export const Player: FC = () => {
         className="player_station_avatar w-4rem h-4rem sm:w-6rem sm:h-6rem shadow-2 bg-no-repeat bg-contain bg-center flex-shrink-0 border-round-xl flex align-items-center justify-content-center"
         style={{ backgroundImage: current_station ? `url(/api/v1/files/stations/${current_station?.id}/avatar)` : '' }}
       >
+        <img
+          style={{ display: 'none' }}
+          src={`/api/v1/files/stations/${current_station?.id}/avatar`}
+
+          onError={({ currentTarget }) => {
+            currentTarget.onerror = null
+            set_avatar_exists(false)
+          }}
+        />
+
         {
-          current_station?.avatar ?
+          avatar_exists ?
             <></>
             :
             <i className="pi pi-wave-pulse text-secondary" style={{ fontSize: '4rem' }}></i>
@@ -175,7 +193,7 @@ export const Player: FC = () => {
           {/* current station name */}
           {
             current_station ?
-              <QueryLink to={generatePath(app_routes["station$id"], { id: current_station?.id })} className="radio_card_header align-self-center font-semibold text-secondary text_hidden_overflow line-clamp-2 text-center">
+              <QueryLink to={generatePath(app_routes["station$id"], { id: current_station?.id })} className="radio_card_header align-self-center font-semibold text-secondary text-hidden-overflow line-clamp-2 text-center">
                 {current_station?.name}
               </QueryLink>
               : <></>
@@ -193,7 +211,7 @@ export const Player: FC = () => {
           {/* downloads  if downloadable */}
         </div>
 
-        <div className="station_tags_container text_hidden_overflow line-clamp-2 max-w-15rem text-center">
+        <div className="station_tags_container text-hidden-overflow line-clamp-2 max-w-15rem text-center">
           {/* current station tags (clickable, opens the main page with search with clicked tag)  */}
           {
             current_station?.tags.map(tag => <StationTag tag={tag} />)
