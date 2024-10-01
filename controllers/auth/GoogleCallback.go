@@ -103,6 +103,7 @@ func GoogleCallback(c *fiber.Ctx) error {
 			"email": credential["email"],
 			"name":  credential["name"],
 			"oauth": true,
+			"admin": false,
 		})
 
 		if err != nil {

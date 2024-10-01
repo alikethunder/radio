@@ -31,7 +31,7 @@ func Initialize() {
 		background blob,
 		broadcasting boolean,
 		tags set<text>,
-		admins set<uuid>,
+		admins set<text>,
 		render_order smallint,
 		likes int,
 		external text,

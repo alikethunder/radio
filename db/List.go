@@ -1,12 +1,13 @@
 package db
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-func List(table string, key_parameters fiber.Map, select_parameters ...string) (results []fiber.Map) {
+func List(table string, key_parameters fiber.Map, additional_selectors []string, select_parameters ...string) (results []fiber.Map) {
 
 	var selectString strings.Builder
 
@@ -30,30 +31,49 @@ func List(table string, key_parameters fiber.Map, select_parameters ...string) (
 
 	values := make([]interface{}, len(key_parameters))
 
-	if len(key_parameters) > 0 {
+	if len(key_parameters) > 0 || len(additional_selectors) > 0 {
 
 		selectString.WriteString(` WHERE `)
 
-		i := 0
-		for key, val := range key_parameters {
+		if len(key_parameters) > 0 {
+			i := 0
+			for key, val := range key_parameters {
 
-			selectString.WriteString(key)
-			selectString.WriteString(` = ?`)
+				selectString.WriteString(key)
+				selectString.WriteString(` = ?`)
 
-			if i != len(key_parameters)-1 {
-				selectString.WriteString(` AND `)
+				if i != len(key_parameters)-1 {
+					selectString.WriteString(` AND `)
+				}
+
+				values[i] = val
+				i++
 			}
 
-			values[i] = val
-			i++
 		}
 
+		if len(additional_selectors) > 0 {
+
+			if len(key_parameters) > 0 {
+				selectString.WriteString(` AND`)
+			}
+
+			for i, value := range additional_selectors {
+
+				selectString.WriteString(` `)
+				selectString.WriteString(value)
+
+				if i != len(additional_selectors)-1 {
+					selectString.WriteString(` AND `)
+				}
+			}
+		}
 	}
 
 	selectString.WriteString(` ALLOW FILTERING`)
 
-	//fmt.Println("[db.List] selectString : ", selectString.String())
-	//fmt.Println("[db.List] values : ", values)
+	fmt.Println("[db.List] selectString : ", selectString.String())
+	fmt.Println("[db.List] values : ", values)
 
 	iter := Session.Query(selectString.String(), values...).Iter()
 

@@ -115,32 +115,25 @@ export const Station = () => {
 
   const edit_mode = useStore().app.FormActionsState_edit_mode()
 
-  const [is_admin, set_is_admin] = useState(false)
-
   const signedin = useStore().auth.signedin()
 
   const root_admin = useStore().user.admin()
+
+  const current_user_id = useStore().user.id()
 
   const playing = useStore().player.playing()
 
   const current_station = useStore().player.current_station()
 
-  useEffect(() => {
-    //console.log('signedin, root_admin: ', signedin, root_admin)
-
-    if (signedin) {
-      if (root_admin) {
-        set_is_admin(true)
-      } else {
-        admin(station.id).then(r => {
-          //parameters can change during call, so they're requested again from store
-          set_is_admin(store.auth.signedin() && (r || store.user.admin()))
-        })
-      }
-    } else {
-      set_is_admin(false)
-    }
-  }, [station, signedin, root_admin])
+  const station_admin = useMemo(() => Boolean(
+    signedin
+    && current_user_id
+    && station.admins?.includes(current_user_id)
+  ), [
+    station,
+    signedin,
+    current_user_id
+  ])
 
   //console.log('[Station] is_admin : ', is_admin)
 
@@ -314,7 +307,7 @@ export const Station = () => {
       setValue('description', station.description)
       reset()
     },
-  }, formState, is_admin)
+  }, formState, root_admin || station_admin)
 
   const external = useWatch({
     control,

@@ -23,7 +23,7 @@ func Start(c *fiber.Ctx) error {
 
 		u := cookies.ParseCookie(c.Cookies(cookies.AuthCookieName))
 
-		user, _ := db.SelectRow("users", fiber.Map{"email": u["email"]}, "id", "name", "email")
+		user, _ := db.SelectRow("users", fiber.Map{"email": u["email"]}, "id", "name", "email", "admin")
 
 		user["created"] = user["id"].(gocql.UUID).Time()
 

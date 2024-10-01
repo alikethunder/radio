@@ -25,7 +25,7 @@ func Index(ctx *fiber.Ctx) error {
 
 		if cookie_user["id"] != nil {
 
-			user, err := db.SelectRow("users", fiber.Map{"email": cookie_user["email"]}, "id", "name", "email", "subscription_plan")
+			user, err := db.SelectRow("users", fiber.Map{"email": cookie_user["email"]}, "id", "name", "email", "subscription_plan", "admin")
 
 			if err != nil {
 				fmt.Printf("[controllers.Index] ClearAuthCookies 1")

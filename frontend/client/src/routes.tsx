@@ -64,7 +64,6 @@ export const routes = [
       {
         path: app_routes.root,
         loader: async ({ request }: Loader_params) => {
-          console.log('[loader Home] root admin : ', store.user.admin())
 
           const stations = await stations_list()
           return stations 

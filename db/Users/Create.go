@@ -98,7 +98,7 @@ func Create(user fiber.Map) (fiber.Map, error) {
 			mailer.SendVc(vc, user["email"].(string), user["name"].(string))
 		}
 
-		return db.SelectRow("users", fiber.Map{"id": user_db["id"], "email": user["email"]}, "name", "email", "id")
+		return db.SelectRow("users", fiber.Map{"id": user_db["id"], "email": user["email"]}, "name", "email", "id", "admin")
 
 	}
 

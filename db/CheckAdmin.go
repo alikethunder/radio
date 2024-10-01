@@ -14,7 +14,7 @@ func CheckRootAdmin(ctx *fiber.Ctx) bool {
 
 		db_user, _ := SelectRow("users", fiber.Map{"id": current_user_id}, "admin")
 
-		return db_user["admin"].(bool)
+		return db_user["admin"] != nil && db_user["admin"].(bool)
 
 	}
 	return false

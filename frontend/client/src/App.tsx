@@ -186,13 +186,6 @@ export default function App() {
   }, [])
 
   useEffect(() => {
-    //check if user is root admin
-    if (store.auth.signedin()) {
-      admin().then(r => actions.user.admin(r))
-    }
-  }, [])
-
-  useEffect(() => {
     actions.app.isDesktop(
       (
         windowSize?.width ? windowSize?.width > 768.1 : false
