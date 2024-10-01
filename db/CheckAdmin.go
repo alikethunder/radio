@@ -8,13 +8,11 @@ import (
 
 func CheckRootAdmin(ctx *fiber.Ctx) bool {
 
-	authCookie := ctx.Cookies(cookies.AuthCookieName)
+	current_user_id := cookies.CurrentUserId(ctx)
 
-	if authCookie != "" {
+	if current_user_id != "" {
 
-		cookie_user := cookies.ParseCookie(ctx.Cookies(cookies.AuthCookieName))
-
-		db_user, _ := SelectRow("users", fiber.Map{"id": cookie_user["id"]}, "admin")
+		db_user, _ := SelectRow("users", fiber.Map{"id": current_user_id}, "admin")
 
 		return db_user["admin"].(bool)
 

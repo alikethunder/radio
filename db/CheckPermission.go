@@ -13,11 +13,9 @@ import (
 
 func CheckPermission(ctx *fiber.Ctx, table, row_id, permission string) bool {
 
-	authCookie := ctx.Cookies(cookies.AuthCookieName)
+	current_user_id := cookies.CurrentUserId(ctx)
 
-	if authCookie != "" {
-
-		cookie_user := cookies.ParseCookie(ctx.Cookies(cookies.AuthCookieName))
+	if current_user_id != "" {
 
 		if table != "" && row_id != "" {
 
@@ -25,7 +23,7 @@ func CheckPermission(ctx *fiber.Ctx, table, row_id, permission string) bool {
 
 			fmt.Println("[db.CheckPermission] row :", row)
 
-			return row[permission] != nil && slices.Contains(row[permission].([]string), cookie_user["id"].(string))
+			return row[permission] != nil && slices.Contains(row[permission].([]string), current_user_id)
 
 		}
 
