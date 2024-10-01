@@ -11,6 +11,8 @@ import {
   store,
   useStore,
 } from "@/store"
+import { useNavigate } from "react-router-dom"
+import { app_routes } from "@/constants/router"
 
 type Props = {
   tag: string;
@@ -20,6 +22,8 @@ type Props = {
 }
 
 export const StationTag: FC<Props> = ({ tag, color, onClick, disable_link }) => {
+
+  const navigate = useNavigate()
 
   const result_color = color ?? useStore().app.get_station_tag(tag)?.color
 
@@ -35,6 +39,11 @@ export const StationTag: FC<Props> = ({ tag, color, onClick, disable_link }) => 
     if (!disable_link) {
 
       actions.persistedApp.add_tag_to_search(tag)
+
+      navigate(app_routes.root)
+
+      store.persistedApp.search_panel()?.expand(e)
+      actions.persistedApp.search_panel_collapsed(false)
     }
   }, 100)
 
