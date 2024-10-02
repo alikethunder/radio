@@ -102,11 +102,11 @@ export const Home = () => {
 
   const tags_searched_stations = useMemo(() => search_station_tags.length ? stations?.filter(station => search_station_tags.every(tag => station.tags.includes(tag))) : stations, [search_station_tags, stations])
 
-  useLog('tags_searched_stations : ', tags_searched_stations)
+  //useLog('tags_searched_stations : ', tags_searched_stations)
 
   const text_searched_stations = useMemo(() => search_stations_text_array.length ? tags_searched_stations?.filter(station => search_stations_text_array.every(w => station.description.toLowerCase().includes(w)) || search_stations_text_array.some(w => station.name.toLowerCase().includes(w))) : tags_searched_stations, [search_stations_text_array, tags_searched_stations])
 
-  useLog('text_searched_stations : ', text_searched_stations)
+  //useLog('text_searched_stations : ', text_searched_stations)
 
   const searched_stations_with_mode = useMemo(() => edit_mode ?
     (
@@ -123,7 +123,7 @@ export const Home = () => {
       root_admin,
     ])
 
-  useLog('searched_stations_with_mode : ', searched_stations_with_mode)
+  //useLog('searched_stations_with_mode : ', searched_stations_with_mode)
 
   const play_click = useDebounceCallback((station) => {
     if (store.player.playing() && store.player.current_station()?.id == station.id) {

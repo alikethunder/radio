@@ -38,6 +38,7 @@ import {
 } from '@/types'
 
 import { icon_classes } from "@/constants/icon_classes"
+import { Translation } from "@/layout parts"
 
 type SigninUser = (Pick<User, 'password' | 'name' | 'email' | 'rememberme'>)
 
@@ -245,7 +246,8 @@ export const Signin: FC = () => {
 
             <Button
               type="submit"
-              label={route_attributes[app_routes.signin].name}
+              label={<Translation field="login" className="w-6"/>}
+              //label={route_attributes[app_routes.signin].name}
               outlined
               raised
               icon={`${icon_classes} ${isSubmitting ? 'pi-spin pi-sync' : route_attributes[app_routes.signin].icon}`}

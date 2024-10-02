@@ -23,6 +23,7 @@ import (
 	ProfileEndpoints "web_project/controllers/profile"
 	RadioEndpoints "web_project/controllers/radio"
 	StationTagsEndpoints "web_project/controllers/tags"
+	TranslationEndpoints "web_project/controllers/translations"
 
 	"web_project/functions"
 	"web_project/mailer"
@@ -103,6 +104,10 @@ func main() {
 	profile_endpoints.Post("/request-update-email", ProfileEndpoints.RequestUpdateEmail)
 
 	profile_endpoints.Get("/update-email/:hash", ProfileEndpoints.UpdateEmail)
+
+	translation_endpoints := v1.Group("/translation", etag.New())
+
+	translation_endpoints.Get("/:field", TranslationEndpoints.Translate)
 
 	files_endpoints := v1.Group("/files", etag.New())
 	//get user profile photo by user id
