@@ -74,7 +74,7 @@ export const RightSidebar: FC = () => {
           options={languages}
           optionLabel="name"
           placeholder="Select a City"
-          className="w-full md:w-14rem"
+          className="w-full mb-2 border-noround"
         />
 
         {
