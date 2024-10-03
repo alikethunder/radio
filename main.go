@@ -107,7 +107,9 @@ func main() {
 
 	translation_endpoints := v1.Group("/translation", etag.New())
 
-	translation_endpoints.Get("/:field", TranslationEndpoints.Translate)
+	translation_endpoints.Get("/", TranslationEndpoints.Languages)
+
+	translation_endpoints.Get("/:language/:field", TranslationEndpoints.Translate)
 
 	files_endpoints := v1.Group("/files", etag.New())
 	//get user profile photo by user id

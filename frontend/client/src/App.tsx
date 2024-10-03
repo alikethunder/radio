@@ -222,6 +222,40 @@ export default function App() {
 
   const is_project_page = useMatch(app_routes.project$id)
 
+  useEffect(() => {
+    //language preset
+    (async () => {
+      const resp = await fetch('/api/v1/translation')
+
+      if (resp.status == 200) {
+        const languages = await resp.json()
+
+        actions.persistedApp.languages(languages)
+
+        const curr_selected_lang = store.persistedApp.language()
+
+        if (!curr_selected_lang || !languages.includes(curr_selected_lang)) {
+          //lang was not set or it is not supported
+
+          //get navigator language
+          const nav_lang = navigator.language.substring(0, 2)
+
+          if (languages.includes(nav_lang)) {
+            actions.persistedApp.language(nav_lang)
+          } else {
+            //navigator language is not supported
+            //find supported in navigator languages
+
+            const supported_navigator_languages = navigator.languages.find(l => languages.includes(l))
+
+            actions.persistedApp.language(supported_navigator_languages ?? languages[0])
+
+          }
+        }
+      }
+    })()
+  }, [])
+
   return (
     <PrimeReactProvider value={{
       appendTo: 'self',

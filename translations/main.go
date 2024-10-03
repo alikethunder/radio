@@ -1,5 +1,12 @@
 package translations
 
-var Ru = map[string]string{
-	"login": "Войти",
+//!!first in list is the fallback language
+
+var Dictionary = map[string]map[string]string{
+	"en": {
+		"login": "Login",
+	},
+	"ru": {
+		"login": "Войти",
+	},
 }

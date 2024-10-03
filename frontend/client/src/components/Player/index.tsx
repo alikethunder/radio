@@ -80,7 +80,7 @@ export const Player: FC = () => {
   }, [current_station])
 
   return (
-    <div className="flex flex-row flex-shrink-0 shadow-3 h-7rem justify-content-center bg-white p-1 sm:p-2 gap-3">
+    <div className="flex flex-row flex-shrink-0 shadow-3 h-7rem justify-content-center bg-white p-1 sm:p-2 gap-3 mt-auto">
 
       <audio
         src=""

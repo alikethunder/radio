@@ -8,6 +8,8 @@ type PersistedApp = {
   search_station_tags: string[];
   search_panel_collapsed: boolean;
   search_stations_text: string;
+  language: string | null,
+  languages: string[],
 }
 
 const initial_state = {
@@ -16,6 +18,8 @@ const initial_state = {
   search_station_tags: [],
   search_panel_collapsed: true,
   search_stations_text: '',
+  language: null,
+  languages: [],
 } as PersistedApp
 
 export const persistedAppStore = createStore('app')(initial_state,
@@ -28,7 +32,7 @@ export const persistedAppStore = createStore('app')(initial_state,
   .extendActions((set, get, api) => ({
     add_tag_to_search: (tag: string) => {
       const cur_tags = get.search_station_tags()
-      
+
       if (!cur_tags.includes(tag)) {
         set.search_station_tags([...cur_tags, tag])
       }

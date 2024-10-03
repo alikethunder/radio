@@ -247,7 +247,6 @@ export const Signin: FC = () => {
             <Button
               type="submit"
               label={<Translation field="login" className="w-6"/>}
-              //label={route_attributes[app_routes.signin].name}
               outlined
               raised
               icon={`${icon_classes} ${isSubmitting ? 'pi-spin pi-sync' : route_attributes[app_routes.signin].icon}`}

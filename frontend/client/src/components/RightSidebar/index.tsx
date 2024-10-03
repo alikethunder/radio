@@ -1,7 +1,10 @@
 import { FC, useEffect } from "react"
 
 import { Button } from 'primereact/button'
+
 import { Sidebar } from 'primereact/sidebar'
+
+import { Dropdown } from 'primereact/dropdown'
 
 import {
   QueryLink,
@@ -38,6 +41,10 @@ export const RightSidebar: FC = () => {
 
   const signedin = useStore().auth.signedin()
 
+  const language = useStore().persistedApp.language()
+
+  const languages = useStore().persistedApp.languages()
+
   return (
     <Sidebar
       visible={rightSidebarOpened}
@@ -60,7 +67,16 @@ export const RightSidebar: FC = () => {
       }}
     >
       <div className="top flex flex-column">
-        
+
+        <Dropdown
+          value={language}
+          onChange={(e) => actions.persistedApp.language(e.value)}
+          options={languages}
+          optionLabel="name"
+          placeholder="Select a City"
+          className="w-full md:w-14rem"
+        />
+
         {
           signedin ?
             <>
