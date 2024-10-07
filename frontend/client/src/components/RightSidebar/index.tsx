@@ -32,6 +32,8 @@ import { generatePath } from "react-router-dom"
 import { icon_classes } from "@/constants/icon_classes"
 import { classNames } from "primereact/utils"
 
+import { Translation } from "@/layout parts"
+
 export const RightSidebar: FC = () => {
 
   const rightSidebarOpened = useTrackedStore().app.rightSidebarOpened()
@@ -74,7 +76,6 @@ export const RightSidebar: FC = () => {
           onChange={(e) => actions.persistedApp.language(e.value)}
           options={languages}
           optionLabel="name"
-          placeholder="Select a City"
           className="w-full border-noround border-none"
           checkmark
           pt={{
@@ -152,7 +153,7 @@ export const RightSidebar: FC = () => {
         {
           signedin ?
             <Button
-              label="Выйти"
+              label={<Translation capitalize field="logout" className="w-4"/>}
               text
               raised
               icon={`${icon_classes} pi-sign-out`}

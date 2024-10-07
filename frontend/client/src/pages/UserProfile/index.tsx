@@ -23,6 +23,8 @@ import { InputIcon } from 'primereact/inputicon'
 
 import { confirmDialog } from 'primereact/confirmdialog'
 
+import { Translation } from "@/layout parts"
+
 import './index.sass'
 
 import {
@@ -220,7 +222,7 @@ export const UserProfile = () => {
                   <div className="overlay_background surface-900 absolute top-0 bottom-0 right-0 left-0"></div>
 
                   <div className="overlay_text text-white font-semibold z-1">
-                    Choose image
+                    <Translation capitalize field="choose_image" className="w-4rem" />
                   </div>
 
                 </div>
@@ -253,7 +255,7 @@ export const UserProfile = () => {
           <Controller
             name="name"
             control={control}
-            rules={{ required: 'Name cannot be empty' }}
+            rules={{ required: true, }}
             render={({ field, fieldState }) => (
               <>
                 <label
@@ -265,7 +267,9 @@ export const UserProfile = () => {
                     'text-600'
                   )}
                 >
-                  <small>Имя</small>
+                  <small>
+                    <Translation capitalize field="name" className="w-2rem" />
+                  </small>
                 </label>
 
                 <InputText
@@ -291,7 +295,12 @@ export const UserProfile = () => {
                   }}
                 />
 
-                <small className="p-error">{errors[field.name]?.message ?? ' '}</small>
+                <small className="p-error">
+                  {
+                    errors[field.name]?.type == 'required' ?
+                      <Translation capitalize field="name_cannot_be_empty" className="w-4rem" /> : errors[field.name]?.message ?? ' '
+                  }
+                </small>
               </>
             )}
           />

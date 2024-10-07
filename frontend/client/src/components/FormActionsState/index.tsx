@@ -3,18 +3,7 @@ import { FC, useEffect, useMemo } from "react"
 //import { TabMenu } from 'primereact/tabmenu'
 import { Button } from 'primereact/button'
 
-import {
-  logout,
-} from '@/functions'
-
 import { actions, useStore, store } from "@/store"
-
-import { usePageInList } from '@/hooks'
-
-import {
-  app_routes,
-  auth_routes,
-} from '@/constants/router'
 
 import { tooltip_options } from "@/constants/tooltip_options"
 
@@ -27,9 +16,6 @@ export const FormActionsState: FC = () => {
 
   const edit_mode = useStore().app.FormActionsState_state()
 
-  const edit = useStore().app.FormActionsState_edit()
-  const submit = useStore().app.FormActionsState_submit()
-  const reset = useStore().app.FormActionsState_reset()
   const isValid = useStore().app.FormActionsState_isValid()
   const show = useStore().app.FormActionsState_show()
 

@@ -141,7 +141,7 @@ export const Home = () => {
 
         {
           edit_mode && root_admin ?
-            <QueryLink to={generatePath(`${app_routes["station$id"]}/${'?edit'/* app_routes.edit */}`, { id: "new" })} className="flex flex-column gap-2">
+            <QueryLink to={generatePath(`${app_routes["station$id"]}/${'?edit'/* app_routes.edit */}`, { id: "new" })} className="flex flex-column gap-2 text-primary">
               <div className="flex flex-row overflow-hidden flex-shrink-0 shadow-2 border-round align-self-center shadow_on_hover w-9rem h-10rem">
 
                 <div className="station_card_icon align-self-center flex align-items-center justify-content-center">

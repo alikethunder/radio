@@ -1,6 +1,8 @@
 import { Station } from "@/types"
 import { useLoaderData } from "react-router-dom"
 
+import { Translation } from "@/layout parts"
+
 /* 
 routes transformation for name
         _ === -
@@ -42,11 +44,11 @@ export const all_routes = Object.values(app_routes)
 
 export const route_attributes = {
   [app_routes.user_profile$id]: {
-    name: 'Профиль',
-    icon: 'pi-id-card'
+    name: <Translation capitalize field="profile" className="w-4"/>,
+    icon: 'pi-id-card',
   },
   [app_routes.signin]: {
-    name: 'Вход',
+    name: <Translation capitalize field="login" className="w-4"/>,
     icon: 'pi-sign-in',
   },
   [app_routes.root]: {},

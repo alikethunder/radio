@@ -4,12 +4,15 @@ import { Skeleton } from 'primereact/skeleton'
 
 import { useStore } from "@/store"
 
-interface Props {
+type Props = {
+  capitalize?: boolean;
   field: string;
-  [x: string]: string;
+  className?: string;
+} & {
+  [x: string]: any;
 }
 
-export const Translation: FC<Props> = ({ field, className, }) => {
+export const Translation: FC<Props> = ({ field, className, capitalize, }) => {
 
   const [translation, set_translation] = useState('')
   const [loading, set_loading] = useState(true)
@@ -21,7 +24,8 @@ export const Translation: FC<Props> = ({ field, className, }) => {
       const resp = await fetch(`/api/v1/translation/${language}/${field}`)
       const text = await resp.text()
 
-      set_translation(text)
+      set_translation(capitalize ? text.charAt(0).toUpperCase() + text.slice(1) : text)
+
       set_loading(false)
 
     })()
