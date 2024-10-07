@@ -176,17 +176,15 @@ export const Player: FC = () => {
         className="h-5rem align-self-center -ml-2"
         pt={{
           range: {
-            style: {
-              backgroundColor: 'var(--color-secondary)',
-            }
+            className: classNames({},
+              'bg-secondary'
+            )
           },
           handle: {
             className: classNames({},
-              'hover:bg-cyan-500'
+              'hover:bg-cyan-500',
+              'border-secondary',
             ),
-            style: {
-              borderColor: 'var(--color-secondary)',
-            }
           }
         }}
       />
