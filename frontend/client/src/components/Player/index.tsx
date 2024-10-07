@@ -48,7 +48,7 @@ export const Player: FC = () => {
 
   const current_station = useStore().player.current_station()
 
-  //console.log('navbar_actions : ', navbar_actions)
+  console.log('current_station : ', current_station)
 
   useEffect(() => {
     actions.player.playing(false)
@@ -75,11 +75,12 @@ export const Player: FC = () => {
 
   useEffect(() => {
     if (current_station) {
-      set_avatar_not_exists(e=>e == current_station.id ? e : '')
+      set_avatar_not_exists(e => e == current_station.id ? e : '')
     }
   }, [current_station])
 
-  return (
+  //remove after adding buttons for random station
+  return current_station ?
     <div className="flex flex-row flex-shrink-0 shadow-3 h-7rem justify-content-center bg-white p-1 sm:p-2 gap-3 mt-auto">
 
       <audio
@@ -233,5 +234,5 @@ export const Player: FC = () => {
       </div>
 
     </div>
-  )
+    : <></>
 }
