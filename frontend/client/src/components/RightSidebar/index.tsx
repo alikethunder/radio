@@ -30,6 +30,7 @@ import './index.sass'
 import { generatePath } from "react-router-dom"
 
 import { icon_classes } from "@/constants/icon_classes"
+import { classNames } from "primereact/utils"
 
 export const RightSidebar: FC = () => {
 
@@ -74,7 +75,15 @@ export const RightSidebar: FC = () => {
           options={languages}
           optionLabel="name"
           placeholder="Select a City"
-          className="w-full mb-2 border-noround"
+          className="w-full border-noround border-none"
+          checkmark
+          pt={{
+            list:{
+              className: classNames({},
+                'p-0',
+              )
+            }
+          }}
         />
 
         {
@@ -86,7 +95,7 @@ export const RightSidebar: FC = () => {
                   text
                   raised
                   icon={`${icon_classes} ${route_attributes[app_routes.user_profile$id].icon} `}
-                  className="border-noround w-full h-full px-2 text-secondary lobster_font text-xl shadow_on_hover"
+                  className="border-noround w-full h-full px-2 lobster_font text-xl shadow_on_hover"
                 />
               </QueryLink>
 
@@ -116,7 +125,7 @@ export const RightSidebar: FC = () => {
                 raised
                 icon={`${icon_classes} ${route_attributes[app_routes.signin].icon}`}
                 iconPos="right"
-                className="border-noround w-full h-full px-2 text-secondary shadow_on_hover lobster_font text-xl"
+                className="border-noround w-full h-full px-2 text-primary shadow_on_hover lobster_font text-xl"
               />
             </QueryLink>
         }
@@ -128,7 +137,7 @@ export const RightSidebar: FC = () => {
             icon={`pi pi-plus`}
             iconPos="right"
             //onClick={logout}
-            className="border-noround w-full h-full px-2 text-secondary"
+            className="border-noround w-full h-full px-2 text-primary"
           />
         </QueryLink> */}
         <div className="flex flex-column shadow-4">

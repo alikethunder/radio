@@ -1,7 +1,7 @@
 @import '@/sass/index'
 
 :root
-  --color-secondary: var(--blue-500)
+  --color-secondary: var($secondaryColor)
 
 *:not(.pi)
   font-family: "IBM Plex Sans", sans-serif!important
@@ -10,6 +10,7 @@
   font-family: "Lobster", sans-serif!important
 
 $md: 768.1px
+$box-shadow: 0 0 5px 1px
 
 html
   font-size: 16px
@@ -24,12 +25,6 @@ body
 .bg-transparent
   background-color: rgba(0,0,0,0)
 
-.bg-secondary
-  background-color: var(--color-secondary)
-
-.text-secondary
-  color: #2483c7
-
 .p-tooltip .p-tooltip-text
   padding: .3rem .5rem
   font-size: .8rem
@@ -37,18 +32,19 @@ body
 .p-inputtext.p-disabled
   opacity: 1
 
-.p-inputtext:not(:disabled):not(.p-invalid):not([data-p-disabled="true"])
-  outline: 0 none
-  outline-offset: 0
-  box-shadow: 0 0 5px 1px var(--blue-400)
-  border-color: var(--blue-400)
+.p-inputtext, .p-dropdown:hover
+  &:not(:disabled):not(.p-invalid):not([data-p-disabled="true"]):not(.p-dropdown-label)
+    outline: 0 none
+    outline-offset: 0
+    box-shadow: $box-shadow $primaryLightColor
+    border-color: $primaryLightColor
 
 .p-inputtext.p-invalid.p-component
-  box-shadow: 0 0 5px 1px var(--pink-400)
+  box-shadow: $box-shadow $errorColor
 
 .shadow_on_hover
   &:hover, &:focus, &.active_element
-    box-shadow: 0 0 5px 1px!important
+    box-shadow: $box-shadow!important
 
 .p-icon-field-left>.p-inputtext
   padding-left: 2.2rem

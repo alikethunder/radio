@@ -13,8 +13,6 @@ import {
 
 import { PrimeReactProvider } from 'primereact/api'
 
-import 'primereact/resources/themes/soho-light/theme.css'
-
 import 'primeicons/primeicons.css'
 
 import '@/sass/primeflex/primeflex.scss'

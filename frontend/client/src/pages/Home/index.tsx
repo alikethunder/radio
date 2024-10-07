@@ -174,7 +174,7 @@ export const Home = () => {
                 'flex-column',
                 'gap-1',
                 'overflow-hidden',
-                'text-secondary',
+                'text-primary',
                 'shadow_on_hover',
                 'element_with_overlay',
                 'w-9rem',
@@ -239,7 +239,7 @@ export const Home = () => {
 
                   <div className="flex flex-column justify-content-center flex-grow-1">
 
-                    <QueryLink to={generatePath(app_routes["station$id"], { id: station.id })} className="font-semibold text-secondary text-center station_name mb-1  text_hidden_overflow line-clamp-3">
+                    <QueryLink to={generatePath(app_routes["station$id"], { id: station.id })} className="font-semibold text-primary text-center station_name mb-1  text_hidden_overflow line-clamp-3">
                       {station.name}
                     </QueryLink>
                   </div>

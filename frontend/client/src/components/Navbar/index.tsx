@@ -79,11 +79,11 @@ export const Navbar: FC = () => {
               text
               raised
               icon={`${icon_classes} pi-wave-pulse`}
-              className="border-noround w-full h-full md:px-3 px-2 text-secondary lobster_font text-xl shadow_on_hover text-xl md:text-2xl"
+              className="border-noround w-full h-full md:px-3 px-2 text-primary lobster_font text-xl shadow_on_hover text-xl md:text-2xl"
             />
           </QueryLink>
 
-          <div className="lobster_font align-self-center text-secondary max-h-full text-overflow-ellipsis text_hidden_overflow line-clamp-2">
+          <div className="lobster_font align-self-center text-primary max-h-full text-overflow-ellipsis text_hidden_overflow line-clamp-2">
             {
               current_page?.icon ?
                 <i className={`${icon_classes} ${current_page?.icon} mr-2`}></i>

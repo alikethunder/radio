@@ -48,7 +48,7 @@ export const Player: FC = () => {
 
   const current_station = useStore().player.current_station()
 
-  console.log('current_station : ', current_station)
+  //console.log('current_station : ', current_station)
 
   useEffect(() => {
     actions.player.playing(false)
@@ -110,7 +110,7 @@ export const Player: FC = () => {
 
         {
           avatar_not_exists == current_station?.id ?
-            <i className="pi pi-wave-pulse text-secondary" style={{ fontSize: '4rem' }}></i>
+            <i className="pi pi-wave-pulse text-primary" style={{ fontSize: '4rem' }}></i>
             :
             <></>
         }
@@ -197,7 +197,7 @@ export const Player: FC = () => {
           {/* current station name */}
           {
             current_station ?
-              <QueryLink to={generatePath(app_routes["station$id"], { id: current_station?.id })} className="radio_card_header align-self-center font-semibold text-secondary text_hidden_overflow line-clamp-2 text-center">
+              <QueryLink to={generatePath(app_routes["station$id"], { id: current_station?.id })} className="radio_card_header align-self-center font-semibold text-primary text_hidden_overflow line-clamp-2 text-center">
                 {current_station?.name}
               </QueryLink>
               : <></>
