@@ -109,6 +109,8 @@ func main() {
 
 	translation_endpoints.Get("/", TranslationEndpoints.Languages)
 
+	translation_endpoints.Get("/:language", TranslationEndpoints.TranslateBunch)
+
 	translation_endpoints.Get("/:language/:field", TranslationEndpoints.Translate)
 
 	files_endpoints := v1.Group("/files", etag.New())

@@ -15,6 +15,11 @@ var Dictionary = map[string]map[string]string{
 		"error_email_not_real": "Please, enter your real email",
 		"error_email_required": "Please, enter your email",
 		"error_email_with_@":   "Enter an email that contains \"@\" Example: info@roshni.nl",
+		"volume":               "volume",
+		"play":                 "play",
+		"pause":                "pause",
+		"mute":                 "mute",
+		"unmute":               "unmute",
 	},
 	"ru": {
 		"login":                "Войти",
@@ -28,5 +33,10 @@ var Dictionary = map[string]map[string]string{
 		"error_email_not_real": "Пожалуйста, введите свой настоящий email",
 		"error_email_required": "Пожалуйста, введите свой email",
 		"error_email_with_@":   "Введите email содержащий \"@\" Пример: info@roshni.nl",
+		"volume":               "звук",
+		"play":                 "Играть",
+		"pause":                "пауза",
+		"mute":                 "выкл звук",
+		"unmute":               "вкл звук",
 	},
 }

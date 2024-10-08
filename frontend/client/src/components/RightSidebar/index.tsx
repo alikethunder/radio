@@ -100,7 +100,7 @@ export const RightSidebar: FC = () => {
                 />
               </QueryLink>
 
-              <div className="flex">
+             {/*  <div className="flex">
                 <Button
                   //todo: projects quantity like "My projects (5)"
                   label="My stations"
@@ -116,7 +116,7 @@ export const RightSidebar: FC = () => {
                   icon={`pi pi-chevron-down`}
                   className="border-noround h-full px-2 shadow_on_hover"
                 />
-              </div>
+              </div> */}
             </>
             :
             <QueryLink to={app_routes.signin} onClick={() => actions.app.rightSidebarOpened(false)}>

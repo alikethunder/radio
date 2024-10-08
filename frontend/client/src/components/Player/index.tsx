@@ -33,6 +33,7 @@ import { icon_classes } from "@/constants/icon_classes"
 import { tooltip_options } from "@/constants/tooltip_options"
 import { classNames } from "primereact/utils"
 import { NumRange } from "@/types/generics/range"
+import { useTranslation, useTranslations } from "@/hooks"
 
 const tltp_options = { ...tooltip_options, position: 'top' } as const
 
@@ -79,6 +80,14 @@ export const Player: FC = () => {
     }
   }, [current_station])
 
+  const [translations, __] = useTranslations([
+    'mute',
+    'unmute',
+    'volume',
+    'play',
+    'pause',
+  ], true)
+
   //remove after adding buttons for random station
   return current_station ?
     <div className="flex flex-row flex-shrink-0 shadow-3 h-7rem justify-content-center bg-white p-1 sm:p-2 gap-3 mt-auto">
@@ -124,7 +133,7 @@ export const Player: FC = () => {
           rounded
           outlined
           raised
-          aria-label={`${playing ? 'Pause' : 'Play'}`}
+          aria-label={`${playing ? translations.pause : translations.play}`}
           severity="info"
           icon={`pi text-3xl ${playing ? 'pi-pause' : 'pi-play'}`}
 
@@ -142,12 +151,12 @@ export const Player: FC = () => {
         <div className="flex justify-content-between align-items-center text-gray-500 w-4rem">
           {/* volume icon */}
           <Button
-            icon={`pi pi-${volume ? 'volume-up' : 'volume-off'}`}
+            icon={`pi pi-${volume ? 'volume-up' : 'volume-off text-sm mr-1'}`}
             rounded
             outlined
             raised
-            aria-label="volume"
-            className={`p-0 w-2rem h-2rem shadow_on_hover`}
+            aria-label={volume ? translations.mute : translations.unmute}
+            className={`p-0 w-2rem h-2rem shadow_on_hover ${volume ? '' : 'pr-1'}`}
             severity={`warning`}
 
             onClick={() => {
@@ -169,6 +178,9 @@ export const Player: FC = () => {
 
       <Slider
         value={volume}
+
+        aria-label={translations.volume}
+
         onChange={(e) => {
           actions.player.volume(e.value as NumRange<101>)
         }}
