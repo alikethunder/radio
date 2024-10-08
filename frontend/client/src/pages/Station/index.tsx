@@ -57,6 +57,8 @@ import { Ripple } from "primereact/ripple"
 
 import {
   useFormState,
+  useTranslations,
+  useTranslationsSkeleton,
 } from '@/hooks'
 
 import { tooltip_options } from "@/constants/tooltip_options"
@@ -66,8 +68,6 @@ import {
 } from "@/types"
 
 import { setForm } from "@/functions/setForm"
-
-import { admin } from "@/API/profile/admin"
 
 import {
   StationTag,
@@ -180,6 +180,7 @@ export const Station = () => {
         //console.log('station before : ', JSON.stringify(station.tags))
 
         Object.entries(data).map(entry => {
+          //@ts-ignore
           station[entry[0]] = entry[1]
         })
 
@@ -349,6 +350,17 @@ export const Station = () => {
     }
   }, 50)
 
+  const [translations] = useTranslations([
+    'play',
+    'pause',
+  ], true)
+
+  const translations_skl = useTranslationsSkeleton([
+    ["choose_image", "w-4rem"],
+    ["radiostation", 'w-4rem'],
+    ["error_radiostation_name_empty", "w-8rem"],
+  ], true)
+
   return (
     /* background here */
     <div
@@ -394,7 +406,7 @@ export const Station = () => {
                     <div className="overlay_background surface-900 absolute top-0 bottom-0 right-0 left-0"></div>
 
                     <div className="overlay_text text-white font-semibold z-1">
-                      Choose image
+                      {translations_skl.choose_image}
                     </div>
 
                   </div>
@@ -428,7 +440,7 @@ export const Station = () => {
             rounded
             outlined
             raised
-            aria-label={`${playing && current_station?.id == station.id ? 'Pause' : 'Play'}`}
+            aria-label={`${playing && current_station?.id == station.id ? translations.pause : translations.play}`}
             severity="info"
             icon={`pi text-4xl ${playing && current_station?.id == station.id ? 'pi-pause' : 'pi-play'}`}
 
@@ -456,7 +468,12 @@ export const Station = () => {
           <Controller
             name="name"
             control={control}
-            rules={{ required: 'Radiostation name cannot be empty' }}
+            rules={{
+              required: {
+                value: true,
+                message: translations_skl.error_radiostation_name_empty,
+              }
+            }}
             render={({ field, fieldState }) => (
               <>
                 <label
@@ -471,7 +488,7 @@ export const Station = () => {
                     'align-items-center'
                   )}
                 >
-                  <small>Radiostation</small>
+                  <small>{translations_skl.radiostation}</small>
 
                   {
                     edit_mode ?

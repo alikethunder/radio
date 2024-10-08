@@ -46,7 +46,11 @@ import {
 
 import { Ripple } from "primereact/ripple"
 
-import { useFormState, useTranslation, useTranslationsSkeleton } from '@/hooks'
+import {
+  useFormState,
+  useTranslation,
+  useTranslationsSkeleton,
+} from '@/hooks'
 
 import { tooltip_options } from "@/constants/tooltip_options"
 import { FrontUser } from "@/types"
