@@ -80,7 +80,7 @@ export const Player: FC = () => {
     }
   }, [current_station])
 
-  const [translations, __] = useTranslations([
+  const [translations] = useTranslations([
     'mute',
     'unmute',
     'volume',

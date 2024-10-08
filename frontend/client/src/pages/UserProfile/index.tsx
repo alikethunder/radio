@@ -23,8 +23,6 @@ import { InputIcon } from 'primereact/inputicon'
 
 import { confirmDialog } from 'primereact/confirmdialog'
 
-import { Translation } from "@/layout parts"
-
 import './index.sass'
 
 import {
@@ -48,7 +46,7 @@ import {
 
 import { Ripple } from "primereact/ripple"
 
-import { useFormState, useTranslation } from '@/hooks'
+import { useFormState, useTranslation, useTranslationsSkeleton } from '@/hooks'
 
 import { tooltip_options } from "@/constants/tooltip_options"
 import { FrontUser } from "@/types"
@@ -182,6 +180,15 @@ export const UserProfile = () => {
 
   const [error_email_with_a, _] = useTranslation('error_email_with_@', true)
 
+  const translations = useTranslationsSkeleton([
+    ["choose_image", "w-4rem"],
+    ["name_cannot_be_empty", 'w-4rem'],
+    ["name", "w-2rem"],
+    ['error_email_required', 'w-8'],
+    ['error_not_real_email', 'w-8'],
+    ['only_you_can_see', 'w-4rem'],
+  ], true)
+
   return (
     <div
       className=" w-full overflow-y-auto page user_profile_page flex-grow-1 flex flex-column text-800 md:py-4 py-3 md:px-4 px-3"
@@ -224,7 +231,7 @@ export const UserProfile = () => {
                   <div className="overlay_background surface-900 absolute top-0 bottom-0 right-0 left-0"></div>
 
                   <div className="overlay_text text-white font-semibold z-1">
-                    <Translation capitalize field="choose_image" className="w-4rem" />
+                    {translations.choose_image}
                   </div>
 
                 </div>
@@ -260,7 +267,7 @@ export const UserProfile = () => {
             rules={{
               required: {
                 value: true,
-                message: <Translation capitalize field="name_cannot_be_empty" className="w-4rem" /> as unknown as string
+                message: translations.name_cannot_be_empty,
               },
             }}
             render={({ field, fieldState }) => (
@@ -275,7 +282,7 @@ export const UserProfile = () => {
                   )}
                 >
                   <small>
-                    <Translation capitalize field="name" className="w-2rem" />
+                    {translations.name}
                   </small>
                 </label>
 
@@ -318,11 +325,11 @@ export const UserProfile = () => {
                 rules={{
                   required: {
                     value: true,
-                    message: <Translation capitalize field="error_email_required" className="w-8" /> as unknown as string,
+                    message: translations.error_email_required,
                   },
                   pattern: {
                     value: /\S+@\S+\.\S+/,
-                    message: <Translation capitalize field="error_not_real_email" className="w-8" /> as unknown as string,
+                    message: translations.error_not_real_email,
                   },
                 }}
                 render={({ field, fieldState }) => (
@@ -337,7 +344,7 @@ export const UserProfile = () => {
                       )}
                     >
                       <Tooltip target='.pi-lock' {...private_tooltip_options} >
-                        <Translation capitalize field="only_you_can_see" className="w-4rem" />
+                        {translations.only_you_can_see}
                       </Tooltip>
 
                       <small>E-mail </small> <i className="pi pi-lock text-xs" ></i>
