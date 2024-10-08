@@ -48,7 +48,7 @@ import {
 
 import { Ripple } from "primereact/ripple"
 
-import { useFormState } from '@/hooks'
+import { useFormState, useTranslation } from '@/hooks'
 
 import { tooltip_options } from "@/constants/tooltip_options"
 import { FrontUser } from "@/types"
@@ -180,6 +180,8 @@ export const UserProfile = () => {
     },
   }, formState, user_data?.own_profile)
 
+  const [error_email_with_a, _] = useTranslation('error_email_with_@', true)
+
   return (
     <div
       className=" w-full overflow-y-auto page user_profile_page flex-grow-1 flex flex-column text-800 md:py-4 py-3 md:px-4 px-3"
@@ -255,7 +257,12 @@ export const UserProfile = () => {
           <Controller
             name="name"
             control={control}
-            rules={{ required: true, }}
+            rules={{
+              required: {
+                value: true,
+                message: <Translation capitalize field="name_cannot_be_empty" className="w-4rem" /> as unknown as string
+              },
+            }}
             render={({ field, fieldState }) => (
               <>
                 <label
@@ -297,8 +304,7 @@ export const UserProfile = () => {
 
                 <small className="p-error">
                   {
-                    errors[field.name]?.type == 'required' ?
-                      <Translation capitalize field="name_cannot_be_empty" className="w-4rem" /> : errors[field.name]?.message ?? ' '
+                    errors[field.name]?.message ?? ' '
                   }
                 </small>
               </>
@@ -310,10 +316,13 @@ export const UserProfile = () => {
                 name="email"
                 control={control}
                 rules={{
-                  required: 'Please, enter your e-mail',
+                  required: {
+                    value: true,
+                    message: <Translation capitalize field="error_email_required" className="w-8" /> as unknown as string,
+                  },
                   pattern: {
                     value: /\S+@\S+\.\S+/,
-                    message: "Please, enter your real e-mail",
+                    message: <Translation capitalize field="error_not_real_email" className="w-8" /> as unknown as string,
                   },
                 }}
                 render={({ field, fieldState }) => (
@@ -327,7 +336,9 @@ export const UserProfile = () => {
                         'text-600'
                       )}
                     >
-                      <Tooltip content="Видно только вам" target='.pi-lock' {...private_tooltip_options} />
+                      <Tooltip target='.pi-lock' {...private_tooltip_options} >
+                        <Translation capitalize field="only_you_can_see" className="w-4rem" />
+                      </Tooltip>
 
                       <small>E-mail </small> <i className="pi pi-lock text-xs" ></i>
                     </label>
@@ -350,7 +361,7 @@ export const UserProfile = () => {
                         disabled={!edit_mode}
                         autoComplete="email"
 
-                        onInvalid={e => (e.target as HTMLInputElement).setCustomValidity('Enter an email that contains "@" Example: info@roshni.nl')}
+                        onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(error_email_with_a)}
 
                       />
                     </IconField>

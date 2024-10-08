@@ -40,6 +40,7 @@ import {
 import { icon_classes } from "@/constants/icon_classes"
 
 import { Translation } from "@/layout parts"
+import { useTranslation } from "@/hooks"
 
 type SigninUser = (Pick<User, 'password' | 'name' | 'email' | 'rememberme'>)
 
@@ -109,6 +110,8 @@ export const Signin: FC = () => {
 
   }
 
+  const [error_email_with_a, _] = useTranslation('error_email_with_@', true)
+
   return (
     <>
       <div className="sm:px-3 md:px-5 flex justify-content-center align-items-center flex-grow-1">
@@ -143,7 +146,7 @@ export const Signin: FC = () => {
                       onChange={(e) => field.onChange(e.target.value)}
                       autoComplete="email"
 
-                      onInvalid={e => (e.target as HTMLInputElement).setCustomValidity('Enter an email that contains "@" Example: info@roshni.nl')}
+                      onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(error_email_with_a)}
 
                     />
                   </IconField>
@@ -247,7 +250,7 @@ export const Signin: FC = () => {
 
             <Button
               type="submit"
-              label={<Translation field="login" className="w-6"/>}
+              label={<Translation field="login" className="w-6" />}
               outlined
               raised
               icon={`${icon_classes} ${isSubmitting ? 'pi-spin pi-sync' : route_attributes[app_routes.signin].icon}`}

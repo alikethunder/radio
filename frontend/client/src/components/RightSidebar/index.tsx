@@ -79,7 +79,7 @@ export const RightSidebar: FC = () => {
           className="w-full border-noround border-none"
           checkmark
           pt={{
-            list:{
+            list: {
               className: classNames({},
                 'p-0',
               )
@@ -92,7 +92,7 @@ export const RightSidebar: FC = () => {
             <>
               <QueryLink to={generatePath(app_routes.user_profile$id, { id: store.user.id() })} onClick={() => actions.app.rightSidebarOpened(false)}>
                 <Button
-                  label={route_attributes[app_routes.user_profile$id].name}
+                  label={route_attributes[app_routes.user_profile$id].name as unknown as string}
                   text
                   raised
                   icon={`${icon_classes} ${route_attributes[app_routes.user_profile$id].icon} `}
@@ -121,7 +121,7 @@ export const RightSidebar: FC = () => {
             :
             <QueryLink to={app_routes.signin} onClick={() => actions.app.rightSidebarOpened(false)}>
               <Button
-                label={route_attributes[app_routes.signin].name}
+                label={route_attributes[app_routes.signin].name as unknown as string}
                 text
                 raised
                 icon={`${icon_classes} ${route_attributes[app_routes.signin].icon}`}
@@ -153,7 +153,7 @@ export const RightSidebar: FC = () => {
         {
           signedin ?
             <Button
-              label={<Translation capitalize field="logout" className="w-4"/>}
+              label={<Translation capitalize field="logout" className="w-4" /> as unknown as string}
               text
               raised
               icon={`${icon_classes} pi-sign-out`}

@@ -11,6 +11,10 @@ var Dictionary = map[string]map[string]string{
 		"choose_image":         "choose image",
 		"name":                 "name",
 		"name_cannot_be_empty": "Name cannot be empty",
+		"only_you_can_see":     "only you can see it",
+		"error_email_not_real": "Please, enter your real email",
+		"error_email_required": "Please, enter your email",
+		"error_email_with_@":   "Enter an email that contains \"@\" Example: info@roshni.nl",
 	},
 	"ru": {
 		"login":                "Войти",
@@ -20,5 +24,9 @@ var Dictionary = map[string]map[string]string{
 		"choose_image":         "выберите изображение",
 		"name":                 "имя",
 		"name_cannot_be_empty": "Имя не может быть пустым",
+		"only_you_can_see":     "видно только вам",
+		"error_email_not_real": "Пожалуйста, введите свой настоящий email",
+		"error_email_required": "Пожалуйста, введите свой email",
+		"error_email_with_@":   "Введите email содержащий \"@\" Пример: info@roshni.nl",
 	},
 }
