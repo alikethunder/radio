@@ -32,6 +32,7 @@ var Dictionary = map[string]map[string]string{
 		"registration":                  "registration",
 		"signup":                        "sign up",
 		"already_have_account":          "Already have an account",
+		"reset_password":                "Reset password",
 	},
 	"ru": {
 		"login":                         "Войти",
@@ -62,5 +63,6 @@ var Dictionary = map[string]map[string]string{
 		"registration":                  "регистрация",
 		"signup":                        "зарегистрироваться",
 		"already_have_account":          "Уже есть аккаунт",
+		"reset_password":                "Восстановление пароля",
 	},
 }

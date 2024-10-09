@@ -34,6 +34,11 @@ import {
 
 import { icon_classes } from "@/constants/icon_classes"
 
+import {
+  useTranslations,
+  useTranslationsSkeleton,
+} from "@/hooks"
+
 type ResetPasswordUser = (Pick<User, 'email'>)
 
 export const ResetPassword: FC = () => {
@@ -95,13 +100,30 @@ export const ResetPassword: FC = () => {
 
   }
 
+  const [translations] = useTranslations([
+    'error_email_with_@',
+    'password',
+  ], true)
+
+  const translations_skl = useTranslationsSkeleton([
+    ['error_email_required', 'w-8'],
+    ['error_not_real_email', 'w-8'],
+    ['error_password_required', 'w-8'],
+    ['error_password_incorrect', 'w-8'],
+    ['remember_me', 'w-5'],
+    ['reset_password', 'w-8'],
+    ['dont_have_account', 'w-8'],
+    ['create_today', 'w-5'],
+    ['login', 'w-6']
+  ], true)
+
   return (
     <>
       <div className="sm:px-3 md:px-5 min-h-screen flex justify-content-center align-items-center">
 
         <form onSubmit={handleSubmit(onSubmit)} className="sm:border-1 surface-border sm:surface-card border-round py-5 px-4 md:px-5 z-1 sm:shadow-2 w-full md:w-30rem">
 
-          <div className="text-900 text-xl font-bold mb-5 flex justify-content-center">Reset password</div>
+          <div className="text-900 text-xl font-bold mb-5 flex justify-content-center">{translations_skl.reset_password}</div>
 
           <div className="flex flex-column">
 
