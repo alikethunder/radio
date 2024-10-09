@@ -144,7 +144,7 @@ export const Verification: FC = () => {
 
         <div className="text-900 text-xl font-bold mb-3 flex justify-content-center">Create password</div>
 
-        <div className="text-600 font-medium mb-5 flex justify-content-center">Please enter 8-digit verification code from e-mail</div>
+        <div className="text-600 font-medium mb-5 flex justify-content-center">Please enter 8-digit verification code from email</div>
 
         <div className="flex flex-column">
 

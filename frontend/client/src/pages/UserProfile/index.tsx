@@ -351,7 +351,7 @@ export const UserProfile = () => {
                         {translations.only_you_can_see}
                       </Tooltip>
 
-                      <small>E-mail </small> <i className="pi pi-lock text-xs" ></i>
+                      <small>Email </small> <i className="pi pi-lock text-xs" ></i>
                     </label>
 
                     <IconField iconPosition="left">

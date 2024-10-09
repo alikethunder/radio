@@ -125,7 +125,7 @@ export const ResetPassword: FC = () => {
                       type="email"
                       id={field.name}
                       value={field.value}
-                      placeholder="E-mail"
+                      placeholder="Email"
                       className={classNames("w-full", { 'p-invalid': fieldState.error })}
                       onInput={() => clearErrors('email')}
                       onChange={(e) => field.onChange(e.target.value)}

@@ -40,7 +40,11 @@ import {
 import { icon_classes } from "@/constants/icon_classes"
 
 import { Translation } from "@/layout parts"
-import { useTranslation } from "@/hooks"
+
+import {
+  useTranslations,
+  useTranslationsSkeleton,
+} from "@/hooks"
 
 type SigninUser = (Pick<User, 'password' | 'name' | 'email' | 'rememberme'>)
 
@@ -110,7 +114,21 @@ export const Signin: FC = () => {
 
   }
 
-  const [error_email_with_a, _] = useTranslation('error_email_with_@', true)
+  const [translations] = useTranslations([
+    'error_email_with_@',
+    'password',
+  ], true)
+
+  const translations_skl = useTranslationsSkeleton([
+    ['error_email_required', 'w-8'],
+    ['error_not_real_email', 'w-8'],
+    ['error_password_required', 'w-8'],
+    ['error_password_incorrect', 'w-8'],
+    ['remember_me', 'w-5'],
+    ['forgot_your_password', 'w-8'],
+    ['dont_have_account', 'w-8'],
+    ['create_today', 'w-5'],
+  ], true)
 
   return (
     <>
@@ -124,10 +142,13 @@ export const Signin: FC = () => {
               name="email"
               control={control}
               rules={{
-                required: 'Please, enter your e-mail',
+                required: {
+                  value: true,
+                  message: translations_skl.error_email_required,
+                },
                 pattern: {
                   value: /\S+@\S+\.\S+/,
-                  message: "Please, enter your real e-mail",
+                  message: translations_skl.error_not_real_email,
                 },
               }}
               render={({ field, fieldState }) => (
@@ -140,13 +161,13 @@ export const Signin: FC = () => {
                       type="email"
                       id={field.name}
                       value={field.value}
-                      placeholder="E-mail"
+                      placeholder="Email"
                       className={classNames("w-full", { 'p-invalid': fieldState.error })}
                       onInput={() => clearErrors('email')}
                       onChange={(e) => field.onChange(e.target.value)}
                       autoComplete="email"
 
-                      onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(error_email_with_a)}
+                      onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(translations.error_email_with_a)}
 
                     />
                   </IconField>
@@ -160,10 +181,13 @@ export const Signin: FC = () => {
               name="password"
               control={control}
               rules={{
-                required: 'Please, enter your password',
+                required: {
+                  value: true,
+                  message: translations_skl.error_password_required,
+                },
                 pattern: {
                   value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/,
-                  message: 'Please enter the correct password'
+                  message: translations_skl.error_password_incorrect,
                 }
               }}
               render={({ field, fieldState }) => (
@@ -176,7 +200,7 @@ export const Signin: FC = () => {
                       inputId={field.name}
                       value={field.value}
                       /* type={`${showPass ? 'text' : 'password'}`}  */
-                      placeholder="Password"
+                      placeholder={translations.password}
 
                       onChange={(e) => field.onChange(e.target.value)}
 
@@ -237,7 +261,7 @@ export const Signin: FC = () => {
                               actions.persistedApp.rememberme(!!e.checked)
                               field.onChange(e.checked)
                             }} />
-                          <label htmlFor={field.name} className="cursor-pointer">Remember me</label>
+                          <label htmlFor={field.name} className="cursor-pointer">{translations_skl.remember_me}</label>
                         </>
                       )}
                     />
@@ -245,7 +269,7 @@ export const Signin: FC = () => {
                 }
 
               </div>
-              <QueryLink to={app_routes.reset_password} className="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Forgot your password?</QueryLink>
+              <QueryLink to={app_routes.reset_password} className="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">{translations_skl.forgot_your_password}?</QueryLink>
             </div>
 
             <Button
@@ -260,7 +284,7 @@ export const Signin: FC = () => {
 
             <GoogleOAuth rememberme={watch('rememberme')} />
 
-            <QueryLink to={app_routes.signup} className="font-medium no-underline ml-2 text-blue-500 align-self-center">Don't have an account? <span className="font-semibold">Create today!</span></QueryLink>
+            <QueryLink to={app_routes.signup} className="font-medium no-underline ml-2 text-blue-500 align-self-center">{translations_skl.dont_have_account}? <span className="font-semibold">{translations_skl.create_today}!</span></QueryLink>
 
           </div>
         </form>
