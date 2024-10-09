@@ -8,8 +8,11 @@ import {
 } from "@/store"
 
 import oauth from '&/settings/google_oauth.json'
+import { appStore } from "@/store/appStore"
 
 export const GoogleOAuth: FC<{ rememberme?: boolean }> = ({ rememberme }) => {
+
+  const language = useStore().persistedApp.language()
 
   useEffect(() => {
 
@@ -28,7 +31,7 @@ export const GoogleOAuth: FC<{ rememberme?: boolean }> = ({ rememberme }) => {
       window.google.accounts.id.renderButton(
         document.getElementById("google_signin"),
         {
-          locale: 'ru',
+          locale: language,
           theme: "filled_blue",
           size: "large",
           //use 'state' to pass parameters within google-callback request
@@ -41,7 +44,7 @@ export const GoogleOAuth: FC<{ rememberme?: boolean }> = ({ rememberme }) => {
     } catch (e) {
       console.log('google init error : ', e)
     }
-  }, [rememberme])
+  }, [rememberme, language])
 
   return (
     <div id="google_signin" className="mb-4 align-self-center" />
