@@ -39,8 +39,6 @@ import {
 
 import { icon_classes } from "@/constants/icon_classes"
 
-import { Translation } from "@/layout parts"
-
 import {
   useTranslations,
   useTranslationsSkeleton,
@@ -128,6 +126,7 @@ export const Signin: FC = () => {
     ['forgot_your_password', 'w-8'],
     ['dont_have_account', 'w-8'],
     ['create_today', 'w-5'],
+    ['login', 'w-6']
   ], true)
 
   return (
@@ -274,7 +273,7 @@ export const Signin: FC = () => {
 
             <Button
               type="submit"
-              label={<Translation field="login" className="w-6" />}
+              label={translations_skl.login}
               outlined
               raised
               icon={`${icon_classes} ${isSubmitting ? 'pi-spin pi-sync' : route_attributes[app_routes.signin].icon}`}

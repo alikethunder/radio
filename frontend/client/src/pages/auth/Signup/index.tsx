@@ -39,6 +39,11 @@ import {
 
 import { icon_classes } from "@/constants/icon_classes"
 
+import {
+  useTranslations,
+  useTranslationsSkeleton,
+} from "@/hooks"
+
 export const Signup: FC = () => {
   const navigate = useNavigate()
 
@@ -87,19 +92,40 @@ export const Signup: FC = () => {
 
   }
 
+  const [translations] = useTranslations([
+    'error_email_with_@',
+    'name',
+  ], true)
+
+  const translations_skl = useTranslationsSkeleton([
+    ['error_email_required', 'w-8'],
+    ['error_not_real_email', 'w-8'],
+    ['remember_me', 'w-5'],
+    ['forgot_your_password', 'w-8'],
+    ['already_have_account', 'w-8'],
+    ['signup', 'w-6'],
+    ['login', 'w-6'],
+    ['registration', 'w-5rem']
+  ], true)
+
   return (
     <div className="sm:px-3 md:px-5 min-h-screen flex justify-content-center align-items-center">
 
       <form onSubmit={handleSubmit(onSubmit)} className="sm:border-1 surface-border sm:surface-card border-round py-5 px-4 md:px-5 z-1 sm:shadow-2 w-full md:w-30rem">
 
-        <div className="text-900 text-xl font-bold mb-5 flex justify-content-center">Registration</div>
+        <div className="text-900 text-xl font-bold mb-5 flex justify-content-center">{translations_skl.registration}</div>
 
         <div className="flex flex-column">
 
           <Controller
             name="name"
             control={control}
-            rules={{ required: 'Please, enter your name' }}
+            rules={{
+              required: {
+                value: true,
+                message: translations.name_cannot_be_empty,
+              },
+            }}
             render={({ field, fieldState }) => (
               <>
                 <IconField iconPosition="left">
@@ -109,7 +135,7 @@ export const Signup: FC = () => {
                     type="text"
                     id={field.name}
                     value={field.value}
-                    placeholder="User name"
+                    placeholder={translations.name}
                     className={classNames("w-full", { 'p-invalid': fieldState.error })}
                     onChange={(e) => field.onChange(e.target.value)}
                     autoComplete="name"
@@ -125,10 +151,13 @@ export const Signup: FC = () => {
             name="email"
             control={control}
             rules={{
-              required: 'Please, enter an e-mail',
+              required: {
+                value: true,
+                message: translations_skl.error_email_required,
+              },
               pattern: {
                 value: /\S+@\S+\.\S+/,
-                message: "Please, enter your real e-mail",
+                message: translations_skl.error_not_real_email,
               },
             }}
             render={({ field, fieldState }) => (
@@ -146,6 +175,8 @@ export const Signup: FC = () => {
                     onInput={() => clearErrors('email')}
                     onChange={(e) => field.onChange(e.target.value)}
                     autoComplete="email"
+
+                    onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(translations.error_email_with_a)}
                   />
                 </IconField>
 
@@ -175,7 +206,7 @@ export const Signup: FC = () => {
                             actions.persistedApp.rememberme(!!e.checked)
                             field.onChange(e.checked)
                           }} />
-                        <label htmlFor={field.name} className="cursor-pointer">Remember me</label>
+                        <label htmlFor={field.name} className="cursor-pointer">{translations_skl.remember_me}</label>
                       </>
                     )}
                   />
@@ -183,12 +214,12 @@ export const Signup: FC = () => {
               }
 
             </div>
-            <QueryLink to={app_routes.reset_password} className="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Forgot your password?</QueryLink>
+            <QueryLink to={app_routes.reset_password} className="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">{translations_skl.forgot_your_password}?</QueryLink>
           </div>
 
           <Button
             type="submit"
-            label="Sign Up"
+            label={translations_skl.signup}
             outlined
             raised
             icon={`${icon_classes} ${isSubmitting ? 'pi-spin pi-sync' : 'pi-send'}`}
@@ -200,8 +231,8 @@ export const Signup: FC = () => {
           <GoogleOAuth rememberme={watch('rememberme')} />
 
           <QueryLink to={app_routes.signin} className="font-medium no-underline ml-2 text-blue-500 align-self-center">
-            Already have an account? <span className="font-semibold">
-              Log in
+            {translations_skl.already_have_account}? <span className="font-semibold">
+              {translations_skl.login}
             </span>
           </QueryLink>
 
