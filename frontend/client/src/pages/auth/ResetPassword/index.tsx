@@ -100,22 +100,14 @@ export const ResetPassword: FC = () => {
 
   }
 
-  const [translations] = useTranslations([
-    'error_email_with_@',
-    'password',
-  ], true)
-
-  const translations_skl = useTranslationsSkeleton([
-    ['error_email_required', 'w-8'],
-    ['error_not_real_email', 'w-8'],
-    ['error_password_required', 'w-8'],
-    ['error_password_incorrect', 'w-8'],
-    ['remember_me', 'w-5'],
-    ['reset_password', 'w-8'],
-    ['dont_have_account', 'w-8'],
-    ['create_today', 'w-5'],
-    ['login', 'w-6']
-  ], true)
+  const translations_skl = useTranslationsSkeleton({
+    'reset_password': ['w-8',],
+    'send_verification_code': ['w-8'],
+    'remember_password': ['w-4'],
+    'login': ['w-2', 'font-semibold'],
+    'dont_have_account': ['w-4'],
+    'create_today': ['w-3', 'font-semibold'],
+  }, true)
 
   return (
     <>
@@ -165,7 +157,7 @@ export const ResetPassword: FC = () => {
 
             <Button
               type="submit"
-              label="Send 8-digit verification code"
+              label={translations_skl.send_verification_code}
               outlined
               raised
               icon={`${icon_classes} ${isSubmitting ? 'pi-spin pi-sync' : 'pi-send'}`}
@@ -173,9 +165,15 @@ export const ResetPassword: FC = () => {
               iconPos="right"
             />
 
-            <QueryLink to={app_routes.signin} className="font-medium no-underline text-blue-500 text-right cursor-pointer align-self-center mb-4">Remember your password? <span className="font-semibold">Log in</span></QueryLink>
+            <QueryLink to={app_routes.signin} className="font-medium no-underline text-blue-500 cursor-pointer justify-content-center mb-4 flex flex-row gap-1">
+              {translations_skl.remember_password}
+              {translations_skl.login}
+            </QueryLink>
 
-            <QueryLink to={app_routes.signup} className="font-medium no-underline  text-blue-500 align-self-center">Don't have an account? <span className="font-semibold">Create today!</span></QueryLink>
+            <QueryLink to={app_routes.signup} className="font-medium no-underline text-blue-500 justify-content-center flex flex-row gap-1">
+              {translations_skl.dont_have_account}
+              {translations_skl.create_today}
+            </QueryLink>
 
           </div>
         </form>

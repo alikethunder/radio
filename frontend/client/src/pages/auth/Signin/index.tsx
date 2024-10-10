@@ -117,17 +117,17 @@ export const Signin: FC = () => {
     'password',
   ], true)
 
-  const translations_skl = useTranslationsSkeleton([
-    ['error_email_required', 'w-8'],
-    ['error_not_real_email', 'w-8'],
-    ['error_password_required', 'w-8'],
-    ['error_password_incorrect', 'w-8'],
-    ['remember_me', 'w-5'],
-    ['forgot_your_password', 'w-8'],
-    ['dont_have_account', 'w-8'],
-    ['create_today', 'w-5'],
-    ['login', 'w-6']
-  ], true)
+  const translations_skl = useTranslationsSkeleton({
+    'error_email_required': ['w-8'],
+    'error_not_real_email': ['w-8'],
+    'error_password_required': ['w-8'],
+    'error_password_incorrect': ['w-8'],
+    'remember_me': ['w-6rem'],
+    'forgot_your_password': ['w-8rem'],
+    'login': ['w-5'],
+    'dont_have_account': ['w-5'],
+    'create_today': ['w-3'],
+  }, true)
 
   return (
     <>
@@ -152,7 +152,7 @@ export const Signin: FC = () => {
               }}
               render={({ field, fieldState }) => (
                 <>
-                  <IconField iconPosition="left">
+                  <IconField iconPosition="left" className="mb-1">
                     <InputIcon className="pi pi-envelope"></InputIcon>
 
                     <InputText
@@ -166,7 +166,7 @@ export const Signin: FC = () => {
                       onChange={(e) => field.onChange(e.target.value)}
                       autoComplete="email"
 
-                      onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(translations.error_email_with_a)}
+                      onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(translations['error_email_with_@'])}
 
                     />
                   </IconField>
@@ -191,7 +191,7 @@ export const Signin: FC = () => {
               }}
               render={({ field, fieldState }) => (
                 <>
-                  <IconField iconPosition="left">
+                  <IconField iconPosition="left" className="mb-1">
                     <InputIcon className="pi pi-lock z-2"></InputIcon>
 
                     <Password
@@ -268,7 +268,7 @@ export const Signin: FC = () => {
                 }
 
               </div>
-              <QueryLink to={app_routes.reset_password} className="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">{translations_skl.forgot_your_password}?</QueryLink>
+              <QueryLink to={app_routes.reset_password} className="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">{translations_skl.forgot_your_password}</QueryLink>
             </div>
 
             <Button
@@ -283,7 +283,10 @@ export const Signin: FC = () => {
 
             <GoogleOAuth rememberme={watch('rememberme')} />
 
-            <QueryLink to={app_routes.signup} className="font-medium no-underline ml-2 text-blue-500 align-self-center">{translations_skl.dont_have_account}? <span className="font-semibold">{translations_skl.create_today}!</span></QueryLink>
+            <QueryLink to={app_routes.signup} className="font-medium no-underline ml-2 text-blue-500 justify-content-center flex flex-row gap-1">
+              {translations_skl.dont_have_account}
+              {translations_skl.create_today}
+            </QueryLink>
 
           </div>
         </form>

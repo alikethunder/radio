@@ -4,18 +4,20 @@ import { useTranslations } from "@/hooks/useTranslations"
 
 import { Skeleton } from 'primereact/skeleton'
 
-export const useTranslationsSkeleton = (fields: [field: string, className?: string][], capitalize?: boolean): { [x: string]: string } => {
+export const useTranslationsSkeleton = <T extends Record<string, string[]>>(fields: T, capitalize?: boolean) => {
 
-  const field_names = fields.map(([field]) => field)
+  const keys = Object.keys(fields)
 
-  const [translations, loading] = useTranslations(field_names, capitalize)
+  const [translations, loading] = useTranslations(keys, capitalize)
 
-  return Object.fromEntries(Object.entries(translations).map(([field, translation], i) => [field, <>
-    {
-      loading ?
-        <Skeleton className={`inline-block ${fields[i][1] ?? ''}`} />
-        : translation
-    }
-  </> as unknown as string]))
+  return Object.fromEntries(Object.keys(translations).map(
+    key => [key, <>
+      {
+        true || loading ?
+          <Skeleton className={`inline-block ${fields[key][0] ?? ''}`} />
+          : <div className={`inline-block ${(fields[key][1] ?? '')}`}>{translations[key]}</div>
+      }
+    </> as unknown as string]
+  )) as { [K in keyof T]: string }
 
 }
