@@ -39,6 +39,11 @@ import {
   app_routes,
 } from '@/constants/router'
 
+import {
+  useTranslations,
+  useTranslationsSkeleton,
+} from "@/hooks"
+
 import { icon_classes } from "@/constants/icon_classes"
 
 export const Verification: FC = () => {
@@ -133,16 +138,31 @@ export const Verification: FC = () => {
 
   useEffect(() => {
     if (!store.user.email()) {
-      navigate(app_routes.signin, { replace: true })
+      //navigate(app_routes.signin, { replace: true })
     }
   }, [])
+
+  const [translations] = useTranslations([
+    'verification_code',
+    'password',
+  ] as const, true)
+
+  const translations_skl = useTranslationsSkeleton({
+    'create_password': ['w-7',],
+    'send': ['w-2'],
+    "verification_code": ['w-6'],
+    'remember_password': ['w-4'],
+    'login': ['w-2', 'font-semibold'],
+    'dont_have_account': ['w-4'],
+    'create_today': ['w-3', 'font-semibold'],
+  }, true)
 
   return (
     <div className="sm:px-3 md:px-5 min-h-screen flex justify-content-center align-items-center">
 
       <form onSubmit={handleSubmit(onSubmit)} className="sm:border-1 surface-border sm:surface-card border-round py-5 px-4 md:px-5 z-1 sm:shadow-2 w-full md:w-30rem">
 
-        <div className="text-900 text-xl font-bold mb-3 flex justify-content-center">Create password</div>
+        <div className="text-900 text-xl font-bold mb-3 flex justify-content-center">{translations_skl.create_password}</div>
 
         <div className="text-600 font-medium mb-5 flex justify-content-center">Please enter 8-digit verification code from email</div>
 
@@ -162,7 +182,7 @@ export const Verification: FC = () => {
                     id={field.name}
                     //@ts-ignore
                     value={field.value}
-                    placeholder="8-digit verification code"
+                    placeholder={translations.verification_code}
                     className={classNames("w-full", { 'p-invalid': fieldState.error })}
                     onInput={() => clearErrors('verification_code')}
                     onChange={(e) => field.onChange(e.target.value)}
@@ -196,7 +216,7 @@ export const Verification: FC = () => {
                     ref={passwordRef}
                     inputId={field.name}
                     value={field.value}
-                    placeholder="Password"
+                    placeholder={translations.password}
 
                     onChange={(e) => field.onChange(e.target.value)}
 

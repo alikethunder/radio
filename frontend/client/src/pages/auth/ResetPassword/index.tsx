@@ -102,7 +102,8 @@ export const ResetPassword: FC = () => {
 
   const translations_skl = useTranslationsSkeleton({
     'reset_password': ['w-8',],
-    'send_verification_code': ['w-8'],
+    'send': ['w-2'],
+    "verification_code": ['w-6'],
     'remember_password': ['w-4'],
     'login': ['w-2', 'font-semibold'],
     'dont_have_account': ['w-4'],
@@ -157,7 +158,7 @@ export const ResetPassword: FC = () => {
 
             <Button
               type="submit"
-              label={translations_skl.send_verification_code}
+              label={<div className="flex flex-row gap-1 justify-content-center">{translations_skl.send}{translations_skl.verification_code}</div> as unknown as string}
               outlined
               raised
               icon={`${icon_classes} ${isSubmitting ? 'pi-spin pi-sync' : 'pi-send'}`}

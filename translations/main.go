@@ -34,7 +34,9 @@ var Dictionary = map[string]map[string]string{
 		"already_have_account":          "Already have an account?",
 		"reset_password":                "Reset password",
 		"remember_password":             "Remember your password?",
-		"send_verification_code":        "Send 8-digit verification code",
+		"verification_code":             "8-digit verification code",
+		"send":                          "Send",
+		"create_password":               "Create password",
 	},
 	"ru": {
 		"login":                         "Войти",
@@ -67,6 +69,8 @@ var Dictionary = map[string]map[string]string{
 		"already_have_account":          "Уже есть аккаунт?",
 		"reset_password":                "Восстановление пароля",
 		"remember_password":             "Помните пароль?",
-		"send_verification_code":        "Отправить 8-значный код",
+		"verification_code":             "8-значный код",
+		"send":                          "Отправить",
+		"create_password":               "Создать пароль",
 	},
 }
