@@ -97,16 +97,16 @@ export const Signup: FC = () => {
     'name',
   ], true)
 
-  const translations_skl = useTranslationsSkeleton([
-    ['error_email_required', 'w-8'],
-    ['error_not_real_email', 'w-8'],
-    ['remember_me', 'w-5'],
-    ['forgot_your_password', 'w-8'],
-    ['already_have_account', 'w-8'],
-    ['signup', 'w-6'],
-    ['login', 'w-6'],
-    ['registration', 'w-5rem']
-  ], true)
+  const translations_skl = useTranslationsSkeleton({
+    'registration': ['w-5'],
+    'error_email_required': ['w-8'],
+    'error_not_real_email': ['w-8'],
+    'remember_me': ['w-6rem'],
+    'forgot_your_password': ['w-8rem'],
+    'signup': ['w-6'],
+    'already_have_account': ['w-5'],
+    'login': ['w-2', 'font-semibold'],
+  }, true)
 
   return (
     <div className="sm:px-3 md:px-5 min-h-screen flex justify-content-center align-items-center">
@@ -176,7 +176,7 @@ export const Signup: FC = () => {
                     onChange={(e) => field.onChange(e.target.value)}
                     autoComplete="email"
 
-                    onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(translations.error_email_with_a)}
+                    onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(translations['error_email_with_@'])}
                   />
                 </IconField>
 
@@ -185,7 +185,7 @@ export const Signup: FC = () => {
             )}
           />
 
-          <div className="flex align-items-center justify-content-between mb-6">
+          <div className="flex align-items-center justify-content-between mb-5">
             <div className="flex align-items-center">
 
               {
@@ -214,7 +214,7 @@ export const Signup: FC = () => {
               }
 
             </div>
-            <QueryLink to={app_routes.reset_password} className="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">{translations_skl.forgot_your_password}?</QueryLink>
+            <QueryLink to={app_routes.reset_password} className="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">{translations_skl.forgot_your_password}</QueryLink>
           </div>
 
           <Button
@@ -230,10 +230,9 @@ export const Signup: FC = () => {
 
           <GoogleOAuth rememberme={watch('rememberme')} />
 
-          <QueryLink to={app_routes.signin} className="font-medium no-underline ml-2 text-blue-500 align-self-center">
-            {translations_skl.already_have_account}? <span className="font-semibold">
-              {translations_skl.login}
-            </span>
+          <QueryLink to={app_routes.signin} className="font-medium no-underline ml-2 text-blue-500 justify-content-center flex flex-row gap-1">
+            {translations_skl.already_have_account}
+            {translations_skl.login}
           </QueryLink>
 
         </div>

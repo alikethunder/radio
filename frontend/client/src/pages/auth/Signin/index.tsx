@@ -126,7 +126,7 @@ export const Signin: FC = () => {
     'forgot_your_password': ['w-8rem'],
     'login': ['w-5'],
     'dont_have_account': ['w-5'],
-    'create_today': ['w-3'],
+    'create_today': ['w-3', 'font-semibold'],
   }, true)
 
   return (

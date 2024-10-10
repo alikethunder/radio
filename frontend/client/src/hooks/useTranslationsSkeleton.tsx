@@ -13,7 +13,7 @@ export const useTranslationsSkeleton = <T extends Record<string, string[]>>(fiel
   return Object.fromEntries(Object.keys(translations).map(
     key => [key, <>
       {
-        true || loading ?
+        /* true || */ loading ?
           <Skeleton className={`inline-block ${fields[key][0] ?? ''}`} />
           : <div className={`inline-block ${(fields[key][1] ?? '')}`}>{translations[key]}</div>
       }
