@@ -6,6 +6,9 @@ import { Skeleton } from 'primereact/skeleton'
 
 export const useTranslationsSkeleton = <T extends Record<string, string[]>>(fields: T, capitalize?: boolean) => {
 
+  //fields[key][0] - will be applied to Skeleton
+  //fields[key][1] - will be applied to text div
+
   const keys = Object.keys(fields)
 
   const [translations, loading] = useTranslations(keys, capitalize)

@@ -355,11 +355,11 @@ export const Station = () => {
     'pause',
   ], true)
 
-  const translations_skl = useTranslationsSkeleton([
-    ["choose_image", "w-4rem"],
-    ["radiostation", 'w-4rem'],
-    ["error_radiostation_name_empty", "w-8rem"],
-  ], true)
+  const translations_skl = useTranslationsSkeleton({
+    "choose_image": ["w-4rem"],
+    "radiostation": ['w-8rem'],
+    "error_radiostation_name_empty": ["w-8rem"],
+  }, true)
 
   return (
     /* background here */

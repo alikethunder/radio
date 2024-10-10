@@ -184,14 +184,14 @@ export const UserProfile = () => {
 
   const [error_email_with_a, _] = useTranslation('error_email_with_@', true)
 
-  const translations = useTranslationsSkeleton([
-    ["choose_image", "w-4rem"],
-    ["name_cannot_be_empty", 'w-4rem'],
-    ["name", "w-2rem"],
-    ['error_email_required', 'w-8'],
-    ['error_not_real_email', 'w-8'],
-    ['only_you_can_see', 'w-4rem'],
-  ], true)
+  const translations = useTranslationsSkeleton({
+    "choose_image": ["w-4rem"],
+    "name_cannot_be_empty": ['w-8'],
+    "name": ["w-5rem"],
+    'error_email_required': ['w-8'],
+    'error_not_real_email': ['w-8'],
+    'only_you_can_see': ['w-8rem'],
+  }, true)
 
   return (
     <div
