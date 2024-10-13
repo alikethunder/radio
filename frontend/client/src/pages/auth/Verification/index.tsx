@@ -150,7 +150,7 @@ export const Verification: FC = () => {
   const translations_skl = useTranslationsSkeleton({
     'create_password': ['w-7',],
     "verification_code": ['w-6'],
-    'remember_me': ['w-6rem'],
+    'remember_me': ['w-7rem'],
     'login': ['w-2', 'font-semibold'],
     'strong_password_consits_of': ['w-5'],
     'at_least_one_lowercase_letter': ['w-5'],
