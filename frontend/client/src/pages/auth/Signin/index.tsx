@@ -218,7 +218,7 @@ export const Signin: FC = () => {
                           style: {
                             paddingLeft: '2.2rem',
                           },
-                          autoComplete: 'current-password',
+                          autoComplete: 'login-password',
                           className: classNames("w-full", { 'p-invalid': fieldState.error })
                         },
                         showIcon: {

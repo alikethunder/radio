@@ -149,12 +149,25 @@ export const Verification: FC = () => {
 
   const translations_skl = useTranslationsSkeleton({
     'create_password': ['w-7',],
-    'send': ['w-2'],
     "verification_code": ['w-6'],
-    'remember_password': ['w-4'],
+    'remember_me': ['w-6rem'],
     'login': ['w-2', 'font-semibold'],
-    'dont_have_account': ['w-4'],
-    'create_today': ['w-3', 'font-semibold'],
+    'strong_password_consits_of': ['w-5'],
+    'at_least_one_lowercase_letter': ['w-5'],
+    'at_least_one_uppercase_letter': ['w-5'],
+    'at_least_one_numeric': ['w-5'],
+    'minimum_8_characters': ['w-5'],
+    'password_strength': ['w-4'],
+    'confirm_and_signin': ['w-5'],
+    'resend_verification_code': ['w-5'],
+    'already_have_account': ['w-5'],
+    'please_create_password': ['w-6'],
+    'please_create_strong_password': ['w-6'],
+    'please_enter': ['w-3'],
+    'from_email': ['w-2'],
+    'weak': ['w-2'],
+    'medium': ['w-3'],
+    'strong': ['w-3'],
   }, true)
 
   return (
@@ -164,14 +177,23 @@ export const Verification: FC = () => {
 
         <div className="text-900 text-xl font-bold mb-3 flex justify-content-center">{translations_skl.create_password}</div>
 
-        <div className="text-600 font-medium mb-5 flex justify-content-center">Please enter 8-digit verification code from email</div>
+        <div className="text-600 font-medium mb-5 flex justify-content-center flex-row gap-1">
+          {translations_skl.please_enter}
+          {translations_skl.verification_code}
+          {translations_skl.from_email}
+        </div>
 
         <div className="flex flex-column">
 
           <Controller
             name="verification_code"
             control={control}
-            rules={{ required: 'Please, enter verification code' }}
+            rules={{
+              required: {
+                value: true,
+                message: <div className="flex flex-row gap-1">{translations_skl.please_enter}{translations_skl.verification_code}</div> as unknown as string
+              }
+            }}
             render={({ field, fieldState }) => (
               <>
                 <IconField iconPosition="left">
@@ -183,7 +205,7 @@ export const Verification: FC = () => {
                     //@ts-ignore
                     value={field.value}
                     placeholder={translations.verification_code}
-                    className={classNames("w-full", { 'p-invalid': fieldState.error })}
+                    className={classNames("w-full mb-1", { 'p-invalid': fieldState.error })}
                     onInput={() => clearErrors('verification_code')}
                     onChange={(e) => field.onChange(e.target.value)}
                     autoComplete="name"
@@ -201,11 +223,14 @@ export const Verification: FC = () => {
             name="password"
             control={control}
             rules={{
-              required: 'Please, create a password',
+              required: {
+                value: true,
+                message: translations_skl.please_create_password,
+              },
               pattern: {
                 value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/,
-                message: 'Please, create a strong password'
-              }
+                message: translations_skl.please_create_strong_password,
+              },
             }}
             render={({ field, fieldState }) => (
               <>
@@ -224,7 +249,7 @@ export const Verification: FC = () => {
 
                     pt={{
                       root: {
-                        className: classNames("w-full", { 'p-invalid': fieldState.error })
+                        className: classNames("w-full mb-1", { 'p-invalid': fieldState.error })
                       },
                       iconField: {
                         root: {
@@ -236,7 +261,7 @@ export const Verification: FC = () => {
                           paddingLeft: '2.5rem',
                           ...state?.state.overlayVisible ? { boxShadow: 'none' } : {}
                         },
-                        autoComplete: 'new-password',
+                        autoComplete: 'login-password',
                         className: classNames({
                           'border-noround-top border-top-none': state?.state.overlayVisible,
                           'p-invalid': fieldState.error,
@@ -261,22 +286,22 @@ export const Verification: FC = () => {
 
                     footer={
                       <div className="px-4">
-                        <div className="mt-0">Strong password consits of:</div>
+                        <div className="mt-0">{translations_skl.strong_password_consits_of}:</div>
                         <ul className="pl-3 ml-3 mt-1 line-height-3">
-                          <li>At least one lowercase</li>
-                          <li>At least one uppercase</li>
-                          <li>At least one numeric</li>
-                          <li>Minimum 8 characters</li>
+                          <li>{translations_skl.at_least_one_lowercase_letter}</li>
+                          <li>{translations_skl.at_least_one_uppercase_letter}</li>
+                          <li>{translations_skl.at_least_one_numeric}</li>
+                          <li>{translations_skl.minimum_8_characters}</li>
                         </ul>
                         <Divider className="mb-3 mt-0" />
                       </div>
                     }
 
-                    weakLabel="Weak"
-                    mediumLabel={'Medium'}
-                    strongLabel="Strong"
+                    weakLabel={translations_skl.weak}
+                    mediumLabel={translations_skl.medium}
+                    strongLabel={translations_skl.strong}
 
-                    promptLabel='Password strength'
+                    promptLabel={translations_skl.password_strength}
 
                     panelStyle={{ top: 'auto!important', bottom: '0!important' }}
                     appendTo='self'
@@ -308,7 +333,7 @@ export const Verification: FC = () => {
                           actions.persistedApp.rememberme(!!e.checked)
                           field.onChange(e.checked)
                         }} />
-                      <label htmlFor={field.name} className="cursor-pointer">Remember me</label>
+                      <label htmlFor={field.name} className="cursor-pointer">{translations_skl.remember_me}</label>
                     </>
                   )}
                 />
@@ -318,7 +343,7 @@ export const Verification: FC = () => {
 
           <Button
             type="submit"
-            label="Confirm and sign in"
+            label={translations_skl.confirm_and_signin}
             outlined
             raised
             icon={`${icon_classes} ${isSubmitting ? 'pi-spin pi-sync' : 'pi-send'}`}
@@ -328,7 +353,7 @@ export const Verification: FC = () => {
           />
 
           <Button
-            label="Resend verification code"
+            label={translations_skl.resend_verification_code}
             outlined
             raised
             icon={`${icon_classes} ${sendingVC ? 'pi-spin pi-sync' : 'pi-key'}`}
@@ -338,7 +363,10 @@ export const Verification: FC = () => {
             disabled={sendingVC}
           />
 
-          <QueryLink to={app_routes.signin} className="font-medium no-underline text-blue-500 align-self-center">Already have an account? <span className="font-semibold">Log in</span></QueryLink>
+          <QueryLink to={app_routes.signin} className="font-medium no-underline text-blue-500 justify-content-center flex flex-row gap-1">
+            {translations_skl.already_have_account}
+            {translations_skl.login}
+          </QueryLink>
 
         </div>
       </form>
