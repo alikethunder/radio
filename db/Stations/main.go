@@ -9,7 +9,8 @@ import (
 /*
 	id uuid, 										station id
 	name text,  								station name
-	description text, 					station description
+	description_en text, 					station en description
+	description_ru text, 				station ru description
 	playlist uuid, 							station playlist table 'playlist_${uuid}'
 	avatar blob, 								station icon image
 	background blob, 						station background image
@@ -26,7 +27,8 @@ func Initialize() {
 	if err := db.Session.Query(`CREATE TABLE IF NOT EXISTS stations (
 		id uuid PRIMARY KEY,
 		name text,
-		description text,
+		description_en text,
+		description_ru text,
 		avatar blob,
 		background blob,
 		broadcasting boolean,

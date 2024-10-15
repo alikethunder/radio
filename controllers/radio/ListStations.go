@@ -22,7 +22,7 @@ func ListStations(ctx *fiber.Ctx) error {
 	} else {
 		// get all broadcasting stations + stations where user is admin
 		//!! todo: restrict station properties that usual users receive
-		stations = db.List("stations", fiber.Map{"broadcasting": true}, []string{}, constants.Public_Station_Props[:]...)
+		stations = db.List("stations", fiber.Map{"broadcasting": true}, []string{}, constants.Public_Station_Props()[:]...)
 
 		// get all non-broadcasting stations where user is admin
 		current_user_id := cookies.CurrentUserId(ctx)

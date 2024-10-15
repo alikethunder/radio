@@ -1,7 +1,6 @@
 export type Station = {
   id: string,
   name: string,
-  description: string,
   avatar: Blob,
   background: Blob,
   broadcasting: boolean,
@@ -11,4 +10,6 @@ export type Station = {
   likes: number,
   external: string,
   external_enable: boolean,
+} & {
+  [x: string]: string,
 }

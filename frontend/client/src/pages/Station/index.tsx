@@ -92,7 +92,7 @@ export const Station = () => {
         return s
       }, { replace: true })
     }
-  }, [station.id])
+  }, [station?.id])
 
   //console.log('station : ', station)
 
@@ -125,6 +125,10 @@ export const Station = () => {
 
   const current_station = useStore().player.current_station()
 
+  const languages = useStore().persistedApp.languages()
+
+  const language = useStore().persistedApp.language()
+
   const station_admin = useMemo(() => Boolean(
     signedin
     && current_user_id
@@ -153,8 +157,8 @@ export const Station = () => {
       external_enable: station?.external_enable ?? false,
       external: station?.external ?? '',
       broadcasting: station?.broadcasting ?? false,
-      description: station?.description ?? '',
       tags: station?.tags ?? [],
+      ...Object.fromEntries(languages.map(language => ([`description_${language}`, station[`description_${language}`] ?? ''])))
     }
   })
 
@@ -305,7 +309,11 @@ export const Station = () => {
     reset() {
       set_avatar_data_url(null)
       set_avatar_blob(null)
-      setValue('description', station.description)
+      store.persistedApp.languages().forEach(language => {
+        //@ts-ignore
+        setValue(`description_${language}`, station[`description_${language}`])
+      })
+
       reset()
     },
   }, formState, root_admin || station_admin)
@@ -320,11 +328,6 @@ export const Station = () => {
       setValue("external_enable", false)
     }
   }, [external])
-
-  const description = useWatch({
-    control,
-    name: 'description',
-  })
 
   const change_station_tags = useDebounceCallback(async (e, field) => {
     field.onChange(e)
@@ -637,7 +640,7 @@ export const Station = () => {
 
           {/* Read only editor */}
           <Editor
-            value={description}
+            value={station[`description_${language}`]}
             readOnly
             headerTemplate={<></>}
             pt={{
@@ -652,12 +655,13 @@ export const Station = () => {
                   'shadow-2',
                 ),
                 style: {
-                  height: '320px',
+                  maxHeight: '240px',
                   border: '1px solid #dfe7ef',
+                  overflowY: 'auto',
                   borderRadius: '6px',
                   padding: '1px',
-                  ...edit_mode ? {
-                    display: 'none'
+                  ...edit_mode || !station[`description_${language}`] ? {
+                    display: 'none',
                   } : {},
                 },
               }
@@ -665,70 +669,84 @@ export const Station = () => {
           />
 
           {/* Edit only editor */}
-          <Editor
-            value={description}
-            style={{
-              height: '320px',
-            }}
-
-            headerTemplate={
+          {
+            languages.map(language =>
               <>
-                <span className={`ql-formats`} >
+                <Editor
+                  value={station[`description_${language}`]}
+                  style={{
+                    maxHeight: '240px',
+                    overflowY: 'auto',
+                  }}
 
-                  <select className="ql-size">
+                  formats={['bold', 'font', 'italic', 'link', 'size', 'underline', 'list', '']}
 
-                    <option selected></option>
-                    <option value="large"></option>
-                    <option value="huge"></option>
-                  </select>
+                  headerTemplate={
+                    <>
+                      <span className="bg-primary select-none p-2">
+                        {language}
+                      </span>
 
-                </span>
+                      <span className={`ql-formats`} >
 
-                <span className={`ql-formats`} >
+                        <select className="ql-size">
 
-                  <button className="ql-bold" aria-label="Bold"></button>
+                          <option selected></option>
+                          <option value="large"></option>
+                          <option value="huge"></option>
+                        </select>
 
-                  <button className="ql-italic" aria-label="Italic"></button>
+                      </span>
 
-                  <button className="ql-underline" aria-label="Underline"></button>
+                      <span className={`ql-formats`} >
 
-                </span>
+                        <button className="ql-bold" aria-label="Bold"></button>
 
-                <span className={`ql-formats`} >
+                        <button className="ql-italic" aria-label="Italic"></button>
 
-                  <button className="ql-list" value={'ordered'} aria-label="Ordered List"></button>
+                        <button className="ql-underline" aria-label="Underline"></button>
 
-                  <button className="ql-list" value={'bullet'} aria-label="Unordered List"></button>
+                      </span>
 
-                </span>
+                      <span className={`ql-formats`} >
 
-                <span className={`ql-formats`} >
+                        <button className="ql-list" value={'ordered'} aria-label="Ordered List"></button>
 
-                  <button className="ql-link" aria-label="Link"></button>
+                        <button className="ql-list" value={'bullet'} aria-label="Unordered List"></button>
 
-                </span>
+                      </span>
+
+                      <span className={`ql-formats`} >
+
+                        <button className="ql-link" aria-label="Link"></button>
+
+                      </span>
+                    </>
+                  }
+
+                  pt={{
+                    root: {
+                      className: classNames({},
+                        'shadow-2',
+                        'mt-2',
+                      ),
+                      style: {
+                        ...edit_mode ? {} : {
+                          display: 'none'
+                        },
+                      }
+                    }
+                  }}
+
+                  onTextChange={e => {
+                    //console.log('description ', language, ' : ', e.htmlValue)
+                    //@ts-ignore
+                    setValue(`description_${language}`, e.htmlValue ?? '')
+                  }}
+                />
               </>
-            }
-
-            pt={{
-              root: {
-                className: classNames({},
-                  'shadow-2',
-                  'mt-2',
-                ),
-                style: {
-                  ...edit_mode ? {} : {
-                    display: 'none'
-                  },
-                }
-              }
-            }}
-
-            onTextChange={e => {
-              console.log('description : ', e.htmlValue)
-              setValue('description', e.htmlValue ?? '')
-            }}
-          />
+            )
+          }
 
           {
             edit_mode ?
