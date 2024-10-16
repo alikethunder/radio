@@ -57,6 +57,8 @@ export const Home = () => {
 
   const current_user_id = useStore().user.id()
 
+  const language = useStore().persistedApp.language()
+
   const some_station_admin = useMemo(() => signedin
     && current_user_id
     && stations.some(station => station.admins?.includes(current_user_id)), [
@@ -104,7 +106,11 @@ export const Home = () => {
 
   //useLog('tags_searched_stations : ', tags_searched_stations)
 
-  const text_searched_stations = useMemo(() => search_stations_text_array.length ? tags_searched_stations?.filter(station => search_stations_text_array.every(w => station.description.toLowerCase().includes(w)) || search_stations_text_array.some(w => station.name.toLowerCase().includes(w))) : tags_searched_stations, [search_stations_text_array, tags_searched_stations])
+  const text_searched_stations = useMemo(() => search_stations_text_array.length ? tags_searched_stations?.filter(station => search_stations_text_array.every(w => station[`description_${language}`].toLowerCase().includes(w)) || search_stations_text_array.some(w => station.name.toLowerCase().includes(w))) : tags_searched_stations, [
+    search_stations_text_array,
+    tags_searched_stations,
+    language,
+  ])
 
   //useLog('text_searched_stations : ', text_searched_stations)
 

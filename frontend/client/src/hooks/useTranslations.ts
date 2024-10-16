@@ -2,11 +2,11 @@ import { useEffect, useState } from "react"
 
 import { useStore } from "@/store"
 
-type ObjectFromList<T extends readonly string[]> = {
-  [K in T[number]]: string;
+type ObjectFromList<T extends string> = {
+  [K in T[][number]]: string;
 }
 
-export const useTranslations = <T extends readonly string[]>(fields: T, capitalize?: boolean): [ObjectFromList<T>, boolean] => {
+export const useTranslations = <T extends string>(fields: T[], capitalize?: boolean): [ObjectFromList<T>, boolean] => {
 
   const [translations, set_translations] = useState<{ [x: string]: string }>({})
 
