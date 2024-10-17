@@ -310,7 +310,6 @@ export const Navbar: FC = () => {
 
           <OverlayPanel
             ref={overlay_panel}
-            //appendTo={document.body}
             pt={{
               root: {
                 className: classNames({
