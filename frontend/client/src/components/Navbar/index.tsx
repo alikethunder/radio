@@ -99,7 +99,7 @@ export const Navbar: FC = () => {
 
   return (
     <>
-      <div className="flex flex-shrink-0  shadow-2 h-3rem sm:h-4rem justify-content-between bg-white border-bottom-1 border-solid border-100 border-top-none border-left-none border-right-none">
+      <div className="flex flex-shrink-0 shadow-2 h-3rem sm:h-4rem justify-content-between bg-white border-bottom-1 border-solid border-100 border-top-none border-left-none border-right-none">
 
         <div className="left h-full flex gap-1 sm:gap-2">
 
@@ -310,14 +310,16 @@ export const Navbar: FC = () => {
 
           <OverlayPanel
             ref={overlay_panel}
+            //appendTo={document.body}
             pt={{
               root: {
                 className: classNames({
 
                 },
                   'max-w-25rem',
-                  'w-11',
-                  'mx-3',
+                  'mx-2',
+                  'shadow-5',
+                  'surface-hover',
                 )
               },
               content: {
