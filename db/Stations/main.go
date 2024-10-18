@@ -9,8 +9,10 @@ import (
 /*
 	id uuid, 										station id
 	name text,  								station name
-	description_en text, 					station en description
+	description_en text, 				station en description
 	description_ru text, 				station ru description
+	text_description_ru text,		for SEO
+	text_description_en text,
 	playlist uuid, 							station playlist table 'playlist_${uuid}'
 	avatar blob, 								station icon image
 	background blob, 						station background image
@@ -29,6 +31,8 @@ func Initialize() {
 		name text,
 		description_en text,
 		description_ru text,
+		text_description_ru text,
+		text_description_en text,
 		avatar blob,
 		background blob,
 		broadcasting boolean,

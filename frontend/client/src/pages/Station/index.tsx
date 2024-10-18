@@ -77,6 +77,8 @@ import { random_station_tag_color } from "@/functions/random_station_tag_color"
 
 import { StationTagRemoveTokenIcon } from "@/layout parts"
 
+import { Helmet } from "react-helmet"
+
 const private_tooltip_options = { ...tooltip_options, position: 'right' } as const
 
 export const Station = () => {
@@ -158,7 +160,8 @@ export const Station = () => {
       external: station?.external ?? '',
       broadcasting: station?.broadcasting ?? false,
       tags: station?.tags ?? [],
-      ...Object.fromEntries(languages.map(language => ([`description_${language}`, station[`description_${language}`] ?? ''])))
+      ...Object.fromEntries(languages.map(language => ([`description_${language}`, station[`description_${language}`] ?? '']))),
+      ...Object.fromEntries(languages.map(language => ([`text_description_${language}`, station[`text_description_${language}`] ?? ''])))
     }
   })
 
@@ -312,6 +315,8 @@ export const Station = () => {
       store.persistedApp.languages().forEach(language => {
         //@ts-ignore
         setValue(`description_${language}`, station[`description_${language}`])
+        //@ts-ignore
+        setValue(`text_description_${language}`, station[`text_description_${language}`])
       })
 
       reset()
@@ -365,405 +370,145 @@ export const Station = () => {
   }, true)
 
   return (
-    /* background here */
-    <div
-      className=" w-full overflow-y-auto page station_page flex-grow-1 flex flex-column text-800 md:py-4 py-3 md:px-4 px-3"
-    >
+    <>
+      <Helmet>
+        <title>RadioWorld - {station.name}</title>
+        <meta name="description" content={station[`text_description_${language}`]} />
+        <link rel="canonical" href={`${window.location.origin}${generatePath(app_routes["station$id"], { id: station.id })}?language=${language}`} />
+      </Helmet>
 
-      <div className="flex flex-column sm:flex-row">
+      <div
+        className=" w-full overflow-y-auto page station_page flex-grow-1 flex flex-column text-800 md:py-4 py-3 md:px-4 px-3"
+      >
+        {/* background here? */}
 
-        <div className="flex flex-row sm:flex-column align-items-center gap-4">
+        <div className="flex flex-column sm:flex-row">
 
-          <div
-            style={{ backgroundImage: `url(${avatar_data_url || `/api/v1/files/stations/${station.id}/avatar`})` }}
+          <div className="flex flex-row sm:flex-column align-items-center gap-4">
 
-            className={`element_with_overlay shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-round-xl flex flex-shrink-0 align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode ? 'cursor-pointer' : ''}`}
+            <div
+              style={{ backgroundImage: `url(${avatar_data_url || `/api/v1/files/stations/${station.id}/avatar`})` }}
 
-            onClick={(e: React.MouseEvent) => {
-              if (edit_mode) {
-                photo_file_input_ref.current?.click()
-              }
-            }}
-          >
-            <img
-              style={{ display: 'none' }}
-              src={`/api/v1/files/stations/${station.id}/avatar`}
+              className={`element_with_overlay shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-round-xl flex flex-shrink-0 align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode ? 'cursor-pointer' : ''}`}
 
-              onError={({ currentTarget }) => {
-                currentTarget.onerror = null
-                set_profile_photo_exists(false)
-              }}
-            />
-
-            {
-              avatar_data_url || profile_photo_exists ? <></> :
-                <i className="pi pi-wave-pulse text-4xl md:text-6xl"></i>
-            }
-
-            {
-              edit_mode ?
-                <>
-
-                  <div className="overlay absolute top-0 bottom-0 right-0 left-0 flex align-items-center justify-content-center text-center">
-
-                    <div className="overlay_background surface-900 absolute top-0 bottom-0 right-0 left-0"></div>
-
-                    <div className="overlay_text text-white font-semibold z-1">
-                      {translations_skl.choose_image}
-                    </div>
-
-                  </div>
-
-                  <Ripple />
-
-                </>
-                : <></>
-            }
-
-            <input
-              ref={photo_file_input_ref}
-              type="file"
-              id="fileElem"
-              accept="image/*"
-              className="hidden"
-              onChange={async (e) => {
-                if (e.target.files?.[0]) {
-                  const [blob, data_url] = await resize_image(e.target.files?.[0])
-                  set_avatar_blob(blob)
-                  set_avatar_data_url(data_url)
+              onClick={(e: React.MouseEvent) => {
+                if (edit_mode) {
+                  photo_file_input_ref.current?.click()
                 }
               }}
-            />
+            >
+              <img
+                style={{ display: 'none' }}
+                src={`/api/v1/files/stations/${station.id}/avatar`}
 
-          </div>
+                onError={({ currentTarget }) => {
+                  currentTarget.onerror = null
+                  set_profile_photo_exists(false)
+                }}
+              />
 
-          <Button
-            className="shadow_on_hover p-0 flex-shrink-0 w-4rem md:w-5rem h-4rem md:h-5rem"
-
-            rounded
-            outlined
-            raised
-            aria-label={`${playing && current_station?.id == station.id ? translations.pause : translations.play}`}
-            severity="info"
-            icon={`pi text-4xl ${playing && current_station?.id == station.id ? 'pi-pause' : 'pi-play'}`}
-
-            pt={{
-              icon: {
-                style: {
-                  paddingLeft: playing && current_station?.id == station.id ? '0' : '4px',
-                }
+              {
+                avatar_data_url || profile_photo_exists ? <></> :
+                  <i className="pi pi-wave-pulse text-4xl md:text-6xl"></i>
               }
-            }}
 
-            onClick={() => {
-              if (store.player.playing() && store.player.current_station()?.id == station.id) {
-                actions.player.playing(false)
-              } else {
-                actions.player.playing(true)
-                actions.player.current_station(station)
-              }
-            }}
-          />
-        </div>
-
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-1 align-self-start sm:ml-5 mt-3 sm:mt-1 max-w-full" ref={setForm}>
-
-          <Controller
-            name="name"
-            control={control}
-            rules={{
-              required: {
-                value: true,
-                message: translations_skl.error_radiostation_name_empty,
-              }
-            }}
-            render={({ field, fieldState }) => (
-              <>
-                <label
-                  htmlFor={field.name}
-                  className={classNames(
-                    {
-                      'p-error': errors[field.name]
-                    },
-                    'text-600',
-                    "select-none",
-                    'flex',
-                    'align-items-center'
-                  )}
-                >
-                  <small>{translations_skl.radiostation}</small>
-
-                  {
-                    edit_mode ?
-                      <Controller
-                        name="broadcasting"
-                        control={control}
-                        render={({ field: switch_field, }) => (
-                          <>
-                            <InputSwitch
-                              inputId={switch_field.name}
-                              checked={switch_field.value}
-                              inputRef={switch_field.ref}
-                              className="origin-center"
-                              onChange={switch_field.onChange}
-                              disabled={!external}
-                              pt={{
-                                root: {
-                                  style: {
-                                    transform: 'scale(0.6)'
-                                  },
-                                  className: classNames({
-
-                                  })
-                                }
-                              }}
-                            />
-
-                            <label htmlFor={switch_field.name} className="cursor-pointer ml-0">
-                              <Tag
-                                value={switch_field.value ? 'on' : 'off'}
-                                severity={switch_field.value ? 'success' : null}
-                                pt={{
-                                  root: {
-                                    className: classNames({
-                                      'surface-300': !switch_field.value
-                                    },
-                                      'py-05',
-                                      'shadow-2',
-                                    ),
-                                  },
-                                  value: {
-                                    style: {
-                                      lineHeight: 1.25,
-                                    }
-                                  }
-                                }}
-                              />
-                            </label>
-                          </>
-                        )}
-                      />
-                      : <></>
-                  }
-                </label>
-
-                <InputText
-                  id={field.name}
-                  value={field.value}
-                  className={classNames(
-                    {
-                      'p-invalid': fieldState.error,
-                    },
-                    'max-w-full',
-                    'align-self-start',
-                    'shadow-2',
-                  )}
-                  onChange={(e) => {
-                    field.onChange(e.target.value)
-                  }}
-                  onBlur={field.onBlur}
-                  disabled={!edit_mode}
-                  pt={{
-                    root: {
-                      onInput: (e) => {
-                        //@ts-ignore
-                        e.target.size = Math.min(Math.max(e.target.value.length - 7, 20), 70)
-                      }
-                    }
-                  }}
-                />
-
-                <small className="p-error">{errors[field.name]?.message ?? ' '}</small>
-              </>
-            )}
-          />
-
-          {
-            edit_mode ?
-              <Controller
-                name="tags"
-                control={control}
-                render={({ field, }) => (
+              {
+                edit_mode ?
                   <>
 
-                    <label
-                      htmlFor={field.name}
-                      className={classNames(
-                        {
-                          'p-error': errors[field.name]
-                        },
-                        'text-600',
-                        "select-none",
-                        'flex',
-                        'align-items-center'
-                      )}
-                    >
-                      <small>Tags</small>
-                    </label>
+                    <div className="overlay absolute top-0 bottom-0 right-0 left-0 flex align-items-center justify-content-center text-center">
 
-                    <Chips
-                      value={field.value}
-                      onChange={e => change_station_tags(e, field)}
-                      allowDuplicate={false}
-                      removable
+                      <div className="overlay_background surface-900 absolute top-0 bottom-0 right-0 left-0"></div>
 
-                      removeIcon={<StationTagRemoveTokenIcon onClick={e => {
-                        if (e) {
-                          setValue(field.name, field.value.filter(v => v != (e.target as HTMLElement).closest('.p-chips-token')?.querySelector('.p-tag-value')?.textContent))
-                        }
-                      }} />}
+                      <div className="overlay_text text-white font-semibold z-1">
+                        {translations_skl.choose_image}
+                      </div>
 
-                      pt={{
-                        token: {
-                          className: classNames({
+                    </div>
 
-                          },
-                            'p-0',
-                            'ml-1',
-                            'bg-red-600',
-                            'border-round',
-                          ),
-                        },
-                      }}
+                    <Ripple />
 
-                      itemTemplate={tag => <StationTag tag={tag} disable_link />}
-                    />
                   </>
-                )} />
-              :
-              <div className="flex gap-1">
-                {
-                  station?.tags?.map(tag => <StationTag tag={tag} />)
-                }
-              </div>
-          }
-
-          {/* Read only editor */}
-          <Editor
-            value={station[`description_${language}`]}
-            readOnly
-            headerTemplate={<></>}
-            pt={{
-              toolbar: {
-                style: {
-                  display: 'none'
-                }
-              },
-              content: {
-                className: classNames({},
-                  'mt-2',
-                  'shadow-2',
-                ),
-                style: {
-                  maxHeight: '240px',
-                  border: '1px solid #dfe7ef',
-                  overflowY: 'auto',
-                  borderRadius: '6px',
-                  padding: '1px',
-                  ...edit_mode || !station[`description_${language}`] ? {
-                    display: 'none',
-                  } : {},
-                },
+                  : <></>
               }
-            }}
-          />
 
-          {/* Edit only editor */}
-          {
-            languages.map(language =>
-              <>
-                <Editor
-                  value={station[`description_${language}`]}
-                  style={{
-                    maxHeight: '240px',
-                    overflowY: 'auto',
-                  }}
-
-                  formats={['bold', 'font', 'italic', 'link', 'size', 'underline', 'list', '']}
-
-                  headerTemplate={
-                    <>
-                      <span className="bg-primary select-none p-2">
-                        {language}
-                      </span>
-
-                      <span className={`ql-formats`} >
-
-                        <select className="ql-size">
-
-                          <option selected></option>
-                          <option value="large"></option>
-                          <option value="huge"></option>
-                        </select>
-
-                      </span>
-
-                      <span className={`ql-formats`} >
-
-                        <button className="ql-bold" aria-label="Bold"></button>
-
-                        <button className="ql-italic" aria-label="Italic"></button>
-
-                        <button className="ql-underline" aria-label="Underline"></button>
-
-                      </span>
-
-                      <span className={`ql-formats`} >
-
-                        <button className="ql-list" value={'ordered'} aria-label="Ordered List"></button>
-
-                        <button className="ql-list" value={'bullet'} aria-label="Unordered List"></button>
-
-                      </span>
-
-                      <span className={`ql-formats`} >
-
-                        <button className="ql-link" aria-label="Link"></button>
-
-                      </span>
-                    </>
+              <input
+                ref={photo_file_input_ref}
+                type="file"
+                id="fileElem"
+                accept="image/*"
+                className="hidden"
+                onChange={async (e) => {
+                  if (e.target.files?.[0]) {
+                    const [blob, data_url] = await resize_image(e.target.files?.[0])
+                    set_avatar_blob(blob)
+                    set_avatar_data_url(data_url)
                   }
+                }}
+              />
 
-                  pt={{
-                    root: {
-                      className: classNames({},
-                        'shadow-2',
-                        'mt-2',
-                      ),
-                      style: {
-                        ...edit_mode ? {} : {
-                          display: 'none'
-                        },
-                      }
-                    }
-                  }}
+            </div>
 
-                  onTextChange={e => {
-                    //console.log('description ', language, ' : ', e.htmlValue)
-                    //@ts-ignore
-                    setValue(`description_${language}`, e.htmlValue ?? '')
-                  }}
-                />
-              </>
-            )
-          }
+            <Button
+              className="shadow_on_hover p-0 flex-shrink-0 w-4rem md:w-5rem h-4rem md:h-5rem"
 
-          {
-            edit_mode ?
-              <div className="flex flex-column gap-1">
-                <Controller
-                  name="external"
-                  control={control}
-                  render={({ field, fieldState }) => (
-                    <>
-                      <label
-                        htmlFor={field.name}
-                        className='text-600 select-none flex align-items-center'
-                      >
-                        <small>External</small>
+              rounded
+              outlined
+              raised
+              aria-label={`${playing && current_station?.id == station.id ? translations.pause : translations.play}`}
+              severity="info"
+              icon={`pi text-4xl ${playing && current_station?.id == station.id ? 'pi-pause' : 'pi-play'}`}
 
+              pt={{
+                icon: {
+                  style: {
+                    paddingLeft: playing && current_station?.id == station.id ? '0' : '4px',
+                  }
+                }
+              }}
+
+              onClick={() => {
+                if (store.player.playing() && store.player.current_station()?.id == station.id) {
+                  actions.player.playing(false)
+                } else {
+                  actions.player.playing(true)
+                  actions.player.current_station(station)
+                }
+              }}
+            />
+          </div>
+
+          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-1 align-self-start sm:ml-5 mt-3 sm:mt-1 max-w-full" ref={setForm}>
+
+            <Controller
+              name="name"
+              control={control}
+              rules={{
+                required: {
+                  value: true,
+                  message: translations_skl.error_radiostation_name_empty,
+                }
+              }}
+              render={({ field, fieldState }) => (
+                <>
+                  <label
+                    htmlFor={field.name}
+                    className={classNames(
+                      {
+                        'p-error': errors[field.name]
+                      },
+                      'text-600',
+                      "select-none",
+                      'flex',
+                      'align-items-center'
+                    )}
+                  >
+                    <small>{translations_skl.radiostation}</small>
+
+                    {
+                      edit_mode ?
                         <Controller
-                          name="external_enable"
+                          name="broadcasting"
                           control={control}
                           render={({ field: switch_field, }) => (
                             <>
@@ -796,6 +541,7 @@ export const Station = () => {
                                         'surface-300': !switch_field.value
                                       },
                                         'py-05',
+                                        'shadow-2',
                                       ),
                                     },
                                     value: {
@@ -809,76 +555,345 @@ export const Station = () => {
                             </>
                           )}
                         />
+                        : <></>
+                    }
+                  </label>
 
-                      </label>
+                  <InputText
+                    id={field.name}
+                    value={field.value}
+                    className={classNames(
+                      {
+                        'p-invalid': fieldState.error,
+                      },
+                      'max-w-full',
+                      'align-self-start',
+                      'shadow-2',
+                    )}
+                    onChange={(e) => {
+                      field.onChange(e.target.value)
+                    }}
+                    onBlur={field.onBlur}
+                    disabled={!edit_mode}
+                    pt={{
+                      root: {
+                        onInput: (e) => {
+                          //@ts-ignore
+                          e.target.size = Math.min(Math.max(e.target.value.length - 7, 20), 70)
+                        }
+                      }
+                    }}
+                  />
 
-                      <InputText
-                        id={field.name}
-                        value={field.value}
+                  <small className="p-error">{errors[field.name]?.message ?? ' '}</small>
+                </>
+              )}
+            />
+
+            {
+              edit_mode ?
+                <Controller
+                  name="tags"
+                  control={control}
+                  render={({ field, }) => (
+                    <>
+
+                      <label
+                        htmlFor={field.name}
                         className={classNames(
                           {
+                            'p-error': errors[field.name]
                           },
+                          'text-600',
+                          "select-none",
+                          'flex',
+                          'align-items-center'
                         )}
-                        onChange={field.onChange}
-                        onBlur={field.onBlur}
+                      >
+                        <small>Tags</small>
+                      </label>
+
+                      <Chips
+                        value={field.value}
+                        onChange={e => change_station_tags(e, field)}
+                        allowDuplicate={false}
+                        removable
+
+                        removeIcon={<StationTagRemoveTokenIcon onClick={e => {
+                          if (e) {
+                            setValue(field.name, field.value.filter(v => v != (e.target as HTMLElement).closest('.p-chips-token')?.querySelector('.p-tag-value')?.textContent))
+                          }
+                        }} />}
+
+                        pt={{
+                          token: {
+                            className: classNames({
+
+                            },
+                              'p-0',
+                              'ml-1',
+                              'bg-red-600',
+                              'border-round',
+                            ),
+                          },
+                        }}
+
+                        itemTemplate={tag => <StationTag tag={tag} disable_link />}
                       />
                     </>
-                  )}
+                  )} />
+                :
+                <div className="flex gap-1">
+                  {
+                    station?.tags?.map(tag => <StationTag tag={tag} />)
+                  }
+                </div>
+            }
+
+            {/* Read only editor */}
+            <Editor
+              value={station[`description_${language}`]}
+              readOnly
+              headerTemplate={<></>}
+              pt={{
+                toolbar: {
+                  style: {
+                    display: 'none'
+                  }
+                },
+                content: {
+                  className: classNames({},
+                    'mt-2',
+                    'shadow-2',
+                  ),
+                  style: {
+                    maxHeight: '240px',
+                    border: '1px solid #dfe7ef',
+                    overflowY: 'auto',
+                    borderRadius: '6px',
+                    padding: '1px',
+                    ...edit_mode || !station[`description_${language}`] ? {
+                      display: 'none',
+                    } : {},
+                  },
+                }
+              }}
+            />
+
+            {/* Edit only editor */}
+            {
+              languages.map(language =>
+                <>
+                  <Editor
+                    value={station[`description_${language}`]}
+                    style={{
+                      maxHeight: '240px',
+                      overflowY: 'auto',
+                    }}
+
+                    formats={['bold', 'font', 'italic', 'link', 'size', 'underline', 'list', '']}
+
+                    headerTemplate={
+                      <>
+                        <span className="bg-primary select-none p-2">
+                          {language}
+                        </span>
+
+                        <span className={`ql-formats`} >
+
+                          <select className="ql-size">
+
+                            <option selected></option>
+                            <option value="large"></option>
+                            <option value="huge"></option>
+                          </select>
+
+                        </span>
+
+                        <span className={`ql-formats`} >
+
+                          <button className="ql-bold" aria-label="Bold"></button>
+
+                          <button className="ql-italic" aria-label="Italic"></button>
+
+                          <button className="ql-underline" aria-label="Underline"></button>
+
+                        </span>
+
+                        <span className={`ql-formats`} >
+
+                          <button className="ql-list" value={'ordered'} aria-label="Ordered List"></button>
+
+                          <button className="ql-list" value={'bullet'} aria-label="Unordered List"></button>
+
+                        </span>
+
+                        <span className={`ql-formats`} >
+
+                          <button className="ql-link" aria-label="Link"></button>
+
+                        </span>
+                      </>
+                    }
+
+                    pt={{
+                      root: {
+                        className: classNames({},
+                          'shadow-2',
+                          'mt-2',
+                        ),
+                        style: {
+                          ...edit_mode ? {} : {
+                            display: 'none'
+                          },
+                        }
+                      }
+                    }}
+
+                    onTextChange={e => {
+                      //console.log('description ', language, ' : ', e.htmlValue)
+                      //@ts-ignore
+                      setValue(`description_${language}`, e.htmlValue ?? '')
+                      //@ts-ignore
+                      setValue(`text_description_${language}`, (e.textValue ?? '').replaceAll(/\r?\n|\r/g, ''))
+                    }}
+                  />
+                </>
+              )
+            }
+
+            {
+              edit_mode ?
+                <div className="flex flex-column gap-1">
+                  <Controller
+                    name="external"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                      <>
+                        <label
+                          htmlFor={field.name}
+                          className='text-600 select-none flex align-items-center'
+                        >
+                          <small>External</small>
+
+                          <Controller
+                            name="external_enable"
+                            control={control}
+                            render={({ field: switch_field, }) => (
+                              <>
+                                <InputSwitch
+                                  inputId={switch_field.name}
+                                  checked={switch_field.value}
+                                  inputRef={switch_field.ref}
+                                  className="origin-center"
+                                  onChange={switch_field.onChange}
+                                  disabled={!external}
+                                  pt={{
+                                    root: {
+                                      style: {
+                                        transform: 'scale(0.6)'
+                                      },
+                                      className: classNames({
+
+                                      })
+                                    }
+                                  }}
+                                />
+
+                                <label htmlFor={switch_field.name} className="cursor-pointer ml-0">
+                                  <Tag
+                                    value={switch_field.value ? 'on' : 'off'}
+                                    severity={switch_field.value ? 'success' : null}
+                                    pt={{
+                                      root: {
+                                        className: classNames({
+                                          'surface-300': !switch_field.value
+                                        },
+                                          'py-05',
+                                        ),
+                                      },
+                                      value: {
+                                        style: {
+                                          lineHeight: 1.25,
+                                        }
+                                      }
+                                    }}
+                                  />
+                                </label>
+                              </>
+                            )}
+                          />
+
+                        </label>
+
+                        <InputText
+                          id={field.name}
+                          value={field.value}
+                          className={classNames(
+                            {
+                            },
+                          )}
+                          onChange={field.onChange}
+                          onBlur={field.onBlur}
+                        />
+                      </>
+                    )}
+                  />
+                </div>
+                : <></>
+            }
+
+          </form>
+
+        </div>
+
+
+        {
+          edit_mode && false ?
+            <>
+
+              {/* Upload tracks */}
+
+              <Button className="track_uploader" label="Upload tracks" onClick={e => {
+                if (edit_mode) {
+                  tracks_input_ref.current?.click()
+                }
+              }}>
+
+                <input
+                  ref={tracks_input_ref}
+                  type="file"
+                  id="tracks_input"
+                  className="hidden"
+                  multiple
+                  onChange={addTracks}
                 />
-              </div>
-              : <></>
-          }
+              </Button>
 
-        </form>
+              {/* Playlist */}
+              < DataTable value={[]} sortField="order" sortOrder={1} stripedRows>
 
-      </div>
+                <Column field="order" header="Order" sortable ></Column>
 
+                <Column field="image" header="Image" ></Column>
 
-      {
-        edit_mode && false ?
-          <>
+                <Column field="track" header="Track" sortable ></Column>
 
-            {/* Upload tracks */}
+                <Column field="artist" header="artist" sortable ></Column>
 
-            <Button className="track_uploader" label="Upload tracks" onClick={e => {
-              if (edit_mode) {
-                tracks_input_ref.current?.click()
-              }
-            }}>
+                <Column field="track_time" header="Track time" sortable></Column>
 
-              <input
-                ref={tracks_input_ref}
-                type="file"
-                id="tracks_input"
-                className="hidden"
-                multiple
-                onChange={addTracks}
-              />
-            </Button>
+                <Column field="time_to_play" header="Time to play (local PC time)"></Column>
 
-            {/* Playlist */}
-            < DataTable value={[]} sortField="order" sortOrder={1} stripedRows>
+                <Column field="downloads" header="Downloads" sortable></Column>
 
-              <Column field="order" header="Order" sortable ></Column>
+                <Column field="likes" header="Likes" sortable></Column>
+              </DataTable>
+            </>
+            : <></>
+        }
 
-              <Column field="image" header="Image" ></Column>
-
-              <Column field="track" header="Track" sortable ></Column>
-
-              <Column field="artist" header="artist" sortable ></Column>
-
-              <Column field="track_time" header="Track time" sortable></Column>
-
-              <Column field="time_to_play" header="Time to play (local PC time)"></Column>
-
-              <Column field="downloads" header="Downloads" sortable></Column>
-
-              <Column field="likes" header="Likes" sortable></Column>
-            </DataTable>
-          </>
-          : <></>
-      }
-
-    </div >
+      </div >
+    </>
   )
 }
