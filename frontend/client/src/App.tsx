@@ -92,8 +92,9 @@ export default function App() {
     // to redirect from google login 
     if (store.session.prev_pathname() && store.session.redirect_from_google()) {
       actions.session.redirect_from_google(false)
-      console.log('signedin : ', signedin)
+      //console.log('signedin : ', signedin)
       if (signedin) {
+        //console.log('signedin navigate: ', signedin)
         navigate(store.session.prev_pathname(), { replace: true })
       }
     }
@@ -261,6 +262,20 @@ export default function App() {
       }
     })()
   }, [])
+
+  const language = useStore().persistedApp.language()
+
+  const languages = useStore().persistedApp.languages()
+
+  useEffect(() => {
+    //update language in url
+    if (languages.length && language) {
+      set_search(s => {
+        s.set('language', language)
+        return s
+      })
+    }
+  }, [language, languages])
 
   return (
     <PrimeReactProvider value={{
