@@ -1,7 +1,9 @@
 import { useEffect } from "react"
 
-export const useLog = (message: string, ...args: any[]) => {
+export const useLog = (log: boolean | null | undefined, message: string, ...args: any[]) => {
   useEffect(() => {
-    console.log(message, ...args)
+    if (log) {
+      console.log(message, ...args)
+    }
   }, args)
 }

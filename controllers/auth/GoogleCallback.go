@@ -119,7 +119,10 @@ func GoogleCallback(c *fiber.Ctx) error {
 
 		fmt.Println("[GoogleCallback] auth cookie : ", auth_cookie.Value)
 
-		return c.Redirect(state["redirect_to"].(string) + "?auth=" + auth_cookie.Value)
+		if state["redirect_to"] != nil {
+			return c.Redirect(state["redirect_to"].(string) + "?auth=" + auth_cookie.Value)
+		}
+		return c.Redirect("/?auth=" + auth_cookie.Value)
 	}
 
 	return nil

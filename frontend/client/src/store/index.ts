@@ -6,6 +6,7 @@ import { persistedAppStore } from './persistedAppStore'
 import { userStore } from './userStore'
 import { toastStore } from './toastStore'
 import { playerStore } from './playerStore'
+import { sessionStore } from './sessionStore'
 
 // Global store
 export const rootStore = {
@@ -15,6 +16,7 @@ export const rootStore = {
   user: userStore,
   toast: toastStore,
   player: playerStore,
+  session: sessionStore,
   /*contextMenu: contextMenuStore,
   editor: editorStore,
   modal: modalStore,

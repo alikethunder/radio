@@ -19,7 +19,6 @@ import {
 type AppStore = {
   isClient: boolean;
   router: ReturnType<typeof createBrowserRouter> | null;
-  rightSidebarOpened: boolean;
   isDesktop: boolean;
   windowSize: {
     width: number;
@@ -27,8 +26,6 @@ type AppStore = {
   };
   subscription_plans: [];
   subscription_plans_loading: boolean;
-  leftSidebarOpened: boolean;
-  prev_pathname: string;
   current_page: {
     name?: string;
     icon?: string;
@@ -48,8 +45,6 @@ const initial_state = {
   //to render client parts only
   isClient: false,
   router: null,
-  rightSidebarOpened: false,
-  leftSidebarOpened: false,
   isDesktop: false,
   windowSize: {
     width: 0,
@@ -57,7 +52,6 @@ const initial_state = {
   },
   subscription_plans: [],
   subscription_plans_loading: false,
-  prev_pathname: app_routes.root,
   current_page: {
     name: '',
     icon: '',

@@ -36,7 +36,7 @@ import { Translation } from "@/layout parts"
 
 export const RightSidebar: FC = () => {
 
-  const rightSidebarOpened = useTrackedStore().app.rightSidebarOpened()
+  const rightSidebarOpened = useTrackedStore().session.rightSidebarOpened()
 
   const subscription_plan = useTrackedStore().user.subscription_plan()
 
@@ -52,7 +52,7 @@ export const RightSidebar: FC = () => {
     <Sidebar
       visible={rightSidebarOpened}
       position="right"
-      onHide={() => actions.app.rightSidebarOpened(false)}
+      onHide={() => actions.session.rightSidebarOpened(false)}
       className="w-15rem"
       showCloseIcon={false}
       pt={{
@@ -90,7 +90,7 @@ export const RightSidebar: FC = () => {
         {
           signedin ?
             <>
-              <QueryLink to={generatePath(app_routes.user_profile$id, { id: store.user.id() })} onClick={() => actions.app.rightSidebarOpened(false)}>
+              <QueryLink to={generatePath(app_routes.user_profile$id, { id: store.user.id() })} onClick={() => actions.session.rightSidebarOpened(false)}>
                 <Button
                   label={route_attributes[app_routes.user_profile$id].name as unknown as string}
                   text
@@ -119,7 +119,7 @@ export const RightSidebar: FC = () => {
               </div> */}
             </>
             :
-            <QueryLink to={app_routes.signin} onClick={() => actions.app.rightSidebarOpened(false)}>
+            <QueryLink to={app_routes.signin} onClick={() => actions.session.rightSidebarOpened(false)}>
               <Button
                 label={route_attributes[app_routes.signin].name as unknown as string}
                 text
@@ -159,7 +159,7 @@ export const RightSidebar: FC = () => {
               icon={`${icon_classes} pi-sign-out`}
               onClick={() => {
                 logout();
-                actions.app.rightSidebarOpened(false)
+                actions.session.rightSidebarOpened(false)
               }}
               iconPos="right"
               className="border-noround text-gray-800 text-left lobster_font text-xl shadow_on_hover"

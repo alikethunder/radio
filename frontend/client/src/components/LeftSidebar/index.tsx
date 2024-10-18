@@ -17,14 +17,14 @@ import './index.sass'
 
 export const LeftSidebar: FC = () => {
 
-  const leftSidebarOpened = useTrackedStore().app.leftSidebarOpened()
+  const leftSidebarOpened = useTrackedStore().session.leftSidebarOpened()
 
 
   return (
     <Sidebar
       visible={leftSidebarOpened}
       position="left"
-      onHide={() => actions.app.leftSidebarOpened(false)}
+      onHide={() => actions.session.leftSidebarOpened(false)}
       className="w-15rem"
       showCloseIcon={false}
       pt={{

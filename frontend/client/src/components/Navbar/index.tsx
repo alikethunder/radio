@@ -104,7 +104,7 @@ export const Navbar: FC = () => {
         <div className="left h-full flex gap-1 sm:gap-2">
 
           <QueryLink to={app_routes.root}
-            onClick={() => actions.app.rightSidebarOpened(false)}>
+            onClick={() => actions.session.rightSidebarOpened(false)}>
             <Button
               label={`Radio`}
               text
@@ -175,7 +175,7 @@ export const Navbar: FC = () => {
             severity="info"
             text
             icon="pi pi-bars text-2xl md:text-3xl"
-            onClick={() => actions.app.rightSidebarOpened(true)} />
+            onClick={() => actions.session.rightSidebarOpened(true)} />
         </div>
       </div>
 

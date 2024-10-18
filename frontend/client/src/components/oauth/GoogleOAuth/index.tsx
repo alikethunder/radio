@@ -25,7 +25,7 @@ export const GoogleOAuth: FC<{ rememberme?: boolean }> = ({ rememberme }) => {
         ux_mode: 'redirect',
         login_uri: `http://localhost:${import.meta.env.VITE_DEV_PORT}/api/v1/auth/google-callback`,
         allowed_parent_origin: `http://localhost:${import.meta.env.VITE_DEV_PORT}`,
-        //window.location.origin
+        use_fedcm_for_prompt: true,
       })
 
       window.google.accounts.id.renderButton(
@@ -36,9 +36,10 @@ export const GoogleOAuth: FC<{ rememberme?: boolean }> = ({ rememberme }) => {
           size: "large",
           //use 'state' to pass parameters within google-callback request
           state: JSON.stringify({
-            redirect_to: store.app.prev_pathname(),
+            redirect_to: store.session.prev_pathname(),
             rememberme,
           }),
+          click_listener: () => actions.session.redirect_from_google(true)
         }
       )
     } catch (e) {

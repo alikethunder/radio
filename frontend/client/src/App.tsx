@@ -84,7 +84,20 @@ export default function App() {
 
   //useEffect(() => { console.log('location : ', location, location.key) }, [location])
 
+  const signedin = useStore().auth.signedin()
+
   const [searchParams, set_search] = useSearchParams()
+
+  useEffect(() => {
+    // to redirect from google login 
+    if (store.session.prev_pathname() && store.session.redirect_from_google()) {
+      actions.session.redirect_from_google(false)
+      console.log('signedin : ', signedin)
+      if (signedin) {
+        navigate(store.session.prev_pathname(), { replace: true })
+      }
+    }
+  }, [signedin])
 
   useEffect(() => {
     setTimeout(() => {
@@ -133,9 +146,7 @@ export default function App() {
     })
   }, [])
 
-  const [authPage, checked_auth_page] = usePageInList(auth_routes)
-
-  const signedin = useStore().auth.signedin()
+  const [authPage, checked_auth_page] = usePageInList(auth_routes, null, null)
 
   //check what route is active and set appropriate current page
   const [current_route, checked_current_route] = usePageInList(all_routes)
@@ -204,16 +215,13 @@ export default function App() {
   useEffect(() => {
     //save prev path to redirect after signin/up
     if (
-      pathname
-      && checked_auth_page
+      checked_auth_page
       && !authPage
     ) {
-      //console.log('[App] set prev_pathname : ', pathname)
-
-      actions.app.prev_pathname(pathname)
+      //console.log('[App] prev pathanme : ', pathname, authPage, checked_auth_page)
+      actions.session.prev_pathname(pathname)
     }
   }, [
-    pathname,
     authPage,
     checked_auth_page
   ])
@@ -272,7 +280,7 @@ export default function App() {
             raised
             icon="pi pi-bars"
             onClick={
-              () => actions.app.leftSidebarOpened(true)
+              () => actions.session.leftSidebarOpened(true)
             } />
           : ''
       }

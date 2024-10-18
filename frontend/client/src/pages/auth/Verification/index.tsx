@@ -80,7 +80,7 @@ export const Verification: FC = () => {
 
       actions.auth.signedin(true)
 
-      navigate(store.app.prev_pathname())
+      navigate(store.session.prev_pathname())
 
       return
     }
