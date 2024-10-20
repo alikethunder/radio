@@ -373,9 +373,51 @@ export const Station = () => {
     <>
       <Helmet>
         <title>RadioWorld - {station.name}</title>
-        <meta name="description" content={station[`text_description_${language}`]} />
+
+        <meta property="og:site_name" content="RadioWorld" />
+
+        <meta property="og:title" content={`RadioWorld - ${station.name}`} />
+        <meta name="twitter:title" content={`RadioWorld - ${station.name}`} />
+
+        <meta name="description" content={`${station[`text_description_${language}`].slice(0, 157)}...`} />
+        <meta property="og:description" content={`${station[`text_description_${language}`].slice(0, 157)}...`} />
+        <meta property="twitter:description" content={`${station[`text_description_${language}`].slice(0, 157)}...`} />
+
         <link rel="canonical" href={`${window.location.origin}${generatePath(app_routes["station$id"], { id: station.id })}?language=${language}`} />
+
+        <meta property="og:url" content={`${window.location.origin}${generatePath(app_routes["station$id"], { id: station.id })}?language=${language}`} />
+
+        <meta property="twitter:url"
+          content={`${window.location.origin}${generatePath(app_routes["station$id"], { id: station.id })}?language=${language}`} />
+
+        <meta property="og:image" content={`/api/v1/files/stations/${station.id}/avatar`} />
+        <meta property="twitter:image" content={`/api/v1/files/stations/${station.id}/avatar`} />
+
+        <meta property="twitter:domain" content={window.location.origin} />
+
       </Helmet>
+
+      <script type="application/ld+json">
+        {JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'Radiostation',
+          name: station.name,
+          description: station[`description_${language}`],
+          availableLanguage: [
+            {
+              "@type": "Language",
+              "name": "English"
+            },
+            {
+              "@type": "Language",
+              "name": "Russian"
+            }
+          ],
+          keywords: station.tags.join(','),
+          logo: `/api/v1/files/stations/${station.id}/avatar`,
+          url: `${window.location.origin}${generatePath(app_routes["station$id"], { id: station.id })}?language=${language}`,
+        })}
+      </script>
 
       <div
         className=" w-full overflow-y-auto page station_page flex-grow-1 flex flex-column text-800 md:py-4 py-3 md:px-4 px-3"
