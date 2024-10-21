@@ -1,9 +1,7 @@
-import { FC, useCallback, useEffect, useMemo, useRef, useState, } from "react"
+import { FC, useCallback, useRef, useState, } from "react"
 
 import {
   useLoaderData,
-  useNavigate,
-  useParams,
 } from "react-router-dom"
 
 import {
@@ -25,7 +23,6 @@ import {
   actions,
   store,
   useStore,
-  useTrackedStore,
 } from "@/store"
 
 import {
@@ -54,11 +51,7 @@ const private_tooltip_options = { ...tooltip_options, position: 'right' } as con
 
 export const UserProfile = () => {
 
-  const navigate = useNavigate()
-
   const language = useStore().persistedApp.language()
-
-  const languages = useStore().persistedApp.languages()
 
   const photo_file_input_ref = useRef<HTMLInputElement>(null)
 
@@ -191,12 +184,12 @@ export const UserProfile = () => {
 
   return (
     <>
-    <Helmet>
-      <title>RadioWorld - {user_data.name}</title>
+      <Helmet>
+        <title>RadioWorld - {user_data.name}</title>
 
-      <link rel="canonical" href={`${window.location.origin}/user-profile/${user_data.id}?language=${language}`} />
+        <link rel="canonical" href={`${window.location.origin}/user-profile/${user_data.id}?language=${language}`} />
 
-    </Helmet>
+      </Helmet>
 
       <div
         className=" w-full overflow-y-auto page flex-grow-1 flex flex-column text-800 md:py-4 py-3 md:px-4 px-3"

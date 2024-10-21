@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef } from "react"
+import { FC, useRef } from "react"
 
 import {
   useNavigate,
@@ -25,6 +25,7 @@ import {
   store,
   actions,
   useTrackedStore,
+  useStore,
 } from "@/store"
 
 import {
@@ -44,6 +45,8 @@ import {
   useTranslationsSkeleton,
 } from "@/hooks"
 
+import { Helmet } from "react-helmet"
+
 type SigninUser = (Pick<User, 'password' | 'name' | 'email' | 'rememberme'>)
 
 export const Signin: FC = () => {
@@ -52,6 +55,8 @@ export const Signin: FC = () => {
 
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<Password>(null)
+
+  const language = useStore().persistedApp.language()
 
   const { handleSubmit, formState: { errors, isSubmitting }, control, clearErrors, setError, watch } = useForm<SigninUser>({
     defaultValues: {
@@ -114,6 +119,7 @@ export const Signin: FC = () => {
 
   const [translations] = useTranslations([
     'error_email_with_@',
+    'signin',
     'password',
   ], true)
 
@@ -127,13 +133,23 @@ export const Signin: FC = () => {
     'login': ['w-5'],
     'dont_have_account': ['w-5'],
     'create_today': ['w-3', 'font-semibold'],
+    'signin': ['w-4'],
   }, true)
 
   return (
     <>
+      <Helmet>
+        <title>RadioWorld - {translations.signin}</title>
+
+        <link rel="canonical" href={`${window.location.origin}/signin?language=${language}`} />
+
+      </Helmet>
+
       <div className="sm:px-3 md:px-5 flex justify-content-center align-items-center flex-grow-1">
 
         <form onSubmit={handleSubmit(onSubmit)} className="sm:border-1 surface-border sm:surface-card border-round pb-5 pt-6 px-4 md:px-5 z-1 sm:shadow-2 w-full md:w-30rem">
+
+          <div className="text-900 text-xl font-bold mb-5 flex justify-content-center">{translations_skl.signin}</div>
 
           <div className="flex flex-column">
 

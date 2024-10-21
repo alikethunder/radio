@@ -24,6 +24,7 @@ import {
   store,
   actions,
   useTrackedStore,
+  useStore,
 } from "@/store"
 
 import {
@@ -44,10 +45,14 @@ import {
   useTranslationsSkeleton,
 } from "@/hooks"
 
+import { Helmet } from "react-helmet"
+
 export const Signup: FC = () => {
   const navigate = useNavigate()
 
   const emailRef = useRef<HTMLInputElement>(null)
+
+  const language = useStore().persistedApp.language()
 
   const { handleSubmit, formState: { errors, isSubmitting }, control, clearErrors, setError, watch } = useForm<User>({
     defaultValues: {
@@ -95,6 +100,8 @@ export const Signup: FC = () => {
   const [translations] = useTranslations([
     'error_email_with_@',
     'name',
+    'name_cannot_be_empty',
+    'registration',
   ], true)
 
   const translations_skl = useTranslationsSkeleton({
@@ -109,134 +116,143 @@ export const Signup: FC = () => {
   }, true)
 
   return (
-    <div className="sm:px-3 md:px-5 min-h-screen flex justify-content-center align-items-center">
+    <>
+      <Helmet>
+        <title>RadioWorld - {translations.registration}</title>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="sm:border-1 surface-border sm:surface-card border-round py-5 px-4 md:px-5 z-1 sm:shadow-2 w-full md:w-30rem">
+        <link rel="canonical" href={`${window.location.origin}/signin?language=${language}`} />
 
-        <div className="text-900 text-xl font-bold mb-5 flex justify-content-center">{translations_skl.registration}</div>
+      </Helmet>
 
-        <div className="flex flex-column">
+      <div className="sm:px-3 md:px-5 flex justify-content-center align-items-center flex-grow-1">
 
-          <Controller
-            name="name"
-            control={control}
-            rules={{
-              required: {
-                value: true,
-                message: translations.name_cannot_be_empty,
-              },
-            }}
-            render={({ field, fieldState }) => (
-              <>
-                <IconField iconPosition="left">
-                  <InputIcon className="pi pi-user"></InputIcon>
+        <form onSubmit={handleSubmit(onSubmit)} className="sm:border-1 surface-border sm:surface-card border-round pb-5 pt-6 px-4 md:px-5 z-1 sm:shadow-2 w-full md:w-30rem">
 
-                  <InputText
-                    type="text"
-                    id={field.name}
-                    value={field.value}
-                    placeholder={translations.name}
-                    className={classNames("w-full", { 'p-invalid': fieldState.error })}
-                    onChange={(e) => field.onChange(e.target.value)}
-                    autoComplete="name"
-                  />
-                </IconField>
+          <div className="text-900 text-xl font-bold mb-5 flex justify-content-center">{translations_skl.registration}</div>
 
-                <small className={`p-error ml-2 pl-1 mb-2`}>{errors?.[field.name]?.message ?? ' '}</small>
-              </>
-            )}
-          />
+          <div className="flex flex-column">
 
-          <Controller
-            name="email"
-            control={control}
-            rules={{
-              required: {
-                value: true,
-                message: translations_skl.error_email_required,
-              },
-              pattern: {
-                value: /\S+@\S+\.\S+/,
-                message: translations_skl.error_not_real_email,
-              },
-            }}
-            render={({ field, fieldState }) => (
-              <>
-                <IconField iconPosition="left">
-                  <InputIcon className="pi pi-envelope"></InputIcon>
+            <Controller
+              name="name"
+              control={control}
+              rules={{
+                required: {
+                  value: true,
+                  message: translations.name_cannot_be_empty,
+                },
+              }}
+              render={({ field, fieldState }) => (
+                <>
+                  <IconField iconPosition="left" className="mb-1">
+                    <InputIcon className="pi pi-user"></InputIcon>
 
-                  <InputText
-                    ref={emailRef}
-                    type="email"
-                    id={field.name}
-                    value={field.value}
-                    placeholder="Email"
-                    className={classNames("w-full", { 'p-invalid': fieldState.error })}
-                    onInput={() => clearErrors('email')}
-                    onChange={(e) => field.onChange(e.target.value)}
-                    autoComplete="email"
+                    <InputText
+                      type="text"
+                      id={field.name}
+                      value={field.value}
+                      placeholder={translations.name}
+                      className={classNames("w-full", { 'p-invalid': fieldState.error })}
+                      onChange={(e) => field.onChange(e.target.value)}
+                      autoComplete="name"
+                    />
+                  </IconField>
 
-                    onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(translations['error_email_with_@'])}
-                  />
-                </IconField>
+                  <small className={`p-error ml-2 pl-1 mb-2`}>{errors?.[field.name]?.message ?? ' '}</small>
+                </>
+              )}
+            />
 
-                <small className={`p-error ml-2 pl-1 mb-2`}>{errors?.[field.name]?.message ?? ' '}</small>
-              </>
-            )}
-          />
+            <Controller
+              name="email"
+              control={control}
+              rules={{
+                required: {
+                  value: true,
+                  message: translations_skl.error_email_required,
+                },
+                pattern: {
+                  value: /\S+@\S+\.\S+/,
+                  message: translations_skl.error_not_real_email,
+                },
+              }}
+              render={({ field, fieldState }) => (
+                <>
+                  <IconField iconPosition="left" className="mb-1">
+                    <InputIcon className="pi pi-envelope"></InputIcon>
 
-          <div className="flex align-items-center justify-content-between mb-5">
-            <div className="flex align-items-center">
+                    <InputText
+                      ref={emailRef}
+                      type="email"
+                      id={field.name}
+                      value={field.value}
+                      placeholder="Email"
+                      className={classNames("w-full", { 'p-invalid': fieldState.error })}
+                      onInput={() => clearErrors('email')}
+                      onChange={(e) => field.onChange(e.target.value)}
+                      autoComplete="email"
 
-              {
-                useTrackedStore().app.isClient()
-                  ?
+                      onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(translations['error_email_with_@'])}
+                    />
+                  </IconField>
 
-                  <Controller
-                    name="rememberme"
-                    control={control}
-                    render={({ field }) => (
-                      <>
-                        <Checkbox
-                          inputId={field.name}
-                          checked={field.value}
-                          inputRef={field.ref}
-                          className="mr-2"
-                          onChange={(e) => {
-                            actions.persistedApp.rememberme(!!e.checked)
-                            field.onChange(e.checked)
-                          }} />
-                        <label htmlFor={field.name} className="cursor-pointer">{translations_skl.remember_me}</label>
-                      </>
-                    )}
-                  />
-                  : ''
-              }
+                  <small className={`p-error ml-2 pl-1 mb-2`}>{errors?.[field.name]?.message ?? ' '}</small>
+                </>
+              )}
+            />
 
+            <div className="flex align-items-center justify-content-between mb-5">
+              <div className="flex align-items-center">
+
+                {
+                  useTrackedStore().app.isClient()
+                    ?
+
+                    <Controller
+                      name="rememberme"
+                      control={control}
+                      render={({ field }) => (
+                        <>
+                          <Checkbox
+                            inputId={field.name}
+                            checked={field.value}
+                            inputRef={field.ref}
+                            className="mr-2"
+                            onChange={(e) => {
+                              actions.persistedApp.rememberme(!!e.checked)
+                              field.onChange(e.checked)
+                            }} />
+                          <label htmlFor={field.name} className="cursor-pointer">{translations_skl.remember_me}</label>
+                        </>
+                      )}
+                    />
+                    : ''
+                }
+
+              </div>
+              <QueryLink to={app_routes.reset_password} className="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">{translations_skl.forgot_your_password}</QueryLink>
             </div>
-            <QueryLink to={app_routes.reset_password} className="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">{translations_skl.forgot_your_password}</QueryLink>
+
+            <Button
+              type="submit"
+              label={translations_skl.signup}
+              outlined
+              raised
+              icon={`${icon_classes} ${isSubmitting ? 'pi-spin pi-sync' : 'pi-address-book'}`}
+              className="w-full mb-4 shadow_on_hover"
+              iconPos="right"
+              disabled={isSubmitting}
+            />
+
+            <GoogleOAuth rememberme={watch('rememberme')} />
+
+            <QueryLink to={app_routes.signin} className="font-medium no-underline ml-2 text-blue-500 justify-content-center flex flex-row gap-1">
+              {translations_skl.already_have_account}
+              {translations_skl.login}
+            </QueryLink>
+
           </div>
-
-          <Button
-            type="submit"
-            label={translations_skl.signup}
-            outlined
-            raised
-            icon={`${icon_classes} ${isSubmitting ? 'pi-spin pi-sync' : 'pi-send'}`}
-            className="w-full mb-4 shadow_on_hover"
-            iconPos="right"
-            disabled={isSubmitting}
-          />
-
-          <GoogleOAuth rememberme={watch('rememberme')} />
-
-          <QueryLink to={app_routes.signin} className="font-medium no-underline ml-2 text-blue-500 justify-content-center flex flex-row gap-1">
-            {translations_skl.already_have_account}
-            {translations_skl.login}
-          </QueryLink>
-
-        </div>
-      </form>
-    </div>
+        </form>
+      </div>
+    </>
   )
 }

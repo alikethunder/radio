@@ -51,5 +51,9 @@ export const route_attributes = {
     name: <Translation capitalize field="login" className="w-4"/>,
     icon: 'pi-sign-in',
   },
+  [app_routes.signup]: {
+    name: <Translation capitalize field="registration" className="w-4"/>,
+    icon: 'pi-address-book',
+  },
   [app_routes.root]: {},
 }
