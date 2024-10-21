@@ -48,14 +48,18 @@ import { tooltip_options } from "@/constants/tooltip_options"
 import { FrontUser } from "@/types"
 import { setForm } from "@/functions/setForm"
 
+import { Helmet } from "react-helmet"
+
 const private_tooltip_options = { ...tooltip_options, position: 'right' } as const
 
 export const UserProfile = () => {
 
   const navigate = useNavigate()
 
-  const windowSize = useTrackedStore().app.windowSize()
-  const isDesktop = useTrackedStore().app.isDesktop()
+  const language = useStore().persistedApp.language()
+
+  const languages = useStore().persistedApp.languages()
+
   const photo_file_input_ref = useRef<HTMLInputElement>(null)
 
   const [profile_photo_exists, set_profile_photo_exists] = useState(true)
@@ -186,200 +190,209 @@ export const UserProfile = () => {
   }, true)
 
   return (
-    <div
-      className=" w-full overflow-y-auto page flex-grow-1 flex flex-column text-800 md:py-4 py-3 md:px-4 px-3"
-    >
+    <>
+    <Helmet>
+      <title>RadioWorld - {user_data.name}</title>
 
-      <div className="flex flex-column sm:flex-row">
+      <link rel="canonical" href={`${window.location.origin}/user-profile/${user_data.id}?language=${language}`} />
 
-        <div
-          style={{ backgroundImage: `url(${photo_data_url || `/api/v1/files/users/${user_data?.id}/photo`})` }}
+    </Helmet>
 
-          className={`element_with_overlay shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-circle flex align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode ? 'cursor-pointer' : ''}`}
+      <div
+        className=" w-full overflow-y-auto page flex-grow-1 flex flex-column text-800 md:py-4 py-3 md:px-4 px-3"
+      >
 
-          onClick={() => {
-            if (edit_mode) {
-              photo_file_input_ref.current?.click()
-            }
-          }}
-        >
-          <img
-            style={{ display: 'none' }}
-            src={`/api/v1/files/users/${user_data?.id}/photo`}
+        <div className="flex flex-column sm:flex-row">
 
-            onError={({ currentTarget }) => {
-              currentTarget.onerror = null
-              set_profile_photo_exists(false)
-            }}
-          />
+          <div
+            style={{ backgroundImage: `url(${photo_data_url || `/api/v1/files/users/${user_data?.id}/photo`})` }}
 
-          {
-            photo_data_url || profile_photo_exists ? <></> :
-              <i className="pi pi-user text-4xl md:text-6xl"></i>
-          }
+            className={`element_with_overlay shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-circle flex align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode ? 'cursor-pointer' : ''}`}
 
-          {
-            edit_mode ?
-              <>
-
-                <div className="overlay absolute top-0 bottom-0 right-0 left-0 flex align-items-center justify-content-center text-center">
-
-                  <div className="overlay_background surface-900 absolute top-0 bottom-0 right-0 left-0"></div>
-
-                  <div className="overlay_text text-white font-semibold z-1">
-                    {translations.choose_image}
-                  </div>
-
-                </div>
-
-                <Ripple />
-
-              </>
-              : <></>
-          }
-
-          <input
-            ref={photo_file_input_ref}
-            type="file"
-            id="fileElem"
-            accept="image/*"
-            className="hidden"
-            onChange={async (e) => {
-              if (e.target.files?.[0]) {
-                const [blob, data_url] = await resize_image(e.target.files?.[0])
-                set_photo_blob(blob)
-                set_photo_data_url(data_url)
+            onClick={() => {
+              if (edit_mode) {
+                photo_file_input_ref.current?.click()
               }
             }}
-          />
+          >
+            <img
+              style={{ display: 'none' }}
+              src={`/api/v1/files/users/${user_data?.id}/photo`}
+
+              onError={({ currentTarget }) => {
+                currentTarget.onerror = null
+                set_profile_photo_exists(false)
+              }}
+            />
+
+            {
+              photo_data_url || profile_photo_exists ? <></> :
+                <i className="pi pi-user text-4xl md:text-6xl"></i>
+            }
+
+            {
+              edit_mode ?
+                <>
+
+                  <div className="overlay absolute top-0 bottom-0 right-0 left-0 flex align-items-center justify-content-center text-center">
+
+                    <div className="overlay_background surface-900 absolute top-0 bottom-0 right-0 left-0"></div>
+
+                    <div className="overlay_text text-white font-semibold z-1">
+                      {translations.choose_image}
+                    </div>
+
+                  </div>
+
+                  <Ripple />
+
+                </>
+                : <></>
+            }
+
+            <input
+              ref={photo_file_input_ref}
+              type="file"
+              id="fileElem"
+              accept="image/*"
+              className="hidden"
+              onChange={async (e) => {
+                if (e.target.files?.[0]) {
+                  const [blob, data_url] = await resize_image(e.target.files?.[0])
+                  set_photo_blob(blob)
+                  set_photo_data_url(data_url)
+                }
+              }}
+            />
+
+          </div>
+
+          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-1 align-self-start sm:ml-5 mt-3 sm:mt-1 w-25rem max-w-full" ref={setForm}>
+
+            <Controller
+              name="name"
+              control={control}
+              rules={{
+                required: {
+                  value: true,
+                  message: translations.name_cannot_be_empty,
+                },
+              }}
+              render={({ field, fieldState }) => (
+                <>
+                  <label
+                    htmlFor={field.name}
+                    className={classNames(
+                      {
+                        'p-error': errors[field.name]
+                      },
+                      'text-600'
+                    )}
+                  >
+                    <small>
+                      {translations.name}
+                    </small>
+                  </label>
+
+                  <InputText
+                    id={field.name}
+                    value={field.value}
+                    className={classNames(
+                      {
+                        'p-invalid': fieldState.error,
+                      },
+                    )}
+                    onChange={(e) => {
+                      field.onChange(e.target.value)
+                    }}
+                    onBlur={field.onBlur}
+                    disabled={!edit_mode}
+                    pt={{
+                      root: {
+                        onInput: (e) => {
+                          //@ts-ignore
+                          e.target.size = Math.min(Math.max(e.target.value.length - 7, 20), 70)
+                        }
+                      }
+                    }}
+                  />
+
+                  <small className="p-error">
+                    {
+                      errors[field.name]?.message ?? ' '
+                    }
+                  </small>
+                </>
+              )}
+            />
+            {
+              user_data?.own_profile ?
+                <Controller
+                  name="email"
+                  control={control}
+                  rules={{
+                    required: {
+                      value: true,
+                      message: translations.error_email_required,
+                    },
+                    pattern: {
+                      value: /\S+@\S+\.\S+/,
+                      message: translations.error_not_real_email,
+                    },
+                  }}
+                  render={({ field, fieldState }) => (
+                    <>
+                      <label
+                        htmlFor={field.name}
+                        className={classNames(
+                          {
+                            'p-error': errors[field.name]
+                          },
+                          'text-600'
+                        )}
+                      >
+                        <Tooltip target='.pi-lock' {...private_tooltip_options} >
+                          {translations.only_you_can_see}
+                        </Tooltip>
+
+                        <small>Email </small> <i className="pi pi-lock text-xs" ></i>
+                      </label>
+
+                      <IconField iconPosition="left">
+                        <InputIcon className="pi pi-envelope"></InputIcon>
+
+                        <InputText
+                          type="email"
+                          id={field.name}
+                          value={field.value}
+
+                          className={classNames(
+                            "w-full",
+                            { 'p-invalid': fieldState.error }
+                          )}
+                          onInput={() => clearErrors('email')}
+                          onChange={(e) => field.onChange(e.target.value)}
+                          onBlur={field.onBlur}
+                          disabled={!edit_mode}
+                          autoComplete="email"
+
+                          onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(error_email_with_a)}
+
+                        />
+                      </IconField>
+
+                      <small className={`p-error`}>{errors?.[field.name]?.message ?? ' '}</small>
+                    </>
+                  )}
+                />
+                : <></>
+            }
+
+          </form>
 
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-1 align-self-start sm:ml-5 mt-3 sm:mt-1 w-25rem max-w-full" ref={setForm}>
-
-          <Controller
-            name="name"
-            control={control}
-            rules={{
-              required: {
-                value: true,
-                message: translations.name_cannot_be_empty,
-              },
-            }}
-            render={({ field, fieldState }) => (
-              <>
-                <label
-                  htmlFor={field.name}
-                  className={classNames(
-                    {
-                      'p-error': errors[field.name]
-                    },
-                    'text-600'
-                  )}
-                >
-                  <small>
-                    {translations.name}
-                  </small>
-                </label>
-
-                <InputText
-                  id={field.name}
-                  value={field.value}
-                  className={classNames(
-                    {
-                      'p-invalid': fieldState.error,
-                    },
-                  )}
-                  onChange={(e) => {
-                    field.onChange(e.target.value)
-                  }}
-                  onBlur={field.onBlur}
-                  disabled={!edit_mode}
-                  pt={{
-                    root: {
-                      onInput: (e) => {
-                        //@ts-ignore
-                        e.target.size = Math.min(Math.max(e.target.value.length - 7, 20), 70)
-                      }
-                    }
-                  }}
-                />
-
-                <small className="p-error">
-                  {
-                    errors[field.name]?.message ?? ' '
-                  }
-                </small>
-              </>
-            )}
-          />
-          {
-            user_data?.own_profile ?
-              <Controller
-                name="email"
-                control={control}
-                rules={{
-                  required: {
-                    value: true,
-                    message: translations.error_email_required,
-                  },
-                  pattern: {
-                    value: /\S+@\S+\.\S+/,
-                    message: translations.error_not_real_email,
-                  },
-                }}
-                render={({ field, fieldState }) => (
-                  <>
-                    <label
-                      htmlFor={field.name}
-                      className={classNames(
-                        {
-                          'p-error': errors[field.name]
-                        },
-                        'text-600'
-                      )}
-                    >
-                      <Tooltip target='.pi-lock' {...private_tooltip_options} >
-                        {translations.only_you_can_see}
-                      </Tooltip>
-
-                      <small>Email </small> <i className="pi pi-lock text-xs" ></i>
-                    </label>
-
-                    <IconField iconPosition="left">
-                      <InputIcon className="pi pi-envelope"></InputIcon>
-
-                      <InputText
-                        type="email"
-                        id={field.name}
-                        value={field.value}
-
-                        className={classNames(
-                          "w-full",
-                          { 'p-invalid': fieldState.error }
-                        )}
-                        onInput={() => clearErrors('email')}
-                        onChange={(e) => field.onChange(e.target.value)}
-                        onBlur={field.onBlur}
-                        disabled={!edit_mode}
-                        autoComplete="email"
-
-                        onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(error_email_with_a)}
-
-                      />
-                    </IconField>
-
-                    <small className={`p-error`}>{errors?.[field.name]?.message ?? ' '}</small>
-                  </>
-                )}
-              />
-              : <></>
-          }
-
-        </form>
-
       </div>
-
-    </div>
+    </>
   )
 }
