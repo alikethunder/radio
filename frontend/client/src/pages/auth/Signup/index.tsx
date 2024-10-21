@@ -120,7 +120,7 @@ export const Signup: FC = () => {
       <Helmet>
         <title>RadioWorld - {translations.registration}</title>
 
-        <link rel="canonical" href={`${window.location.origin}/signin?language=${language}`} />
+        <link rel="canonical" href={`${window.location.origin}/signup?language=${language}`} />
 
       </Helmet>
 

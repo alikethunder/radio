@@ -1,4 +1,4 @@
-import { FC, useRef, useEffect, createRef, useState } from "react"
+import { FC, useRef, } from "react"
 
 import {
   useNavigate,
@@ -21,7 +21,7 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import {
   store,
   actions,
-  useTrackedStore,
+  useStore,
 } from "@/store"
 
 import {
@@ -39,6 +39,8 @@ import {
   useTranslationsSkeleton,
 } from "@/hooks"
 
+import { Helmet } from "react-helmet"
+
 type ResetPasswordUser = (Pick<User, 'email'>)
 
 export const ResetPassword: FC = () => {
@@ -46,6 +48,8 @@ export const ResetPassword: FC = () => {
   const navigate = useNavigate()
 
   const emailRef = useRef<HTMLInputElement>(null)
+
+  const language = useStore().persistedApp.language()
 
   const { handleSubmit, formState: { errors, isSubmitting }, control, clearErrors, setError } = useForm<ResetPasswordUser>({
     defaultValues: {
@@ -100,6 +104,12 @@ export const ResetPassword: FC = () => {
 
   }
 
+  const [translations] = useTranslations([
+    'error_email_with_@',
+    'signin',
+    'reset_password',
+  ], true)
+
   const translations_skl = useTranslationsSkeleton({
     'reset_password': ['w-8',],
     'send': ['w-2'],
@@ -112,6 +122,13 @@ export const ResetPassword: FC = () => {
 
   return (
     <>
+    <Helmet>
+      <title>RadioWorld - {translations.reset_password}</title>
+
+      <link rel="canonical" href={`${window.location.origin}/reset-password?language=${language}`} />
+
+    </Helmet>
+
       <div className="sm:px-3 md:px-5 min-h-screen flex justify-content-center align-items-center">
 
         <form onSubmit={handleSubmit(onSubmit)} className="sm:border-1 surface-border sm:surface-card border-round py-5 px-4 md:px-5 z-1 sm:shadow-2 w-full md:w-30rem">
@@ -158,10 +175,10 @@ export const ResetPassword: FC = () => {
 
             <Button
               type="submit"
-              label={<div className="flex flex-row gap-1 justify-content-center">{translations_skl.send}{translations_skl.verification_code}</div> as unknown as string}
+              label={<div className="flex flex-row gap-1 justify-content-center text-sm sm:text-base">{translations_skl.send}{translations_skl.verification_code}</div> as unknown as string}
               outlined
               raised
-              icon={`${icon_classes} ${isSubmitting ? 'pi-spin pi-sync' : 'pi-send'}`}
+              icon={`${icon_classes} ${isSubmitting ? 'pi-spin pi-sync' : 'pi-key'}`}
               className="w-full mb-4 shadow_on_hover"
               iconPos="right"
             />
