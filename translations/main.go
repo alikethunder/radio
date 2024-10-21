@@ -56,6 +56,8 @@ var Dictionary = map[string]map[string]string{
 		"search_station_name_and_description": "by name or description",
 		"search_stations_by_tags":             "tags",
 		"search_radiostations":                "radiostations search",
+		"home_page_description":               "RadioWorld - is a radiostation hub for every taste.",
+		"tags":                                "tags",
 	},
 	"ru": {
 		"login":                               "Войти",
@@ -110,5 +112,7 @@ var Dictionary = map[string]map[string]string{
 		"search_station_name_and_description": "по имени или описанию",
 		"search_stations_by_tags":             "тэги",
 		"search_radiostations":                "Поиск радиостанций",
+		"home_page_description":               "RadioWorld - хаб радиостанций на любой вкус.",
+		"tags":                                "тэги",
 	},
 }

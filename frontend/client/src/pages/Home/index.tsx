@@ -27,6 +27,8 @@ import {
 
 import {
   useFormState,
+  useTranslations,
+  useTranslationsSkeleton,
 } from '@/hooks'
 
 import {
@@ -35,6 +37,8 @@ import {
 
 import { Station } from "@/types"
 import { useDebounceCallback } from "usehooks-ts"
+
+import { Helmet } from "react-helmet"
 
 export const Home = () => {
 
@@ -58,6 +62,10 @@ export const Home = () => {
   const current_user_id = useStore().user.id()
 
   const language = useStore().persistedApp.language()
+
+  const languages = useStore().persistedApp.languages()
+
+  const station_tags = useStore().app.station_tags().map(t => t.name)
 
   const some_station_admin = useMemo(() => signedin
     && current_user_id
@@ -140,140 +148,220 @@ export const Home = () => {
     }
   }, 50)
 
-  return (
-    <div className="sm:py-5 py-3 sm:px-6 px-2 w-full h-full overflow-y-auto page home_page flex-grow-1 flex flex-column">
+  const [translations] = useTranslations([
+    "home_page_description",
+    "tags",
+  ], true)
 
-      <div className={`stations_list row-gap-2 column-gap-3 ${edit_mode ? 'row-gap-7' : ''}`}>
+
+  const translations_skl = useTranslationsSkeleton({
+    "home_page_description": ["w-12"],
+    "tags": ['w-4rem'],
+  }, true)
+
+  return (
+    <>
+      <Helmet>
+        <title>RadioWorld</title>
+
+        <meta name="twitter:card" content="summary" />
 
         {
-          edit_mode && root_admin ?
-            <QueryLink to={generatePath(`${app_routes["station$id"]}/${'?edit'/* app_routes.edit */}`, { id: "new" })} className="flex flex-column gap-2 text-primary">
-              <div className="flex flex-row overflow-hidden flex-shrink-0 shadow-2 border-round align-self-center shadow_on_hover w-9rem h-10rem">
-
-                <div className="station_card_icon align-self-center flex align-items-center justify-content-center">
-                  <i className="pi pi-plus-circle" style={{ fontSize: '2rem' }}></i>
-                </div>
-
-                <div className="station_card_header align-self-center font-semibold flex-grow-1 text-center lobster_font">
-                  Create new radio
-                </div>
-              </div>
-
-              <div className="flex flex-row flex-wrap align-items-start gap-1">
-
-                <StationTag tag="A" color="" />
-
-                <StationTag tag="A" color="" />
-              </div>
-            </QueryLink>
-            : <></>
+          language ? <meta property="og:locale" content={language} /> : <></>
         }
 
-        {
-          searched_stations_with_mode?.map(station =>
-            <div className="flex flex-column gap-2 w-9rem">
+        <meta property="og:locale:alternate" content={languages.join(',').replaceAll(`${language},`, '').replaceAll(language ?? '', '')} />
 
-              <div className={classNames({
-                'current_station active_element': current_station?.id == station.id,
-              },
-                'flex',
-                'flex-column',
-                'gap-1',
-                'overflow-hidden',
-                'text-primary',
-                'shadow_on_hover',
-                'element_with_overlay',
-                'w-9rem',
-                'h-13rem',
-                'flex-shrink-0 shadow-2 border-round',
-              )}>
+        <meta property="og:site_name" content="RadioWorld" />
 
-                <div className="flex flex-row gap-1">
-                  <div
-                    className="w-full h-5rem flex align-items-center justify-content-center p-ripple relative surface-100"
-                    onClick={(e) => {
-                      e.preventDefault()
-                      e.stopPropagation()
-                      play_click(station)
-                    }} >
+        <meta property="og:title" content={`RadioWorld`} />
+        <meta name="twitter:title" content={`RadioWorld`} />
 
-                    <i className="pi pi-wave-pulse " style={{ fontSize: '2rem' }}></i>
+        <meta name="description" content={`${translations.home_page_description} ${translations.tags}: ${station_tags.join(',')}`} />
+        <meta property="og:description" content={`${translations.home_page_description} ${translations.tags}: ${station_tags.join(',')}`} />
+        <meta property="twitter:description" content={`${translations.home_page_description} ${translations.tags}: ${station_tags.join(',')}`} />
 
-                    <div className="absolute w-full h-full top-0 left-0 bg-no-repeat bg-contain bg-center surface-100 station_image"
-                      style={{
-                        backgroundImage: `url(/api/v1/files/stations/${station.id}/avatar)`,
-                      }} >
+        <link rel="canonical" href={`${window.location.origin}?language=${language}`} />
 
-                      <img
-                        style={{ display: 'none' }}
-                        src={`/api/v1/files/stations/${station.id}/avatar`}
+        <meta property="og:url" content={`${window.location.origin}?language=${language}`} />
 
-                        onError={({ currentTarget }) => {
-                          currentTarget.onerror = null
+        <meta property="twitter:url"
+          content={`${window.location.origin}?language=${language}`} />
 
-                          const p = currentTarget.closest('.station_image') as HTMLElement
+        {/* <meta property="og:image" content={`/api/v1/files/stations/${station.id}/avatar`} /> */}
+        <meta property="og:image:width" content="128" />
+        <meta property="og:image:height" content="128" />
+        {/* <meta property="twitter:image" content={`/api/v1/files/stations/${station.id}/avatar`} /> */}
 
-                          if (p) p.style.display = 'none'
-                        }}
-                      />
-                    </div>
+        <meta property="twitter:domain" content={window.location.origin} />
 
+      </Helmet>
+
+      <script type="application/ld+json">
+        {JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'Radiostations',
+          name: 'Radioworld',
+          description: translations.home_page_description,
+          availableLanguage: [
+            {
+              "@type": "Language",
+              "name": "English"
+            },
+            {
+              "@type": "Language",
+              "name": "Russian"
+            }
+          ],
+          keywords: station_tags.join(','),
+          //logo: `/api/v1/files/stations/${station.id}/avatar`,
+          url: `${window.location.origin}?language=${language}`,
+        })}
+      </script>
+
+
+      <div className="sm:py-5 py-3 sm:px-6 px-2 w-full h-full overflow-y-auto page home_page flex-grow-1 flex flex-column">
+
+        <div className={`stations_list row-gap-2 column-gap-3 mb-4 ${edit_mode ? 'row-gap-7' : ''}`}>
+
+          {
+            edit_mode && root_admin ?
+              <QueryLink to={generatePath(`${app_routes["station$id"]}/${'?edit'/* app_routes.edit */}`, { id: "new" })} className="flex flex-column gap-2 text-primary">
+                <div className="flex flex-row overflow-hidden flex-shrink-0 shadow-2 border-round align-self-center shadow_on_hover w-9rem h-10rem">
+
+                  <div className="station_card_icon align-self-center flex align-items-center justify-content-center">
+                    <i className="pi pi-plus-circle" style={{ fontSize: '2rem' }}></i>
+                  </div>
+
+                  <div className="station_card_header align-self-center font-semibold flex-grow-1 text-center lobster_font">
+                    Create new radio
+                  </div>
+                </div>
+
+                <div className="flex flex-row flex-wrap align-items-start gap-1">
+
+                  <StationTag tag="A" color="" />
+
+                  <StationTag tag="A" color="" />
+                </div>
+              </QueryLink>
+              : <></>
+          }
+
+          {
+            searched_stations_with_mode?.map(station =>
+              <div className="flex flex-column gap-2 w-9rem">
+
+                <div className={classNames({
+                  'current_station active_element': current_station?.id == station.id,
+                },
+                  'flex',
+                  'flex-column',
+                  'gap-1',
+                  'overflow-hidden',
+                  'text-primary',
+                  'shadow_on_hover',
+                  'element_with_overlay',
+                  'w-9rem',
+                  'h-13rem',
+                  'flex-shrink-0 shadow-2 border-round',
+                )}>
+
+                  <div className="flex flex-row gap-1">
                     <div
-                      className="overlay absolute top-0 bottom-0 right-0 left-0 flex align-items-center justify-content-center text-center cursor-pointer"
+                      className="w-full h-5rem flex align-items-center justify-content-center p-ripple relative surface-100"
                       onClick={(e) => {
                         e.preventDefault()
                         e.stopPropagation()
                         play_click(station)
-                      }}>
+                      }} >
 
-                      <div className="overlay_background surface-900 absolute top-0 bottom-0 right-0 left-0"></div>
+                      <i className="pi pi-wave-pulse " style={{ fontSize: '2rem' }}></i>
 
-                      <div className="overlay_text text-white font-semibold z-1">
-                        <i className={`pi ${current_station?.id == station.id && playing ? 'pi-pause' : 'pi-play'}`} style={{ fontSize: '2rem' }}></i>
+                      <div className="absolute w-full h-full top-0 left-0 bg-no-repeat bg-contain bg-center surface-100 station_image"
+                        style={{
+                          backgroundImage: `url(/api/v1/files/stations/${station.id}/avatar)`,
+                        }} >
+
+                        <img
+                          style={{ display: 'none' }}
+                          src={`/api/v1/files/stations/${station.id}/avatar`}
+
+                          onError={({ currentTarget }) => {
+                            currentTarget.onerror = null
+
+                            const p = currentTarget.closest('.station_image') as HTMLElement
+
+                            if (p) p.style.display = 'none'
+                          }}
+                        />
                       </div>
+
+                      <div
+                        className="overlay absolute top-0 bottom-0 right-0 left-0 flex align-items-center justify-content-center text-center cursor-pointer"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          play_click(station)
+                        }}>
+
+                        <div className="overlay_background surface-900 absolute top-0 bottom-0 right-0 left-0"></div>
+
+                        <div className="overlay_text text-white font-semibold z-1">
+                          <i className={`pi ${current_station?.id == station.id && playing ? 'pi-pause' : 'pi-play'}`} style={{ fontSize: '2rem' }}></i>
+                        </div>
+
+                      </div>
+
+                      <Ripple />
 
                     </div>
 
-                    <Ripple />
-
+                    {/* likes listeners */}
                   </div>
 
-                  {/* likes listeners */}
+                  <div className="flex flex-column justify-content-between flex-grow-1 px-1 pb-1">
+
+                    <div className="flex flex-column justify-content-center flex-grow-1">
+
+                      <QueryLink to={generatePath(app_routes["station$id"], { id: station.id })} className="font-semibold text-primary text-center station_name mb-1  text_hidden_overflow line-clamp-3">
+                        {station.name}
+                      </QueryLink>
+                    </div>
+
+                    <div className="station_tags_container text-center text_hidden_overflow line-clamp-2">
+                      {
+                        station.tags.map(tag => <StationTag tag={tag} />)
+                      }
+                    </div>
+                  </div>
+
                 </div>
 
-                <div className="flex flex-column justify-content-between flex-grow-1 px-1 pb-1">
+                {
+                  edit_mode ?
+                    <div className="flex flex-row flex-wrap flex-shrink-0 align-items-start gap-1 overflow-hidden h-3rem">
 
-                  <div className="flex flex-column justify-content-center flex-grow-1">
+                      <StationTag tag="Broadcasting" color={station.broadcasting ? 'green-400' : 'surface-300'} disable_link />
 
-                    <QueryLink to={generatePath(app_routes["station$id"], { id: station.id })} className="font-semibold text-primary text-center station_name mb-1  text_hidden_overflow line-clamp-3">
-                      {station.name}
-                    </QueryLink>
-                  </div>
-
-                  <div className="station_tags_container text-center text_hidden_overflow line-clamp-2">
-                    {
-                      station.tags.map(tag => <StationTag tag={tag} />)
-                    }
-                  </div>
-                </div>
-
+                      <StationTag tag="External" color={station.external && station.external_enable ? 'green-400' : 'surface-300'} disable_link />
+                    </div>
+                    : <></>
+                }
               </div>
+            )}
 
-              {
-                edit_mode ?
-                  <div className="flex flex-row flex-wrap flex-shrink-0 align-items-start gap-1 overflow-hidden h-3rem">
+        </div>
 
-                    <StationTag tag="Broadcasting" color={station.broadcasting ? 'green-400' : 'surface-300'} disable_link />
-
-                    <StationTag tag="External" color={station.external && station.external_enable ? 'green-400' : 'surface-300'} disable_link />
-                  </div>
-                  : <></>
-              }
-            </div>
-          )}
-
-      </div>
-
-    </div >
+        <div className="shadow-2 p-3 w-12 mt-auto border-round flex flex-column ">
+          <div className="inline-block text-center">
+            {translations_skl.home_page_description}
+          </div>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {translations_skl.tags}: {station_tags.map(t => <StationTag tag={t} />)}
+          </div>
+        </div>
+      </div >
+    </>
   )
 }

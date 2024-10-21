@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useMemo, useRef, useState, LegacyRef } from "react"
+import { FC, useCallback, useEffect, useMemo, useRef, useState, } from "react"
 
 import {
   useLoaderData,
@@ -13,8 +13,6 @@ import {
 
 import { classNames } from 'primereact/utils'
 
-import { Button } from 'primereact/button'
-
 import { InputText } from "primereact/inputtext"
 
 import { IconField } from 'primereact/iconfield'
@@ -22,8 +20,6 @@ import { IconField } from 'primereact/iconfield'
 import { InputIcon } from 'primereact/inputicon'
 
 import { confirmDialog } from 'primereact/confirmdialog'
-
-import './index.sass'
 
 import {
   actions,
@@ -39,10 +35,6 @@ import {
 import { DataTable } from "primereact/datatable"
 import { Column } from "primereact/column"
 import { Tooltip } from "primereact/tooltip"
-
-import {
-  app_routes,
-} from '@/constants/router'
 
 import { Ripple } from "primereact/ripple"
 
@@ -195,7 +187,7 @@ export const UserProfile = () => {
 
   return (
     <div
-      className=" w-full overflow-y-auto page user_profile_page flex-grow-1 flex flex-column text-800 md:py-4 py-3 md:px-4 px-3"
+      className=" w-full overflow-y-auto page flex-grow-1 flex flex-column text-800 md:py-4 py-3 md:px-4 px-3"
     >
 
       <div className="flex flex-column sm:flex-row">

@@ -374,14 +374,24 @@ export const Station = () => {
       <Helmet>
         <title>RadioWorld - {station.name}</title>
 
+        <meta property="og:type" content="music.radio_station" />
+        
+        <meta name="twitter:card" content="summary" />
+
+        {
+          language ? <meta property="og:locale" content={language} /> : <></>
+        }
+
+        <meta property="og:locale:alternate" content={languages.join(',').replaceAll(`${language},`, '').replaceAll(language ?? '', '')} />
+
         <meta property="og:site_name" content="RadioWorld" />
 
         <meta property="og:title" content={`RadioWorld - ${station.name}`} />
         <meta name="twitter:title" content={`RadioWorld - ${station.name}`} />
 
-        <meta name="description" content={`${station[`text_description_${language}`].slice(0, 157)}...`} />
-        <meta property="og:description" content={`${station[`text_description_${language}`].slice(0, 157)}...`} />
-        <meta property="twitter:description" content={`${station[`text_description_${language}`].slice(0, 157)}...`} />
+        <meta name="description" content={`${station[`text_description_${language}`]}`} />
+        <meta property="og:description" content={`${station[`text_description_${language}`]}`} />
+        <meta property="twitter:description" content={`${station[`text_description_${language}`]}`} />
 
         <link rel="canonical" href={`${window.location.origin}${generatePath(app_routes["station$id"], { id: station.id })}?language=${language}`} />
 
@@ -391,6 +401,8 @@ export const Station = () => {
           content={`${window.location.origin}${generatePath(app_routes["station$id"], { id: station.id })}?language=${language}`} />
 
         <meta property="og:image" content={`/api/v1/files/stations/${station.id}/avatar`} />
+        <meta property="og:image:width" content="128" />
+        <meta property="og:image:height" content="128" />
         <meta property="twitter:image" content={`/api/v1/files/stations/${station.id}/avatar`} />
 
         <meta property="twitter:domain" content={window.location.origin} />
