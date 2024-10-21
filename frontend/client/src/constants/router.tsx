@@ -59,5 +59,9 @@ export const route_attributes = {
     name: <Translation capitalize field="reset_password" className="w-8rem"/>,
     icon: 'pi-key',
   },
+  [app_routes.verification]: {
+    name: <Translation capitalize field="create_password" className="w-8rem"/>,
+    icon: 'pi-verified',
+  },
   [app_routes.root]: {},
 }
