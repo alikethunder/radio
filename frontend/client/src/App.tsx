@@ -2,11 +2,8 @@ import React, { useEffect, useState } from "react"
 
 import {
   Outlet,
-  //useLoaderData,
   useNavigate,
   useLocation,
-  useBlocker,
-  matchPath,
   useMatch,
   useSearchParams,
 } from "react-router-dom"
@@ -33,7 +30,6 @@ import {
   LeftSidebar,
   RightSidebar,
   RestrictedPage,
-  QueryLink,
   Player,
 } from '@/components'
 
@@ -44,12 +40,7 @@ import {
 } from '@/mechanics'
 
 import {
-  FrontUser,
-} from '@/types'
-
-import {
   actions,
-  useTrackedStore,
   store,
   useStore
 } from "@/store"
@@ -66,13 +57,9 @@ import {
   route_attributes,
 } from '@/constants/router'
 
-import { admin } from "@/API/profile/admin"
-
 import { get_station } from "@/API/station/get_station"
 
 //console.log('typeof window : ', typeof window)
-
-/* import favicon from './assets/favicon.ico' */
 
 export default function App() {
 
@@ -166,7 +153,6 @@ export default function App() {
   }, [
     current_route, checked_current_route
   ])
-  //let data: any = useLoaderData()
 
   useEffect(() => {
     //**effects is running only on client

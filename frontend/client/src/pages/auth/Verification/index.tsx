@@ -142,7 +142,7 @@ export const Verification: FC = () => {
 
   useEffect(() => {
     if (!store.user.email()) {
-      //navigate(app_routes.signin, { replace: true })
+      navigate(app_routes.signin, { replace: true })
     }
   }, [])
 
