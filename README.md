@@ -36,7 +36,7 @@ Prerequisites
      - mac: start from docker gui
   
   - start dev server: air -c .air.toml & npm --prefix ./frontend/client run build:watch
-  (This will run go build with hot reload and building to ./build/main and vite build watching frontend/client building to ./public )
+  (This will run go build with hot reload and building to ./build/main and vite build watching frontend/client building to ./served/public )
 
   
   To do:

@@ -13,7 +13,7 @@ export default defineConfig({
     sourcemap: true,
     chunkSizeWarningLimit: 1500,
     target: 'es2015',
-    outDir: '../../public'
+    outDir: '../../served/public'
   },
   plugins: [
     injectHTML(),

@@ -65,7 +65,7 @@ func main() {
 	//fmt.Println(functions.Vc())
 
 	// Load templates
-	engine := html.New("./public", ".html")
+	engine := html.New("./served", ".html")
 
 	// Create app
 	app := fiber.New(fiber.Config{
@@ -196,8 +196,9 @@ func main() {
 
 	app.Use(compress.New())
 
+	app.Get("/", controllers.Index)
 	// Configure app
-	app.Static("/", "./public")
+	app.Static("/", "./served/public")
 
 	app.Get("*", controllers.Index)
 
