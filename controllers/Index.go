@@ -2,9 +2,12 @@ package controllers
 
 import (
 	"fmt"
+	"html/template"
 	"strings"
 	"web_project/cookies"
 	"web_project/db"
+	"web_project/db/StationTags"
+	"web_project/translations"
 
 	"github.com/gocql/gocql"
 	"github.com/gofiber/fiber/v2"
@@ -14,7 +17,7 @@ func Index(ctx *fiber.Ctx) error {
 
 	fmt.Printf("[Index] path %s \n", ctx.Path())
 
-	/* if ctx.Path() == "/" {
+	if ctx.Path() == "/" {
 		language := ctx.Query("language")
 
 		if language == "" {
@@ -23,26 +26,45 @@ func Index(ctx *fiber.Ctx) error {
 
 		fmt.Printf("[Index] language %s \n", language)
 
-		tags_list := StationTags.ListTags()
+		query_tags := ctx.Query("tags")
 
-		tags := make([]string, len(tags_list))
+		fmt.Printf("[Index] query_tags %s \n", query_tags)
 
-		for i, tag_map := range tags_list {
-			tags[i] = tag_map["name"].(string)
+		var tags []string
+
+		additional_selectors := []string{}
+
+		if query_tags == "" {
+
+			tags_list := StationTags.ListTags()
+
+			tags = make([]string, len(tags_list))
+
+			for i, tag_map := range tags_list {
+				tags[i] = tag_map["name"].(string)
+			}
+		} else {
+			tags = strings.Split(query_tags, ",")
+			additional_selectors = append(additional_selectors, "tags CONTAINS '"+query_tags+"'")
 		}
 
 		languages := strings.ReplaceAll(strings.ReplaceAll(strings.Join(translations.Languages(), ","), language+",", ""), language, "")
 
+		stations_list := db.List("stations", fiber.Map{"broadcasting": true}, additional_selectors, "id", "name")
+
 		return ctx.Render("seo/home", fiber.Map{
-			"Description": translations.Dictionary[language]["home_page_description"],
-			"Tags":        translations.Dictionary[language]["tags"],
-			"Tags_list":   strings.Join(tags, ","),
-			"Language":    language,
-			"Languages":   languages,
-			"URL":         ctx.OriginalURL(),
-			"Domain":      ctx.BaseURL(),
+			"Description":   translations.Dictionary[language]["home_page_description"],
+			"Tags":          translations.Dictionary[language]["tags"],
+			"Tags_list":     tags,
+			"Language":      language,
+			"Languages":     languages,
+			"URL":           ctx.OriginalURL(),
+			"Domain":        ctx.BaseURL(),
+			"Full_url":      template.HTMLEscaper(fmt.Sprintf("%s%s", ctx.BaseURL(), ctx.OriginalURL())),
+			"Stations":      translations.Dictionary[language]["radiostations"],
+			"Stations_list": stations_list,
 		})
-	} */
+	}
 
 	if strings.Contains(ctx.Path(), "/station/") {
 		language := ctx.Query("language")

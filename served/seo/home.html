@@ -23,9 +23,9 @@
   <meta property="og:title" content="RadioWorld" />
   <meta name="twitter:title" content="RadioWorld" />
 
-  <meta name="description" content="{{.Description}} {{.Tags}}: {{.Tags_list}}" />
-  <meta property="og:description" content="{{.Description}} {{.Tags}}: {{.Tags_list}}" />
-  <meta property="twitter:description" content="{{.Description}} {{.Tags}}: {{.Tags_list}}" />
+  <meta name="description" content="{{.Description}} {{.Tags}}: {{range .Tags_list}}{{.}}{{end}}," />
+  <meta property="og:description" content="{{.Description}} {{.Tags}}: {{range .Tags_list}}{{.}}{{end}}," />
+  <meta property="twitter:description" content="{{.Description}} {{.Tags}}: {{range .Tags_list}}{{.}}{{end}}," />
 
   <link rel="canonical" href="{{.Domain}}{{.URL}}" />
 
@@ -51,8 +51,8 @@
           "name": "Russian",
         }
       ],
-      "keywords": "{{.Tags_list}}",
-      "url": "{{.Domain}}{{.URL}}"
+      "keywords": "{{range .Tags_list}}{{.}}{{end}},",
+      "url": {{.Full_url}}
     }
   </script>
 </head>
@@ -62,7 +62,17 @@
     {{.Description}}
   </p>
   <p>
-    {{.Tags}}: {{.Tags_list}}
+    {{.Tags}}:
+    {{range .Tags_list}}
+      <a href="{{$.Domain}}/?language={{$.Language}}&tags={{.}}">{{.}}</a>,
+    {{end}}
+  </p>
+  <p>
+    {{.Stations}}: 
+
+    {{range .Stations_list}}
+      <a href="{{$.Domain}}/station/{{.id}}?language={{$.Language}}">{{.name}}</a>,
+    {{end}}
   </p>
 </body>
 
