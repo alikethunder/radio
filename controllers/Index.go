@@ -5,8 +5,6 @@ import (
 	"strings"
 	"web_project/cookies"
 	"web_project/db"
-	"web_project/db/StationTags"
-	"web_project/translations"
 
 	"github.com/gocql/gocql"
 	"github.com/gofiber/fiber/v2"
@@ -16,7 +14,7 @@ func Index(ctx *fiber.Ctx) error {
 
 	fmt.Printf("[Index] path %s \n", ctx.Path())
 
-	if ctx.Path() == "/" {
+	/* if ctx.Path() == "/" {
 		language := ctx.Query("language")
 
 		if language == "" {
@@ -25,12 +23,26 @@ func Index(ctx *fiber.Ctx) error {
 
 		fmt.Printf("[Index] language %s \n", language)
 
+		tags_list := StationTags.ListTags()
+
+		tags := make([]string, len(tags_list))
+
+		for i, tag_map := range tags_list {
+			tags[i] = tag_map["name"].(string)
+		}
+
+		languages := strings.ReplaceAll(strings.ReplaceAll(strings.Join(translations.Languages(), ","), language+",", ""), language, "")
+
 		return ctx.Render("seo/home", fiber.Map{
 			"Description": translations.Dictionary[language]["home_page_description"],
 			"Tags":        translations.Dictionary[language]["tags"],
-			"Tags_list":   StationTags.ListTags(),
+			"Tags_list":   strings.Join(tags, ","),
+			"Language":    language,
+			"Languages":   languages,
+			"URL":         ctx.OriginalURL(),
+			"Domain":      ctx.BaseURL(),
 		})
-	}
+	} */
 
 	if strings.Contains(ctx.Path(), "/station/") {
 		language := ctx.Query("language")

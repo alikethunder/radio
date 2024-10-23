@@ -2,7 +2,59 @@
 <html>
 
 <head>
-  <title>Main</title>
+  <meta charSet="utf-8" />
+  <title>RadioWorld</title>
+  <meta name="theme-color" content="#00a1f7" />
+
+  <link rel="mask-icon" href="" color="#00a1f7" />
+
+  <link rel="icon" href="" />
+
+  <link rel="apple-touch-icon" href="" />
+
+  <meta name="twitter:card" content="summary" />
+
+  <meta property="og:locale" content={{.Language}} />
+
+  <meta property="og:locale:alternate" content={{.Languages}} />
+
+  <meta property="og:site_name" content="RadioWorld" />
+
+  <meta property="og:title" content="RadioWorld" />
+  <meta name="twitter:title" content="RadioWorld" />
+
+  <meta name="description" content="{{.Description}} {{.Tags}}: {{.Tags_list}}" />
+  <meta property="og:description" content="{{.Description}} {{.Tags}}: {{.Tags_list}}" />
+  <meta property="twitter:description" content="{{.Description}} {{.Tags}}: {{.Tags_list}}" />
+
+  <link rel="canonical" href="{{.Domain}}{{.URL}}" />
+
+  <meta property="og:url" content="{{.Domain}}{{.URL}}" />
+
+  <meta property="twitter:url" content="{{.Domain}}{{.URL}}" />
+
+  <meta property="twitter:domain" content="{{.Domain}}" />
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Radiostations",
+      "name": "Radioworld",
+      "description": "{{.Description}}",
+      "availableLanguage": [
+        {
+          "@type": "Language",
+          "name": "English"
+        },
+        {
+          "@type": "Language",
+          "name": "Russian",
+        }
+      ],
+      "keywords": "{{.Tags_list}}",
+      "url": "{{.Domain}}{{.URL}}"
+    }
+  </script>
 </head>
 
 <body>

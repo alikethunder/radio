@@ -44,6 +44,7 @@ import {
 
 import { icon_classes } from "@/constants/icon_classes"
 import { useDebounceCallback } from "usehooks-ts"
+import { useSearchParams } from "react-router-dom"
 
 export const Navbar: FC = () => {
 
@@ -68,6 +69,8 @@ export const Navbar: FC = () => {
   const search_button_badge_value = useMemo(() => search_station_tags.length, [search_station_tags,])
 
   const [show_stations_search] = usePageInList([app_routes.root, app_routes.station$id])
+
+  const [searchParams, set_search] = useSearchParams()
 
   const [translations] = useTranslations([
     'open_search_stations_panel',
@@ -96,6 +99,24 @@ export const Navbar: FC = () => {
       }, 50);
     }
   }, 50)
+
+  useEffect(() => {
+    //add tags from url at starts
+    const tags = searchParams.get('tags')?.split(',')
+    if (tags?.length) {
+      tags?.forEach(tag => { if (tag) actions.persistedApp.add_tag_to_search(tag) })
+      actions.persistedApp.search_panel_collapsed(false)
+      //@ts-ignore
+      store.persistedApp.search_panel()?.expand()
+    }
+  }, [])
+
+  useEffect(() => {
+    set_search(s => {
+      s.set('tags', search_station_tags.join(','))
+      return s
+    })
+  }, [search_station_tags])
 
   return (
     <>

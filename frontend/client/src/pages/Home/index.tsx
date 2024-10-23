@@ -199,23 +199,23 @@ export const Home = () => {
 
       <script type="application/ld+json">
         {JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'Radiostations',
-          name: 'Radioworld',
-          description: translations.home_page_description,
-          availableLanguage: [
+          "@context": "https://schema.org",
+          "@type": "Radiostations",
+          "name": "Radioworld",
+          "description": translations.home_page_description,
+          "availableLanguage": [
             {
               "@type": "Language",
               "name": "English"
             },
             {
               "@type": "Language",
-              "name": "Russian"
+              "name": "Russian",
             }
           ],
-          keywords: station_tags.join(','),
+          "keywords": station_tags.join(","),
           //logo: `/api/v1/files/stations/${station.id}/avatar`,
-          url: `${window.location.origin}?language=${language}`,
+          "url": `${window.location.origin}?language=${language}`
         })}
       </script>
 
