@@ -1,8 +1,9 @@
 package StationTagsEndpoints
 
 import (
-	"encoding/json"
 	"fmt"
+
+	"github.com/goccy/go-json"
 
 	"web_project/db"
 

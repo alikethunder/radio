@@ -60,7 +60,7 @@ func Index(ctx *fiber.Ctx) error {
 			"Languages":     languages,
 			"URL":           ctx.OriginalURL(),
 			"Domain":        ctx.BaseURL(),
-			"Full_url":      template.HTMLEscaper(fmt.Sprintf("%s%s", ctx.BaseURL(), ctx.OriginalURL())),
+			"Full_url":      template.JS("\"" + fmt.Sprintf("%s%s", ctx.BaseURL(), ctx.OriginalURL()) + "\""),
 			"Stations":      translations.Dictionary[language]["radiostations"],
 			"Stations_list": stations_list,
 		})

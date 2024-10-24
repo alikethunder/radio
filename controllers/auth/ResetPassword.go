@@ -1,7 +1,7 @@
 package AuthEndpoints
 
 import (
-	"encoding/json"
+	"github.com/goccy/go-json"
 
 	"web_project/db"
 	"web_project/functions"

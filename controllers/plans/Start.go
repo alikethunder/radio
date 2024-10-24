@@ -1,7 +1,7 @@
 package PlansEndpoints
 
 import (
-	"encoding/json"
+	"github.com/goccy/go-json"
 
 	"web_project/cookies"
 	"web_project/db"

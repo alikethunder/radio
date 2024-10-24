@@ -1,8 +1,9 @@
 package ProfileEndpoints
 
 import (
-	"encoding/json"
 	"fmt"
+
+	"github.com/goccy/go-json"
 
 	"web_project/cookies"
 	"web_project/db"

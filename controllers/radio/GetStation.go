@@ -1,10 +1,6 @@
 package RadioEndpoints
 
 import (
-	/* "encoding/json"
-
-	"github.com/gocql/gocql" */
-	//"fmt"
 	"web_project/constants"
 	"web_project/db"
 
