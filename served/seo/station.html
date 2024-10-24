@@ -1,10 +1,73 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Main</title>
-  </head>
 
-  <body>
-    {{.Title}}
-  </body>
+<head>
+  <meta charSet="utf-8" />
+  <title>RadioWorld - {{.station.name}}</title>
+  <meta name="theme-color" content="#00a1f7" />
+
+  <link rel="mask-icon" href="" color="#00a1f7" />
+
+  <link rel="icon" href="" />
+
+  <link rel="apple-touch-icon" href="" />
+
+  <meta name="twitter:card" content="summary" />
+
+  <meta property="og:locale" content={{.Language}} />
+
+  {{range .Languages}}
+    <meta property="og:locale:alternate" content={{.}} />
+  {{end}}
+
+  <meta property="og:site_name" content="RadioWorld" />
+
+  <meta property="og:title" content="RadioWorld - {{.station.name}}" />
+  <meta name="twitter:title" content="RadioWorld - {{.station.name}}" />
+
+  <meta name="description" content="{{.text_description}} {{.Tags}}: {{range .Tags_list}}{{.}},{{end}}" />
+  <meta property="og:description" content="{{.text_description}} {{.Tags}}: {{range .Tags_list}}{{.}},{{end}}" />
+  <meta property="twitter:description" content="{{.text_description}} {{.Tags}}: {{range .Tags_list}}{{.}},{{end}}" />
+
+  <link rel="canonical" href="{{.Domain}}{{.URL}}" />
+
+  <meta property="og:url" content="{{.Domain}}{{.URL}}" />
+
+  <meta property="twitter:url" content="{{.Domain}}{{.URL}}" />
+
+  <meta property="twitter:domain" content="{{.Domain}}" />
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Radiostations",
+      "name": "Radioworld",
+      "description": "{{.text_description}}",
+      "availableLanguage": [
+        {
+          "@type": "Language",
+          "name": "English"
+        },
+        {
+          "@type": "Language",
+          "name": "Russian",
+        }
+      ],
+      "keywords": "{{range .station.tags}}{{.}},{{end}}",
+      "url": {{.Full_url}}
+    }
+  </script>
+</head>
+
+<body>
+  <p>RadioWorld - {{.station.name}}</p>
+  {{.description}}
+  <p>
+    {{.Tags}}:
+    {{range .station.tags}}
+      <a href="{{$.Domain}}/?language={{$.Language}}&tags={{.}}">{{.}}</a>,
+    {{end}}
+  </p>
+</body>
+
 </html>
