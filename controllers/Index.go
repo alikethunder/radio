@@ -59,16 +59,17 @@ func Index(ctx *fiber.Ctx) error {
 			stations_list := db.List("stations", fiber.Map{"broadcasting": true}, additional_selectors, "id", "name")
 
 			return ctx.Render("seo/home", fiber.Map{
-				"Description":   translations.Dictionary[language]["home_page_description"],
-				"Tags":          translations.Dictionary[language]["tags"],
-				"Tags_list":     tags,
-				"Language":      language,
-				"Languages":     languages,
-				"URL":           ctx.OriginalURL(),
-				"Domain":        ctx.BaseURL(),
-				"Full_url":      template.JS("\"" + fmt.Sprintf("%s%s", ctx.BaseURL(), ctx.OriginalURL()) + "\""),
-				"Stations":      translations.Dictionary[language]["radiostations"],
-				"Stations_list": stations_list,
+				"Description":                      translations.Dictionary[language]["home_page_description"],
+				"Tags":                             translations.Dictionary[language]["tags"],
+				"Tags_list":                        tags,
+				"Language":                         language,
+				"Languages":                        languages,
+				"URL":                              ctx.OriginalURL(),
+				"Domain":                           ctx.BaseURL(),
+				"Full_url":                         template.JS("\"" + fmt.Sprintf("%s%s", ctx.BaseURL(), ctx.OriginalURL()) + "\""),
+				"Stations":                         translations.Dictionary[language]["radiostations"],
+				"Stations_list":                    stations_list,
+				"links_to_page_on_other_languages": translations.Dictionary[language]["links_to_page_on_other_languages"],
 			})
 		}
 
@@ -76,22 +77,22 @@ func Index(ctx *fiber.Ctx) error {
 
 			fmt.Printf("[Index] language %s \n", language)
 
-			station_id := strings.TrimPrefix(ctx.Path(), "/station/")
+			station_id := strings.TrimSuffix(strings.TrimPrefix(ctx.Path(), "/station/"), "/")
 
 			fmt.Printf("[Index] station id %s \n", station_id)
 
-			station, _ := db.SelectRow("stations", fiber.Map{"id": station_id}, "name", "description_"+language, "text_description_"+language, "tags", "avatar")
+			station, _ := db.SelectRow("stations", fiber.Map{"id": station_id}, "id", "name", "description_"+language, "text_description_"+language, "tags", "avatar")
 
 			return ctx.Render("seo/station", fiber.Map{
-				"station":          station,
-				"Language":         language,
-				"Languages":        languages,
-				"description":      station["description_"+language],
-				"text_description": station["text_description_"+language],
-				"Tags":             translations.Dictionary[language]["tags"],
-				"URL":              ctx.OriginalURL(),
-				"Domain":           ctx.BaseURL(),
-				"Full_url":         template.JS("\"" + fmt.Sprintf("%s%s", ctx.BaseURL(), ctx.OriginalURL()) + "\""),
+				"station":                          station,
+				"Language":                         language,
+				"Languages":                        languages,
+				"text_description":                 station["text_description_"+language],
+				"Tags":                             translations.Dictionary[language]["tags"],
+				"URL":                              ctx.OriginalURL(),
+				"Domain":                           ctx.BaseURL(),
+				"Full_url":                         template.JS("\"" + fmt.Sprintf("%s%s", ctx.BaseURL(), ctx.OriginalURL()) + "\""),
+				"links_to_page_on_other_languages": translations.Dictionary[language]["links_to_page_on_other_languages"],
 			})
 		}
 	}

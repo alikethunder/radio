@@ -76,6 +76,14 @@
       <a href="{{$.Domain}}/station/{{.id}}?language={{$.Language}}">{{.name}}</a>,
     {{end}}
   </p>
+  <p>
+    <p>
+      {{.links_to_page_on_other_languages}}:
+    </p>
+    {{range .Languages}}
+      <a href="{{$.Domain}}?language={{.}}">{{.}} - RadioWorld</a>,
+    {{end}}
+  </p>
 </body>
 
 </html>

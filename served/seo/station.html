@@ -61,12 +61,23 @@
 
 <body>
   <p>RadioWorld - {{.station.name}}</p>
-  {{.description}}
+  {{.text_description}}
   <p>
     {{.Tags}}:
     {{range .station.tags}}
       <a href="{{$.Domain}}/?language={{$.Language}}&tags={{.}}">{{.}}</a>,
     {{end}}
+  </p>
+  <p>
+    <p>
+      {{.links_to_page_on_other_languages}}:
+    </p>
+    {{range .Languages}}
+      <a href="{{$.Domain}}/station/{{$.station.id}}?language={{.}}">{{.}} - {{$.station.name}}</a>,
+    {{end}}
+  </p>
+  <p>
+    <a href="{{.Domain}}?language={{.Language}}">{{.Language}} - RadioWorld</a>,
   </p>
 </body>
 

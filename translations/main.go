@@ -60,6 +60,7 @@ var Dictionary = map[string]map[string]string{
 		"tags":                                "Tags",
 		"signin":                              "Sign in",
 		"radiostations":                       "Radiostations",
+		"links_to_page_on_other_languages":    "Links to page on other languages",
 	},
 	"ru": {
 		"login":                               "Войти",
@@ -118,5 +119,6 @@ var Dictionary = map[string]map[string]string{
 		"tags":                                "Тэги",
 		"signin":                              "Вход",
 		"radiostations":                       "Радиостанции",
+		"links_to_page_on_other_languages":    "Ссылки на страницу на других языках",
 	},
 }
