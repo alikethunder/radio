@@ -73,7 +73,7 @@
       {{.links_to_page_on_other_languages}}:
     </p>
     {{range .Languages}}
-      <a href="{{$.Domain}}/station/{{$.station.id}}?language={{.}}">{{.}} - {{$.station.name}}</a>,
+      <a rel="alternate" hreflang="{{.}}" href="{{$.Domain}}/station/{{$.station.id}}?language={{.}}">{{.}} - {{$.station.name}}</a>,
     {{end}}
   </p>
   <p>
