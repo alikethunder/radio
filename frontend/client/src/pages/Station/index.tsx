@@ -616,6 +616,7 @@ export const Station = () => {
                       'max-w-full',
                       'align-self-start',
                       'shadow-2',
+                      'w-20rem'
                     )}
                     onChange={(e) => {
                       field.onChange(e.target.value)

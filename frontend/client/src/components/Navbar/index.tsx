@@ -76,6 +76,7 @@ export const Navbar: FC = () => {
     'open_search_stations_panel',
     'search_station_name_and_description',
     'search_stations_by_tags',
+    'sitename',
   ], true)
 
   const translations_skl = useTranslationsSkeleton({
@@ -127,11 +128,18 @@ export const Navbar: FC = () => {
           <QueryLink to={app_routes.root}
             onClick={() => actions.session.rightSidebarOpened(false)}>
             <Button
-              label={`Radio`}
+              label={translations.sitename}
               text
               raised
               icon={`${icon_classes} pi-wave-pulse`}
-              className="border-noround w-full h-full md:px-3 px-2 text-primary lobster_font text-xl shadow_on_hover text-xl md:text-2xl"
+              className="border-noround w-full h-full md:px-2 px-1  lobster_font text-xl shadow_on_hover md:text-3xl text-blue-600 font-medium"
+              pt={{
+                root: {
+                  style: {
+                    'text-shadow': '#000 0 0 .5px, -4px -2px 6px #7cd1ff',
+                  }
+                }
+              }}
             />
           </QueryLink>
 

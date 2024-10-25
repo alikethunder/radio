@@ -74,7 +74,7 @@ func Index(ctx *fiber.Ctx) error {
 			})
 		}
 
-		if strings.Contains(ctx.Path(), "/station/") {
+		/* if strings.Contains(ctx.Path(), "/station/") {
 
 			fmt.Printf("[Index] language %s \n", language)
 
@@ -97,7 +97,7 @@ func Index(ctx *fiber.Ctx) error {
 				"sitename":                         translations.Dictionary[language]["sitename"],
 				"logo":                             template.JS("\"" + ctx.BaseURL() + "/api/v1/files/stations/" + station_id + "/avatar\""),
 			})
-		}
+		} */
 	}
 
 	authCookie := ctx.Cookies(cookies.AuthCookieName)
