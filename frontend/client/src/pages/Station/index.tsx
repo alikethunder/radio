@@ -1,10 +1,9 @@
-import { FC, useCallback, useEffect, useMemo, useRef, useState, LegacyRef } from "react"
+import { FC, useCallback, useEffect, useMemo, useRef, useState, } from "react"
 
 import {
   generatePath,
   useLoaderData,
   useNavigate,
-  useParams,
   useSearchParams,
 } from "react-router-dom"
 
@@ -38,7 +37,6 @@ import {
   actions,
   store,
   useStore,
-  useTrackedStore,
 } from "@/store"
 
 import {
@@ -47,7 +45,6 @@ import {
 
 import { DataTable } from "primereact/datatable"
 import { Column } from "primereact/column"
-import { Tooltip } from "primereact/tooltip"
 
 import {
   app_routes,
@@ -79,8 +76,6 @@ import { StationTagRemoveTokenIcon } from "@/layout parts"
 
 import { Helmet } from "react-helmet"
 
-const private_tooltip_options = { ...tooltip_options, position: 'right' } as const
-
 export const Station = () => {
 
   const station = useLoaderData() as StationType
@@ -99,9 +94,6 @@ export const Station = () => {
   //console.log('station : ', station)
 
   const navigate = useNavigate()
-
-  const windowSize = useTrackedStore().app.windowSize()
-  const isDesktop = useTrackedStore().app.isDesktop()
 
   const photo_file_input_ref = useRef<HTMLInputElement>(null)
 
@@ -376,7 +368,7 @@ export const Station = () => {
         <title>{translations.sitename} - {station.name}</title>
 
         <meta property="og:type" content="music.radio_station" />
-        
+
         <meta name="twitter:card" content="summary" />
 
         {
@@ -401,10 +393,10 @@ export const Station = () => {
         <meta property="twitter:url"
           content={`${window.location.origin}${generatePath(app_routes["station$id"], { id: station.id })}?language=${language}`} />
 
-        <meta property="og:image" content={`/api/v1/files/stations/${station.id}/avatar`} />
+        <meta property="og:image" content={`${window.location.origin}/api/v1/files/stations/${station.id}/avatar`} />
         <meta property="og:image:width" content="128" />
         <meta property="og:image:height" content="128" />
-        <meta property="twitter:image" content={`/api/v1/files/stations/${station.id}/avatar`} />
+        <meta property="twitter:image" content={`${window.location.origin}/api/v1/files/stations/${station.id}/avatar`} />
 
         <meta property="twitter:domain" content={window.location.origin} />
 
@@ -427,7 +419,7 @@ export const Station = () => {
             }
           ],
           keywords: station.tags.join(','),
-          logo: `/api/v1/files/stations/${station.id}/avatar`,
+          logo: `${window.location.origin}/api/v1/files/stations/${station.id}/avatar`,
           url: `${window.location.origin}${generatePath(app_routes["station$id"], { id: station.id })}?language=${language}`,
         })}
       </script>
