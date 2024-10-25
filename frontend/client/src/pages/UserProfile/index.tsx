@@ -38,6 +38,7 @@ import { Ripple } from "primereact/ripple"
 import {
   useFormState,
   useTranslation,
+  useTranslations,
   useTranslationsSkeleton,
 } from '@/hooks'
 
@@ -171,9 +172,12 @@ export const UserProfile = () => {
     },
   }, formState, user_data?.own_profile)
 
-  const [error_email_with_a, _] = useTranslation('error_email_with_@', true)
+  const [translations] = useTranslations([
+    'error_email_with_@',
+    'sitename',
+  ], true)
 
-  const translations = useTranslationsSkeleton({
+  const translations_skl = useTranslationsSkeleton({
     "choose_image": ["w-4rem"],
     "name_cannot_be_empty": ['w-8'],
     "name": ["w-5rem"],
@@ -185,7 +189,7 @@ export const UserProfile = () => {
   return (
     <>
       <Helmet>
-        <title>RadioWorld - {user_data.name}</title>
+        <title>{translations.sitename} - {user_data.name}</title>
 
         <link rel="canonical" href={`${window.location.origin}/user-profile/${user_data.id}?language=${language}`} />
 
@@ -232,7 +236,7 @@ export const UserProfile = () => {
                     <div className="overlay_background surface-900 absolute top-0 bottom-0 right-0 left-0"></div>
 
                     <div className="overlay_text text-white font-semibold z-1">
-                      {translations.choose_image}
+                      {translations_skl.choose_image}
                     </div>
 
                   </div>
@@ -268,7 +272,7 @@ export const UserProfile = () => {
               rules={{
                 required: {
                   value: true,
-                  message: translations.name_cannot_be_empty,
+                  message: translations_skl.name_cannot_be_empty,
                 },
               }}
               render={({ field, fieldState }) => (
@@ -283,7 +287,7 @@ export const UserProfile = () => {
                     )}
                   >
                     <small>
-                      {translations.name}
+                      {translations_skl.name}
                     </small>
                   </label>
 
@@ -326,11 +330,11 @@ export const UserProfile = () => {
                   rules={{
                     required: {
                       value: true,
-                      message: translations.error_email_required,
+                      message: translations_skl.error_email_required,
                     },
                     pattern: {
                       value: /\S+@\S+\.\S+/,
-                      message: translations.error_not_real_email,
+                      message: translations_skl.error_not_real_email,
                     },
                   }}
                   render={({ field, fieldState }) => (
@@ -345,7 +349,7 @@ export const UserProfile = () => {
                         )}
                       >
                         <Tooltip target='.pi-lock' {...private_tooltip_options} >
-                          {translations.only_you_can_see}
+                          {translations_skl.only_you_can_see}
                         </Tooltip>
 
                         <small>Email </small> <i className="pi pi-lock text-xs" ></i>
@@ -369,7 +373,7 @@ export const UserProfile = () => {
                           disabled={!edit_mode}
                           autoComplete="email"
 
-                          onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(error_email_with_a)}
+                          onInvalid={e => (e.target as HTMLInputElement).setCustomValidity(translations["error_email_with_@"])}
 
                         />
                       </IconField>

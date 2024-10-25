@@ -121,6 +121,7 @@ export const Signin: FC = () => {
     'error_email_with_@',
     'signin',
     'password',
+    'sitename',
   ], true)
 
   const translations_skl = useTranslationsSkeleton({
@@ -139,7 +140,7 @@ export const Signin: FC = () => {
   return (
     <>
       <Helmet>
-        <title>RadioWorld - {translations.signin}</title>
+        <title>{translations.sitename} - {translations.signin}</title>
 
         <link rel="canonical" href={`${window.location.origin}/signin?language=${language}`} />
 

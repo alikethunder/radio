@@ -150,6 +150,7 @@ export const Verification: FC = () => {
     'verification_code',
     'password',
     'create_password',
+    'sitename',
   ] as const, true)
 
   const translations_skl = useTranslationsSkeleton({
@@ -178,7 +179,7 @@ export const Verification: FC = () => {
   return (
     <>
       <Helmet>
-        <title>RadioWorld - {translations.create_password}</title>
+        <title>{translations.sitename} - {translations.create_password}</title>
 
         <link rel="canonical" href={`${window.location.origin}/verification?language=${language}`} />
 

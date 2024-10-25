@@ -102,6 +102,7 @@ export const Signup: FC = () => {
     'name',
     'name_cannot_be_empty',
     'registration',
+    'sitename',
   ], true)
 
   const translations_skl = useTranslationsSkeleton({
@@ -118,7 +119,7 @@ export const Signup: FC = () => {
   return (
     <>
       <Helmet>
-        <title>RadioWorld - {translations.registration}</title>
+        <title>{translations.sitename} - {translations.registration}</title>
 
         <link rel="canonical" href={`${window.location.origin}/signup?language=${language}`} />
 

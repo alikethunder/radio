@@ -361,6 +361,7 @@ export const Station = () => {
   const [translations] = useTranslations([
     'play',
     'pause',
+    'sitename',
   ], true)
 
   const translations_skl = useTranslationsSkeleton({
@@ -372,7 +373,7 @@ export const Station = () => {
   return (
     <>
       <Helmet>
-        <title>RadioWorld - {station.name}</title>
+        <title>{translations.sitename} - {station.name}</title>
 
         <meta property="og:type" content="music.radio_station" />
         
@@ -384,10 +385,10 @@ export const Station = () => {
 
         <meta property="og:locale:alternate" content={languages.join(',').replaceAll(`${language},`, '').replaceAll(language ?? '', '')} />
 
-        <meta property="og:site_name" content="RadioWorld" />
+        <meta property="og:site_name" content={translations.sitename} />
 
-        <meta property="og:title" content={`RadioWorld - ${station.name}`} />
-        <meta name="twitter:title" content={`RadioWorld - ${station.name}`} />
+        <meta property="og:title" content={`${translations.sitename} - ${station.name}`} />
+        <meta name="twitter:title" content={`${translations.sitename} - ${station.name}`} />
 
         <meta name="description" content={`${station[`text_description_${language}`]}`} />
         <meta property="og:description" content={`${station[`text_description_${language}`]}`} />

@@ -108,6 +108,7 @@ export const ResetPassword: FC = () => {
     'error_email_with_@',
     'signin',
     'reset_password',
+    'sitename',
   ], true)
 
   const translations_skl = useTranslationsSkeleton({
@@ -123,7 +124,7 @@ export const ResetPassword: FC = () => {
   return (
     <>
     <Helmet>
-      <title>RadioWorld - {translations.reset_password}</title>
+      <title>{translations.sitename} - {translations.reset_password}</title>
 
       <link rel="canonical" href={`${window.location.origin}/reset-password?language=${language}`} />
 

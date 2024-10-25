@@ -151,6 +151,7 @@ export const Home = () => {
   const [translations] = useTranslations([
     "home_page_description",
     "tags",
+    'sitename',
   ], true)
 
 
@@ -162,7 +163,7 @@ export const Home = () => {
   return (
     <>
       <Helmet>
-        <title>RadioWorld</title>
+        <title>{translations.sitename}</title>
 
         <meta name="twitter:card" content="summary" />
 
@@ -172,10 +173,10 @@ export const Home = () => {
 
         <meta property="og:locale:alternate" content={languages.join(',').replaceAll(`${language},`, '').replaceAll(language ?? '', '')} />
 
-        <meta property="og:site_name" content="RadioWorld" />
+        <meta property="og:site_name" content={translations.sitename} />
 
-        <meta property="og:title" content={`RadioWorld`} />
-        <meta name="twitter:title" content={`RadioWorld`} />
+        <meta property="og:title" content={translations.sitename} />
+        <meta name="twitter:title" content={translations.sitename} />
 
         <meta name="description" content={`${translations.home_page_description} ${translations.tags}: ${station_tags.join(',')}`} />
         <meta property="og:description" content={`${translations.home_page_description} ${translations.tags}: ${station_tags.join(',')}`} />
@@ -201,7 +202,7 @@ export const Home = () => {
         {JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Radiostations",
-          "name": "Radioworld",
+          "name": translations.sitename,
           "description": translations.home_page_description,
           "availableLanguage": [
             {

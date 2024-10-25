@@ -3,7 +3,7 @@
 
 <head>
   <meta charSet="utf-8" />
-  <title>RadioWorld</title>
+  <title>{{.sitename}}</title>
   <meta name="theme-color" content="#00a1f7" />
 
   <link rel="mask-icon" href="" color="#00a1f7" />
@@ -20,10 +20,10 @@
     <meta property="og:locale:alternate" content={{.}} />
   {{end}}
 
-  <meta property="og:site_name" content="RadioWorld" />
+  <meta property="og:site_name" content="{{.sitename}}" />
 
-  <meta property="og:title" content="RadioWorld" />
-  <meta name="twitter:title" content="RadioWorld" />
+  <meta property="og:title" content="{{.sitename}}" />
+  <meta name="twitter:title" content="{{.sitename}}" />
 
   <meta name="description" content="{{.Description}} {{.Tags}}: {{range .Tags_list}}{{.}},{{end}}" />
   <meta property="og:description" content="{{.Description}} {{.Tags}}: {{range .Tags_list}}{{.}},{{end}}" />
@@ -41,7 +41,7 @@
     {
       "@context": "https://schema.org",
       "@type": "Radiostations",
-      "name": "Radioworld",
+      "name": "{{.sitename}}",
       "description": "{{.Description}}",
       "availableLanguage": [
         {
@@ -81,7 +81,7 @@
       {{.links_to_page_on_other_languages}}:
     </p>
     {{range .Languages}}
-      <a rel="alternate" hreflang="{{.}}" href="{{$.Domain}}?language={{.}}">{{.}} - RadioWorld</a>,
+      <a rel="alternate" hreflang="{{.}}" href="{{$.Domain}}?language={{.}}">{{.}} - {{$.sitename}}</a>,
     {{end}}
   </p>
 </body>

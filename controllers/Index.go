@@ -70,6 +70,7 @@ func Index(ctx *fiber.Ctx) error {
 				"Stations":                         translations.Dictionary[language]["radiostations"],
 				"Stations_list":                    stations_list,
 				"links_to_page_on_other_languages": translations.Dictionary[language]["links_to_page_on_other_languages"],
+				"sitename":                         translations.Dictionary[language]["sitename"],
 			})
 		}
 
@@ -93,6 +94,7 @@ func Index(ctx *fiber.Ctx) error {
 				"Domain":                           ctx.BaseURL(),
 				"Full_url":                         template.JS("\"" + fmt.Sprintf("%s%s", ctx.BaseURL(), ctx.OriginalURL()) + "\""),
 				"links_to_page_on_other_languages": translations.Dictionary[language]["links_to_page_on_other_languages"],
+				"sitename":                         translations.Dictionary[language]["sitename"],
 			})
 		}
 	}
