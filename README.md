@@ -43,6 +43,6 @@ Prerequisites
     - add bun server start script for ssr in feature
 
 2. To build project
-  go build -o ./build/main & npm --prefix ./frontend/client run build // add bun built script
+  go build -o ./build/main . & npm --prefix ./frontend/client run build // add bun built script
 
 

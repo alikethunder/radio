@@ -250,8 +250,8 @@
                 padding: $tableBodyCellPadding;
 
                 .p-treetable-toggler {
-                    @include action-icon();
                     margin-right: $inlineSpacing;
+                    @include action-icon();
                     
                     & + .p-checkbox {
                         margin-right: $inlineSpacing;

@@ -2,13 +2,8 @@ package controllers
 
 import (
 	"fmt"
-	"html/template"
-	"slices"
-	"strings"
 	"web_project/cookies"
 	"web_project/db"
-	"web_project/db/StationTags"
-	"web_project/translations"
 
 	"github.com/gocql/gocql"
 	"github.com/gofiber/fiber/v2"
@@ -20,7 +15,7 @@ func Index(ctx *fiber.Ctx) error {
 
 	if true {
 
-		language := ctx.Query("language")
+		/* language := ctx.Query("language")
 
 		if language == "" {
 			language = "en"
@@ -72,7 +67,7 @@ func Index(ctx *fiber.Ctx) error {
 				"links_to_page_on_other_languages": translations.Dictionary[language]["links_to_page_on_other_languages"],
 				"sitename":                         translations.Dictionary[language]["sitename"],
 			})
-		}
+		} */
 
 		/* if strings.Contains(ctx.Path(), "/station/") {
 
