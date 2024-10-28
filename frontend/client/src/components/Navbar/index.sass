@@ -1,0 +1,28 @@
+@keyframes glow
+  from
+    text-shadow: var(--blue-600) -.3px 1.24px 0px,var(--blue-600) .5px 1.07px 1px,-1px -1px 2px #26ff00,-1px 1.4px 2px #26ff00
+    //background-color: rgba(38, 255, 0, 0)
+  to
+    text-shadow: var(--blue-600) -.3px 1.24px 0px,var(--blue-600) .5px 1.07px 1px,-1px -1px 8px #26ff00,-1px 1.4px 8px #26ff00
+    //background-color: rgba(38, 255, 0, .07)
+    
+@keyframes opacity
+  0%
+    opacity: .2
+  100%
+    opacity: .8
+
+.logo-glow
+  animation: glow 1.5s infinite alternate
+  position: relative
+  
+  &::before
+    position: absolute
+    content: ''
+    display: block
+    left: 0
+    right: 0
+    top: 0
+    bottom: 0
+    animation: opacity 1.5s infinite alternate
+    background: radial-gradient(ellipse at center, rgba(38, 255, 0, .2), transparent)

@@ -46,6 +46,8 @@ import { icon_classes } from "@/constants/icon_classes"
 import { useDebounceCallback } from "usehooks-ts"
 import { useSearchParams } from "react-router-dom"
 
+import './index.sass'
+
 export const Navbar: FC = () => {
 
   const current_page = useStore().app.current_page()
@@ -128,19 +130,28 @@ export const Navbar: FC = () => {
           <QueryLink to={app_routes.root}
             onClick={() => actions.session.rightSidebarOpened(false)}>
             <Button
-              label={translations.sitename}
               text
               raised
-              icon={`${icon_classes} pi-wave-pulse`}
-              className="border-noround w-full h-full md:px-2 px-1  lobster_font text-xl shadow_on_hover md:text-3xl font-medium"
+              className="flex flex-row gap-1 border-noround w-full h-full md:px-2 px-1  lobster_font text-xl shadow_on_hover md:text-3xl bangers-font logo-glow"
               pt={{
                 root: {
                   style: {
-                    'text-shadow': '#ccc 0 0 .5px, -4px -2px 6px var(--green-400)',
+                    //'text-shadow': 'var(--blue-600) -0.3px 1.24px 0px, var(--blue-600) 0.5px 1.07px 1px, -1px 0px 4px #26ff00',
                   }
                 }
               }}
-            />
+            >
+              <span style={{
+              }}>
+                Radio
+              </span>
+              <i className={`pi-wave-pulse ${icon_classes}`} style={{
+                transform: 'skew(-3deg, -7deg)'
+              }}></i>
+              <span style={{
+                transform: 'skew(18deg, -10deg) translateY(-1px)'
+              }}>Best</span>
+            </Button>
           </QueryLink>
 
           <div className="lobster_font align-self-center text-primary max-h-full text-overflow-ellipsis text_hidden_overflow line-clamp-2 select-none text-sm sm:text-base">
