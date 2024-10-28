@@ -133,13 +133,6 @@ export const Navbar: FC = () => {
               text
               raised
               className="flex flex-row gap-1 border-noround w-full h-full md:px-2 px-1  lobster_font text-xl shadow_on_hover md:text-3xl bangers-font logo-glow"
-              pt={{
-                root: {
-                  style: {
-                    //'text-shadow': 'var(--blue-600) -0.3px 1.24px 0px, var(--blue-600) 0.5px 1.07px 1px, -1px 0px 4px #26ff00',
-                  }
-                }
-              }}
             >
               <span style={{
               }}>
@@ -149,7 +142,7 @@ export const Navbar: FC = () => {
                 transform: 'skew(-3deg, -7deg)'
               }}></i>
               <span style={{
-                transform: 'skew(18deg, -10deg) translateY(-1px)'
+                transform: 'skew(18deg, -10deg) translateY(-2px)'
               }}>Best</span>
             </Button>
           </QueryLink>
