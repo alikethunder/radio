@@ -1,5 +1,5 @@
 import React from "react"
-import { redirect, RouteObject, } from "react-router-dom"
+import { redirect, } from "react-router-dom"
 import App from "@/App"
 
 import {
@@ -11,9 +11,7 @@ import {
 
 import {
   Home,
-  //Card,
   PurchasePlan,
-  Project,
   UserProfile,
   Station,
 } from '@/pages'
@@ -66,7 +64,7 @@ export const routes = [
         loader: async ({ request }: Loader_params) => {
 
           const stations = await stations_list()
-          return stations 
+          return stations
           //return [...stations, ...stations, ...stations, ...stations]
         },
         element: <Home />,
@@ -97,33 +95,12 @@ export const routes = [
             }
           } else {
             //todo: load public user data from db
-            
+
           }
 
           //if there is no such project
           return null
         },
-      },
-      {
-        path: app_routes.project$id,
-        element: <Project />,
-        loader(
-          {
-            params,
-            request,
-          }: Loader_params
-        ) {
-          //console.log('project params : ', params)
-          //todo: load project data from db
-
-          //new project
-          if (params.id == 'new') {
-            return params.id
-          }
-
-          //if there is no such project
-          return null
-        }
       },
       {
         path: app_routes.station$id,

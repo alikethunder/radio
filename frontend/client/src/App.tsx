@@ -142,7 +142,7 @@ export default function App() {
   useEffect(() => {
     if (checked_current_route && current_route) {
 
-      const current_route_attrs = route_attributes[current_route]
+      const current_route_attrs = {...route_attributes[current_route as keyof typeof route_attributes]}
 
       //console.log('current page : ', current_route_attrs)
 

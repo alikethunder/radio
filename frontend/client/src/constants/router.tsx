@@ -64,4 +64,4 @@ export const route_attributes = {
     icon: 'pi-verified',
   },
   [app_routes.root]: {},
-}
+} as const

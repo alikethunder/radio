@@ -12,7 +12,7 @@ import { useLog } from "@/hooks/useLog"
 checks if the page is in list of pages and returns its match if it's one,
 or null | undefined if it's not
 */
-export const usePageInList = (pages: typeof all_routes, path_to_check?: string | null, log?: boolean | null): [PathMatch<string> | string | null | undefined, boolean] => {
+export const usePageInList = (pages: readonly typeof all_routes[number][], path_to_check?: string | null, log?: boolean | null): [PathMatch<string> | string | null | undefined, boolean] => {
 
   const { pathname } = useLocation()
 

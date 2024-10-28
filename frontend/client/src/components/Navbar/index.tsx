@@ -132,11 +132,11 @@ export const Navbar: FC = () => {
               text
               raised
               icon={`${icon_classes} pi-wave-pulse`}
-              className="border-noround w-full h-full md:px-2 px-1  lobster_font text-xl shadow_on_hover md:text-3xl text-blue-600 font-medium"
+              className="border-noround w-full h-full md:px-2 px-1  lobster_font text-xl shadow_on_hover md:text-3xl font-medium"
               pt={{
                 root: {
                   style: {
-                    'text-shadow': '#000 0 0 .5px, -4px -2px 6px #7cd1ff',
+                    'text-shadow': '#ccc 0 0 .5px, -4px -2px 6px var(--green-400)',
                   }
                 }
               }}
