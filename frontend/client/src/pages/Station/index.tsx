@@ -58,8 +58,6 @@ import {
   useTranslationsSkeleton,
 } from '@/hooks'
 
-import { tooltip_options } from "@/constants/tooltip_options"
-
 import {
   Station as StationType
 } from "@/types"
@@ -76,7 +74,7 @@ import { random_station_tag_color } from "@/functions/random_station_tag_color"
 import { StationTagRemoveTokenIcon } from "@/layout parts"
 
 import { Helmet } from "react-helmet"
-import { update_json } from "@/API/profile/update_json"
+import { update } from "@/API/station/update_json"
 
 export const Station = () => {
 
@@ -168,34 +166,21 @@ export const Station = () => {
 
     const { id } = station
 
-    const resp = await fetch(`/api/v1/radio/update/${id}`, {
-      method: 'POST',
-      body: JSON.stringify(data),
-    })
+    const resp = await update(id, data)
 
     if (resp.status == 200) {
 
       //*! update station in list
 
       if (id != 'new') {
-        //console.log('station before : ', JSON.stringify(station.tags))
-
         Object.entries(data).map(entry => {
           //@ts-ignore
           station[entry[0]] = entry[1]
         })
 
-        //console.log('station after : ', JSON.stringify(station.tags))
-
         if (store.player.current_station()?.id === id) {
-          //console.log('current station before : ', JSON.stringify(store.player.current_station()?.tags))
-
           actions.player.current_station(station)
-
-          //console.log('current station after : ', JSON.stringify(store.player.current_station()?.tags))
         }
-        // *! update current station if it's this station 
-        //actions.player.current_station()
       }
 
       if (avatar_blob) {

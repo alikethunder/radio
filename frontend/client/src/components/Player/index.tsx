@@ -34,7 +34,8 @@ import { icon_classes } from "@/constants/icon_classes"
 import { tooltip_options } from "@/constants/tooltip_options"
 import { classNames } from "primereact/utils"
 import { NumRange } from "@/types/generics/range"
-import { useTranslation, useTranslations } from "@/hooks"
+import { useTranslation, useTranslations, useTranslationsSkeleton } from "@/hooks"
+import { Tooltip } from "primereact/tooltip"
 
 const tltp_options = { ...tooltip_options, position: 'top' } as const
 
@@ -89,6 +90,10 @@ export const Player: FC = () => {
     'pause',
   ], true)
 
+  const translations_skl = useTranslationsSkeleton({
+    'added_to_favorites': ['w-8rem'],
+  }, true)
+
   //remove after adding buttons for random station
   return current_station ?
     <div className="flex flex-row flex-shrink-0 shadow-3 h-9rem justify-content-center bg-white p-2 sm:p-2 gap-3 mt-auto">
@@ -104,7 +109,14 @@ export const Player: FC = () => {
       <div className="flex flex-row flex-wrap-reverse gap-2 align-items-end justify-content-center">
 
         <div className="flex flex-column social_info">
-          <AddStationToFavorites id={current_station.id} />
+          <div className="flex gap-1 flex-column">
+            {/* <span className="text-gray-500 favorited">125</span> */}
+            <AddStationToFavorites id={current_station.id} />
+
+            {/* <Tooltip target='.favorited' >
+              {translations_skl.added_to_favorites}
+            </Tooltip> */}
+          </div>
         </div>
 
         <div
@@ -156,7 +168,7 @@ export const Player: FC = () => {
           onClick={() => actions.player.switch_playing()}
         />
 
-        <div className="flex flex-column justify-content-between align-items-center text-gray-500">
+        <div className="flex flex-column justify-content-between align-items-center text-gray-500 gap-1">
 
           {volume}
 
