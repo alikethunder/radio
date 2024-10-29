@@ -2,20 +2,24 @@ package controllers
 
 import (
 	"fmt"
+	"html/template"
+	"slices"
+	"strings"
 	"web_project/cookies"
 	"web_project/db"
+	"web_project/db/StationTags"
+	"web_project/translations"
 
 	"github.com/gocql/gocql"
 	"github.com/gofiber/fiber/v2"
+	agents "github.com/monperrus/crawler-user-agents"
 )
 
 func Index(ctx *fiber.Ctx) error {
 
-	fmt.Printf("[Index] path %s \n", ctx.Path())
+	if agents.IsCrawler(ctx.Get("User-Agent")) {
 
-	if true {
-
-		/* language := ctx.Query("language")
+		language := ctx.Query("language")
 
 		if language == "" {
 			language = "en"
@@ -93,7 +97,7 @@ func Index(ctx *fiber.Ctx) error {
 				"sitename":                         translations.Dictionary[language]["sitename"],
 				"logo":                             template.JS("\"" + ctx.BaseURL() + "/api/v1/files/stations/" + station_id + "/avatar\""),
 			})
-		} */
+		}
 	}
 
 	authCookie := ctx.Cookies(cookies.AuthCookieName)
