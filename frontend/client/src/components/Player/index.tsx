@@ -22,6 +22,7 @@ import {
 import {
   StationTag,
   QueryLink,
+  AddStationToFavorites,
 } from '@/components'
 
 import { Slider } from "primereact/slider"
@@ -90,7 +91,7 @@ export const Player: FC = () => {
 
   //remove after adding buttons for random station
   return current_station ?
-    <div className="flex flex-row flex-shrink-0 shadow-3 h-7rem justify-content-center bg-white p-1 sm:p-2 gap-3 mt-auto">
+    <div className="flex flex-row flex-shrink-0 shadow-3 h-9rem justify-content-center bg-white p-2 sm:p-2 gap-3 mt-auto">
 
       <audio
         src=""
@@ -100,29 +101,36 @@ export const Player: FC = () => {
         ref={e => set_audio_ref(e)}
       />
 
-      <div
-        className="player_station_avatar w-4rem h-4rem sm:w-6rem sm:h-6rem shadow-2 bg-no-repeat bg-contain bg-center flex-shrink-0 border-round-xl flex align-items-center justify-content-center"
-        style={{ backgroundImage: current_station ? `url(/api/v1/files/stations/${current_station?.id}/avatar)` : '' }}
-      >
-        {
-          current_station ?
-            <img
-              style={{ display: 'none' }}
-              src={`/api/v1/files/stations/${current_station?.id}/avatar`}
+      <div className="flex flex-row flex-wrap-reverse gap-2 align-items-end justify-content-center">
 
-              onError={({ currentTarget }) => {
-                set_avatar_not_exists(current_station.id)
-              }}
-            />
-            : <></>
-        }
+        <div className="flex flex-column social_info">
+          <AddStationToFavorites id={current_station.id} />
+        </div>
 
-        {
-          avatar_not_exists == current_station?.id ?
-            <i className="pi pi-wave-pulse text-primary" style={{ fontSize: '4rem' }}></i>
-            :
-            <></>
-        }
+        <div
+          className="player_station_avatar w-4rem h-4rem sm:w-6rem sm:h-6rem shadow-2 bg-no-repeat bg-contain bg-center flex-shrink-0 border-round-xl flex align-items-center justify-content-center"
+          style={{ backgroundImage: current_station ? `url(/api/v1/files/stations/${current_station?.id}/avatar)` : '' }}
+        >
+          {
+            current_station ?
+              <img
+                style={{ display: 'none' }}
+                src={`/api/v1/files/stations/${current_station?.id}/avatar`}
+
+                onError={({ currentTarget }) => {
+                  set_avatar_not_exists(current_station.id)
+                }}
+              />
+              : <></>
+          }
+
+          {
+            avatar_not_exists == current_station?.id ?
+              <i className="pi pi-wave-pulse text-primary" style={{ fontSize: '4rem' }}></i>
+              :
+              <></>
+          }
+        </div>
       </div>
 
       <div className="flex flex-column justify-content-between -ml-2 sm:ml-0">
@@ -148,7 +156,10 @@ export const Player: FC = () => {
           onClick={() => actions.player.switch_playing()}
         />
 
-        <div className="flex justify-content-between align-items-center text-gray-500 w-4rem">
+        <div className="flex flex-column justify-content-between align-items-center text-gray-500">
+
+          {volume}
+
           {/* volume icon */}
           <Button
             icon={`pi pi-${volume ? 'volume-up' : 'volume-off text-sm mr-1'}`}
@@ -169,9 +180,6 @@ export const Player: FC = () => {
               }
             }}
           />
-
-          {volume}
-
         </div>
 
       </div>
@@ -185,7 +193,7 @@ export const Player: FC = () => {
           actions.player.volume(e.value as NumRange<101>)
         }}
         orientation="vertical"
-        className="h-5rem align-self-center -ml-2"
+        className="h-5rem align-self-center mx-1"
         pt={{
           range: {
             className: classNames({},
