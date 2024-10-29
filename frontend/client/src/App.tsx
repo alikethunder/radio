@@ -27,7 +27,6 @@ import { ConfirmDialog } from 'primereact/confirmdialog'
 import {
   Toasts,
   Navbar,
-  LeftSidebar,
   RightSidebar,
   RestrictedPage,
   Player,
@@ -293,8 +292,6 @@ export default function App() {
       {/*  <WS /> */}
 
       <Navbar />
-
-      <LeftSidebar />
 
       <RightSidebar />
 

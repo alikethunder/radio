@@ -67,6 +67,7 @@ import {
 import { setForm } from "@/functions/setForm"
 
 import {
+  AddStationToFavorites,
   StationTag,
 } from '@/components'
 
@@ -642,19 +643,7 @@ export const Station = () => {
             />
 
             <div className="flex flex-column">
-              <Button
-                icon={`pi ${favorite_station ? 'pi-star-fill' : 'pi-star'}`}
-                rounded
-                outlined
-                raised
-                aria-label={translations.add_to_favorites}
-                tooltip={translations.add_to_favorites}
-                tooltipOptions={tooltip_options}
-                className={`p-0 w-2rem h-2rem shadow_on_hover flex-shrink-0`}
-                severity={`warning`}
-
-                onClick={() => click_add_to_favorites(station.id)}
-              />
+              <AddStationToFavorites id={station.id} />
             </div>
           </div>
 
