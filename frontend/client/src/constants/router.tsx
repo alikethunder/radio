@@ -44,23 +44,23 @@ export const all_routes = Object.values(app_routes)
 
 export const route_attributes = {
   [app_routes.user_profile$id]: {
-    name: <Translation capitalize field="profile" className="w-5rem"/>,
+    name: <Translation capitalize field="profile" className="w-5rem"/> as unknown as string,
     icon: 'pi-id-card',
   },
   [app_routes.signin]: {
-    name: <Translation capitalize field="login" className="w-8rem"/>,
+    name: <Translation capitalize field="login" className="w-8rem"/> as unknown as string,
     icon: 'pi-sign-in',
   },
   [app_routes.signup]: {
-    name: <Translation capitalize field="registration" className="w-8rem"/>,
+    name: <Translation capitalize field="registration" className="w-8rem"/> as unknown as string,
     icon: 'pi-address-book',
   },
   [app_routes.reset_password]: {
-    name: <Translation capitalize field="reset_password" className="w-8rem"/>,
+    name: <Translation capitalize field="reset_password" className="w-8rem"/> as unknown as string,
     icon: 'pi-key',
   },
   [app_routes.verification]: {
-    name: <Translation capitalize field="create_password" className="w-8rem"/>,
+    name: <Translation capitalize field="create_password" className="w-8rem"/> as unknown as string,
     icon: 'pi-verified',
   },
   [app_routes.root]: {},

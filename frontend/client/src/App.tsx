@@ -105,7 +105,7 @@ export default function App() {
   }, [])
 
   useEffect(() => {
-    console.log('get station')
+    //console.log('get station')
     const current_station = store.player.current_station()
     if (current_station?.id) {
       (async () => {
@@ -142,12 +142,12 @@ export default function App() {
   useEffect(() => {
     if (checked_current_route && current_route) {
 
-      const current_route_attrs = {...route_attributes[current_route as keyof typeof route_attributes]}
+      const current_route_attrs = route_attributes[current_route as keyof typeof route_attributes]
 
-      //console.log('current page : ', current_route_attrs)
+      console.log('[App] current page : ', current_route_attrs)
 
       if (current_route_attrs) {
-        actions.app.current_page(current_route_attrs)
+        actions.app.current_page({...current_route_attrs})
       }
     }
   }, [
