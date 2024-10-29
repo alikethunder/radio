@@ -15,13 +15,11 @@ export const app_routes = {
   reset_password: '/reset-password',
   verification: '/verification',
   purchase_plan: '/purchase-plan',
-  project$id: '/project/:id',
   user_profile$id: '/user-profile/:id',
   station$id: '/station/:id',
 } as const
 
 export const auth_required_routes = [
-  app_routes.project$id,
   //app_routes.user_profile$id,
 ] as const
 

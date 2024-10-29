@@ -130,17 +130,7 @@ export const RightSidebar: FC = () => {
               />
             </QueryLink>
         }
-        {/* <QueryLink to={generatePath(app_routes.project$id, { id: 'new' })} onClick={() => actions.app.rightSidebarOpened(false)}>
-          <Button
-            label="Создать компанию"
-            text
-            raised
-            icon={`pi pi-plus`}
-            iconPos="right"
-            //onClick={logout}
-            className="border-noround w-full h-full px-2 text-primary"
-          />
-        </QueryLink> */}
+        
         <div className="flex flex-column shadow-4">
 
         </div>

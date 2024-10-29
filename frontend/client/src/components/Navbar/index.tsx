@@ -121,6 +121,11 @@ export const Navbar: FC = () => {
     })
   }, [search_station_tags])
 
+  const click_search = useDebounceCallback((e) => {
+    store.persistedApp.search_panel()?.toggle(e)
+    actions.persistedApp.search_panel_collapsed(!store.persistedApp.search_panel_collapsed())
+  }, 50)
+
   return (
     <>
       <div className="flex flex-shrink-0 shadow-2 h-3rem sm:h-4rem justify-content-between bg-white border-bottom-1 border-solid border-100 border-top-none border-left-none border-right-none">
@@ -170,10 +175,7 @@ export const Navbar: FC = () => {
                 className={`p-0 w-2rem h-2rem shadow_on_hover align-self-center flex flex-shrink-0 justify-content-center align-items-center`}
                 severity={`info`}
 
-                onClick={(e) => {
-                  store.persistedApp.search_panel()?.toggle(e)
-                  actions.persistedApp.search_panel_collapsed(!store.persistedApp.search_panel_collapsed())
-                }}
+                onClick={click_search}
               >
                 <i className={`pi pi-search-${search_panel_collapsed ? 'plus' : 'minus'} p-overlay-badge`}>
                   <Badge

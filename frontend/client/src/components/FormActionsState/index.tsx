@@ -6,6 +6,7 @@ import { Button } from 'primereact/button'
 import { actions, useStore, store } from "@/store"
 
 import { tooltip_options } from "@/constants/tooltip_options"
+import { useDebounceCallback } from "usehooks-ts"
 
 /* 
 page that will include form and will need the form state actions has to set and clear after itself the FormActionsState_submit 
@@ -18,6 +19,16 @@ export const FormActionsState: FC = () => {
 
   const isValid = useStore().app.FormActionsState_isValid()
   const show = useStore().app.FormActionsState_show()
+
+  const click_edit = useDebounceCallback(() => {
+    store.app.FormActionsState_edit()?.()
+  }, 50)
+
+  const click_submit = useDebounceCallback(() => store.app.FormActionsState_submit()?.(), 50)
+
+  const click_cancel = useDebounceCallback(() => {
+    store.app.FormActionsState_reset()?.()
+  }, 50)
 
   const navbar_actions = useMemo(() => {
     switch (edit_mode) {
@@ -33,9 +44,7 @@ export const FormActionsState: FC = () => {
           className={`p-0 w-2rem h-2rem shadow_on_hover flex-shrink-0`}
           severity={`warning`}
 
-          onClick={() => {
-            store.app.FormActionsState_edit()?.()
-          }}
+          onClick={click_edit}
         />
         break;
 
@@ -55,7 +64,7 @@ export const FormActionsState: FC = () => {
 
             disabled={!isValid}
 
-            onClick={() => store.app.FormActionsState_submit()?.()}
+            onClick={click_submit}
           />
 
           <Button
@@ -70,9 +79,7 @@ export const FormActionsState: FC = () => {
             severity='danger'
             size="small"
 
-            onClick={() => {
-              store.app.FormActionsState_reset()?.()
-            }}
+            onClick={click_cancel}
           />
         </>
         break;

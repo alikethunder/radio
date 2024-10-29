@@ -213,8 +213,6 @@ export default function App() {
     checked_auth_page
   ])
 
-  const is_project_page = useMatch(app_routes.project$id)
-
   useEffect(() => {
     //language preset
     (async () => {
@@ -271,22 +269,6 @@ export default function App() {
       {/*  <WS /> */}
 
       <Navbar />
-
-      {
-        is_project_page ?
-          <Button
-            className="border-circle fixed top-0 left-0 ml-4 mt-3"
-            severity="info"
-            text
-            raised
-            icon="pi pi-bars"
-            onClick={
-              () => actions.session.leftSidebarOpened(true)
-            } />
-          : ''
-      }
-
-
 
       <LeftSidebar />
 
