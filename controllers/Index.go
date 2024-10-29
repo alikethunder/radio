@@ -106,7 +106,7 @@ func Index(ctx *fiber.Ctx) error {
 		authCookie = ctx.Query("auth")
 	}
 
-	//fmt.Println("[controllers.Index] authCookie ", ctx.GetReqHeaders())
+	fmt.Println("[controllers.Index] authCookie ", authCookie)
 
 	if authCookie != "" {
 
@@ -114,7 +114,7 @@ func Index(ctx *fiber.Ctx) error {
 
 		if cookie_user["id"] != nil {
 
-			user, err := db.SelectRow("users", fiber.Map{"email": cookie_user["email"]}, "id", "name", "email", "subscription_plan", "admin")
+			user, err := db.SelectRow("users", fiber.Map{"email": cookie_user["email"]}, "id", "name", "email", "subscription_plan", "admin", "favorite_stations")
 
 			if err != nil {
 				fmt.Printf("[controllers.Index] ClearAuthCookies 1 \n")

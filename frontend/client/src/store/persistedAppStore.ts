@@ -10,6 +10,7 @@ type PersistedApp = {
   search_stations_text: string;
   language: string | null,
   languages: string[],
+  favorite_stations: string[],
 }
 
 const initial_state = {
@@ -20,6 +21,7 @@ const initial_state = {
   search_stations_text: '',
   language: null,
   languages: [],
+  favorite_stations: [],
 } as PersistedApp
 
 export const persistedAppStore = createStore('app')(initial_state,
@@ -29,6 +31,9 @@ export const persistedAppStore = createStore('app')(initial_state,
       name: 'persistedApp'
     }
   })
+  .extendSelectors((state, get, api) => ({
+    favorite_station: (id: string) => get.favorite_stations().includes(id),
+  }))
   .extendActions((set, get, api) => ({
     add_tag_to_search: (tag: string) => {
       const cur_tags = get.search_station_tags()
@@ -36,5 +41,10 @@ export const persistedAppStore = createStore('app')(initial_state,
       if (!cur_tags.includes(tag)) {
         set.search_station_tags([...cur_tags, tag])
       }
+    },
+    toggle_favorite_station: (id: string) => {
+      const cur_stations = get.favorite_stations()
+
+      set.favorite_stations(cur_stations.includes(id) ? cur_stations.filter(cur_id => cur_id != id) : [...cur_stations, id])
     },
   }))

@@ -58,6 +58,7 @@ import {
 } from '@/constants/router'
 
 import { get_station } from "@/API/station/get_station"
+import { update_json } from "./API/profile/update_json"
 
 //console.log('typeof window : ', typeof window)
 
@@ -147,7 +148,7 @@ export default function App() {
       console.log('[App] current page : ', current_route_attrs)
 
       if (current_route_attrs) {
-        actions.app.current_page({...current_route_attrs})
+        actions.app.current_page({ ...current_route_attrs })
       }
     }
   }, [
@@ -168,18 +169,41 @@ export default function App() {
 
       const user = JSON.parse(decodeURIComponent(user_cookie))
 
-      //console.log('[App.tsx] user : ', user)
+      console.log('[App.tsx] user : ', user)
 
       actions.auth.signedin(true)
 
       actions.user.update_user_data(user)
+
+      console.log('[App] user.favorite_stations : ', user.favorite_stations)
+
+      if (user?.favorite_stations) {
+        actions.persistedApp.favorite_stations(user.favorite_stations)
+      }
     } catch (e) {
+      console.log(e)
       onLogout()
     }
 
     set_checked_signin(true)
 
   }, [])
+
+  useEffect(() => {
+    if (signedin) {
+      const anonym_favorite_stations = store.persistedApp.favorite_stations()
+
+      const user_favorite_stations = store.user.favorite_stations()
+
+      const new_fav_stations = anonym_favorite_stations.filter(id => !user_favorite_stations.includes(id))
+
+      if (new_fav_stations.length) {
+        update_json({ favorite_stations: [...new_fav_stations, ...user_favorite_stations] })
+      }
+    }
+  }, [
+    signedin,
+  ])
 
   useEffect(() => {
     actions.app.isDesktop(

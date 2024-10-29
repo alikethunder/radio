@@ -62,6 +62,7 @@ var Dictionary = map[string]map[string]string{
 		"radiostations":                       "Radiostations",
 		"links_to_page_on_other_languages":    "Links to page on other languages",
 		"sitename":                            "Radio Best",
+		"add_to_favorites":                    "add to favorites",
 	},
 	"ru": {
 		"login":                               "Войти",
@@ -122,5 +123,6 @@ var Dictionary = map[string]map[string]string{
 		"radiostations":                       "Радиостанции",
 		"links_to_page_on_other_languages":    "Ссылки на страницу на других языках",
 		"sitename":                            "Radio Best",
+		"add_to_favorites":                    "добавить в избранное",
 	},
 }

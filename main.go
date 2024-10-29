@@ -99,7 +99,11 @@ func main() {
 
 	profile_endpoints.Get("/admin/:id", ProfileEndpoints.Admin)
 
+	profile_endpoints.Post("/update-json", ProfileEndpoints.UpdateJson)
+
 	profile_endpoints.Post("/update", ProfileEndpoints.Update)
+
+	profile_endpoints.Post("/update-json", ProfileEndpoints.UpdateJson)
 
 	profile_endpoints.Post("/request-update-email", ProfileEndpoints.RequestUpdateEmail)
 

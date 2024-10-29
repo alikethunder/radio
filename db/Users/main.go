@@ -15,6 +15,7 @@ import (
 	last_seen text, date last seen
 	subscription_plan text,
 	subscription_plan_ends text, date seller plan ends
+	favorite_stations set<text>, stations ids
 */
 
 func Initialize() {
@@ -29,6 +30,7 @@ func Initialize() {
 		subscription_plan_ends text,
 		photo blob,
 		admin boolean,
+		favorite_stations set<text>,
 		PRIMARY KEY (id, email)
 	)`).Exec(); err != nil {
 
