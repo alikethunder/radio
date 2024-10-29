@@ -199,6 +199,7 @@ func main() {
 	app.Get("/", controllers.Index)
 	// Configure app
 	app.Static("/", "./served/public")
+	app.Static("/", "./served/app_icon")
 
 	app.Get("*", controllers.Index)
 
