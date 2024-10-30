@@ -353,7 +353,7 @@ export const Station = () => {
   return (
     <>
       <Helmet>
-        <title>{translations.sitename} - {station.name}</title>
+        <title>{translations.sitename} - {station?.name}</title>
 
         <meta property="og:type" content="music.radio_station" />
 
@@ -367,24 +367,24 @@ export const Station = () => {
 
         <meta property="og:site_name" content={translations.sitename} />
 
-        <meta property="og:title" content={`${translations.sitename} - ${station.name}`} />
-        <meta name="twitter:title" content={`${translations.sitename} - ${station.name}`} />
+        <meta property="og:title" content={`${translations.sitename} - ${station?.name}`} />
+        <meta name="twitter:title" content={`${translations.sitename} - ${station?.name}`} />
 
-        <meta name="description" content={`${station[`text_description_${language}`]}`} />
-        <meta property="og:description" content={`${station[`text_description_${language}`]}`} />
-        <meta property="twitter:description" content={`${station[`text_description_${language}`]}`} />
+        <meta name="description" content={`${station?.[`text_description_${language}`]}`} />
+        <meta property="og:description" content={`${station?.[`text_description_${language}`]}`} />
+        <meta property="twitter:description" content={`${station?.[`text_description_${language}`]}`} />
 
-        <link rel="canonical" href={`${window.location.origin}${generatePath(app_routes["station$id"], { id: station.id })}?language=${language}`} />
+        <link rel="canonical" href={`${window.location.origin}${generatePath(app_routes["station$id"], { id: station?.id })}?language=${language}`} />
 
-        <meta property="og:url" content={`${window.location.origin}${generatePath(app_routes["station$id"], { id: station.id })}?language=${language}`} />
+        <meta property="og:url" content={`${window.location.origin}${generatePath(app_routes["station$id"], { id: station?.id })}?language=${language}`} />
 
         <meta property="twitter:url"
-          content={`${window.location.origin}${generatePath(app_routes["station$id"], { id: station.id })}?language=${language}`} />
+          content={`${window.location.origin}${generatePath(app_routes["station$id"], { id: station?.id })}?language=${language}`} />
 
-        <meta property="og:image" content={`${window.location.origin}/api/v1/files/stations/${station.id}/avatar`} />
+        <meta property="og:image" content={`${window.location.origin}/api/v1/files/stations/${station?.id}/avatar`} />
         <meta property="og:image:width" content="128" />
         <meta property="og:image:height" content="128" />
-        <meta property="twitter:image" content={`${window.location.origin}/api/v1/files/stations/${station.id}/avatar`} />
+        <meta property="twitter:image" content={`${window.location.origin}/api/v1/files/stations/${station?.id}/avatar`} />
 
         <meta property="twitter:domain" content={window.location.origin} />
 
@@ -394,8 +394,8 @@ export const Station = () => {
         {JSON.stringify({
           '@context': 'https://schema.org',
           '@type': 'Radiostation',
-          name: station.name,
-          description: station[`description_${language}`],
+          name: station?.name,
+          description: station?.[`description_${language}`],
           availableLanguage: [
             {
               "@type": "Language",
@@ -406,9 +406,9 @@ export const Station = () => {
               "name": "Russian"
             }
           ],
-          keywords: station.tags.join(','),
+          keywords: station.tags?.join(','),
           logo: `${window.location.origin}/api/v1/files/stations/${station.id}/avatar`,
-          url: `${window.location.origin}${generatePath(app_routes["station$id"], { id: station.id })}?language=${language}`,
+          url: `${window.location.origin}${generatePath(app_routes["station$id"], { id: station?.id })}?language=${language}`,
         })}
       </script>
 
@@ -710,6 +710,7 @@ export const Station = () => {
                 ),
                 style: {
                   maxHeight: '240px',
+                  height: 'fit-content',
                   border: '1px solid #dfe7ef',
                   overflowY: 'auto',
                   borderRadius: '6px',
@@ -731,6 +732,7 @@ export const Station = () => {
                   style={{
                     maxHeight: '240px',
                     overflowY: 'auto',
+                    height: 'fit-content',
                   }}
 
                   formats={['bold', 'font', 'italic', 'link', 'size', 'underline', 'list', '']}

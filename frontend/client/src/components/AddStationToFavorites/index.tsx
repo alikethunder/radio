@@ -12,7 +12,6 @@ import { tooltip_options } from "@/constants/tooltip_options"
 import { useTranslations } from "@/hooks"
 import { useDebounceCallback } from "usehooks-ts"
 import { update_json } from "@/API/profile/update_json"
-import { update } from "@/API/station/update_json"
 
 type Props = {
   id: string;
@@ -26,12 +25,21 @@ export const AddStationToFavorites: FC<Props> = ({ id }) => {
 
     actions.persistedApp.toggle_favorite_station(id)
 
+    const likes = store.persistedApp.favorite_station(id) ? '+1' : '-1'
+    //update station like count
+    const resp = await fetch(`/api/v1/radio/update-likes/${id}`, {
+      method: 'POST',
+      body: JSON.stringify({
+        likes,
+      })
+    })
+    
+
     if (store.auth.signedin()) {
       actions.user.toggle_favorite_station(id)
 
       update_json({ favorite_stations: store.persistedApp.favorite_stations() })
 
-      //update(id, {})
     }
   }, 50)
 

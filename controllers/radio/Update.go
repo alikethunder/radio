@@ -44,6 +44,16 @@ func Update(ctx *fiber.Ctx) error {
 
 			updated_fields["render_order"], _ = db.Count("stations", "*", fiber.Map{})
 
+			db.Update(
+				"station_counters",
+				fiber.Map{
+					"likes": 0,
+				},
+				fiber.Map{
+					"id": id,
+				},
+			)
+
 		}
 
 		fmt.Println("[RadioEndpoints.Update] updated_fields :", updated_fields)

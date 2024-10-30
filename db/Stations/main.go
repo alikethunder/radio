@@ -39,7 +39,6 @@ func Initialize() {
 		tags set<text>,
 		admins set<text>,
 		render_order smallint,
-		likes int,
 		external text,
 		external_enable boolean,
 	) WITH caching = {'enabled': 'true'};`).Exec(); err != nil {

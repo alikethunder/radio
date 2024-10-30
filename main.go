@@ -12,6 +12,7 @@ import (
 	//"web_project/cookies"
 	"web_project/db"
 	DBPlans "web_project/db/Plans"
+	"web_project/db/StationCounters"
 	"web_project/db/StationTags"
 	"web_project/db/Stations"
 	Users "web_project/db/Users"
@@ -48,6 +49,7 @@ func init() {
 	DBPlans.Initialize()
 	mailer.Initialize()
 	Stations.Initialize()
+	StationCounters.Initialize()
 	StationTags.Initialize()
 }
 
@@ -145,6 +147,8 @@ func main() {
 	go radio.Stream(radio.ConnPool, ctn)
 
 	radio_endpoints.Get("/broadcast/:id", RadioEndpoints.Broadcast)
+
+	radio_endpoints.Post("/update-likes/:id", RadioEndpoints.UpdateLikes)
 
 	radio_endpoints.Post("/update/:id", RadioEndpoints.Update)
 
