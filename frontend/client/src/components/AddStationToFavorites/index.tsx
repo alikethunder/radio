@@ -74,7 +74,10 @@ export const AddStationToFavorites: FC<Props> = ({ id }) => {
       className={`p-0 w-2rem h-2rem shadow_on_hover flex-shrink-0`}
       severity={`warning`}
 
-      onClick={() => click_add_to_favorites(id)}
+      onClick={(e) => {
+        e.preventDefault()
+        click_add_to_favorites(id)
+      }}
     />
   )
 }
