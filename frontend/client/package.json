@@ -26,6 +26,7 @@
     "sockette": "^2.0.6",
     "use-async-memo": "^1.2.5",
     "usehooks-ts": "^3.0.1",
+    "uuid": "^11.0.2",
     "zustand-x": "^3.0.4"
   },
   "devDependencies": {

@@ -1,6 +1,7 @@
 import { createStore } from 'zustand-x'
 
 import { Panel } from 'primereact/panel'
+import { v7 } from 'uuid'
 
 type PersistedApp = {
   rememberme: boolean;
@@ -11,6 +12,7 @@ type PersistedApp = {
   language: string | null,
   languages: string[],
   favorite_stations: string[],
+  user_uuid: string,
 }
 
 const initial_state = {
@@ -22,6 +24,7 @@ const initial_state = {
   language: null,
   languages: [],
   favorite_stations: [],
+  user_uuid: v7(),
 } as PersistedApp
 
 export const persistedAppStore = createStore('app')(initial_state,

@@ -23,6 +23,8 @@ export const AddStationToFavorites: FC<Props> = ({ id }) => {
 
   const click_add_to_favorites = useDebounceCallback(async (id) => {
 
+    const signedin = store.auth.signedin()
+
     actions.persistedApp.toggle_favorite_station(id)
 
     const likes = store.persistedApp.favorite_station(id) ? '+1' : '-1'
@@ -31,11 +33,11 @@ export const AddStationToFavorites: FC<Props> = ({ id }) => {
       method: 'POST',
       body: JSON.stringify({
         likes,
+        uuid: signedin ? store.user.id() : store.persistedApp.user_uuid(),
       })
     })
-    
 
-    if (store.auth.signedin()) {
+    if (signedin) {
       actions.user.toggle_favorite_station(id)
 
       update_json({ favorite_stations: store.persistedApp.favorite_stations() })

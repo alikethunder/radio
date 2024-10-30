@@ -20,6 +20,7 @@ import (
 	tags set<text>,							station tags
 	admins set<uuid>, 					who can alter station
 	render_order smallint,			order of stations to render
+	likes set<text>,						uuid of unregistered users that added to favorites
 	external text,							external link
 	external_enable boolean,		play from external source
 */
@@ -38,6 +39,7 @@ func Initialize() {
 		tags set<text>,
 		admins set<text>,
 		render_order smallint,
+		likes set<text>,
 		external text,
 		external_enable boolean,
 	) WITH caching = {'enabled': 'true'};`).Exec(); err != nil {
