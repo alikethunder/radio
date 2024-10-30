@@ -7,13 +7,19 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func UpdateCounters(table string, update_parameters fiber.Map, key_parameters fiber.Map) error {
+func UpdateCounters(table string, update_parameters fiber.Map, key_parameters fiber.Map, additional_params ...interface{}) error {
+
+	log := false
+
+	if len(additional_params) > 0 {
+		log = additional_params[0].(bool)
+	}
 
 	if len(update_parameters) > 0 && len(key_parameters) > 0 {
 
 		var insertString strings.Builder
 
-		values := make([]interface{}, len(update_parameters)+len(key_parameters))
+		values := make([]interface{} /* len(update_parameters)+ */, len(key_parameters))
 
 		i := 0
 
@@ -22,13 +28,13 @@ func UpdateCounters(table string, update_parameters fiber.Map, key_parameters fi
 			insertString.WriteString(key)
 			insertString.WriteString(` = `)
 			insertString.WriteString(key)
-			insertString.WriteString(`?`)
+			insertString.WriteString(val.(string))
 
 			if i != len(update_parameters)-1 {
 				insertString.WriteString(", ")
 			}
 
-			values[i] = val
+			//values[i] = val
 
 			i++
 		}
@@ -45,20 +51,22 @@ func UpdateCounters(table string, update_parameters fiber.Map, key_parameters fi
 				insertString.WriteString(" AND ")
 			}
 
-			values[i] = val
+			values[j] = val
 
 			j++
-			i++
+			//i++
 		}
 
 		query := "UPDATE " + table + " SET " + insertString.String()
 
-		//fmt.Println("[Update] query : ", query)
-		//fmt.Println("[Update] values : ", values)
+		if log {
+			fmt.Println("[UpdateCounters] query : ", query)
+			fmt.Println("[UpdateCounters] values : ", values)
+		}
 
 		if err := Session.Query(query, values...).Exec(); err != nil {
 
-			fmt.Printf("[Update] table %s with update_parameters %s and key parameters %s, error : %s\n", table, update_parameters, key_parameters, err)
+			fmt.Printf("[UpdateCounters] table %s with update_parameters %s and key parameters %s, error : %s\n", table, update_parameters, key_parameters, err)
 
 			return err
 		}
@@ -66,5 +74,5 @@ func UpdateCounters(table string, update_parameters fiber.Map, key_parameters fi
 		return nil
 	}
 
-	return fmt.Errorf("[Update] Error: table %s with update_parameters %s and key parameters %s", table, update_parameters, key_parameters)
+	return fmt.Errorf("[UpdateCounters] Error: table %s with update_parameters %s and key parameters %s", table, update_parameters, key_parameters)
 }

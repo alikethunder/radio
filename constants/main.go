@@ -9,7 +9,6 @@ func Public_Station_Props() []string {
 		"external",
 		"external_enable",
 		"id",
-		"likes",
 		"name",
 		"render_order",
 		"tags",

@@ -60,7 +60,7 @@ export const Player: FC = () => {
   useEffect(() => {
     if (current_station && audio_ref) {
       if (playing) {
-        audio_ref.src = current_station.external_enable ? current_station.external : ''
+        audio_ref.src = current_station?.external_enable ? current_station?.external : ''
         audio_ref.play()
       } else {
         audio_ref.pause()
@@ -78,7 +78,7 @@ export const Player: FC = () => {
 
   useEffect(() => {
     if (current_station) {
-      set_avatar_not_exists(e => e == current_station.id ? e : '')
+      set_avatar_not_exists(e => e == current_station?.id ? e : '')
     }
   }, [current_station])
 
@@ -111,7 +111,7 @@ export const Player: FC = () => {
         <div className="flex flex-column social_info">
           <div className="flex gap-1 flex-column">
             {/* <span className="text-gray-500 favorited">125</span> */}
-            <AddStationToFavorites id={current_station.id} />
+            <AddStationToFavorites id={current_station?.id} />
 
             {/* <Tooltip target='.favorited' >
               {translations_skl.added_to_favorites}
@@ -130,7 +130,7 @@ export const Player: FC = () => {
                 src={`/api/v1/files/stations/${current_station?.id}/avatar`}
 
                 onError={({ currentTarget }) => {
-                  set_avatar_not_exists(current_station.id)
+                  set_avatar_not_exists(current_station?.id)
                 }}
               />
               : <></>
@@ -248,7 +248,7 @@ export const Player: FC = () => {
         <div className="station_tags_container text_hidden_overflow line-clamp-2 max-w-15rem text-center">
           {/* current station tags (clickable, opens the main page with search with clicked tag)  */}
           {
-            current_station?.tags.map(tag => <StationTag tag={tag} />)
+            current_station?.tags?.map(tag => <StationTag tag={tag} />)
           }
 
         </div>

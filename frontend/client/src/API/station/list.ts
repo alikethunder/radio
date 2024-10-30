@@ -10,7 +10,7 @@ export const list: (parameters?: {
 
   if (resp.status == 200) {
     const json = await resp.json()
-    return json
+    return json ?? []
   }
 
   return []

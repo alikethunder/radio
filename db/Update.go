@@ -7,7 +7,13 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func Update(table string, orig_insert_parameters fiber.Map, key_parameters fiber.Map) error {
+func Update(table string, orig_insert_parameters fiber.Map, key_parameters fiber.Map, additional_params ...interface{}) error {
+
+	log := false
+
+	if len(additional_params) > 0 {
+		log = additional_params[0].(bool)
+	}
 
 	insert_parameters := make(fiber.Map)
 
@@ -60,8 +66,10 @@ func Update(table string, orig_insert_parameters fiber.Map, key_parameters fiber
 
 		query := "UPDATE " + table + " SET " + insertString.String()
 
-		//fmt.Println("[Update] query : ", query)
-		//fmt.Println("[Update] values : ", values)
+		if log {
+			fmt.Println("[Update] query : ", query)
+			fmt.Println("[Update] values : ", values)
+		}
 
 		if err := Session.Query(query, values...).Exec(); err != nil {
 

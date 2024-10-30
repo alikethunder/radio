@@ -131,7 +131,11 @@ export const routes = [
           try {
 
             const station = await get_station(id)
-
+            
+            if (!station){
+              throw new Error('station not found')
+            }
+            
             actions.app.current_page({
               name: station?.name
             })

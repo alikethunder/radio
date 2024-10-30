@@ -27,6 +27,7 @@ func UpdateLikes(ctx *fiber.Ctx) error {
 		fiber.Map{
 			"id": id,
 		},
+		true,
 	); err == nil {
 		return ctx.SendStatus(fiber.StatusOK)
 	}

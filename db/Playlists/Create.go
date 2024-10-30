@@ -19,7 +19,6 @@ import (
 	tags set<text>,					tags
 	downloads set<uuid>,		ids of users that downloaded
 	downloadable boolean, 	if track can be downloaded
-	likes	int,							how many people liked track
 	video boolean,					if track is video
 	duration smallint, 			track duration in secs
 */
@@ -38,7 +37,6 @@ func Create(id string) error {
 		tags set<text>,
 		downloads set<uuid>,
 		downloadable boolean,
-		likes	int,
 		video boolean,
 		duration smallint,
 	) WITH caching = {'enabled': 'true'};`).Exec(); err != nil {

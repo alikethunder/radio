@@ -3,7 +3,6 @@ package RadioEndpoints
 import (
 	//"fmt"
 
-	"fmt"
 	"web_project/constants"
 	"web_project/cookies"
 	"web_project/db"
@@ -31,13 +30,14 @@ func ListStations(ctx *fiber.Ctx) error {
 
 			admin_stations := db.List("stations", fiber.Map{"broadcasting": false}, []string{"admins CONTAINS '" + current_user_id + "'"})
 
-			fmt.Println("[RadioEndpoints.ListStations] admin_stations ", admin_stations)
+			//fmt.Println("[RadioEndpoints.ListStations] admin_stations ", admin_stations)
 
 			stations = append(stations, admin_stations...)
 		}
 
 	}
 
+	//fmt.Println("[RadioEndpoints.ListStations] stations ", stations)
 	return ctx.Status(fiber.StatusOK).JSON(stations)
 
 }

@@ -7,7 +7,6 @@ export type Station = {
   tags: string[],
   admins: string[],
   render_order: number,
-  likes: number,
   external: string,
   external_enable: boolean,
 } & {

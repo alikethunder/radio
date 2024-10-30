@@ -44,14 +44,16 @@ func Update(ctx *fiber.Ctx) error {
 
 			updated_fields["render_order"], _ = db.Count("stations", "*", fiber.Map{})
 
-			db.Update(
+			db.UpdateCounters(
 				"station_counters",
 				fiber.Map{
-					"likes": 0,
+					"likes":     "+ 0",
+					"listeners": "+ 0",
 				},
 				fiber.Map{
 					"id": id,
 				},
+				true,
 			)
 
 		}
