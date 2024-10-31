@@ -11,6 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@sentry/react": "^8.36.0",
     "@types/jsmediatags": "^3.9.6",
     "jsmediatags": "^3.9.7",
     "primeflex": "^3.3.1",
@@ -30,6 +31,7 @@
     "zustand-x": "^3.0.4"
   },
   "devDependencies": {
+    "@sentry/vite-plugin": "^2.22.6",
     "@svgr/rollup": "^8.1.0",
     "@types/node": "^20.10.5",
     "@types/promise-polyfill": "^6.0.6",

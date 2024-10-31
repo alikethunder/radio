@@ -6,6 +6,7 @@ import autoprefixer from 'autoprefixer'
 import * as path from 'path'
 import svgr from '@svgr/rollup'
 import injectHTML from 'vite-plugin-html-inject'
+import { sentryVitePlugin } from "@sentry/vite-plugin"
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -21,6 +22,17 @@ export default defineConfig({
     viteTsconfigPaths(),
     svgr(),
     commonjs(),
+    sentryVitePlugin({
+      org: 'RadioBest',
+      project: 'radio-best-fe',
+
+      authToken: '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',
+
+      sourcemaps: {
+        assets: "./assets/**"
+      },
+
+    }),
   ],
   css: {
     postcss: {

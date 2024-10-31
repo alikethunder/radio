@@ -1,6 +1,6 @@
 /// <reference lib="dom" />
 /// <reference lib="dom.iterable" />
-
+import './sentry'
 import 'vite/modulepreload-polyfill'
 
 import 'promise-polyfill'
