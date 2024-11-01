@@ -18,7 +18,7 @@ export const useTranslationsSkeleton = <T extends Record<string, string[]>>(fiel
       {
         /* true || */ loading ?
           <Skeleton className={`inline-block ${fields[key][0] ?? ''}`} />
-          : <div className={`inline-block ${(fields[key][1] ?? '')}`}>{translations[key]}</div>
+          : <div className={`inline-block ${(fields[key][1] ?? '')}`} dangerouslySetInnerHTML={{__html: translations[key]}}></div>
       }
     </> as unknown as string]
   )) as { [K in keyof T]: string }
