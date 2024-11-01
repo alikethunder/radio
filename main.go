@@ -39,6 +39,8 @@ import (
 
 	//"web_project/settings"
 
+	"github.com/getsentry/sentry-go"
+	sentryfiber "github.com/getsentry/sentry-go/fiber"
 	"github.com/goccy/go-json"
 	_ "github.com/joho/godotenv/autoload"
 )
@@ -51,6 +53,17 @@ func init() {
 	Stations.Initialize()
 	StationCounters.Initialize()
 	StationTags.Initialize()
+
+	// To initialize Sentry's handler, you need to initialize Sentry itself beforehand
+	if err := sentry.Init(sentry.ClientOptions{
+		Dsn: "https://4ba1a1068260d3de6faaa8a63420a5e5@o4508217277808640.ingest.de.sentry.io/4508218385760336",
+		// Set TracesSampleRate to 1.0 to capture 100%
+		// of transactions for tracing.
+		// We recommend adjusting this value in production,
+		TracesSampleRate: 1.0,
+	}); err != nil {
+		fmt.Printf("Sentry initialization failed: %v\n", err)
+	}
 }
 
 func main() {
@@ -205,6 +218,15 @@ func main() {
 	app.Use(compress.New())
 
 	app.Get("/", controllers.Index)
+
+	// Later in the code
+	sentryHandler := sentryfiber.New(sentryfiber.Options{
+		Repanic:         true,
+		WaitForDelivery: true,
+	})
+
+	app.Use(sentryHandler)
+
 	// Configure app
 	app.Static("/", "./served/public")
 	app.Static("/", "./served/app_icon")
