@@ -126,6 +126,10 @@ export const Navbar: FC = () => {
     actions.persistedApp.search_panel_collapsed(!store.persistedApp.search_panel_collapsed())
   }, 50)
 
+  const click_tag_remove = useDebounceCallback(tag => {
+    actions.persistedApp.search_station_tags(store.persistedApp.search_station_tags().filter(t => t != tag))
+  }, 50)
+
   return (
     <>
       <div className="flex flex-shrink-0 shadow-2 h-3rem sm:h-4rem justify-content-between bg-white border-bottom-1 border-solid border-100 border-top-none border-left-none border-right-none">
@@ -291,9 +295,7 @@ export const Navbar: FC = () => {
                   <StationTag tag={tag} disable_link />
 
                   <StationTagRemoveTokenIcon
-                    onClick={() => {
-                      actions.persistedApp.search_station_tags(store.persistedApp.search_station_tags().filter(t => t != tag))
-                    }} />
+                    onClick={() => click_tag_remove(tag)} />
                 </div>
               )
             }

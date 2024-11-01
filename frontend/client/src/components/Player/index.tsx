@@ -36,6 +36,7 @@ import { classNames } from "primereact/utils"
 import { NumRange } from "@/types/generics/range"
 import { useTranslation, useTranslations, useTranslationsSkeleton } from "@/hooks"
 import { Tooltip } from "primereact/tooltip"
+import { useDebounceCallback } from "usehooks-ts"
 
 const tltp_options = { ...tooltip_options, position: 'top' } as const
 
@@ -93,6 +94,18 @@ export const Player: FC = () => {
   const translations_skl = useTranslationsSkeleton({
     'added_to_favorites': ['w-8rem'],
   }, true)
+
+  const switch_playing = useDebounceCallback(() => actions.player.switch_playing(), 50)
+
+  const click_volume_icon = useDebounceCallback(() => {
+    const v = store.player.volume()
+    if (v) {
+      actions.player.prev_volume(v)
+      actions.player.volume(0)
+    } else {
+      actions.player.volume(store.player.prev_volume() ?? 100)
+    }
+  }, 50)
 
   //remove after adding buttons for random station
   return current_station ?
@@ -165,7 +178,7 @@ export const Player: FC = () => {
             }
           }}
 
-          onClick={() => actions.player.switch_playing()}
+          onClick={switch_playing}
         />
 
         <div className="flex flex-column justify-content-between align-items-center text-gray-500 gap-1">
@@ -182,15 +195,7 @@ export const Player: FC = () => {
             className={`p-0 w-2rem h-2rem shadow_on_hover ${volume ? '' : 'pr-1'}`}
             severity={`warning`}
 
-            onClick={() => {
-              const v = store.player.volume()
-              if (v) {
-                actions.player.prev_volume(v)
-                actions.player.volume(0)
-              } else {
-                actions.player.volume(store.player.prev_volume() ?? 100)
-              }
-            }}
+            onClick={click_volume_icon}
           />
         </div>
 

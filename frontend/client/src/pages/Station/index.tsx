@@ -161,7 +161,7 @@ export const Station = () => {
 
   //console.log("errors.name : ", errors.name)
 
-  const onSubmit = useCallback(async (data: any) => {
+  const onSubmit = useCallback(useDebounceCallback(async (data: any) => {
     console.log('submit : ', data)
 
     const { id } = station
@@ -211,7 +211,7 @@ export const Station = () => {
       console.log(`[Station] update error : `, resp)
     }
 
-  }, [avatar_blob, avatar_data_url, station])
+  }, 50), [avatar_blob, avatar_data_url, station])
 
   const file_reader = new FileReader()
 
@@ -349,6 +349,29 @@ export const Station = () => {
     "radiostation": ['w-8rem'],
     "error_radiostation_name_empty": ["w-8rem"],
   }, true)
+
+  const click_station_tag_remove = useDebounceCallback((e, field) => {
+    if (e) {
+      setValue(field.name, field.value.filter((v: string) => v != (e.target as HTMLElement).closest('.p-chips-token')?.querySelector('.p-tag-value')?.textContent))
+    }
+  }, 50)
+
+  const click_play = useDebounceCallback(() => {
+    if (store.player.playing() && store.player.current_station()?.id == station.id) {
+      actions.player.playing(false)
+    } else {
+      actions.player.playing(true)
+      actions.player.current_station(station)
+    }
+  }, 50)
+
+  const click_tag_remove_token_icon = useDebounceCallback((e, field) => click_station_tag_remove(e, field), 50)
+
+  const click_file_input = useDebounceCallback(e => {
+    if (edit_mode) {
+      photo_file_input_ref.current?.click()
+    }
+  }, 50)
 
   return (
     <>
@@ -541,11 +564,7 @@ export const Station = () => {
 
               className={`element_with_overlay shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-round-xl flex flex-shrink-0 align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode ? 'cursor-pointer' : ''}`}
 
-              onClick={(e: React.MouseEvent) => {
-                if (edit_mode) {
-                  photo_file_input_ref.current?.click()
-                }
-              }}
+              onClick={click_file_input}
             >
               <img
                 style={{ display: 'none' }}
@@ -617,14 +636,7 @@ export const Station = () => {
                 }
               }}
 
-              onClick={() => {
-                if (store.player.playing() && store.player.current_station()?.id == station.id) {
-                  actions.player.playing(false)
-                } else {
-                  actions.player.playing(true)
-                  actions.player.current_station(station)
-                }
-              }}
+              onClick={click_play}
             />
 
             <div className="flex flex-column">
@@ -661,11 +673,7 @@ export const Station = () => {
                       allowDuplicate={false}
                       removable
 
-                      removeIcon={<StationTagRemoveTokenIcon onClick={e => {
-                        if (e) {
-                          setValue(field.name, field.value.filter(v => v != (e.target as HTMLElement).closest('.p-chips-token')?.querySelector('.p-tag-value')?.textContent))
-                        }
-                      }} />}
+                      removeIcon={<StationTagRemoveTokenIcon onClick={e => click_tag_remove_token_icon(e, field)} />}
 
                       pt={{
                         token: {

@@ -70,6 +70,11 @@ var Dictionary = map[string]map[string]string{
 		"user_already_exists":                 "User with this email already exists",
 		"we_have_sent_otp":                    "We've sent the 8-digit verification code to your email",
 		"wrong_otp":                           "Wrong verification code",
+		"are_you_sure_you_want_change_email":  "Are you sure you want to change the email",
+		"to":                                  "to",
+		"email_change":                        "Email change",
+		"yes":                                 "yes",
+		"no":                                  "no",
 	},
 
 	"ru": {
@@ -139,5 +144,10 @@ var Dictionary = map[string]map[string]string{
 		"user_already_exists":                 "Пользователь с этим email уже существует",
 		"we_have_sent_otp":                    "Мы отправили 8-значный проверочный код на вашу почту",
 		"wrong_otp":                           "Неверный проверочный код",
+		"are_you_sure_you_want_change_email":  "Вы точно хотите поменять email адрес",
+		"to":                                  "на",
+		"email_change":                        "Смена email",
+		"yes":                                 "да",
+		"no":                                  "нет",
 	},
 }

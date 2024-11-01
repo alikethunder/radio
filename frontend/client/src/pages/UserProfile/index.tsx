@@ -37,7 +37,6 @@ import { Ripple } from "primereact/ripple"
 
 import {
   useFormState,
-  useTranslation,
   useTranslations,
   useTranslationsSkeleton,
 } from '@/hooks'
@@ -47,6 +46,7 @@ import { FrontUser } from "@/types"
 import { setForm } from "@/functions/setForm"
 
 import { Helmet } from "react-helmet"
+import { useDebounceCallback } from "usehooks-ts"
 
 const private_tooltip_options = { ...tooltip_options, position: 'right' } as const
 
@@ -88,7 +88,26 @@ export const UserProfile = () => {
 
   //console.log("errors : ", errors)
 
-  const onSubmit = useCallback(async (data: any) => {
+  const [translations] = useTranslations([
+    'error_email_with_@',
+    'sitename',
+    'to',
+    'are_you_sure_you_want_change_email',
+    'email_change',
+    'yes',
+    'no',
+  ], true)
+
+  const translations_skl = useTranslationsSkeleton({
+    "choose_image": ["w-4rem"],
+    "name_cannot_be_empty": ['w-8'],
+    "name": ["w-5rem"],
+    'error_email_required': ['w-8'],
+    'error_not_real_email': ['w-8'],
+    'only_you_can_see': ['w-8rem'],
+  }, true)
+
+  const onSubmit = useCallback(useDebounceCallback(async (data: any) => {
     console.log('submit : ', data)
 
     const body = new FormData()
@@ -129,10 +148,10 @@ export const UserProfile = () => {
     if (data.email != store.user.email()) {
 
       confirmDialog({
-        message: <span>Вы точно хотите поменять email адрес <strong>{store.user.email()}</strong> на <strong>{data.email}</strong>?</span>,
-        header: <span className="flex flex-row align-items-center justify-content-center text-2xl sm:text-4xl"><i className="pi pi-question-circle text-4xl sm:text-6xl danger mr-2 text-orange-500"></i>Смена email</span>,
-        acceptLabel: 'Да',
-        rejectLabel: 'Нет',
+        message: <span>{translations.are_you_sure_you_want_change_email} <strong>{store.user.email()}</strong> {translations.to} <strong>{data.email}</strong>?</span>,
+        header: <span className="flex flex-row align-items-center justify-content-center text-2xl sm:text-4xl"><i className="pi pi-question-circle text-4xl sm:text-6xl danger mr-2 text-orange-500"></i>{translations.email_change}</span>,
+        acceptLabel: translations.yes,
+        rejectLabel: translations.no,
         closable: false,
         closeOnEscape: false,
         rejectIcon: 'pi pi-times',
@@ -161,7 +180,7 @@ export const UserProfile = () => {
         }, 4000))
      */
 
-  }, [photo_blob, photo_data_url])
+  }, 50), [photo_blob, photo_data_url])
 
   //todo add prompt to reset and save form if fields changed
   useFormState({
@@ -172,19 +191,11 @@ export const UserProfile = () => {
     },
   }, formState, user_data?.own_profile)
 
-  const [translations] = useTranslations([
-    'error_email_with_@',
-    'sitename',
-  ], true)
-
-  const translations_skl = useTranslationsSkeleton({
-    "choose_image": ["w-4rem"],
-    "name_cannot_be_empty": ['w-8'],
-    "name": ["w-5rem"],
-    'error_email_required': ['w-8'],
-    'error_not_real_email': ['w-8'],
-    'only_you_can_see': ['w-8rem'],
-  }, true)
+  const click_file_input = useDebounceCallback(() => {
+    if (edit_mode) {
+      photo_file_input_ref.current?.click()
+    }
+  }, 50)
 
   return (
     <>
@@ -206,11 +217,7 @@ export const UserProfile = () => {
 
             className={`element_with_overlay shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-circle flex align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode ? 'cursor-pointer' : ''}`}
 
-            onClick={() => {
-              if (edit_mode) {
-                photo_file_input_ref.current?.click()
-              }
-            }}
+            onClick={click_file_input}
           >
             <img
               style={{ display: 'none' }}

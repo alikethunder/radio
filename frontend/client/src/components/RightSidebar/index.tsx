@@ -33,6 +33,7 @@ import { icon_classes } from "@/constants/icon_classes"
 import { classNames } from "primereact/utils"
 
 import { Translation } from "@/layout parts"
+import { useDebounceCallback } from "usehooks-ts"
 
 export const RightSidebar: FC = () => {
 
@@ -40,13 +41,16 @@ export const RightSidebar: FC = () => {
 
   const subscription_plan = useTrackedStore().user.subscription_plan()
 
-  //const new_project_url = 
-
   const signedin = useStore().auth.signedin()
 
   const language = useStore().persistedApp.language()
 
   const languages = useStore().persistedApp.languages()
+
+  const click_logout = useDebounceCallback(() => {
+    logout()
+    actions.session.rightSidebarOpened(false)
+  }, 50)
 
   return (
     <Sidebar
@@ -100,7 +104,7 @@ export const RightSidebar: FC = () => {
                 />
               </QueryLink>
 
-             {/*  <div className="flex">
+              {/*  <div className="flex">
                 <Button
                   //todo: projects quantity like "My projects (5)"
                   label="My stations"
@@ -130,12 +134,10 @@ export const RightSidebar: FC = () => {
               />
             </QueryLink>
         }
-        
+
         <div className="flex flex-column shadow-4">
 
         </div>
-
-
 
       </div>
 
@@ -147,10 +149,7 @@ export const RightSidebar: FC = () => {
               text
               raised
               icon={`${icon_classes} pi-sign-out`}
-              onClick={() => {
-                logout();
-                actions.session.rightSidebarOpened(false)
-              }}
+              onClick={click_logout}
               iconPos="right"
               className="border-noround text-gray-800 text-left lobster_font text-xl shadow_on_hover"
             />
