@@ -40,6 +40,7 @@ import {
 } from "@/hooks"
 
 import { Helmet } from "react-helmet"
+import { useDebounceCallback } from "usehooks-ts"
 
 type ResetPasswordUser = (Pick<User, 'email'>)
 
@@ -57,7 +58,27 @@ export const ResetPassword: FC = () => {
     }
   })
 
-  const onSubmit: SubmitHandler<ResetPasswordUser> = async (form) => {
+  const [translations] = useTranslations([
+    'error_email_with_@',
+    'signin',
+    'reset_password',
+    'sitename',
+    'we_have_sent_otp',
+    'user_not_exist',
+    'something_went_wrong_try_again',
+  ], true)
+
+  const translations_skl = useTranslationsSkeleton({
+    'reset_password': ['w-8',],
+    'send': ['w-2'],
+    "verification_code": ['w-6'],
+    'remember_password': ['w-4'],
+    'login': ['w-2', 'font-semibold'],
+    'dont_have_account': ['w-4'],
+    'create_today': ['w-3', 'font-semibold'],
+  }, true)
+
+  const onSubmit: SubmitHandler<ResetPasswordUser> = useDebounceCallback(async (form) => {
     //console.log('form submit : ', form)
 
     let res = await fetch('/api/v1/auth/reset-password', {
@@ -76,7 +97,7 @@ export const ResetPassword: FC = () => {
         store.toast['bottom-center']().show({
           severity: 'info',
           summary: 'Verification code',
-          detail: 'We\'ve sent the 8-digit verification code to your email',
+          detail: translations.we_have_sent_otp,
           closable: true,
           life: 10000
         })
@@ -86,7 +107,7 @@ export const ResetPassword: FC = () => {
 
       case 403:
 
-        setError('email', { type: 'custom', message: 'User with such email doesn\'t exist' })
+        setError('email', { type: 'custom', message: translations.user_not_exist })
         emailRef.current?.focus()
         break;
 
@@ -95,40 +116,23 @@ export const ResetPassword: FC = () => {
         store.toast['center']().show({
           severity: 'error',
           summary: 'Error',
-          detail: 'Something went wrong, please try again later',
+          detail: translations.something_went_wrong_try_again,
           closable: true,
           life: 1500
         })
-        break;
+        break
     }
 
-  }
-
-  const [translations] = useTranslations([
-    'error_email_with_@',
-    'signin',
-    'reset_password',
-    'sitename',
-  ], true)
-
-  const translations_skl = useTranslationsSkeleton({
-    'reset_password': ['w-8',],
-    'send': ['w-2'],
-    "verification_code": ['w-6'],
-    'remember_password': ['w-4'],
-    'login': ['w-2', 'font-semibold'],
-    'dont_have_account': ['w-4'],
-    'create_today': ['w-3', 'font-semibold'],
-  }, true)
+  }, 50)
 
   return (
     <>
-    <Helmet>
-      <title>{translations.sitename} - {translations.reset_password}</title>
+      <Helmet>
+        <title>{translations.sitename} - {translations.reset_password}</title>
 
-      <link rel="canonical" href={`${window.location.origin}/reset-password?language=${language}`} />
+        <link rel="canonical" href={`${window.location.origin}/reset-password?language=${language}`} />
 
-    </Helmet>
+      </Helmet>
 
       <div className="sm:px-3 md:px-5 min-h-screen flex justify-content-center align-items-center">
 

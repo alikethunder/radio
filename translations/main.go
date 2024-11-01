@@ -64,7 +64,14 @@ var Dictionary = map[string]map[string]string{
 		"sitename":                            "Radio Best",
 		"add_to_favorites":                    "add to favorites",
 		"added_to_favorites":                  "added to favorites",
+		"wrong_password":                      "wrong password",
+		"user_not_exist":                      "User with such email doesn't exist",
+		"something_went_wrong_try_again":      "Something went wrong, please try again later",
+		"user_already_exists":                 "User with this email already exists",
+		"we_have_sent_otp":                    "We've sent the 8-digit verification code to your email",
+		"wrong_otp":                           "Wrong verification code",
 	},
+
 	"ru": {
 		"login":                               "Войти",
 		"language":                            "язык",
@@ -126,5 +133,11 @@ var Dictionary = map[string]map[string]string{
 		"sitename":                            "Radio Best",
 		"add_to_favorites":                    "добавить в избранное",
 		"added_to_favorites":                  "добавили в избранное",
+		"wrong_password":                      "неверный пароль",
+		"user_not_exist":                      "Пользователь с таким email не существует",
+		"something_went_wrong_try_again":      "Что-то пошло не так, пожалуйста попробуйте позже",
+		"user_already_exists":                 "Пользователь с этим email уже существует",
+		"we_have_sent_otp":                    "Мы отправили 8-значный проверочный код на вашу почту",
+		"wrong_otp":                           "Неверный проверочный код",
 	},
 }

@@ -46,6 +46,7 @@ import {
 } from "@/hooks"
 
 import { Helmet } from "react-helmet"
+import { useDebounceCallback } from "usehooks-ts"
 
 export const Signup: FC = () => {
   const navigate = useNavigate()
@@ -61,7 +62,28 @@ export const Signup: FC = () => {
     }
   })
 
-  const onSubmit: SubmitHandler<User> = async (form) => {
+  const [translations] = useTranslations([
+    'error_email_with_@',
+    'name',
+    'name_cannot_be_empty',
+    'registration',
+    'sitename',
+    'user_already_exists',
+    'we_have_sent_otp',
+  ], true)
+
+  const translations_skl = useTranslationsSkeleton({
+    'registration': ['w-5'],
+    'error_email_required': ['w-8'],
+    'error_not_real_email': ['w-8'],
+    'remember_me': ['w-6rem'],
+    'forgot_your_password': ['w-8rem'],
+    'signup': ['w-6'],
+    'already_have_account': ['w-5'],
+    'login': ['w-2', 'font-semibold'],
+  }, true)
+
+  const onSubmit: SubmitHandler<User> = useDebounceCallback(async (form) => {
     //console.log('form submit : ', form)
 
     let res = await fetch('/api/v1/auth/signup', {
@@ -82,7 +104,7 @@ export const Signup: FC = () => {
       store.toast['bottom-center']().show({
         severity: 'info',
         summary: 'Verification code',
-        detail: 'We\'ve sent the 8-digit verification code to your email',
+        detail: translations.we_have_sent_otp,
         closable: true,
         life: 10000
       })
@@ -91,30 +113,11 @@ export const Signup: FC = () => {
       return
     }
 
-    setError('email', { type: 'custom', message: 'User with this email already exists' })
+    setError('email', { type: 'custom', message: translations.user_already_exists })
 
     emailRef.current?.focus()
 
-  }
-
-  const [translations] = useTranslations([
-    'error_email_with_@',
-    'name',
-    'name_cannot_be_empty',
-    'registration',
-    'sitename',
-  ], true)
-
-  const translations_skl = useTranslationsSkeleton({
-    'registration': ['w-5'],
-    'error_email_required': ['w-8'],
-    'error_not_real_email': ['w-8'],
-    'remember_me': ['w-6rem'],
-    'forgot_your_password': ['w-8rem'],
-    'signup': ['w-6'],
-    'already_have_account': ['w-5'],
-    'login': ['w-2', 'font-semibold'],
-  }, true)
+  }, 50)
 
   return (
     <>

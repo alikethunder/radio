@@ -46,6 +46,7 @@ import {
 } from "@/hooks"
 
 import { Helmet } from "react-helmet"
+import { useDebounceCallback } from "usehooks-ts"
 
 type SigninUser = (Pick<User, 'password' | 'name' | 'email' | 'rememberme'>)
 
@@ -66,7 +67,30 @@ export const Signin: FC = () => {
     }
   })
 
-  const onSubmit: SubmitHandler<SigninUser> = async (form) => {
+  const [translations] = useTranslations([
+    'error_email_with_@',
+    'signin',
+    'password',
+    'sitename',
+    'wrong_password',
+    'user_not_exist',
+    'something_went_wrong_try_again',
+  ], true)
+
+  const translations_skl = useTranslationsSkeleton({
+    'error_email_required': ['w-8'],
+    'error_not_real_email': ['w-8'],
+    'error_password_required': ['w-8'],
+    'error_password_incorrect': ['w-8'],
+    'remember_me': ['w-6rem'],
+    'forgot_your_password': ['w-8rem'],
+    'login': ['w-5'],
+    'dont_have_account': ['w-5'],
+    'create_today': ['w-3', 'font-semibold'],
+    'signin': ['w-4'],
+  }, true)
+
+  const onSubmit: SubmitHandler<SigninUser> = useDebounceCallback(async (form) => {
     //console.log('form submit : ', form)
 
     let res = await fetch('/api/v1/auth/signin', {
@@ -93,13 +117,13 @@ export const Signin: FC = () => {
 
       case 401: //wrong password
 
-        setError('password', { type: 'custom', message: 'Wrong password' })
+        setError('password', { type: 'custom', message: translations.wrong_password })
         passwordRef.current?.focus()
         break;
 
       case 403: //user not exist
 
-        setError('email', { type: 'custom', message: 'User with such email doesn\'t exist' })
+        setError('email', { type: 'custom', message: translations.user_not_exist })
         emailRef.current?.focus()
         break;
 
@@ -108,34 +132,14 @@ export const Signin: FC = () => {
         store.toast['center']().show({
           severity: 'error',
           summary: 'Error',
-          detail: 'Something went wrong, please try again later',
+          detail: translations.something_went_wrong_try_again,
           closable: true,
           life: 1500
         })
         break;
     }
 
-  }
-
-  const [translations] = useTranslations([
-    'error_email_with_@',
-    'signin',
-    'password',
-    'sitename',
-  ], true)
-
-  const translations_skl = useTranslationsSkeleton({
-    'error_email_required': ['w-8'],
-    'error_not_real_email': ['w-8'],
-    'error_password_required': ['w-8'],
-    'error_password_incorrect': ['w-8'],
-    'remember_me': ['w-6rem'],
-    'forgot_your_password': ['w-8rem'],
-    'login': ['w-5'],
-    'dont_have_account': ['w-5'],
-    'create_today': ['w-3', 'font-semibold'],
-    'signin': ['w-4'],
-  }, true)
+  }, 50)
 
   return (
     <>

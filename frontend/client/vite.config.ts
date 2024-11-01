@@ -23,7 +23,7 @@ export default defineConfig({
     svgr(),
     commonjs(),
     sentryVitePlugin({
-      org: 'RadioBest',
+      org: 'radiobest',
       project: 'radio-best-fe',
 
       authToken: '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',

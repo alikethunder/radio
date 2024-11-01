@@ -25,33 +25,35 @@ func Signin(c *fiber.Ctx) error {
 
 	user, _ := db.SelectRow("users", fiber.Map{"email": req_json["email"]}, "id", "password", "name")
 
-	if user != nil && user["password"] != "" && user["password"] != nil {
+	if user != nil {
 
-		correctPassword := functions.CheckPasswordHash(req_json["password"].(string), user["password"].(string))
+		if user["password"] != "" && user["password"] != nil {
 
-		if correctPassword {
+			correctPassword := functions.CheckPasswordHash(req_json["password"].(string), user["password"].(string))
 
-			cookies.SetAuthCookie(fiber.Map{"email": req_json["email"], "rememberme": req_json["rememberme"], "id": user["id"]}, c)
+			if correctPassword {
 
-			tm := time.Now().UTC().String()
+				cookies.SetAuthCookie(fiber.Map{"email": req_json["email"], "rememberme": req_json["rememberme"], "id": user["id"]}, c)
 
-			db.Update(
-				"users",
+				tm := time.Now().UTC().String()
 
-				fiber.Map{"last_seen": tm},
+				db.Update(
+					"users",
 
-				fiber.Map{
-					"id":    user["id"],
-					"email": req_json["email"],
-				},
-			)
+					fiber.Map{"last_seen": tm},
 
-			return c.Status(fiber.StatusOK).JSON(fiber.Map{"id": user["id"], "created": user["id"].(gocql.UUID).Time(), "name": user["name"]})
+					fiber.Map{
+						"id":    user["id"],
+						"email": req_json["email"],
+					},
+				)
 
-		} else {
-			//wrong password
-			return c.SendStatus(fiber.StatusUnauthorized)
+				return c.Status(fiber.StatusOK).JSON(fiber.Map{"id": user["id"], "created": user["id"].(gocql.UUID).Time(), "name": user["name"]})
+
+			}
 		}
+		//wrong password
+		return c.SendStatus(fiber.StatusUnauthorized)
 
 	}
 

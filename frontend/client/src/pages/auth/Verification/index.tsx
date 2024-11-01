@@ -47,6 +47,7 @@ import {
 import { icon_classes } from "@/constants/icon_classes"
 
 import { Helmet } from "react-helmet"
+import { useDebounceCallback } from "usehooks-ts"
 
 export const Verification: FC = () => {
 
@@ -65,92 +66,14 @@ export const Verification: FC = () => {
     }
   })
 
-  const onSubmit: SubmitHandler<User> = async (form) => {
-    //console.log('form submit : ', form)
-
-    let res = await fetch('/api/v1/auth/verification', {
-      method: 'POST',
-      body: JSON.stringify({ ...form, email: store.user.email() }),
-      headers: {
-        'Content-Type': 'arrayBuffer'
-      },
-    })
-
-    if (res.status == 200) {
-      const user = await res.json() as FrontUser
-      //console.log('[signup] user : ', user)
-
-      actions.user.update_user_data(user)
-
-      actions.auth.signedin(true)
-
-      navigate(store.session.prev_pathname())
-
-      return
-    }
-
-    setError('verification_code', { type: 'custom', message: 'Wrong verification code' })
-
-    passwordRef.current?.getOverlay()?.blur()
-
-    verification_codeRef.current?.focus()
-
-  }
-
-  const [sendingVC, setSendingVC] = useState(false)
-
-  const resendVC = async () => {
-    setSendingVC(true)
-
-    let res = await fetch('/api/v1/auth/reset-password', {
-      method: 'POST',
-      body: JSON.stringify({ email: store.user.email() }),
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
-
-    switch (res.status) {
-
-      case 200:
-        //show VerificationToast
-        store.toast['bottom-center']().show({
-          severity: 'info',
-          summary: 'Verification code',
-          detail: 'We\'ve sent the 8-digit verification code to your email',
-          closable: true,
-          life: 10000
-        })
-
-        navigate(app_routes.verification)
-        break;
-
-      default:
-
-        store.toast['center']().show({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Something went wrong, please try again later',
-          closable: true,
-          life: 1500
-        })
-        break;
-    }
-
-    setSendingVC(false)
-  }
-
-  useEffect(() => {
-    if (!store.user.email()) {
-      navigate(app_routes.signin, { replace: true })
-    }
-  }, [])
-
   const [translations] = useTranslations([
     'verification_code',
     'password',
     'create_password',
     'sitename',
+    'wrong_otp',
+    'we_have_sent_otp',
+    'something_went_wrong_try_again',
   ] as const, true)
 
   const translations_skl = useTranslationsSkeleton({
@@ -175,6 +98,87 @@ export const Verification: FC = () => {
     'medium': ['w-3'],
     'strong': ['w-3'],
   }, true)
+
+  const onSubmit: SubmitHandler<User> = useDebounceCallback(async (form) => {
+    //console.log('form submit : ', form)
+
+    let res = await fetch('/api/v1/auth/verification', {
+      method: 'POST',
+      body: JSON.stringify({ ...form, email: store.user.email() }),
+      headers: {
+        'Content-Type': 'arrayBuffer'
+      },
+    })
+
+    if (res.status == 200) {
+      const user = await res.json() as FrontUser
+      //console.log('[signup] user : ', user)
+
+      actions.user.update_user_data(user)
+
+      actions.auth.signedin(true)
+
+      navigate(store.session.prev_pathname())
+
+      return
+    }
+
+    setError('verification_code', { type: 'custom', message: translations.wrong_otp })
+
+    passwordRef.current?.getOverlay()?.blur()
+
+    verification_codeRef.current?.focus()
+
+  }, 50)
+
+  const [sendingVC, setSendingVC] = useState(false)
+
+  const resendVC = useDebounceCallback(async () => {
+    setSendingVC(true)
+
+    let res = await fetch('/api/v1/auth/reset-password', {
+      method: 'POST',
+      body: JSON.stringify({ email: store.user.email() }),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+
+    switch (res.status) {
+
+      case 200:
+        //show VerificationToast
+        store.toast['bottom-center']().show({
+          severity: 'info',
+          summary: 'Verification code',
+          detail: translations.we_have_sent_otp,
+          closable: true,
+          life: 10000
+        })
+
+        navigate(app_routes.verification)
+        break;
+
+      default:
+
+        store.toast['center']().show({
+          severity: 'error',
+          summary: 'Error',
+          detail: translations.something_went_wrong_try_again,
+          closable: true,
+          life: 1500
+        })
+        break;
+    }
+
+    setSendingVC(false)
+  }, 50)
+
+  useEffect(() => {
+    if (!store.user.email()) {
+      navigate(app_routes.signin, { replace: true })
+    }
+  }, [])
 
   return (
     <>

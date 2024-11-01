@@ -219,6 +219,12 @@ func main() {
 
 	app.Get("/", controllers.Index)
 
+	// Configure app
+	app.Static("/", "./served/public")
+	app.Static("/", "./served/app_icon")
+
+	app.Get("*", controllers.Index)
+
 	// Later in the code
 	sentryHandler := sentryfiber.New(sentryfiber.Options{
 		Repanic:         true,
@@ -226,12 +232,6 @@ func main() {
 	})
 
 	app.Use(sentryHandler)
-
-	// Configure app
-	app.Static("/", "./served/public")
-	app.Static("/", "./served/app_icon")
-
-	app.Get("*", controllers.Index)
 
 	// Start app
 	err = app.Listen(":" + os.Getenv("PORT"))
