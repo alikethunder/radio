@@ -1,9 +1,7 @@
 package main
 
 import (
-	"flag"
 	"fmt"
-	"io"
 	"log"
 	"os"
 
@@ -16,7 +14,6 @@ import (
 	"web_project/db/StationTags"
 	"web_project/db/Stations"
 	Users "web_project/db/Users"
-	"web_project/radio"
 
 	"web_project/controllers"
 	AuthEndpoints "web_project/controllers/auth"
@@ -139,7 +136,7 @@ func main() {
 
 	radio_endpoints := v1.Group("/radio")
 
-	fname := flag.String("filename", "audio.mp3", "path of the audio file")
+	/* fname := flag.String("filename", "audio.mp3", "path of the audio file")
 
 	flag.Parse()
 
@@ -157,9 +154,9 @@ func main() {
 
 	}
 
-	go radio.Stream(radio.ConnPool, ctn)
+	go radio.Stream(radio.ConnPool, ctn) */
 
-	radio_endpoints.Get("/broadcast/:id", RadioEndpoints.Broadcast)
+	//radio_endpoints.Get("/broadcast/:id", RadioEndpoints.Broadcast)
 
 	radio_endpoints.Post("/update-likes/:id", RadioEndpoints.UpdateLikes)
 
@@ -234,7 +231,7 @@ func main() {
 	app.Use(sentryHandler)
 
 	// Start app
-	err = app.Listen(":" + os.Getenv("PORT"))
+	err := app.Listen(":" + os.Getenv("PORT"))
 	if err != nil {
 		fmt.Println("main error : ", err)
 	}
