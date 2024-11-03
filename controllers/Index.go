@@ -57,7 +57,7 @@ func Index(ctx *fiber.Ctx) error {
 
 			stations_list := db.List("stations", fiber.Map{"broadcasting": true}, additional_selectors, "id", "name")
 
-			return ctx.Render("seo/home", fiber.Map{
+			return ctx.Render("seo/home.html", fiber.Map{
 				"Description":                      translations.Dictionary[language]["home_page_description"],
 				"Tags":                             translations.Dictionary[language]["tags"],
 				"Tags_list":                        tags,
@@ -84,7 +84,7 @@ func Index(ctx *fiber.Ctx) error {
 
 			station, _ := db.SelectRow("stations", fiber.Map{"id": station_id}, "id", "name", "description_"+language, "text_description_"+language, "tags", "avatar")
 
-			return ctx.Render("seo/station", fiber.Map{
+			return ctx.Render("seo/station.html", fiber.Map{
 				"station":                          station,
 				"Language":                         language,
 				"Languages":                        languages,
@@ -140,5 +140,5 @@ func Index(ctx *fiber.Ctx) error {
 		cookies.ClearAuthCookies(ctx)
 	}
 
-	return ctx.Render("public/index", fiber.Map{})
+	return ctx.Render("public/index.html", fiber.Map{})
 }

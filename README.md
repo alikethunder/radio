@@ -44,11 +44,12 @@ Prerequisites
   To do:
     - add bun server start script for ssr in feature
 
-2. To build project
+2. To build & deploy projectd
 
   npm --prefix ./frontend/client install
-  npm --prefix ./frontend/client run build
-  go build -o ./build/main . 
+  npm --prefix ./frontend/client run build -- --emptyOutDir
+  go build -o ./build/main .
+  ./build/main
 
   // add bun built script
 

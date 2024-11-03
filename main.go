@@ -230,6 +230,7 @@ func main() {
 	app.Use(sentryHandler)
 
 	// Start app
+	fmt.Printf("PORT %s\n", os.Getenv("PORT"))
 	err := app.Listen(":" + os.Getenv("PORT"))
 	if err != nil {
 		fmt.Println("main error : ", err)
