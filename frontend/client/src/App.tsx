@@ -119,7 +119,7 @@ export default function App() {
 
   const [checked_signin, set_checked_signin] = useState(false)
 
-  useEffect(() => {
+  /* useEffect(() => {
     //console.log('import.meta.env.VITE_DEV_PORT : ', import.meta.env.VITE_DEV_PORT)
     //code for reloading on code change during development
     new Sockette(`ws://localhost:${import.meta.env.VITE_DEV_PORT}/reloadws`, {
@@ -132,7 +132,7 @@ export default function App() {
         window.location.reload()
       },
     })
-  }, [])
+  }, []) */
 
   const [authPage, checked_auth_page] = usePageInList(auth_routes, null, null)
 

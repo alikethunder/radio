@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
 
 	//"time"
@@ -28,7 +27,6 @@ import (
 
 	//"web_project/functions"
 
-	"github.com/gofiber/contrib/websocket"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/etag"
@@ -172,7 +170,8 @@ func main() {
 
 	tags_endpoints.Post("/", StationTagsEndpoints.SaveTags)
 
-	app.Use("/reloadws", func(c *fiber.Ctx) error {
+	//uncomment for development
+	/* app.Use("/reloadws", func(c *fiber.Ctx) error {
 		// IsWebSocketUpgrade returns true if the client
 		// requested upgrade to the WebSocket protocol.
 		//log.Println("connection", c)
@@ -210,7 +209,7 @@ func main() {
 			}
 		}
 
-	}))
+	})) */
 
 	app.Use(compress.New())
 
