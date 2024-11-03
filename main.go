@@ -75,7 +75,7 @@ func main() {
 	//fmt.Println(functions.Vc())
 
 	// Load templates
-	engine := html.New("./served", ".html")
+	engine := html.New(os.Getenv("TEMPL_PATH")+"/served", ".html")
 
 	// Create app
 	app := fiber.New(fiber.Config{
@@ -216,8 +216,8 @@ func main() {
 	app.Get("/", controllers.Index)
 
 	// Configure app
-	app.Static("/", "./served/public")
-	app.Static("/", "./served/app_icon")
+	app.Static("/", os.Getenv("TEMPL_PATH")+"/served/public")
+	app.Static("/", os.Getenv("TEMPL_PATH")+"/served/app_icon")
 
 	app.Get("*", controllers.Index)
 
@@ -230,7 +230,6 @@ func main() {
 	app.Use(sentryHandler)
 
 	// Start app
-	fmt.Printf("PORT %s\n", os.Getenv("PORT"))
 	err := app.Listen(":" + os.Getenv("PORT"))
 	if err != nil {
 		fmt.Println("main error : ", err)

@@ -50,6 +50,7 @@ Prerequisites
   npm --prefix ./frontend/client run build -- --emptyOutDir
   go build -o ./build/main .
   ./build/main
-
+  sudo systemctl restart radiobest
+  
   // add bun built script
 
