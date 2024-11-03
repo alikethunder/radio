@@ -1,0 +1,19 @@
+/*save as lib/systemd/system/tvcamtv.service*/
+this will overwrite settings in .env
+
+[Unit]
+Description=radio.best
+
+[Service]
+Environment=TEMPL_PATH=/home/radio
+Environment=PORT=80
+Environment=ENV=prod
+Restart=always
+ExecStart=/home/radio/build/main
+
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=tvcamtv-server
+
+[Install]
+WantedBy=multi-user.target

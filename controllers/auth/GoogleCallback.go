@@ -52,7 +52,7 @@ func GoogleCallback(c *fiber.Ctx) error {
 			panic(errors.New("iss not accounts.google.com"))
 		}
 
-		oauth_json_content, err := os.ReadFile("./settings/google_oauth.json")
+		oauth_json_content, err := os.ReadFile(os.Getenv("TEMPL_PATH") + "/settings/google_oauth_" + os.Getenv("ENV") + ".json")
 		if err != nil {
 			panic(err)
 		}

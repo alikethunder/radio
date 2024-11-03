@@ -2,13 +2,12 @@ import { FC, useEffect } from "react"
 
 import {
   actions,
-  useTrackedStore,
   store,
   useStore
 } from "@/store"
 
-import oauth from '&/settings/google_oauth.json'
-import { appStore } from "@/store/appStore"
+import oauth_dev from '&/settings/google_oauth_dev.json'
+import oauth_prod from '&/settings/google_oauth_prod.json'
 
 export const GoogleOAuth: FC<{ rememberme?: boolean }> = ({ rememberme }) => {
 
@@ -16,11 +15,11 @@ export const GoogleOAuth: FC<{ rememberme?: boolean }> = ({ rememberme }) => {
 
   useEffect(() => {
 
-    //console.log('oauth settings : ', oauth, window.google)
+    console.log('import.meta.env : ', import.meta.env)
     //todo: add code to remove the old button and create new one each time
     try {
       window.google.accounts.id.initialize({
-        client_id: oauth.web.client_id,
+        client_id: (import.meta.env.VITE_ENV == 'dev' ? oauth_dev : oauth_prod).web.client_id,
         itp_support: true,
         ux_mode: 'redirect',
         login_uri: `http://localhost:${import.meta.env.VITE_DEV_PORT}/api/v1/auth/google-callback`,
