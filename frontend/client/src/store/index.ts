@@ -7,6 +7,7 @@ import { userStore } from './userStore'
 import { toastStore } from './toastStore'
 import { playerStore } from './playerStore'
 import { sessionStore } from './sessionStore'
+import { translationsStore } from './translationsStore'
 
 // Global store
 export const rootStore = {
@@ -17,6 +18,7 @@ export const rootStore = {
   toast: toastStore,
   player: playerStore,
   session: sessionStore,
+  translations: translationsStore,
   /*contextMenu: contextMenuStore,
   editor: editorStore,
   modal: modalStore,

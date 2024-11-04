@@ -1,26 +1,32 @@
 import { useEffect, useState } from "react"
 
-import { useStore } from "@/store"
+import { actions, useStore } from "@/store"
 
 export const useTranslation = (field: string, capitalize?: boolean,): [string, boolean] => {
 
-  const [translation, set_translation] = useState('')
   const [loading, set_loading] = useState(true)
 
   const language = useStore().persistedApp.language()
 
+  const translation = useStore().translations.get_translation(language, field)
+
+  const translation_checked = useStore().session.translation_checked(language, field)
+
   useEffect(() => {
-    (async () => {
-      const resp = await fetch(`/api/v1/translation/${language}/${field}`)
-      const text = await resp.text()
+    if (language && !translation_checked) {
+      (async () => {
+        const resp = await fetch(`/api/v1/translation/${language}/${field}`)
+        const text = await resp.text()
 
-      set_translation(capitalize ? text.charAt(0).toUpperCase() + text.slice(1) : text)
+        actions.translations.add_translation(language, field, capitalize ? text.charAt(0).toUpperCase() + text.slice(1) : text)
 
-      set_loading(false)
+        actions.session.translation_checked(language, field)
 
-    })()
+        set_loading(false)
 
-  }, [language, field])
+      })()
+    }
+  }, [language, field, translation_checked])
 
-  return [translation, loading]
+  return [translation, translation_checked ? false : loading]
 }
