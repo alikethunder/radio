@@ -1,22 +1,8 @@
-import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { FC, useMemo, } from "react"
 
 import { Button } from 'primereact/button'
 
-import { Panel } from 'primereact/panel'
-
-import { InputText } from "primereact/inputtext"
-
-import { OverlayPanel } from 'primereact/overlaypanel'
-
-import { IconField } from "primereact/iconfield"
-
-import { InputIcon } from "primereact/inputicon"
-
-import { classNames } from 'primereact/utils'
-
 import { Badge } from 'primereact/badge'
-
-import { StationTagRemoveTokenIcon } from "@/layout parts"
 
 import {
   actions,
@@ -27,24 +13,19 @@ import {
 import {
   usePageInList,
   useTranslations,
-  useTranslationsSkeleton,
 } from '@/hooks'
 
 import {
   app_routes,
-  auth_routes,
-  route_attributes,
 } from '@/constants/router'
 
 import {
   FormActionsState,
   QueryLink,
-  StationTag,
 } from '@/components'
 
 import { icon_classes } from "@/constants/icon_classes"
 import { useDebounceCallback } from "usehooks-ts"
-import { useSearchParams } from "react-router-dom"
 
 import './index.sass'
 
@@ -52,82 +33,21 @@ export const Navbar: FC = () => {
 
   const current_page = useStore().app.current_page()
 
-  const station_tags = useStore().app.station_tags().map(t => t.name)
-
   const search_station_tags = useStore().persistedApp.search_station_tags()
 
-  const [tags_input_value, set_tags_input_value] = useState('')
-
-  const [tag_input_ref, set_tag_input_ref] = useState<HTMLInputElement | null>(null)
-
-  const overlay_panel = useRef<OverlayPanel | null>(null)
-
-  const search_stations_text = useStore().persistedApp.search_stations_text()
-
   const search_panel_collapsed = useStore().persistedApp.search_panel_collapsed()
-
-  const filtered_tags = useMemo(() => station_tags.filter(tag => tag.includes(tags_input_value) && !search_station_tags.includes(tag)), [tags_input_value, station_tags, search_station_tags])
 
   const search_button_badge_value = useMemo(() => search_station_tags.length, [search_station_tags,])
 
   const [show_stations_search] = usePageInList([app_routes.root, app_routes.station$id])
 
-  const [searchParams, set_search] = useSearchParams()
-
   const [translations] = useTranslations([
     'open_search_stations_panel',
-    'search_station_name_and_description',
-    'search_stations_by_tags',
-    'sitename',
   ], true)
-
-  const translations_skl = useTranslationsSkeleton({
-    "search_radiostations": ["w-7rem"],
-    "radiostation": ['w-8rem'],
-    "error_radiostation_name_empty": ["w-8rem"],
-  }, true)
-
-  const click_search_tag = useDebounceCallback(tag => {
-    actions.persistedApp.add_tag_to_search(tag)
-    set_tags_input_value('')
-
-    overlay_panel.current?.hide()
-
-    if (filtered_tags.length > 1) {
-      //hide if it's the last tag and panel will be empty
-
-      setTimeout(() => {
-
-        tag_input_ref?.focus()
-      }, 50);
-    }
-  }, 50)
-
-  useEffect(() => {
-    //add tags from url at starts
-    const tags = searchParams.get('tags')?.split(',')
-    if (tags?.length) {
-      tags?.forEach(tag => { if (tag) actions.persistedApp.add_tag_to_search(tag) })
-      actions.persistedApp.search_panel_collapsed(false)
-      //@ts-ignore
-      store.persistedApp.search_panel()?.expand()
-    }
-  }, [])
-
-  useEffect(() => {
-    set_search(s => {
-      s.set('tags', search_station_tags.join(','))
-      return s
-    })
-  }, [search_station_tags])
 
   const click_search = useDebounceCallback((e) => {
     store.persistedApp.search_panel()?.toggle(e)
     actions.persistedApp.search_panel_collapsed(!store.persistedApp.search_panel_collapsed())
-  }, 50)
-
-  const click_tag_remove = useDebounceCallback(tag => {
-    actions.persistedApp.search_station_tags(store.persistedApp.search_station_tags().filter(t => t != tag))
   }, 50)
 
   return (
@@ -217,164 +137,6 @@ export const Navbar: FC = () => {
             onClick={() => actions.session.rightSidebarOpened(true)} />
         </div>
       </div>
-
-      <Panel
-        ref={e => actions.persistedApp.search_panel(e)}
-        toggleable
-
-        collapsed={search_panel_collapsed}
-
-        pt={{
-          root: {
-            className: classNames({
-              'hidden': !show_stations_search,
-            },
-            )
-          },
-          header: {
-            style: {
-              display: 'none'
-            }
-          },
-          toggleableContent: {
-            //panel content
-            className: classNames({},
-              'shadow-2',
-            )
-          },
-          content: {
-            //panel content
-            className: classNames({},
-              'flex',
-              'flex-row',
-              'flex-wrap',
-              'p-2',
-              'gap-4',
-              'justify-content-center',
-              'align-items-end',
-            )
-          }
-        }}
-      >
-
-        <div className="max-w-full w-20rem flex flex-column justify-content-center gap-1 align-self-stretch">
-          <div className="font-semibold flex-shrink-0 text-xl sm:text-2xl mb-auto">
-            {translations_skl.search_radiostations}
-          </div>
-
-          {/* text search */}
-          <IconField className="w-full align-self-start">
-
-            {
-              search_stations_text ?
-                <InputIcon className="pi pi-times cursor-pointer" onClick={() => actions.persistedApp.search_stations_text('')} />
-                : <></>
-            }
-
-            <InputText
-              placeholder={translations.search_station_name_and_description}
-              className="w-full"
-              value={search_stations_text}
-
-              onChange={(e) => actions.persistedApp.search_stations_text(e.target.value)}
-            />
-
-          </IconField>
-
-        </div>
-
-        {/* tags search */}
-        <div className="flex flex-column gap-2 max-w-full w-20rem">
-
-          <div className="flex flex-row flex-wrap gap-2 align-items-start">
-            {/* searched tags */}
-
-            {
-              search_station_tags?.map(tag =>
-                <div className="flex bg-red-600 border-round align-items-center hover:overflow-hidden">
-                  <StationTag tag={tag} disable_link />
-
-                  <StationTagRemoveTokenIcon
-                    onClick={() => click_tag_remove(tag)} />
-                </div>
-              )
-            }
-          </div>
-
-          <IconField className="">
-
-            {
-              tags_input_value ?
-                <InputIcon className="pi pi-times cursor-pointer" onClick={() => set_tags_input_value('')} />
-                : <></>
-            }
-
-            <InputText
-              placeholder={translations.search_stations_by_tags}
-              className="w-full"
-              value={tags_input_value}
-              disabled={!filtered_tags.length}
-              ref={e => set_tag_input_ref(e)}
-
-              onChange={(e) => set_tags_input_value(e.target.value)}
-
-              onFocus={(e) => {
-                overlay_panel.current?.show(e, e.target)
-              }}
-
-              onKeyUp={(e) => {
-                const exact = filtered_tags.find(t => t === (e.target as HTMLInputElement).value)
-
-                if (
-                  e.code == 'Enter'
-                  || e.key == 'Enter'
-                ) {
-                  if (filtered_tags.length == 1) {
-
-                    actions.persistedApp.add_tag_to_search(filtered_tags[0])
-                    set_tags_input_value('')
-
-                  } else if (exact) {
-
-                    actions.persistedApp.add_tag_to_search(exact)
-                    set_tags_input_value('')
-                  }
-                }
-              }}
-            />
-
-          </IconField>
-
-          <OverlayPanel
-            ref={overlay_panel}
-            pt={{
-              root: {
-                className: classNames({
-
-                },
-                  'max-w-25rem',
-                  'mx-2',
-                  'shadow-5',
-                  'surface-hover',
-                )
-              },
-              content: {
-                className: classNames({},
-                  "flex flex-wrap gap-2 p-2",
-                )
-              }
-            }}
-          >
-            {
-              filtered_tags?.map(tag => <StationTag
-                tag={tag}
-                onClick={() => click_search_tag(tag)}
-              />)
-            }
-          </OverlayPanel>
-
-        </div>
-      </Panel>
     </>
   )
 }

@@ -30,6 +30,7 @@ import {
   RightSidebar,
   RestrictedPage,
   Player,
+  StationSearchPanel,
 } from '@/components'
 
 import { useLog, usePageInList } from '@/hooks'
@@ -292,6 +293,8 @@ export default function App() {
       {/*  <WS /> */}
 
       <Navbar />
+
+      <StationSearchPanel />
 
       <RightSidebar />
 
