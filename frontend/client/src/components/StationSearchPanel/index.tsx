@@ -55,7 +55,7 @@ export const StationSearchPanel: FC = () => {
   return (
     <Panel
       ref={e => {
-        console.log('[Panel] ref : ', e)
+        //console.log('[Panel] ref : ', e)
         if (e) actions.persistedApp.search_panel(e)
       }}
       toggleable
