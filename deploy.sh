@@ -1,4 +1,6 @@
 #should be placed alongside the project radio
+#to make file executable
+# chmod +x ./deploy.sh
 echo "Radio.Best deploy start"
 cd radio
 git pull origin HEAD

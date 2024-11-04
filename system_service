@@ -1,4 +1,4 @@
-/*save as lib/systemd/system/tvcamtv.service*/
+/*save as lib/systemd/system/radiobest.service*/
 this will overwrite settings in .env
 
 [Unit]
@@ -11,9 +11,9 @@ Environment=ENV=prod
 Restart=always
 ExecStart=/home/radio/build/main
 
-StandardOutput=syslog
+StandardOutput=null
 StandardError=syslog
-SyslogIdentifier=tvcamtv-server
+SyslogIdentifier=radiobest
 
 [Install]
 WantedBy=multi-user.target
