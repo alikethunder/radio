@@ -46,16 +46,13 @@ Prerequisites
 
 2. To build & deploy projectd from inside radio folder
 
-  git pull origin HEAD
-  npm --prefix ./frontend/client install
   npm --prefix ./frontend/client run build -- --emptyOutDir
   go build -o ./build/main .
-  sudo systemctl restart radiobest
-  
-  // todo: add bun built script
 
   // to start built project 
   ./build/main
+  
+  // todo: add bun built script
 
   //connect with ssh 
   ssh -p 56777 root@45.66.248.26
