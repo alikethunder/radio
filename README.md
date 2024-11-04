@@ -44,13 +44,18 @@ Prerequisites
   To do:
     - add bun server start script for ssr in feature
 
-2. To build & deploy projectd
+2. To build & deploy projectd from inside radio folder
 
+  git pull origin HEAD
   npm --prefix ./frontend/client install
   npm --prefix ./frontend/client run build -- --emptyOutDir
   go build -o ./build/main .
-  ./build/main
   sudo systemctl restart radiobest
   
-  // add bun built script
+  // todo: add bun built script
 
+  // to start built project 
+  ./build/main
+
+  //connect with ssh 
+  ssh -p 56777 root@45.66.248.26

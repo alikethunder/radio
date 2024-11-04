@@ -49,15 +49,17 @@ func init() {
 	StationCounters.Initialize()
 	StationTags.Initialize()
 
-	// To initialize Sentry's handler, you need to initialize Sentry itself beforehand
-	if err := sentry.Init(sentry.ClientOptions{
-		Dsn: "https://4ba1a1068260d3de6faaa8a63420a5e5@o4508217277808640.ingest.de.sentry.io/4508218385760336",
-		// Set TracesSampleRate to 1.0 to capture 100%
-		// of transactions for tracing.
-		// We recommend adjusting this value in production,
-		TracesSampleRate: 1.0,
-	}); err != nil {
-		fmt.Printf("Sentry initialization failed: %v\n", err)
+	if os.Getenv("ENV") == "prod" {
+		// To initialize Sentry's handler, you need to initialize Sentry itself beforehand
+		if err := sentry.Init(sentry.ClientOptions{
+			Dsn: "https://4ba1a1068260d3de6faaa8a63420a5e5@o4508217277808640.ingest.de.sentry.io/4508218385760336",
+			// Set TracesSampleRate to 1.0 to capture 100%
+			// of transactions for tracing.
+			// We recommend adjusting this value in production,
+			TracesSampleRate: 1.0,
+		}); err != nil {
+			fmt.Printf("Sentry initialization failed: %v\n", err)
+		}
 	}
 }
 
@@ -221,14 +223,15 @@ func main() {
 
 	app.Get("*", controllers.Index)
 
-	// Later in the code
-	sentryHandler := sentryfiber.New(sentryfiber.Options{
-		Repanic:         true,
-		WaitForDelivery: true,
-	})
+	if os.Getenv("ENV") == "prod" {
+		// Later in the code
+		sentryHandler := sentryfiber.New(sentryfiber.Options{
+			Repanic:         true,
+			WaitForDelivery: true,
+		})
 
-	app.Use(sentryHandler)
-
+		app.Use(sentryHandler)
+	}
 	// Start app
 	err := app.Listen(":" + os.Getenv("PORT"))
 	if err != nil {
