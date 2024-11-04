@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	//"time"
@@ -27,6 +28,7 @@ import (
 
 	//"web_project/functions"
 
+	"github.com/caddyserver/certmagic"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/etag"
@@ -232,9 +234,25 @@ func main() {
 
 		app.Use(sentryHandler)
 	}
+
+	certmagic.DefaultACME.Agreed = true
+
+	certmagic.DefaultACME.Email = "aleksandr.popugaiev@gmail.com"
+
 	// Start app
-	err := app.Listen(":" + os.Getenv("PORT"))
-	if err != nil {
-		fmt.Println("main error : ", err)
+	if os.Getenv("ENV") == "dev" {
+		err := app.Listen(":" + os.Getenv("PORT"))
+		if err != nil {
+			fmt.Println("main error : ", err)
+		}
+	} else {
+		ln, err := certmagic.Listen([]string{"radio.best", "www.radio.best"})
+
+		if err != nil {
+			fmt.Println("main error : ", err)
+		}
+
+		log.Fatal(app.Listener(ln))
 	}
+
 }
