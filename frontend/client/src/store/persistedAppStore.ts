@@ -9,8 +9,6 @@ type PersistedApp = {
   search_station_tags: string[];
   search_panel_collapsed: boolean;
   search_stations_text: string;
-  language: string | null,
-  languages: string[],
   favorite_stations: string[],
   user_uuid: string,
 }
@@ -21,8 +19,6 @@ const initial_state = {
   search_station_tags: [],
   search_panel_collapsed: true,
   search_stations_text: '',
-  language: null,
-  languages: [],
   favorite_stations: [],
   user_uuid: v7(),
 } as PersistedApp

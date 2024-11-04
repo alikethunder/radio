@@ -11,7 +11,7 @@ import oauth_prod from '&/settings/google_oauth_prod.json'
 
 export const GoogleOAuth: FC<{ rememberme?: boolean }> = ({ rememberme }) => {
 
-  const language = useStore().persistedApp.language()
+  const language = useStore().translations.language()
 
   useEffect(() => {
 

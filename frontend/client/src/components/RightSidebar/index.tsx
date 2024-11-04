@@ -43,9 +43,9 @@ export const RightSidebar: FC = () => {
 
   const signedin = useStore().auth.signedin()
 
-  const language = useStore().persistedApp.language()
+  const language = useStore().translations.language()
 
-  const languages = useStore().persistedApp.languages()
+  const languages = useStore().translations.languages()
 
   const click_logout = useDebounceCallback(() => {
     logout()
@@ -77,7 +77,7 @@ export const RightSidebar: FC = () => {
 
         <Dropdown
           value={language}
-          onChange={(e) => actions.persistedApp.language(e.value)}
+          onChange={(e) => actions.translations.language(e.value)}
           options={languages}
           optionLabel="name"
           className="w-full border-noround border-none"

@@ -53,7 +53,7 @@ export const Signup: FC = () => {
 
   const emailRef = useRef<HTMLInputElement>(null)
 
-  const language = useStore().persistedApp.language()
+  const language = useStore().translations.language()
 
   const { handleSubmit, formState: { errors, isSubmitting }, control, clearErrors, setError, watch } = useForm<User>({
     defaultValues: {

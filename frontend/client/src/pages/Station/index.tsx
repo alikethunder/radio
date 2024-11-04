@@ -119,9 +119,9 @@ export const Station = () => {
 
   const current_station = useStore().player.current_station()
 
-  const languages = useStore().persistedApp.languages()
+  const languages = useStore().translations.languages()
 
-  const language = useStore().persistedApp.language()
+  const language = useStore().translations.language()
 
   const station_admin = useMemo(() => Boolean(
     signedin
@@ -291,7 +291,7 @@ export const Station = () => {
     reset() {
       set_avatar_data_url(null)
       set_avatar_blob(null)
-      store.persistedApp.languages().forEach(language => {
+      store.translations.languages().forEach(language => {
         //@ts-ignore
         setValue(`description_${language}`, station[`description_${language}`])
         //@ts-ignore

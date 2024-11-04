@@ -52,7 +52,7 @@ const private_tooltip_options = { ...tooltip_options, position: 'right' } as con
 
 export const UserProfile = () => {
 
-  const language = useStore().persistedApp.language()
+  const language = useStore().translations.language()
 
   const photo_file_input_ref = useRef<HTMLInputElement>(null)
 

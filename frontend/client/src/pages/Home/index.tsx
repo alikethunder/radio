@@ -61,9 +61,9 @@ export const Home = () => {
 
   const current_user_id = useStore().user.id()
 
-  const language = useStore().persistedApp.language()
+  const language = useStore().translations.language()
 
-  const languages = useStore().persistedApp.languages()
+  const languages = useStore().translations.languages()
 
   const station_tags = useStore().app.station_tags().map(t => t.name)
 

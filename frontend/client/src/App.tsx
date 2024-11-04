@@ -244,9 +244,9 @@ export default function App() {
       if (resp.status == 200) {
         const languages = await resp.json()
 
-        actions.persistedApp.languages(languages)
+        actions.translations.languages(languages)
 
-        const curr_selected_lang = store.persistedApp.language()
+        const curr_selected_lang = store.translations.language()
 
         if (!curr_selected_lang || !languages.includes(curr_selected_lang)) {
           //lang was not set or it is not supported
@@ -255,14 +255,14 @@ export default function App() {
           const nav_lang = navigator.language.substring(0, 2)
 
           if (languages.includes(nav_lang)) {
-            actions.persistedApp.language(nav_lang)
+            actions.translations.language(nav_lang)
           } else {
             //navigator language is not supported
             //find supported in navigator languages
 
             const supported_navigator_languages = navigator.languages.find(l => languages.includes(l))
 
-            actions.persistedApp.language(supported_navigator_languages ?? languages[0])
+            actions.translations.language(supported_navigator_languages ?? languages[0])
 
           }
         }
@@ -270,9 +270,9 @@ export default function App() {
     })()
   }, [])
 
-  const language = useStore().persistedApp.language()
+  const language = useStore().translations.language()
 
-  const languages = useStore().persistedApp.languages()
+  const languages = useStore().translations.languages()
 
   useEffect(() => {
     //update language in url

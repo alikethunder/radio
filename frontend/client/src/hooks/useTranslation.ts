@@ -6,9 +6,9 @@ export const useTranslation = (field: string, capitalize?: boolean,): [string, b
 
   const [loading, set_loading] = useState(true)
 
-  const language = useStore().persistedApp.language()
+  const language = useStore().translations.language()
 
-  const translation = useStore().translations.get_translation(language, field)
+  const translation = useStore().translations.get_translation(field)
 
   const translation_checked = useStore().session.translation_checked(language, field)
 
@@ -18,7 +18,7 @@ export const useTranslation = (field: string, capitalize?: boolean,): [string, b
         const resp = await fetch(`/api/v1/translation/${language}/${field}`)
         const text = await resp.text()
 
-        actions.translations.add_translation(language, field, capitalize ? text.charAt(0).toUpperCase() + text.slice(1) : text)
+        actions.translations.add_translation(field, capitalize ? text.charAt(0).toUpperCase() + text.slice(1) : text)
 
         actions.session.translation_checked(language, field)
 

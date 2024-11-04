@@ -57,7 +57,7 @@ export const Signin: FC = () => {
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<Password>(null)
 
-  const language = useStore().persistedApp.language()
+  const language = useStore().translations.language()
 
   const { handleSubmit, formState: { errors, isSubmitting }, control, clearErrors, setError, watch } = useForm<SigninUser>({
     defaultValues: {

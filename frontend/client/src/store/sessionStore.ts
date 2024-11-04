@@ -35,7 +35,7 @@ const initial_state = {
 export const sessionStore = createStore('sessionStore')(initial_state, {
   persist: {
     enabled: true,
-    name: 'appStore',
+    name: 'sessionStore',
     storage: createJSONStorage(() => sessionStorage),
   }
 })

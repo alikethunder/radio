@@ -3,15 +3,19 @@ import { createStore } from 'zustand-x'
 const initialState = {
   en: {},
   ru: {},
+  language: null,
+  languages: [],
 }
 
 type Translations = {
   en: {
-    [x:string]: string;
+    [x: string]: string;
   },
   ru: {
-    [x:string]: string;
+    [x: string]: string;
   },
+  language: string | null,
+  languages: string[],
 }
 
 export const translationsStore = createStore('app')(initialState as Translations,
@@ -22,9 +26,13 @@ export const translationsStore = createStore('app')(initialState as Translations
     }
   })
   .extendSelectors((state, get, api) => ({
-    get_translation(language: string | null, field: string) {
+    get_translation(field: string) {
       //@ts-ignore
-      return get[language ?? 'en']()[field]
+      return get[get.language() ?? 'en']()[field]
+    },
+    get_translations(fields: string[]) {
+      //@ts-ignore
+      return Object.fromEntries(fields.map(field => [field, get[get.language() ?? 'en']()[field]]))
     },
   }))
   .extendActions((set, get, api) => ({
@@ -37,11 +45,11 @@ export const translationsStore = createStore('app')(initialState as Translations
         //@ts-ignore
         .forEach(n => set[n](initialState[n]))
     },
-    add_translation(language: string, field: string, translation: string) {
+    add_translation(field: string, translation: string) {
       //@ts-ignore
-      const lang_dict = structuredClone(get[language]())
+      const lang_dict = structuredClone(get[get.language() ?? 'en']())
       lang_dict[field] = translation
       //@ts-ignore
-      set[language](lang_dict)
+      set[get.language() ?? 'en'](lang_dict)
     },
   }))

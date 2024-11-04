@@ -56,7 +56,7 @@ export const Verification: FC = () => {
   const verification_codeRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<Password>(null)
 
-  const language = useStore().persistedApp.language()
+  const language = useStore().translations.language()
 
   const { handleSubmit, formState: { errors, isSubmitting }, control, clearErrors, setError } = useForm<User>({
     defaultValues: {
