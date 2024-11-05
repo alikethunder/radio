@@ -260,7 +260,7 @@ func main() {
 		if err != nil {
 			fmt.Println("main error : ", err)
 		}
-		log.Fatal(app.Listener(ln))
+		app.Listener(ln)
 
 	}
 
