@@ -4,10 +4,8 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
-	//"time"
-
-	//"web_project/cookies"
 	"crypto/tls"
 	"web_project/db"
 	DBPlans "web_project/db/Plans"
@@ -27,14 +25,12 @@ import (
 	"web_project/functions"
 	"web_project/mailer"
 
-	//"web_project/functions"
+	"github.com/gofiber/contrib/websocket"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/etag"
 	"github.com/gofiber/template/html/v2"
 	"golang.org/x/crypto/acme/autocert"
-
-	//"web_project/settings"
 
 	"github.com/getsentry/sentry-go"
 	sentryfiber "github.com/getsentry/sentry-go/fiber"
@@ -68,24 +64,26 @@ func init() {
 func main() {
 
 	defer functions.Recovery()
-	/* err := db.Session.Query(`ALTER TABLE users ADD last_seen text`).Exec()
-	fmt.Println(err)
-	return */
 
 	fmt.Println("start server")
 	defer db.Session.Close()
 	defer mailer.C.Quit()
 
-	//fmt.Println(functions.Vc())
-
 	// Load templates
 	engine := html.New(os.Getenv("TEMPL_PATH")+"/served", ".html")
 
-	// Create app
 	app := fiber.New(fiber.Config{
 		Views:       engine,
 		JSONEncoder: json.Marshal,
 		JSONDecoder: json.Unmarshal,
+	})
+
+	app.Use(func(ctx *fiber.Ctx) error {
+		//fmt.Printf("[redirect] %s\n", strings.Replace(ctx.BaseURL(), "http", "https", 1)+ctx.OriginalURL())
+		if os.Getenv("ENV") == "prod" && ctx.Protocol() == "http" {
+			return ctx.Redirect(strings.Replace(ctx.BaseURL(), "http", "https", 1) + ctx.OriginalURL())
+		}
+		return ctx.Next()
 	})
 
 	api := app.Group("/api")
@@ -109,8 +107,6 @@ func main() {
 	//get user profile by user id
 	//profile_endpoints.Get("/:id")
 
-	//update user profile
-
 	profile_endpoints.Get("/admin/:id", ProfileEndpoints.Admin)
 
 	profile_endpoints.Post("/update-json", ProfileEndpoints.UpdateJson)
@@ -132,8 +128,9 @@ func main() {
 	translation_endpoints.Get("/:language/:field", TranslationEndpoints.Translate)
 
 	files_endpoints := v1.Group("/files", etag.New())
-	//get user profile photo by user id
+
 	files_endpoints.Get("/:table/:row_id/:field", FilesEndpoints.GetFile)
+
 	files_endpoints.Post("/:table/:row_id/:field", FilesEndpoints.Upload)
 
 	radio_endpoints := v1.Group("/radio")
@@ -174,46 +171,47 @@ func main() {
 
 	tags_endpoints.Post("/", StationTagsEndpoints.SaveTags)
 
-	//uncomment for development
-	/* app.Use("/reloadws", func(c *fiber.Ctx) error {
-		// IsWebSocketUpgrade returns true if the client
-		// requested upgrade to the WebSocket protocol.
-		//log.Println("connection", c)
-		if websocket.IsWebSocketUpgrade(c) {
-			//log.Println("upgrade")
-			c.Locals("allowed", true)
-			return c.Next()
-		}
-		return fiber.ErrUpgradeRequired
-	})
-
-	app.Get("/reloadws", websocket.New(func(c *websocket.Conn) {
-		// c.Locals is added to the *websocket.Conn
-		//log.Println(c.Locals("allowed"))  // true
-		//log.Println(c.Params("id"))       // 123
-		//log.Println(c.Query("v"))         // 1.0
-		//log.Println(c.Cookies("session")) // ""
-
-		// websocket.Conn bindings https://pkg.go.dev/github.com/fasthttp/websocket?tab=doc#pkg-index
-		var (
-			mt  int
-			msg []byte
-			err error
-		)
-		for {
-			if mt, msg, err = c.ReadMessage(); err != nil {
-				log.Println("[reloadws] read err :", err)
-				break
+	if os.Getenv("ENV") == "dev" {
+		app.Use("/reloadws", func(c *fiber.Ctx) error {
+			// IsWebSocketUpgrade returns true if the client
+			// requested upgrade to the WebSocket protocol.
+			//log.Println("connection", c)
+			if websocket.IsWebSocketUpgrade(c) {
+				//log.Println("upgrade")
+				c.Locals("allowed", true)
+				return c.Next()
 			}
-			log.Printf("recv: %s", msg)
+			return fiber.ErrUpgradeRequired
+		})
 
-			if err = c.WriteMessage(mt, msg); err != nil {
-				log.Println("[reloadws] write err :", err)
-				break
+		app.Get("/reloadws", websocket.New(func(c *websocket.Conn) {
+			// c.Locals is added to the *websocket.Conn
+			//log.Println(c.Locals("allowed"))  // true
+			//log.Println(c.Params("id"))       // 123
+			//log.Println(c.Query("v"))         // 1.0
+			//log.Println(c.Cookies("session")) // ""
+
+			// websocket.Conn bindings https://pkg.go.dev/github.com/fasthttp/websocket?tab=doc#pkg-index
+			var (
+				mt  int
+				msg []byte
+				err error
+			)
+			for {
+				if mt, msg, err = c.ReadMessage(); err != nil {
+					log.Println("[reloadws] read err :", err)
+					break
+				}
+				log.Printf("recv: %s", msg)
+
+				if err = c.WriteMessage(mt, msg); err != nil {
+					log.Println("[reloadws] write err :", err)
+					break
+				}
 			}
-		}
 
-	})) */
+		}))
+	}
 
 	app.Use(compress.New())
 
@@ -264,11 +262,11 @@ func main() {
 		}
 		log.Fatal(app.Listener(ln))
 
-	} else {
-		// Start app
-		err := app.Listen(":" + os.Getenv("PORT"))
-		if err != nil {
-			fmt.Println("main error : ", err)
-		}
+	}
+
+	// Start app
+	err := app.Listen(":" + os.Getenv("PORT"))
+	if err != nil {
+		fmt.Println("main error : ", err)
 	}
 }
