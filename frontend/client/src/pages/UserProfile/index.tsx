@@ -54,8 +54,6 @@ export const UserProfile = () => {
 
   const language = useStore().translations.language()
 
-  const photo_file_input_ref = useRef<HTMLInputElement>(null)
-
   const [profile_photo_exists, set_profile_photo_exists] = useState(true)
 
   const [photo_data_url, set_photo_data_url] = useState<string | null>(null)
@@ -191,12 +189,6 @@ export const UserProfile = () => {
     },
   }, formState, user_data?.own_profile)
 
-  const click_file_input = useDebounceCallback(() => {
-    if (edit_mode) {
-      photo_file_input_ref.current?.click()
-    }
-  }, 50)
-
   return (
     <>
       <Helmet>
@@ -216,8 +208,6 @@ export const UserProfile = () => {
             style={{ backgroundImage: `url(${photo_data_url || `/api/v1/files/users/${user_data?.id}/photo`})` }}
 
             className={`element_with_overlay shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-circle flex align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode ? 'cursor-pointer' : ''}`}
-
-            onClick={click_file_input}
           >
             <img
               style={{ display: 'none' }}
@@ -238,7 +228,7 @@ export const UserProfile = () => {
               edit_mode ?
                 <>
 
-                  <div className="overlay absolute top-0 bottom-0 right-0 left-0 flex align-items-center justify-content-center text-center">
+                  <label htmlFor="fileElem" className="overlay absolute top-0 bottom-0 right-0 left-0 m-0 flex align-items-center justify-content-center text-center">
 
                     <div className="overlay_background surface-900 absolute top-0 bottom-0 right-0 left-0"></div>
 
@@ -246,7 +236,7 @@ export const UserProfile = () => {
                       {translations_skl.choose_image}
                     </div>
 
-                  </div>
+                  </label>
 
                   <Ripple />
 
@@ -255,7 +245,6 @@ export const UserProfile = () => {
             }
 
             <input
-              ref={photo_file_input_ref}
               type="file"
               id="fileElem"
               accept="image/*"

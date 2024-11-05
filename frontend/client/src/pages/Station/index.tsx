@@ -575,7 +575,7 @@ export const Station = () => {
                 edit_mode ?
                   <>
 
-                    <label for="fileElem" className="overlay absolute top-0 bottom-0 right-0 left-0 m-0 flex align-items-center justify-content-center text-center">
+                    <label htmlFor="fileElem" className="overlay absolute top-0 bottom-0 right-0 left-0 m-0 flex align-items-center justify-content-center text-center">
 
                       <div className="overlay_background surface-900 absolute top-0 bottom-0 right-0 left-0"></div>
 
