@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strings"
 
 	"crypto/tls"
 	"web_project/db"
@@ -76,14 +75,6 @@ func main() {
 		Views:       engine,
 		JSONEncoder: json.Marshal,
 		JSONDecoder: json.Unmarshal,
-	})
-
-	app.Use(func(ctx *fiber.Ctx) error {
-		//fmt.Printf("[redirect] %s\n", strings.Replace(ctx.BaseURL(), "http", "https", 1)+ctx.OriginalURL())
-		if os.Getenv("ENV") == "prod" && ctx.Protocol() == "http" {
-			return ctx.Redirect(strings.Replace(ctx.BaseURL(), "http", "https", 1) + ctx.OriginalURL())
-		}
-		return ctx.Next()
 	})
 
 	api := app.Group("/api")
@@ -262,11 +253,11 @@ func main() {
 		}
 		app.Listener(ln)
 
-	}
-
-	// Start app
-	err := app.Listen(":" + os.Getenv("PORT"))
-	if err != nil {
-		fmt.Println("main error : ", err)
+	} else {
+		// Start app
+		err := app.Listen(":" + os.Getenv("PORT"))
+		if err != nil {
+			fmt.Println("main error : ", err)
+		}
 	}
 }
