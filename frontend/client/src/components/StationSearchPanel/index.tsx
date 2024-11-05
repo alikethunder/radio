@@ -1,4 +1,4 @@
-import { FC, useEffect, } from "react"
+import { FC, LegacyRef, useCallback, useEffect, } from "react"
 
 import { StationSearchPanelContent } from "./StationSearchPanelContent"
 
@@ -52,12 +52,13 @@ export const StationSearchPanel: FC = () => {
     })
   }, [search_station_tags])
 
+  const panel_ref = useCallback((e: Panel) => {
+    if (e) actions.persistedApp.search_panel(e)
+  }, [])
+
   return (
     <Panel
-      ref={e => {
-        //console.log('[Panel] ref : ', e)
-        if (e) actions.persistedApp.search_panel(e)
-      }}
+      ref={panel_ref}
       toggleable
 
       collapsed={search_panel_collapsed}
