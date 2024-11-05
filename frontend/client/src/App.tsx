@@ -121,7 +121,6 @@ export default function App() {
   const [checked_signin, set_checked_signin] = useState(false)
 
   /* useEffect(() => {
-    //console.log('import.meta.env.VITE_DEV_PORT : ', import.meta.env.VITE_DEV_PORT)
     //code for reloading on code change during development
     new Sockette(`${window.location.origin}/reloadws`, {
       timeout: 5000,

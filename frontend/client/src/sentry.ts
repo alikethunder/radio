@@ -9,7 +9,7 @@ import {
   useNavigationType,
 } from "react-router-dom"
 
-if (import.meta.env.VITE_DEV_PORT == 'prod') {
+if (window.location.port != '3000') {
   Sentry.init({
     dsn: "https://301e57eb5173d739561bd05a389afe86@o4508217277808640.ingest.de.sentry.io/4508217316802640",
     integrations: [

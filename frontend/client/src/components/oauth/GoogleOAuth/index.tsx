@@ -19,7 +19,7 @@ export const GoogleOAuth: FC<{ rememberme?: boolean }> = ({ rememberme }) => {
     //todo: add code to remove the old button and create new one each time
     try {
       console.log('google creds : ', {
-        client_id: (import.meta.env.VITE_ENV == 'dev' ? oauth_dev : oauth_prod).web.client_id,
+        client_id: (window.location.port == '3000' ? oauth_dev : oauth_prod).web.client_id,
         itp_support: true,
         ux_mode: 'redirect',
         login_uri: `${window.location.origin}/api/v1/auth/google-callback`,
@@ -27,7 +27,7 @@ export const GoogleOAuth: FC<{ rememberme?: boolean }> = ({ rememberme }) => {
         use_fedcm_for_prompt: true,
       })
       window.google.accounts.id.initialize({
-        client_id: (import.meta.env.VITE_ENV == 'dev' ? oauth_dev : oauth_prod).web.client_id,
+        client_id: (window.location.port == '3000' ? oauth_dev : oauth_prod).web.client_id,
         itp_support: true,
         ux_mode: 'redirect',
         login_uri: `${window.location.origin}/api/v1/auth/google-callback`,
