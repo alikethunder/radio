@@ -15,7 +15,7 @@ export const WS: FC = () => {
       if (signedin) {
 
         const ws = await new Promise((res, rej) => {
-          let s = new Sockette(`ws://localhost:${import.meta.env.VITE_DEV_PORT}/ws`, {
+          let s = new Sockette(`${window.location.origin}/ws`, {
             timeout: 5e3,
             maxAttempts: 1,//10,
             onopen: e => {

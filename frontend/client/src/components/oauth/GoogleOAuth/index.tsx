@@ -22,8 +22,8 @@ export const GoogleOAuth: FC<{ rememberme?: boolean }> = ({ rememberme }) => {
         client_id: (import.meta.env.VITE_ENV == 'dev' ? oauth_dev : oauth_prod).web.client_id,
         itp_support: true,
         ux_mode: 'redirect',
-        login_uri: `http://localhost:${import.meta.env.VITE_DEV_PORT}/api/v1/auth/google-callback`,
-        allowed_parent_origin: `http://localhost:${import.meta.env.VITE_DEV_PORT}`,
+        login_uri: `${window.location.origin}/api/v1/auth/google-callback`,
+        allowed_parent_origin: `${window.location.origin}`,
         use_fedcm_for_prompt: true,
       })
 

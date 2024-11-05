@@ -123,7 +123,7 @@ export default function App() {
   /* useEffect(() => {
     //console.log('import.meta.env.VITE_DEV_PORT : ', import.meta.env.VITE_DEV_PORT)
     //code for reloading on code change during development
-    new Sockette(`ws://localhost:${import.meta.env.VITE_DEV_PORT}/reloadws`, {
+    new Sockette(`${window.location.origin}/reloadws`, {
       timeout: 5000,
       maxAttempts: 1,
       onopen() {

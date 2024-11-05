@@ -2,6 +2,7 @@ package ProfileEndpoints
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/goccy/go-json"
 
@@ -70,12 +71,19 @@ func RequestUpdateEmail(c *fiber.Ctx) error {
 				"old_email": cookie_user["email"],
 			})
 
+			domain := "http://localhost:" + os.Getenv("PORT")
+
+			if os.Getenv("ENV") == "prod" {
+				domain = "https://radio.best"
+			}
+
 			mailer.SendRequestUpdateEmail(fiber.Map{
 				"NewEmail":   req_json["new_email"],
 				"UpdateHash": update_email_hash,
 				"DenyHash":   deny_update_email_hash,
 				"Name":       stored_user["name"],
 				"OldEmal":    cookie_user["email"],
+				"domain":     domain,
 			})
 
 			return c.SendStatus(fiber.StatusAccepted)
