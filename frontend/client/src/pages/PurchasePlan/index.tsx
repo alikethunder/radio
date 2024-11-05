@@ -35,13 +35,6 @@ export const PurchasePlan = () => {
 
   const navigate = useNavigate()
 
-  const windowSize = useTrackedStore().app.windowSize()
-  const isDesktop = useTrackedStore().app.isDesktop()
-
-  const width = useMemo(() =>
-    isDesktop ? windowSize.width * .25 : Math.min(windowSize.width, windowSize.height) * .7
-    , [isDesktop, windowSize])
-
   const plans = useTrackedStore().app.subscription_plans()
 
   const sortedPlans = useMemo(() => plans?.sort(sortByPriority), [plans])
@@ -75,12 +68,12 @@ export const PurchasePlan = () => {
     <div
       className="sm:py-5 py-4 sm:px-6 px-4 w-full overflow-y-auto page become_seller_page flex-grow-1 flex flex-column"
       //@ts-ignore
-      style={{
+      /* style={{
         ...width ? {
           '--SmallCardContainer_width': `${width}px`,
           '--card-ratio': `${1.2}`
         } : {}
-      }}
+      }} */
     >
 
       <div className=" align-self-center sm:text-3xl lg:text-5xl lg:w-7 w-11 mb-5 text-center font-semibold">

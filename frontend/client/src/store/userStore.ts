@@ -34,7 +34,7 @@ export const userStore = createStore('app')(initialState as unknown as (FrontUse
     }
   })
   .extendSelectors((state, get, api) => ({
-    favorite_station: (id: string) => get.favorite_stations().includes(id),
+    favorite_station: (id?: string) => id && get.favorite_stations().includes(id),
   }))
   .extendActions((set, get, api) => ({
     reset: () => {

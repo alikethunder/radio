@@ -1,4 +1,4 @@
-import { FC, LegacyRef, useEffect, useRef, useState } from "react"
+import { FC, useCallback, useEffect, useState } from "react"
 
 import {
   generatePath,
@@ -15,8 +15,6 @@ import {
 
 import {
   app_routes,
-  auth_routes,
-  route_attributes,
 } from '@/constants/router'
 
 import {
@@ -27,22 +25,14 @@ import {
 
 import { Slider } from "primereact/slider"
 
-import { InputNumber } from "primereact/inputnumber"
-
-import { icon_classes } from "@/constants/icon_classes"
-
-import { tooltip_options } from "@/constants/tooltip_options"
 import { classNames } from "primereact/utils"
 import { NumRange } from "@/types/generics/range"
-import { useTranslation, useTranslations, useTranslationsSkeleton } from "@/hooks"
-import { Tooltip } from "primereact/tooltip"
+import { useTranslations, useTranslationsSkeleton } from "@/hooks"
 import { useDebounceCallback } from "usehooks-ts"
 
-const tltp_options = { ...tooltip_options, position: 'top' } as const
+import './index.sass'
 
 export const Player: FC = () => {
-
-  const current_page = useStore().app.current_page()
 
   const [audio_ref, set_audio_ref] = useState<HTMLAudioElement | null>(null)
 
@@ -107,16 +97,19 @@ export const Player: FC = () => {
     }
   }, 50)
 
-  //remove after adding buttons for random station
-  return current_station ?
-    <div className="flex flex-row flex-shrink-0 shadow-3 h-9rem justify-content-center bg-white p-2 sm:p-2 gap-3 mt-auto">
+  const set_audio_ref_func = useCallback((e: HTMLAudioElement) => {
+    set_audio_ref(e)
+  }, [])
+
+  return (
+    <div id="player" className={`flex flex-row flex-shrink-0 shadow-3 h-9rem justify-content-center bg-white p-2 sm:p-2 gap-3 mt-auto ${current_station ? 'opened' : ''}`}>
 
       <audio
         src=""
         style={{
           display: 'none'
         }}
-        ref={e => set_audio_ref(e)}
+        ref={set_audio_ref_func}
       />
 
       <div className="flex flex-row flex-wrap-reverse gap-2 align-items-end justify-content-center">
@@ -269,5 +262,5 @@ export const Player: FC = () => {
       </div>
 
     </div>
-    : <></>
+  )
 }

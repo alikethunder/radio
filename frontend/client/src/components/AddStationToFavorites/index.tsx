@@ -14,7 +14,7 @@ import { useDebounceCallback } from "usehooks-ts"
 import { update_json } from "@/API/profile/update_json"
 
 type Props = {
-  id: string;
+  id?: string;
 }
 
 export const AddStationToFavorites: FC<Props> = ({ id }) => {

@@ -205,24 +205,6 @@ export default function App() {
   ])
 
   useEffect(() => {
-    actions.app.isDesktop(
-      (
-        windowSize?.width ? windowSize?.width > 768.1 : false
-      )
-      && (
-        windowSize?.height ? windowSize?.height > 768.1 : false
-      )
-    )
-    const { width, height } = windowSize
-
-    actions.app.windowSize({
-      width: width ?? 0,
-      height: height ?? 0
-    })
-
-  }, [windowSize])
-
-  useEffect(() => {
     //save prev path to redirect after signin/up
     if (
       checked_auth_page

@@ -46,13 +46,6 @@ export const Home = () => {
 
   useLog(true, '[Home] stations : ', stations)
 
-  const windowSize = useStore().app.windowSize()
-  const isDesktop = useStore().app.isDesktop()
-
-  const width = useMemo(() =>
-    isDesktop ? windowSize.width * .21 : Math.min(windowSize.width, windowSize.height) * .8
-    , [isDesktop, windowSize])
-
   const edit_mode = useStore().app.FormActionsState_edit_mode()
 
   const signedin = useStore().auth.signedin()
