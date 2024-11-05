@@ -8,6 +8,7 @@ import (
 	//"time"
 
 	//"web_project/cookies"
+	"crypto/tls"
 	"web_project/db"
 	DBPlans "web_project/db/Plans"
 	"web_project/db/StationCounters"
@@ -27,12 +28,11 @@ import (
 	"web_project/mailer"
 
 	//"web_project/functions"
-
-	"github.com/caddyserver/certmagic"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/etag"
 	"github.com/gofiber/template/html/v2"
+	"golang.org/x/crypto/acme/autocert"
 
 	//"web_project/settings"
 
@@ -235,24 +235,40 @@ func main() {
 		app.Use(sentryHandler)
 	}
 
-	certmagic.DefaultACME.Agreed = true
+	if os.Getenv("ENV") == "prod" {
 
-	certmagic.DefaultACME.Email = "aleksandr.popugaiev@gmail.com"
+		// Certificate manager
+		m := &autocert.Manager{
+			Prompt: autocert.AcceptTOS,
+			// Replace with your domain
+			HostPolicy: autocert.HostWhitelist("radio.best", "www.radio.best"),
+			// Folder to store the certificates
+			Cache: autocert.DirCache("./certs"),
+		}
 
-	// Start app
-	if os.Getenv("ENV") == "dev" {
+		// TLS Config
+		cfg := &tls.Config{
+			// Get Certificate from Let's Encrypt
+			GetCertificate: m.GetCertificate,
+			// By default NextProtos contains the "h2"
+			// This has to be removed since Fasthttp does not support HTTP/2
+			// Or it will cause a flood of PRI method logs
+			// http://webconcepts.info/concepts/http-method/PRI
+			NextProtos: []string{
+				"http/1.1", "acme-tls/1",
+			},
+		}
+		ln, err := tls.Listen("tcp", ":443", cfg)
+		if err != nil {
+			fmt.Println("main error : ", err)
+		}
+		log.Fatal(app.Listener(ln))
+
+	} else {
+		// Start app
 		err := app.Listen(":" + os.Getenv("PORT"))
 		if err != nil {
 			fmt.Println("main error : ", err)
 		}
-	} else {
-		ln, err := certmagic.Listen([]string{"radio.best", "www.radio.best"})
-
-		if err != nil {
-			fmt.Println("main error : ", err)
-		}
-
-		log.Fatal(app.Listener(ln))
 	}
-
 }
