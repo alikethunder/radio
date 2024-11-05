@@ -4,7 +4,12 @@
 <head>
   <meta charSet="utf-8" />
   <title>{{.sitename}} - {{.station.name}}</title>
+  <meta name='pagename' content="{{.sitename}} - {{.station.name}}">
 
+  <meta name='coverage' content='Worldwide'>
+  <meta name='distribution' content='Global'>
+  <meta name='target' content='all'>
+  
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -14,6 +19,8 @@
   <meta name="twitter:card" content="summary" />
 
   <meta property="og:locale" content={{.Language}} />
+
+  <meta content="yes" name="apple-mobile-web-app-capable" />
 
   {{range .Languages}}
     <meta property="og:locale:alternate" content={{.}} />
@@ -27,6 +34,14 @@
   <meta name="description" content="{{.text_description}} {{.Tags}}: {{range .Tags_list}}{{.}},{{end}}" />
   <meta property="og:description" content="{{.text_description}} {{.Tags}}: {{range .Tags_list}}{{.}},{{end}}" />
   <meta property="twitter:description" content="{{.text_description}} {{.Tags}}: {{range .Tags_list}}{{.}},{{end}}" />
+
+  <meta name="subject" content="{{.Description}} {{.Tags}}: {{range .Tags_list}}{{.}},{{end}}" />
+
+  <meta name='copyright' content='radio.best'>
+
+  <meta name='robots' content='index,follow'>
+
+  <meta name='keywords' content="{{.sitename}},{{.station.name}},{{range .Tags_list}}{{.}},{{end}}">
 
   <meta property="og:image" content="{{.logo}}" />
   <meta property="twitter:image" content="{{.logo}}" />

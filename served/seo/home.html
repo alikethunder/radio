@@ -4,6 +4,11 @@
 <head>
   <meta charSet="utf-8" />
   <title>{{.sitename}}</title>
+  <meta name='pagename' content="{{.sitename}}">
+
+  <meta name='coverage' content='Worldwide'>
+  <meta name='distribution' content='Global'>
+  <meta name='target' content='all'>
 
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -15,8 +20,10 @@
 
   <meta property="og:locale" content={{.Language}} />
 
+  <meta content="yes" name="apple-mobile-web-app-capable" />
+
   {{range .Languages}}
-    <meta property="og:locale:alternate" content={{.}} />
+  <meta property="og:locale:alternate" content={{.}} />
   {{end}}
 
   <meta property="og:site_name" content="{{.sitename}}" />
@@ -28,10 +35,20 @@
   <meta property="og:description" content="{{.Description}} {{.Tags}}: {{range .Tags_list}}{{.}},{{end}}" />
   <meta property="twitter:description" content="{{.Description}} {{.Tags}}: {{range .Tags_list}}{{.}},{{end}}" />
 
+  <meta name="subject" content="{{.Description}} {{.Tags}}: {{range .Tags_list}}{{.}},{{end}}" />
+
+  <meta name='copyright' content='radio.best'>
+
+  <meta name='robots' content='index,follow'>
+
+  <meta name='keywords' content="{{.sitename}},{{range .Tags_list}}{{.}},{{end}}">
+
   <meta property="og:image" content="{{.logo}}" />
   <meta property="twitter:image" content="{{.logo}}" />
 
   <link rel="canonical" href="{{.Domain}}{{.URL}}" />
+
+  <meta property="url" content="{{.Domain}}{{.URL}}" />
 
   <meta property="og:url" content="{{.Domain}}{{.URL}}" />
 
@@ -69,23 +86,23 @@
   <p>
     {{.Tags}}:
     {{range .Tags_list}}
-      <a href="{{$.Domain}}/?language={{$.Language}}&tags={{.}}">{{.}}</a>,
+    <a href="{{$.Domain}}/?language={{$.Language}}&tags={{.}}">{{.}}</a>,
     {{end}}
   </p>
   <p>
-    {{.Stations}}: 
+    {{.Stations}}:
 
     {{range .Stations_list}}
-      <a href="{{$.Domain}}/station/{{.id}}?language={{$.Language}}">{{.name}}</a>,
+    <a href="{{$.Domain}}/station/{{.id}}?language={{$.Language}}">{{.name}}</a>,
     {{end}}
   </p>
   <p>
-    <p>
-      {{.links_to_page_on_other_languages}}:
-    </p>
-    {{range .Languages}}
-      <a rel="alternate" hreflang="{{.}}" href="{{$.Domain}}?language={{.}}">{{.}} - {{$.sitename}}</a>,
-    {{end}}
+  <p>
+    {{.links_to_page_on_other_languages}}:
+  </p>
+  {{range .Languages}}
+  <a rel="alternate" hreflang="{{.}}" href="{{$.Domain}}?language={{.}}">{{.}} - {{$.sitename}}</a>,
+  {{end}}
   </p>
 </body>
 

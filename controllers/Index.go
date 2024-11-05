@@ -17,45 +17,41 @@ import (
 
 func Index(ctx *fiber.Ctx) error {
 
+	language := ctx.Query("language")
+
+	if language == "" {
+		language = "en"
+	}
+
+	languages := slices.DeleteFunc(translations.Languages(), func(e string) bool {
+		return e == language
+	})
+
+	query_tags := ctx.Query("tags")
+
+	var tags []string
+
+	additional_selectors := []string{}
+
+	if query_tags == "" {
+
+		tags_list := StationTags.ListTags()
+
+		tags = make([]string, len(tags_list))
+
+		for i, tag_map := range tags_list {
+			tags[i] = tag_map["name"].(string)
+		}
+	} else {
+		tags = strings.Split(query_tags, ",")
+		additional_selectors = append(additional_selectors, "tags CONTAINS '"+query_tags+"'")
+	}
+
+	stations_list := db.List("stations", fiber.Map{"broadcasting": true}, additional_selectors, "id", "name")
+
 	if agents.IsCrawler(ctx.Get("User-Agent")) {
 
-		language := ctx.Query("language")
-
-		if language == "" {
-			language = "en"
-		}
-
-		languages := slices.DeleteFunc(translations.Languages(), func(e string) bool {
-			return e == language
-		})
-
 		if ctx.Path() == "/" {
-
-			fmt.Printf("[Index] language %s \n", language)
-
-			query_tags := ctx.Query("tags")
-
-			fmt.Printf("[Index] query_tags %s \n", query_tags)
-
-			var tags []string
-
-			additional_selectors := []string{}
-
-			if query_tags == "" {
-
-				tags_list := StationTags.ListTags()
-
-				tags = make([]string, len(tags_list))
-
-				for i, tag_map := range tags_list {
-					tags[i] = tag_map["name"].(string)
-				}
-			} else {
-				tags = strings.Split(query_tags, ",")
-				additional_selectors = append(additional_selectors, "tags CONTAINS '"+query_tags+"'")
-			}
-
-			stations_list := db.List("stations", fiber.Map{"broadcasting": true}, additional_selectors, "id", "name")
 
 			return ctx.Render("seo/home", fiber.Map{
 				"Description":                      translations.Dictionary[language]["home_page_description"],
@@ -140,5 +136,19 @@ func Index(ctx *fiber.Ctx) error {
 		cookies.ClearAuthCookies(ctx)
 	}
 
-	return ctx.Render("public/index", fiber.Map{})
+	return ctx.Render("public/index", fiber.Map{
+		"Description":                      translations.Dictionary[language]["home_page_description"],
+		"Tags":                             translations.Dictionary[language]["tags"],
+		"Tags_list":                        tags,
+		"Language":                         language,
+		"Languages":                        languages,
+		"URL":                              ctx.OriginalURL(),
+		"Domain":                           ctx.BaseURL(),
+		"Full_url":                         template.JS("\"" + fmt.Sprintf("%s%s", ctx.BaseURL(), ctx.OriginalURL()) + "\""),
+		"Stations":                         translations.Dictionary[language]["radiostations"],
+		"Stations_list":                    stations_list,
+		"links_to_page_on_other_languages": translations.Dictionary[language]["links_to_page_on_other_languages"],
+		"sitename":                         translations.Dictionary[language]["sitename"],
+		"logo":                             template.JS("\"" + ctx.BaseURL() + "/android-chrome-512x512.png\""),
+	})
 }
