@@ -48,6 +48,7 @@ export const StationSearchPanelContent: FC = () => {
   const [translations] = useTranslations([
     'search_station_name_and_description',
     'search_stations_by_tags',
+    'no_such_tags',
   ], true)
 
   const translations_skl = useTranslationsSkeleton({
@@ -132,7 +133,7 @@ export const StationSearchPanelContent: FC = () => {
             placeholder={translations.search_stations_by_tags}
             className="w-full"
             value={tags_input_value}
-            disabled={!filtered_tags.length}
+            disabled={tags_input_value ? false : !filtered_tags.length}
 
             onChange={(e) => set_tags_input_value(e.target.value)}
 
@@ -188,6 +189,15 @@ export const StationSearchPanelContent: FC = () => {
               tag={tag}
               onClick={() => click_search_tag(tag)}
             />)
+          }
+          {
+            filtered_tags.length ?
+              <></>
+              :
+              tags_input_value ?
+                translations.no_such_tags
+                :
+                ''
           }
         </OverlayPanel>
 

@@ -75,6 +75,7 @@ var Dictionary = map[string]map[string]string{
 		"email_change":                        "Email change",
 		"yes":                                 "yes",
 		"no":                                  "no",
+		"no_such_tags":                        "No such tags",
 	},
 
 	"ru": {
@@ -149,5 +150,6 @@ var Dictionary = map[string]map[string]string{
 		"email_change":                        "Смена email",
 		"yes":                                 "да",
 		"no":                                  "нет",
+		"no_such_tags":                        "Нет таких тегов",
 	},
 }

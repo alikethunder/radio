@@ -1,4 +1,4 @@
-import { FC, LegacyRef, useCallback, useEffect, } from "react"
+import { FC, useCallback, useEffect, } from "react"
 
 import { StationSearchPanelContent } from "./StationSearchPanelContent"
 
