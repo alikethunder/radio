@@ -42,17 +42,15 @@ export const Player: FC = () => {
 
   const current_station = useStore().player.current_station()
 
-  //console.log('current_station : ', current_station)
-
-  useEffect(() => {
-    actions.player.playing(false)
-  }, [])
-
   useEffect(() => {
     if (current_station && audio_ref) {
       if (playing) {
         audio_ref.src = current_station?.external_enable ? current_station?.external : ''
-        audio_ref.play()
+        audio_ref.play().catch((e) => {
+          console.log('[Player] play error : ', e)
+          actions.player.playing(false)
+          audio_ref.pause()
+        })
       } else {
         audio_ref.pause()
       }
