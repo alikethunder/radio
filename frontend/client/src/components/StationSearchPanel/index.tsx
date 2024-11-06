@@ -36,7 +36,7 @@ export const StationSearchPanel: FC = () => {
 
   useEffect(() => {
     //add tags from url at starts
-    const tags = searchParams.get('tags')?.split(',')
+    const tags = searchParams.get('tags')?.split(',').filter(tag => !!tag)
     if (tags?.length) {
       tags?.forEach(tag => { if (tag) actions.persistedApp.add_tag_to_search(tag) })
       actions.persistedApp.search_panel_collapsed(false)
