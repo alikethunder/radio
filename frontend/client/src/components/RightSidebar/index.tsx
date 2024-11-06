@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react"
+import { FC, } from "react"
 
 import { Button } from 'primereact/button'
 
@@ -39,8 +39,6 @@ export const RightSidebar: FC = () => {
 
   const rightSidebarOpened = useTrackedStore().session.rightSidebarOpened()
 
-  const subscription_plan = useTrackedStore().user.subscription_plan()
-
   const signedin = useStore().auth.signedin()
 
   const language = useStore().translations.language()
@@ -80,7 +78,7 @@ export const RightSidebar: FC = () => {
           onChange={(e) => actions.translations.language(e.value)}
           options={languages}
           optionLabel="name"
-          className="w-full border-noround border-none"
+          className="w-full border-noround border-none flex-shrink-0"
           checkmark
           pt={{
             list: {
@@ -93,35 +91,15 @@ export const RightSidebar: FC = () => {
 
         {
           signedin ?
-            <>
-              <QueryLink to={generatePath(app_routes.user_profile$id, { id: store.user.id() })} onClick={() => actions.session.rightSidebarOpened(false)}>
-                <Button
-                  label={route_attributes[app_routes.user_profile$id].name as unknown as string}
-                  text
-                  raised
-                  icon={`${icon_classes} ${route_attributes[app_routes.user_profile$id].icon} `}
-                  className="border-noround w-full h-full px-2 lobster_font text-xl shadow_on_hover"
-                />
-              </QueryLink>
-
-              {/*  <div className="flex">
-                <Button
-                  //todo: projects quantity like "My projects (5)"
-                  label="My stations"
-                  text
-                  raised
-                  icon={`${icon_classes} pi-briefcase`}
-                  className="border-noround w-full h-full px-2 lobster_font text-xl shadow_on_hover"
-                />
-                <Button
-                  text
-                  raised
-                  //todo: switch to pi-chevron-up when opened projects list
-                  icon={`pi pi-chevron-down`}
-                  className="border-noround h-full px-2 shadow_on_hover"
-                />
-              </div> */}
-            </>
+            <QueryLink to={generatePath(app_routes.user_profile$id, { id: store.user.id() })} onClick={() => actions.session.rightSidebarOpened(false)}>
+              <Button
+                label={route_attributes[app_routes.user_profile$id].name as unknown as string}
+                text
+                raised
+                icon={`${icon_classes} ${route_attributes[app_routes.user_profile$id].icon} `}
+                className="border-noround w-full h-full px-2 lobster_font text-xl shadow_on_hover"
+              />
+            </QueryLink>
             :
             <QueryLink to={app_routes.signin} onClick={() => actions.session.rightSidebarOpened(false)}>
               <Button
@@ -135,13 +113,30 @@ export const RightSidebar: FC = () => {
             </QueryLink>
         }
 
-        <div className="flex flex-column shadow-4">
-
-        </div>
+        {/* 
+//todo: if user has favorite stations
+ */}
+        <QueryLink to={app_routes.my_stations} onClick={() => actions.session.rightSidebarOpened(false)}>
+          <Button
+            //todo: stations quantity like "My stations (5)"
+            label={route_attributes[app_routes.my_stations].name as unknown as string}
+            text
+            raised
+            icon={`${icon_classes} ${route_attributes[app_routes.my_stations].icon}`}
+            className="border-noround w-full h-full px-2 text-xl shadow_on_hover"
+            pt={{
+              label: {
+                className: classNames({},
+                  'font-semibold'
+                )
+              },
+            }}
+          />
+        </QueryLink>
 
       </div>
 
-      <div className="bottom flex flex-column">
+      <div className="bottom flex flex-column flex-shrink-0">
         {
           signedin ?
             <Button

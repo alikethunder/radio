@@ -14,6 +14,7 @@ import {
   PurchasePlan,
   UserProfile,
   Station,
+  FavoriteStations,
 } from '@/pages'
 
 import {
@@ -59,6 +60,7 @@ export const routes = [
       return false
     },
     children: [
+
       {
         path: app_routes.root,
         loader: async ({ request }: Loader_params) => {
@@ -70,10 +72,12 @@ export const routes = [
         element: <Home />,
         shouldRevalidate: () => false,
       },
+
       {
         path: app_routes.purchase_plan,
         element: <PurchasePlan />
       },
+
       {
         path: app_routes.user_profile$id,
         element: <UserProfile />,
@@ -102,6 +106,7 @@ export const routes = [
           return null
         },
       },
+
       {
         path: app_routes.station$id,
         element: <Station />,
@@ -112,7 +117,6 @@ export const routes = [
           }: Loader_params
         ) => {
           //console.log('station params : ', params)
-          //todo: load station data from db
           const { id } = params
 
           if (id == 'new') {
@@ -131,11 +135,11 @@ export const routes = [
           try {
 
             const station = await get_station(id)
-            
-            if (!station){
+
+            if (!station) {
               throw new Error('station not found')
             }
-            
+
             actions.app.current_page({
               name: station?.name
             })
@@ -151,6 +155,23 @@ export const routes = [
         },
         shouldRevalidate: () => false,
       },
+
+      {
+        path: app_routes.my_stations,
+        element: <FavoriteStations />,
+        loader: async (
+          {
+            params,
+            request,
+          }: Loader_params
+        ) => {
+          //todo: load favorite stations
+          const stations = await stations_list()
+          return stations
+        },
+        shouldRevalidate: () => false,
+      },
+
       {
         path: app_routes.signin,
         element: <Signin />

@@ -154,6 +154,9 @@ func main() {
 
 	radio_endpoints.Get("/list", RadioEndpoints.ListStations)
 
+	//todo: create favorite stations endpoint
+	//radio_endpoints.Get("/list", RadioEndpoints.ListStations)
+
 	radio_endpoints.Get("/:id", RadioEndpoints.GetStation)
 
 	tags_endpoints := v1.Group("/tags")
