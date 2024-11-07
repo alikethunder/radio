@@ -61,7 +61,7 @@ export const Navbar: FC = () => {
             <Button
               text
               raised
-              className="flex flex-row gap-1 border-noround w-full h-full md:px-2 px-1  lobster_font text-xl shadow_on_hover md:text-3xl bangers-font logo-glow"
+              className="flex flex-row gap-1 border-noround w-full h-full md:px-2 px-1  action_text_font text-xl shadow_on_hover md:text-3xl bangers-font logo-glow"
             >
               <span style={{
               }}>
@@ -76,7 +76,7 @@ export const Navbar: FC = () => {
             </Button>
           </QueryLink>
 
-          <div className="lobster_font align-self-center text-primary max-h-full text-overflow-ellipsis text_hidden_overflow line-clamp-2 select-none sm:text-lg font-bold">
+          <div className="action_text_font align-self-center text-primary max-h-full text-overflow-ellipsis text_hidden_overflow line-clamp-2 select-none sm:text-lg font-bold">
             {
               current_page?.icon ?
                 <i className={`pi ${current_page?.icon} mr-2`}></i>

@@ -100,7 +100,7 @@ export const RightSidebar: FC = () => {
                 text
                 raised
                 icon={`${icon_classes} ${route_attributes[app_routes.user_profile$id].icon} `}
-                className="border-noround w-full h-full px-2 lobster_font text-2xl shadow_on_hover"
+                className="border-noround w-full h-full px-2 action_text_font text-2xl shadow_on_hover"
               />
             </QueryLink>
             :
@@ -111,7 +111,7 @@ export const RightSidebar: FC = () => {
                 raised
                 icon={`${icon_classes} ${route_attributes[app_routes.signin].icon}`}
                 iconPos="right"
-                className="border-noround w-full h-full px-2 text-primary shadow_on_hover lobster_font text-2xl"
+                className="border-noround w-full h-full px-2 text-primary shadow_on_hover action_text_font text-2xl"
               />
             </QueryLink>
         }
@@ -125,7 +125,7 @@ export const RightSidebar: FC = () => {
                 text
                 raised
                 icon={`${icon_classes} ${route_attributes[app_routes.my_stations].icon}`}
-                className="border-noround w-full h-full px-2 text-2xl shadow_on_hover lobster_font"
+                className="border-noround w-full h-full px-2 text-2xl shadow_on_hover action_text_font"
               />
             </QueryLink>
             : <></>
@@ -143,7 +143,7 @@ export const RightSidebar: FC = () => {
               icon={`${icon_classes} pi-sign-out`}
               onClick={click_logout}
               iconPos="right"
-              className="border-noround text-gray-800 text-left lobster_font text-2xl shadow_on_hover"
+              className="border-noround text-gray-800 text-left action_text_font text-2xl shadow_on_hover"
             />
             : <></>
         }
