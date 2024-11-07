@@ -77,6 +77,7 @@ var Dictionary = map[string]map[string]string{
 		"no":                                  "no",
 		"no_such_tags":                        "No such tags",
 		"my_stations":                         "My stations",
+		"no_stations_with_parameters":         "There are no radio stations with these search parameters",
 	},
 
 	"ru": {
@@ -153,5 +154,6 @@ var Dictionary = map[string]map[string]string{
 		"no":                                  "нет",
 		"no_such_tags":                        "Нет таких тегов",
 		"my_stations":                         "Мои станции",
+		"no_stations_with_parameters":         "Нет радиостанций с такими параметрами поиска",
 	},
 }
