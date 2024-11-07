@@ -43,8 +43,8 @@
 
   <meta name='keywords' content="{{.sitename}},{{.station.name}},{{range .station.tags}}{{.}},{{end}}">
 
-  <meta property="og:image" content="{{.logo}}" />
-  <meta property="twitter:image" content="{{.logo}}" />
+  <meta property="og:image" content={{.logo}} />
+  <meta property="twitter:image" content={{.logo}} />
 
   <link rel="canonical" href="{{.Domain}}{{.URL}}" />
 
@@ -71,7 +71,7 @@
         }
       ],
       "keywords": "{{range .station.tags}}{{.}},{{end}}",
-      "logo": {{.logo}},
+      "logo": {{.quoted_logo}},
       "url": {{.Full_url}}
     }
   </script>

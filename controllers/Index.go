@@ -49,7 +49,7 @@ func Index(ctx *fiber.Ctx) error {
 
 	stations_list := db.List("stations", fiber.Map{"broadcasting": true}, additional_selectors, "id", "name")
 
-	if agents.IsCrawler(ctx.Get("User-Agent")) {
+	if true || agents.IsCrawler(ctx.Get("User-Agent")) {
 
 		if ctx.Path() == "/" {
 
@@ -80,6 +80,8 @@ func Index(ctx *fiber.Ctx) error {
 
 			station, _ := db.SelectRow("stations", fiber.Map{"id": station_id}, "id", "name", "description_"+language, "text_description_"+language, "tags", "avatar")
 
+			logo := template.JS(ctx.BaseURL() + "/api/v1/files/stations/" + station_id + "/avatar")
+
 			return ctx.Render("seo/station", fiber.Map{
 				"station":                          station,
 				"Language":                         language,
@@ -91,7 +93,8 @@ func Index(ctx *fiber.Ctx) error {
 				"Full_url":                         template.JS("\"" + fmt.Sprintf("%s%s", ctx.BaseURL(), ctx.OriginalURL()) + "\""),
 				"links_to_page_on_other_languages": translations.Dictionary[language]["links_to_page_on_other_languages"],
 				"sitename":                         translations.Dictionary[language]["sitename"],
-				"logo":                             template.JS("\"" + ctx.BaseURL() + "/api/v1/files/stations/" + station_id + "/avatar\""),
+				"logo":                             logo,
+				"quoted_logo":                      template.JS("\"" + logo + "\""),
 			})
 		}
 	}
