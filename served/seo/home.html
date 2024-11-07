@@ -43,8 +43,8 @@
 
   <meta name='keywords' content="{{.sitename}},{{range .Tags_list}}{{.}},{{end}}">
 
-  <meta property="og:image" content="{{.logo}}" />
-  <meta property="twitter:image" content="{{.logo}}" />
+  <meta property="og:image" content={{.logo}} />
+  <meta property="twitter:image" content={{.logo}} />
 
   <link rel="canonical" href="{{.Domain}}{{.URL}}" />
 
@@ -73,7 +73,7 @@
         }
       ],
       "keywords": "{{range .Tags_list}}{{.}},{{end}}",
-      "logo": {{.logo}},
+      "logo": {{.quoted_logo}},
       "url": {{.Full_url}}
     }
   </script>

@@ -49,12 +49,14 @@ func Index(ctx *fiber.Ctx) error {
 
 	stations_list := db.List("stations", fiber.Map{"broadcasting": true}, additional_selectors, "id", "name")
 
-	if true || agents.IsCrawler(ctx.Get("User-Agent")) {
+	if agents.IsCrawler(ctx.Get("User-Agent")) {
 
 		if ctx.Path() == "/" {
 
+			logo := template.JS(ctx.BaseURL() + "/android-chrome-512x512.png")
+
 			return ctx.Render("seo/home", fiber.Map{
-				"Description":                      translations.Dictionary[language]["home_page_description"],
+				"Description":                      template.HTML(translations.Dictionary[language]["home_page_description"]),
 				"Tags":                             translations.Dictionary[language]["tags"],
 				"Tags_list":                        tags,
 				"Language":                         language,
@@ -67,6 +69,7 @@ func Index(ctx *fiber.Ctx) error {
 				"links_to_page_on_other_languages": translations.Dictionary[language]["links_to_page_on_other_languages"],
 				"sitename":                         translations.Dictionary[language]["sitename"],
 				"logo":                             template.JS("\"" + ctx.BaseURL() + "/android-chrome-512x512.png\""),
+				"quoted_logo":                      template.JS("\"" + logo + "\""),
 			})
 		}
 
