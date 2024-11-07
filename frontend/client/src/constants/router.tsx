@@ -66,6 +66,6 @@ export const route_attributes = {
   [app_routes.root]: {},
   [app_routes.my_stations]: {
     name: <Translation capitalize field="my_stations" className="w-5rem" /> as unknown as string,
-    icon: 'pi-star-fill',
+    icon: 'pi-star-fill text-orange-500',
   },
 } as const
