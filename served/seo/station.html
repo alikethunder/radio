@@ -55,8 +55,7 @@
   <meta property="twitter:domain" content="{{.Domain}}" />
 
   <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
+    {"@context": "https://schema.org",
       "@type": "Radiostations",
       "name": "{{.sitename}}",
       "description": "{{.text_description}}",
@@ -72,8 +71,7 @@
       ],
       "keywords": "{{range .station.tags}}{{.}},{{end}}",
       "logo": {{.quoted_logo}},
-      "url": {{.Full_url}}
-    }
+      "url": {{.Full_url}}}
   </script>
 </head>
 
