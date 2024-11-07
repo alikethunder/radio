@@ -11,7 +11,7 @@ import {
 } from "@/store"
 
 import {
-  usePageInList,
+  useShowSearchPanel,
   useTranslations,
 } from '@/hooks'
 
@@ -39,7 +39,7 @@ export const Navbar: FC = () => {
 
   const search_button_badge_value = useMemo(() => search_station_tags.length, [search_station_tags,])
 
-  const [show_stations_search] = usePageInList([app_routes.root, app_routes.station$id])
+  const [show_stations_search] = useShowSearchPanel()
 
   const [translations] = useTranslations([
     'open_search_stations_panel',

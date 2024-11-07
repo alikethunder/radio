@@ -13,7 +13,7 @@ import {
 } from "@/store"
 
 import {
-  usePageInList,
+  useShowSearchPanel,
 } from '@/hooks'
 
 import {
@@ -30,7 +30,7 @@ export const StationSearchPanel: FC = () => {
 
   const search_panel_collapsed = useStore().persistedApp.search_panel_collapsed()
 
-  const [show_stations_search] = usePageInList([app_routes.root, app_routes.station$id])
+  const [show_stations_search] = useShowSearchPanel()
 
   const [searchParams, set_search] = useSearchParams()
 

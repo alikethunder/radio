@@ -154,8 +154,7 @@ func main() {
 
 	radio_endpoints.Get("/list", RadioEndpoints.ListStations)
 
-	//todo: create favorite stations endpoint
-	//radio_endpoints.Get("/list", RadioEndpoints.ListStations)
+	radio_endpoints.Post("/stations-by-id", RadioEndpoints.ListStationsById)
 
 	radio_endpoints.Get("/:id", RadioEndpoints.GetStation)
 

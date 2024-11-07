@@ -34,6 +34,7 @@ import { classNames } from "primereact/utils"
 
 import { Translation } from "@/layout parts"
 import { useDebounceCallback } from "usehooks-ts"
+import { useFavoriteStations } from "@/hooks"
 
 export const RightSidebar: FC = () => {
 
@@ -44,6 +45,8 @@ export const RightSidebar: FC = () => {
   const language = useStore().translations.language()
 
   const languages = useStore().translations.languages()
+
+  const favorite_stations = useFavoriteStations()
 
   const click_logout = useDebounceCallback(() => {
     logout()
@@ -113,26 +116,27 @@ export const RightSidebar: FC = () => {
             </QueryLink>
         }
 
-        {/* 
-//todo: if user has favorite stations
- */}
-        <QueryLink to={app_routes.my_stations} onClick={() => actions.session.rightSidebarOpened(false)}>
-          <Button
-            //todo: stations quantity like "My stations (5)"
-            label={route_attributes[app_routes.my_stations].name as unknown as string}
-            text
-            raised
-            icon={`${icon_classes} ${route_attributes[app_routes.my_stations].icon}`}
-            className="border-noround w-full h-full px-2 text-xl shadow_on_hover"
-            pt={{
-              label: {
-                className: classNames({},
-                  'font-semibold'
-                )
-              },
-            }}
-          />
-        </QueryLink>
+        {
+          favorite_stations.length ?
+            <QueryLink to={app_routes.my_stations} onClick={() => actions.session.rightSidebarOpened(false)}>
+              <Button
+                //todo: stations quantity like "My stations (5)"
+                label={route_attributes[app_routes.my_stations].name as unknown as string}
+                text
+                raised
+                icon={`${icon_classes} ${route_attributes[app_routes.my_stations].icon}`}
+                className="border-noround w-full h-full px-2 text-xl shadow_on_hover"
+                pt={{
+                  label: {
+                    className: classNames({},
+                      'font-semibold'
+                    )
+                  },
+                }}
+              />
+            </QueryLink>
+            : <></>
+        }
 
       </div>
 

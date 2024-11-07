@@ -5,15 +5,11 @@ import {
   generatePath,
 } from "react-router-dom"
 
-import { SmallCardContainer } from "@/layout parts"
-
 import { Ripple } from "primereact/ripple"
 
 import { classNames } from 'primereact/utils'
 
 import { QueryLink, StationTag } from "@/components"
-
-import './index.sass'
 
 import {
   app_routes,
@@ -46,10 +42,6 @@ export const FavoriteStations = () => {
 
   useLog(true, '[FavoriteStations] stations : ', stations)
 
-  const signedin = useStore().auth.signedin()
-
-  const current_user_id = useStore().user.id()
-
   const language = useStore().translations.language()
 
   const playing = useStore().player.playing()
@@ -57,11 +49,6 @@ export const FavoriteStations = () => {
   const current_station = useStore().player.current_station()
 
   const search_station_tags = useStore().persistedApp.search_station_tags()
-
-  const [formState, set_formState] = useState({
-    isValid: true,
-    isSubmitting: false,
-  })
 
   const search_stations_text = useStore().persistedApp.search_stations_text()
 

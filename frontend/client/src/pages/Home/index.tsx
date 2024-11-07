@@ -5,15 +5,11 @@ import {
   generatePath,
 } from "react-router-dom"
 
-import { SmallCardContainer } from "@/layout parts"
-
 import { Ripple } from "primereact/ripple"
 
 import { classNames } from 'primereact/utils'
 
 import { QueryLink, StationTag } from "@/components"
-
-import './index.sass'
 
 import {
   app_routes,

@@ -176,7 +176,7 @@ export default function App() {
 
       console.log('[App] user.favorite_stations : ', user.favorite_stations)
 
-      if (user?.favorite_stations) {
+      if (user?.favorite_stations.length) {
         actions.persistedApp.favorite_stations(user.favorite_stations)
       }
     } catch (e) {
@@ -196,8 +196,12 @@ export default function App() {
 
       const new_fav_stations = anonym_favorite_stations.filter(id => !user_favorite_stations.includes(id))
 
+      const updated_fav_stations = [...new_fav_stations, ...user_favorite_stations]
+
       if (new_fav_stations.length) {
-        update_json({ favorite_stations: [...new_fav_stations, ...user_favorite_stations] })
+        update_json({ favorite_stations: updated_fav_stations })
+
+        actions.user.favorite_stations(updated_fav_stations)
       }
     }
   }, [

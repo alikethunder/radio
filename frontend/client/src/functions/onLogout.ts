@@ -11,6 +11,4 @@ export const onLogout = () => {
   //clear user info
   actions.user.reset()
 
-  actions.persistedApp.favorite_stations([])
-
 }

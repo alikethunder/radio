@@ -18,19 +18,9 @@ import {
 } from '@/pages'
 
 import {
-
-} from '@/components'
-
-import {
   actions,
   store
 } from '@/store'
-
-import {
-  FrontUser,
-} from '@/types'
-
-import { CardPageParams } from "@/types/card"
 
 import {
   app_routes,
@@ -43,6 +33,7 @@ import {
 import {
   get_station,
 } from '@/API/station/get_station'
+import { useFavoriteStations } from "./hooks"
 
 type Loader_params = { params: { [param: string]: string; }, request: Request }
 
@@ -165,8 +156,18 @@ export const routes = [
             request,
           }: Loader_params
         ) => {
-          //todo: load favorite stations
-          const stations = await stations_list()
+          const favorite_stations = useFavoriteStations(true)
+
+          if (!favorite_stations.length) {
+            return redirect(app_routes.root)
+          }
+
+          const stations = await fetch(`/api/v1/radio/stations-by-id`, {
+            method: 'POST',
+            body: JSON.stringify({
+              ids: favorite_stations.join(',')
+            }),
+          })
           return stations
         },
         shouldRevalidate: () => false,
