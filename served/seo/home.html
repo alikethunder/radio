@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang={{.Language}}>
 
 <head>
   <meta charSet="utf-8" />
   <title>{{.sitename}}</title>
   <meta name='pagename' content="{{.sitename}}">
+
+  <meta name="viewport"
+    content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=0, minimum-scale=1" />
 
   <meta name='coverage' content='Worldwide'>
   <meta name='distribution' content='Global'>
@@ -79,7 +82,7 @@
   </script>
 </head>
 
-<body>
+<body style="font-size: 18px;">
   <p>
     {{.Description}}
   </p>
