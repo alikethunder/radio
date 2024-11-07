@@ -523,7 +523,9 @@ export const Station = () => {
                     'max-w-full',
                     'align-self-start',
                     'shadow-2',
-                    'w-20rem'
+                    'w-20rem',
+                    'action_text_font',
+                    'text-xl',
                   )}
                   onChange={(e) => {
                     field.onChange(e.target.value)
