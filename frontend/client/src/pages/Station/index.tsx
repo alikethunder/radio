@@ -411,16 +411,6 @@ export const Station = () => {
           '@type': 'Radiostation',
           name: station?.name,
           description: station?.[`description_${language}`],
-          availableLanguage: [
-            {
-              "@type": "Language",
-              "name": "English"
-            },
-            {
-              "@type": "Language",
-              "name": "Russian"
-            }
-          ],
           keywords: station.tags?.join(','),
           logo: `${window.location.origin}/api/v1/files/stations/${station.id}/avatar`,
           url: `${window.location.origin}${generatePath(app_routes["station$id"], { id: station?.id })}?language=${language}`,

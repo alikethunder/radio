@@ -174,18 +174,8 @@ export const Home = () => {
           "@type": "Radiostations",
           "name": translations.sitename,
           "description": translations.home_page_description,
-          "availableLanguage": [
-            {
-              "@type": "Language",
-              "name": "English"
-            },
-            {
-              "@type": "Language",
-              "name": "Russian",
-            }
-          ],
           "keywords": station_tags.join(","),
-          //logo: `/api/v1/files/stations/${station.id}/avatar`,
+          "logo": `/android-chrome-512x512.png`,
           "url": `${window.location.origin}?language=${language}`
         })}
       </script>
