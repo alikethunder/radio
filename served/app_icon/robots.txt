@@ -1,1 +1,4 @@
 user-agent: *
+Allow: /$
+Allow: /station/
+Disallow: /
