@@ -12,7 +12,7 @@
   <meta name='coverage' content='Worldwide'>
   <meta name='distribution' content='Global'>
   <meta name='target' content='all'>
-
+  
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -26,7 +26,7 @@
   <meta content="yes" name="apple-mobile-web-app-capable" />
 
   {{range .Languages}}
-  <meta property="og:locale:alternate" content={{.}} />
+    <meta property="og:locale:alternate" content={{.}} />
   {{end}}
 
   <meta property="og:site_name" content="{{$.sitename}}" />
@@ -36,8 +36,7 @@
 
   <meta name="description" content="{{.text_description}} {{.Tags}}: {{range .station.tags}}{{.}},{{end}}" />
   <meta property="og:description" content="{{.text_description}} {{.Tags}}: {{range .station.tags}}{{.}},{{end}}" />
-  <meta property="twitter:description"
-    content="{{.text_description}} {{.Tags}}: {{range .station.tags}}{{.}},{{end}}" />
+  <meta property="twitter:description" content="{{.text_description}} {{.Tags}}: {{range .station.tags}}{{.}},{{end}}" />
 
   <meta name="subject" content="{{.Description}} {{.Tags}}: {{range .station.tags}}{{.}},{{end}}" />
 
@@ -64,7 +63,6 @@
       "@type": "Radiostations",
       "name": "{{.sitename}}",
       "description": "{{.text_description}}",
-      "availableLanguage": [ { "@type": "Language", "name": "English" }, { "@type": "Language", "name": "Russian", } ],
       "keywords": "{{range .station.tags}}{{.}},{{end}}",
       "logo": {{.quoted_logo}},
       "url": {{.Full_url}}
@@ -78,17 +76,16 @@
   <p>
     {{.Tags}}:
     {{range .station.tags}}
-    <a href="{{$.Domain}}/?language={{$.Language}}&tags={{.}}">{{.}}</a>,
+      <a href="{{$.Domain}}/?language={{$.Language}}&tags={{.}}">{{.}}</a>,
     {{end}}
   </p>
   <p>
-  <p>
-    {{.links_to_page_on_other_languages}}:
-  </p>
-  {{range .Languages}}
-  <a rel="alternate" hreflang="{{.}}" href="{{$.Domain}}/station/{{$.station.id}}?language={{.}}">{{.}} -
-    {{$.station.name}}</a>,
-  {{end}}
+    <p>
+      {{.links_to_page_on_other_languages}}:
+    </p>
+    {{range .Languages}}
+      <a rel="alternate" hreflang="{{.}}" href="{{$.Domain}}/station/{{$.station.id}}?language={{.}}">{{.}} - {{$.station.name}}</a>,
+    {{end}}
   </p>
   <p>
     <a href="{{.Domain}}?language={{.Language}}">{{.Language}} - {{$.sitename}}</a>,
