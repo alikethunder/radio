@@ -230,8 +230,8 @@ func main() {
 	if os.Getenv("ENV") == "prod" {
 
 		go func() {
-			http.ListenAndServe(":80", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				fmt.Println(r.RequestURI)
+			http.ListenAndServe(":"+os.Getenv("PORT"), http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				fmt.Println(r.URL)
 				u := r.URL
 				u.Scheme = "https"
 				http.Redirect(w, r, u.String(), http.StatusMovedPermanently)
