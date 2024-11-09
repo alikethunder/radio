@@ -2,7 +2,6 @@ package SettingsEndpoints
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"time"
 	"web_project/constants"
@@ -10,6 +9,7 @@ import (
 	"web_project/db/StationTags"
 	"web_project/translations"
 
+	"github.com/getsentry/sentry-go"
 	"github.com/gocql/gocql"
 	"github.com/gofiber/fiber/v2"
 	"github.com/sabloger/sitemap-generator/smg"
@@ -71,7 +71,7 @@ func GenerateSitemap(ctx *fiber.Ctx) error {
 
 		filename, err := smi.Save()
 		if err != nil {
-			log.Fatal("Unable to Save Sitemap:", err)
+			sentry.CaptureMessage(fmt.Sprintf("Unable to Save Sitemap: %s", err))
 		}
 
 		// Pings the Search engines. default Google and Bing, But you can add any other ping URL's
@@ -88,5 +88,5 @@ func GenerateSitemap(ctx *fiber.Ctx) error {
 		}
 	}
 
-	return ctx.SendStatus(fiber.StatusNotFound)
+	return ctx.SendStatus(fiber.StatusForbidden)
 }
