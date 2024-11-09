@@ -234,6 +234,7 @@ func main() {
 				fmt.Println(r.URL)
 				u := r.URL
 				u.Scheme = "https"
+				fmt.Println("[main] r.URL, u.String : ", r.URL, u.String())
 				http.Redirect(w, r, u.String(), http.StatusMovedPermanently)
 			}))
 		}()
