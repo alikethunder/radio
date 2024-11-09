@@ -231,6 +231,7 @@ func main() {
 
 		go func() {
 			http.ListenAndServe(":"+os.Getenv("PORT"), http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				sentry.CaptureMessage(fmt.Sprintf("[main] r.URL, u.String : %s, %s", r.URL.String(), r.RequestURI))
 				u := r.URL
 				u.Scheme = "https"
 				sentry.CaptureMessage(fmt.Sprintf("[main] r.URL, u.String : %s, %s", r.URL.String(), u.String()))
