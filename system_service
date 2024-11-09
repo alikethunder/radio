@@ -1,4 +1,8 @@
-/*save as lib/systemd/system/radiobest.service*/
+/*
+save as lib/systemd/system/radiobest.service
+systemctl daemon-reload
+systemctl restart radiobest
+*/
 this will overwrite settings in .env
 
 [Unit]
@@ -10,6 +14,7 @@ Environment=PORT=80
 Environment=ENV=prod
 Restart=always
 ExecStart=/home/radio/build/main
+WorkingDirectory=/home/radio
 
 StandardOutput=null
 StandardError=syslog
