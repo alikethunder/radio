@@ -17,6 +17,10 @@ import (
 
 func Index(ctx *fiber.Ctx) error {
 
+	if strings.Contains(ctx.BaseURL(), "www.") {
+		return ctx.Redirect(strings.Replace(ctx.BaseURL(), "www.", "", 1) + ctx.OriginalURL())
+	}
+
 	language := ctx.Query("language")
 
 	if language == "" {
