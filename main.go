@@ -231,10 +231,9 @@ func main() {
 
 		go func() {
 			http.ListenAndServe(":"+os.Getenv("PORT"), http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				fmt.Println(r.URL)
 				u := r.URL
 				u.Scheme = "https"
-				fmt.Println("[main] r.URL, u.String : ", r.URL, u.String())
+				sentry.CaptureMessage(fmt.Sprintf("[main] r.URL, u.String : %s, %s", r.URL.String(), u.String()))
 				http.Redirect(w, r, u.String(), http.StatusMovedPermanently)
 			}))
 		}()
