@@ -15,9 +15,11 @@ require (
 
 require (
 	github.com/andybalholm/brotli v1.1.0 // indirect
+	github.com/beevik/etree v1.1.0 // indirect
 	github.com/caddyserver/certmagic v0.21.4 // indirect
 	github.com/caddyserver/zerossl v0.1.3 // indirect
 	github.com/fasthttp/websocket v1.5.8 // indirect
+	github.com/fatih/structs v1.1.0 // indirect
 	github.com/getsentry/sentry-go v0.29.1 // indirect
 	github.com/gofiber/template v1.8.3 // indirect
 	github.com/gofiber/utils v1.1.0 // indirect
@@ -25,6 +27,7 @@ require (
 	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/hailocab/go-hostpool v0.0.0-20160125115350-e80d13ce29ed // indirect
+	github.com/ikeikeikeike/go-sitemap-generator/v2 v2.0.2 // indirect
 	github.com/klauspost/compress v1.17.7 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.8 // indirect
 	github.com/libdns/libdns v0.2.2 // indirect

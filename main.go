@@ -125,7 +125,7 @@ func main() {
 
 	files_endpoints.Post("/:table/:row_id/:field", FilesEndpoints.Upload)
 
-	radio_endpoints := v1.Group("/radio")
+	radio_endpoints := v1.Group("/radio", etag.New())
 
 	/* fname := flag.String("filename", "audio.mp3", "path of the audio file")
 
