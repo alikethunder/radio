@@ -2,3 +2,5 @@ user-agent: *
 Allow: /$
 Allow: /station/
 Disallow: /
+sitemap: https://radio.best/sitemaps/sitemap.xml
+sitemap: https://radio.best/sitemaps/radiobest.xml

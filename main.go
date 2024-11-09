@@ -19,6 +19,7 @@ import (
 	FilesEndpoints "web_project/controllers/files"
 	ProfileEndpoints "web_project/controllers/profile"
 	RadioEndpoints "web_project/controllers/radio"
+	SettingsEndpoints "web_project/controllers/settings"
 	StationTagsEndpoints "web_project/controllers/tags"
 	TranslationEndpoints "web_project/controllers/translations"
 
@@ -159,7 +160,11 @@ func main() {
 
 	radio_endpoints.Get("/:id", RadioEndpoints.GetStation)
 
-	tags_endpoints := v1.Group("/tags")
+	settings_endpoints := v1.Group("/settings")
+
+	settings_endpoints.Get("/sitemap", SettingsEndpoints.GenerateSitemap)
+
+	tags_endpoints := v1.Group("/tags", etag.New())
 
 	tags_endpoints.Get("/", StationTagsEndpoints.ListTags)
 

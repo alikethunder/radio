@@ -42,6 +42,8 @@ export const RightSidebar: FC = () => {
 
   const signedin = useStore().auth.signedin()
 
+  const root_admin = useStore().user.admin()
+
   const language = useStore().translations.language()
 
   const languages = useStore().translations.languages()
@@ -51,6 +53,12 @@ export const RightSidebar: FC = () => {
   const click_logout = useDebounceCallback(() => {
     logout()
     actions.session.rightSidebarOpened(false)
+  }, 50)
+
+  const update_sitemap = useDebounceCallback(async () => {
+    const res = await fetch('/api/v1/settings/sitemap')
+
+    console.log('[update_sitemap] result : ', res)
   }, 50)
 
   return (
@@ -128,6 +136,19 @@ export const RightSidebar: FC = () => {
                 className="border-noround w-full h-full px-2 text-2xl shadow_on_hover action_text_font"
               />
             </QueryLink>
+            : <></>
+        }
+
+        {
+          root_admin ?
+            <Button
+              label={'Update sitemap'}
+              text
+              raised
+              icon={`${icon_classes} pi-sitemap`}
+              className="border-noround w-full h-full px-2 text-2xl shadow_on_hover action_text_font"
+              onClick={update_sitemap}
+            />
             : <></>
         }
 

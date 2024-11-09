@@ -1,5 +1,6 @@
 build
 served/public
+served/static/sitemaps
 .vscode
 
 # Logs
