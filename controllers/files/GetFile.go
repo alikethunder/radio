@@ -29,6 +29,10 @@ func GetFile(c *fiber.Ctx) error {
 		}
 	}
 
+	if table == "stations" && field == "avatar" {
+		return c.Redirect("/radio.png")
+	}
+
 	return c.SendStatus(fiber.StatusBadRequest)
 
 }

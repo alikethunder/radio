@@ -213,7 +213,7 @@ func main() {
 
 	// Configure app
 	app.Static("/", os.Getenv("TEMPL_PATH")+"/served/public")
-	app.Static("/", os.Getenv("TEMPL_PATH")+"/served/app_icon")
+	app.Static("/", os.Getenv("TEMPL_PATH")+"/served/static")
 
 	app.Get("*", controllers.Index)
 
