@@ -232,7 +232,9 @@ func main() {
 		go func() {
 			http.ListenAndServe(":80", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				fmt.Println(r.RequestURI)
-				http.Redirect(w, r, "https://IPAddr:443"+r.RequestURI, http.StatusMovedPermanently)
+				u := r.URL
+				u.Scheme = "https"
+				http.Redirect(w, r, u.String(), http.StatusMovedPermanently)
 			}))
 		}()
 
