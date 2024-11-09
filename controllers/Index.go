@@ -57,7 +57,7 @@ func Index(ctx *fiber.Ctx) error {
 
 		if ctx.Path() == "/" {
 
-			logo := template.JS(ctx.BaseURL() + "/android-chrome-512x512.png")
+			logo := template.JS(ctx.BaseURL() + "/android-chrome-192x192.png")
 
 			return ctx.Render("seo/home", fiber.Map{
 				"Description":                      template.HTML(translations.Dictionary[language]["home_page_description"]),
@@ -72,7 +72,7 @@ func Index(ctx *fiber.Ctx) error {
 				"Stations_list":                    stations_list,
 				"links_to_page_on_other_languages": translations.Dictionary[language]["links_to_page_on_other_languages"],
 				"sitename":                         translations.Dictionary[language]["sitename"],
-				"logo":                             template.JS(ctx.BaseURL() + "/android-chrome-512x512.png"),
+				"logo":                             logo,
 				"quoted_logo":                      template.JS("\"" + logo + "\""),
 			})
 		}
@@ -146,7 +146,7 @@ func Index(ctx *fiber.Ctx) error {
 		cookies.ClearAuthCookies(ctx)
 	}
 
-	logo := template.JS(ctx.BaseURL() + "/android-chrome-512x512.png")
+	logo := template.JS(ctx.BaseURL() + "/android-chrome-192x192.png")
 
 	return ctx.Render("public/index", fiber.Map{
 		"Description":                      translations.Dictionary[language]["home_page_description"],
