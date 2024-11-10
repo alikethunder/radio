@@ -14,3 +14,4 @@ Allow: /*.ttf
 Allow: /*.eot
 Disallow: /
 Sitemap: https://radio.best/sitemaps/sitemap.xml
+Sitemap: https://radio.best/sitemaps/radiobest.xml
