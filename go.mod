@@ -12,6 +12,7 @@ require (
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/joho/godotenv v1.5.1
 	github.com/monperrus/crawler-user-agents v0.0.0-20241023055648-e464fa7cb229
+	github.com/sabloger/sitemap-generator v1.3.0
 	golang.org/x/crypto v0.28.0
 )
 
@@ -30,7 +31,6 @@ require (
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.15 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
-	github.com/sabloger/sitemap-generator v1.3.0 // indirect
 	github.com/savsgio/gotils v0.0.0-20240303185622-093b76447511 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.52.0 // indirect
