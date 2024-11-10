@@ -2,5 +2,15 @@ user-agent: *
 Allow: /$
 Allow: /station/
 Allow: /sitemaps/
+Allow: /*.png
+Allow: /*.ico
+Allow: /*.css
+Allow: /*.js
+Allow: /*.svg
+Allow: /*.woff2
+Allow: /*.woff
+Allow: /*.js.map
+Allow: /*.ttf
+Allow: /*.eot
 Disallow: /
 Sitemap: https://radio.best/sitemaps/sitemap.xml
