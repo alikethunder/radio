@@ -1,5 +1,6 @@
 user-agent: *
 Allow: /$
+Allow: /?*
 Allow: /station/
 Allow: /sitemaps/
 Allow: /*.png

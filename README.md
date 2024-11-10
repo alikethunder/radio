@@ -56,3 +56,9 @@ Prerequisites
 
   //connect with ssh 
   ssh -p 56777 root@45.66.248.26
+
+
+Replace everything in sitemap except loc
+^(?!(<loc>.*</loc>)).*
+Every empty line 
+^$\n
