@@ -91,7 +91,7 @@ export const Signin: FC = () => {
   }, true)
 
   const onSubmit: SubmitHandler<SigninUser> = useDebounceCallback(async (form) => {
-    //console.log('form submit : ', form)
+    console.log('form submit : ', form)
 
     let res = await fetch('/api/v1/auth/signin', {
       method: 'POST',
@@ -112,6 +112,7 @@ export const Signin: FC = () => {
 
         actions.auth.signedin(true)
 
+        console.log('[Signin] navigate')
         navigate(store.session.prev_pathname())
         break;
 

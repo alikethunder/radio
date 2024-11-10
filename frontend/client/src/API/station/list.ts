@@ -8,7 +8,7 @@ export const list: (parameters?: {
 }) => Promise<Station[]> = async (parameters) => {
   const resp = await fetch(`/api/v1/radio/list?${objectToQuery(parameters ?? {})}`)
 
-  if (resp.status == 200) {
+  if ([200, 304].includes(resp.status)) {
     const json = await resp.json()
     return json ?? []
   }

@@ -37,6 +37,24 @@ import { useFavoriteStations } from "./hooks"
 
 type Loader_params = { params: { [param: string]: string; }, request: Request }
 
+const auth_loader = () => {
+  return {
+    loader: ({
+      params,
+      request,
+    }: Loader_params) => {
+      //console.log('[auth_loader] params, request : ', params, request,)
+      if (store.auth.signedin()) {
+        //console.log('[auth_loader] redirect')
+        return redirect(app_routes.root + new URL(request.url).search)
+      }
+      return null
+    }
+  }
+}
+
+let signedin = false
+
 export const routes = [
   {
     path: app_routes.root,
@@ -46,8 +64,7 @@ export const routes = [
       actions.app.current_page({})
       return null
     },
-    shouldRevalidate: (/* o */) => {
-      //console.log(o)
+    shouldRevalidate: () => {
       return false
     },
     children: [
@@ -55,10 +72,10 @@ export const routes = [
       {
         path: app_routes.root,
         loader: async ({ request }: Loader_params) => {
+          //console.log('Home loader')
 
           const stations = await stations_list()
           return stations
-          //return [...stations, ...stations, ...stations, ...stations]
         },
         element: <Home />,
         shouldRevalidate: () => false,
@@ -114,7 +131,7 @@ export const routes = [
             //new station
 
             const is_admin = store.user.admin()
-            console.log('[loader Station] root admin : ', is_admin)
+            //console.log('[loader Station] root admin : ', is_admin)
             if (!is_admin) {
               return redirect('/')
             }
@@ -175,19 +192,32 @@ export const routes = [
 
       {
         path: app_routes.signin,
-        element: <Signin />
+        ...auth_loader(),
+        element: <Signin />,
+        /* shouldRevalidate: (data) => {
+          console.log('[Signin] shouldRevalidate data : ', store.auth.signedin(), data)
+          if (signedin == store.auth.signedin()) {
+            return false
+          } else {
+            signedin = store.auth.signedin()
+            return true
+          }
+        }, */
       },
       {
         path: app_routes.signup,
-        element: <Signup />
+        ...auth_loader(),
+        element: <Signup />,
       },
       {
         path: app_routes.verification,
-        element: <Verification />
+        ...auth_loader(),
+        element: <Verification />,
       },
       {
         path: app_routes.reset_password,
-        element: <ResetPassword />
+        ...auth_loader(),
+        element: <ResetPassword />,
       }
     ],
   },

@@ -202,6 +202,8 @@ export const Station = () => {
 
       if (id == 'new') {
         const id = await resp.text()
+        console.log('[Station new] navigate')
+
         navigate(generatePath(app_routes["station$id"], { id }))
       }
 

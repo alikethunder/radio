@@ -138,6 +138,7 @@ export const useFormState = (form_actions: FormState, formState: { isValid: bool
       }, { replace: true })
 
       if (loader_data.id == 'new') {
+        console.log('[useFormState] -1  navigate')
         navigate(-1)
       }
     })

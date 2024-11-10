@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, } from "react"
 
 import {
   Outlet,
   useNavigate,
   useLocation,
-  useMatch,
   useSearchParams,
 } from "react-router-dom"
 
@@ -28,7 +27,6 @@ import {
   Toasts,
   Navbar,
   RightSidebar,
-  RestrictedPage,
   Player,
   StationSearchPanel,
 } from '@/components'
@@ -52,7 +50,6 @@ import {
 
 import {
   all_routes,
-  app_routes,
   auth_routes,
   route_attributes,
 } from '@/constants/router'
@@ -72,6 +69,8 @@ export default function App() {
 
   //useEffect(() => { console.log('location : ', location, location.key) }, [location])
 
+  //useLog(true, '[App] location : ', location)
+
   const signedin = useStore().auth.signedin()
 
   const [searchParams, set_search] = useSearchParams()
@@ -82,7 +81,7 @@ export default function App() {
       actions.session.redirect_from_google(false)
       //console.log('signedin : ', signedin)
       if (signedin) {
-        //console.log('signedin navigate: ', signedin)
+        console.log('signedin navigate: ', signedin, store.session.prev_pathname())
         navigate(store.session.prev_pathname(), { replace: true })
       }
     }
@@ -117,8 +116,6 @@ export default function App() {
   }, [])
 
   const windowSize = useWindowSize()
-
-  const [checked_signin, set_checked_signin] = useState(false)
 
   /* useEffect(() => {
     //code for reloading on code change during development
@@ -183,9 +180,6 @@ export default function App() {
       console.log(e)
       onLogout()
     }
-
-    set_checked_signin(true)
-
   }, [])
 
   useEffect(() => {
@@ -283,17 +277,7 @@ export default function App() {
 
       <RightSidebar />
 
-      {
-        checked_signin ?
-          <>
-            <RestrictedPage>
-
-              <Outlet />
-
-            </RestrictedPage>
-          </>
-          : <></>
-      }
+      <Outlet />
 
       <Player />
 

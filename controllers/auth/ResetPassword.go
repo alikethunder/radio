@@ -1,6 +1,8 @@
 package AuthEndpoints
 
 import (
+	"fmt"
+
 	"github.com/goccy/go-json"
 
 	"web_project/db"
@@ -18,9 +20,11 @@ func ResetPassword(c *fiber.Ctx) error {
 
 	json.Unmarshal(c.Body(), &u)
 
-	//fmt.Println("ResetPassword user : ", u)
+	fmt.Println("[ResetPassword] user : ", u)
 
 	user, _ := db.SelectRow("users", fiber.Map{"email": u["email"]}, "id", "name")
+
+	fmt.Println("[ResetPassword] user : ", user)
 
 	if user != nil {
 		vc := functions.Vc()

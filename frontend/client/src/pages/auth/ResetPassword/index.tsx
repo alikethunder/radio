@@ -102,6 +102,7 @@ export const ResetPassword: FC = () => {
           life: 10000
         })
 
+        console.log('[ResetPassword] navigate')
         navigate(app_routes.verification)
         break;
 

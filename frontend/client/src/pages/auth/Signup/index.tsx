@@ -108,6 +108,7 @@ export const Signup: FC = () => {
         closable: true,
         life: 10000
       })
+      console.log('[Signup] success  navigate')
 
       navigate(app_routes.verification)
       return

@@ -43,6 +43,7 @@ export const StationTag: FC<Props> = ({ tag, color, onClick, disable_link }) => 
       actions.persistedApp.add_tag_to_search(tag)
 
       if (pathname != app_routes.root) {
+        console.log('[StationTag]   navigate')
         navigate(app_routes.root)
       }
 

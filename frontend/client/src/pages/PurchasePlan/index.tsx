@@ -152,6 +152,7 @@ export const PurchasePlan = () => {
                         text
                         raised
                         onClick={() => {
+                          console.log('[PurchasePlan] navigate')
                           store.auth.signedin() ? becomeSeller() : navigate(app_routes.signin)
                         }}
                         className={`border-noround mt-2 align-self-stretch ${i == 0 ? 'bg-secondary text-white' : 'bg-primary'}`}

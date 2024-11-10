@@ -118,6 +118,8 @@ export const Verification: FC = () => {
 
       actions.auth.signedin(true)
 
+      console.log('[Verification] success submit navigate')
+
       navigate(store.session.prev_pathname())
 
       return
@@ -155,6 +157,7 @@ export const Verification: FC = () => {
           closable: true,
           life: 10000
         })
+        console.log('[Verification] success resendVC navigate')
 
         navigate(app_routes.verification)
         break;
@@ -176,6 +179,7 @@ export const Verification: FC = () => {
 
   useEffect(() => {
     if (!store.user.email()) {
+      console.log('[Verification] no email navigate')
       navigate(app_routes.signin, { replace: true })
     }
   }, [])
