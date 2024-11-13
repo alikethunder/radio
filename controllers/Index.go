@@ -60,7 +60,9 @@ func Index(ctx *fiber.Ctx) error {
 			logo := template.JS(ctx.BaseURL() + "/android-chrome-192x192.png")
 
 			return ctx.Render("seo/home", fiber.Map{
-				"Description":                      template.HTML(translations.Dictionary[language]["home_page_description"]),
+				"Description":                      translations.Dictionary[language]["home_page_description"],
+				"content":                          template.HTML(translations.Dictionary[language]["home_page_content"]),
+				"keywords":                         translations.Dictionary[language]["home_page_keywords"],
 				"Tags":                             translations.Dictionary[language]["tags"],
 				"Tags_list":                        tags,
 				"Language":                         language,
@@ -150,6 +152,7 @@ func Index(ctx *fiber.Ctx) error {
 
 	return ctx.Render("public/index", fiber.Map{
 		"Description":                      translations.Dictionary[language]["home_page_description"],
+		"keywords":                         translations.Dictionary[language]["home_page_keywords"],
 		"Tags":                             translations.Dictionary[language]["tags"],
 		"Tags_list":                        tags,
 		"Language":                         language,

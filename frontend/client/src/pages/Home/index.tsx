@@ -148,10 +148,6 @@ export const Home = () => {
         <meta property="og:title" content={translations.sitename} />
         <meta name="twitter:title" content={translations.sitename} />
 
-        <meta name="description" content={`${translations.home_page_description} ${translations.tags}: ${station_tags.join(',')}`} />
-        <meta property="og:description" content={`${translations.home_page_description} ${translations.tags}: ${station_tags.join(',')}`} />
-        <meta property="twitter:description" content={`${translations.home_page_description} ${translations.tags}: ${station_tags.join(',')}`} />
-
         <link rel="canonical" href={`${window.location.origin}?language=${language}`} />
 
         <meta property="og:url" content={`${window.location.origin}?language=${language}`} />
@@ -167,19 +163,6 @@ export const Home = () => {
         <meta property="twitter:domain" content={window.location.origin} />
 
       </Helmet>
-
-      <script type="application/ld+json">
-        {JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Radiostations",
-          "name": translations.sitename,
-          "description": translations.home_page_description,
-          "keywords": station_tags.join(","),
-          "logo": `/android-chrome-512x512.png`,
-          "url": `${window.location.origin}?language=${language}`
-        })}
-      </script>
-
 
       <div className="sm:py-5 py-3 sm:px-6 px-2 w-full h-full overflow-y-auto page home_page flex-grow-1 flex flex-column">
 

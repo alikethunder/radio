@@ -12,17 +12,17 @@
   <meta name='distribution' content='Global'>
   <meta name='target' content='all'>
 
-  <meta name="description" content="{{.Description}} {{.Tags}}: {{range .Tags_list}}{{.}},{{end}}" />
-  <meta property="og:description" content="{{.Description}} {{.Tags}}: {{range .Tags_list}}{{.}},{{end}}" />
-  <meta property="twitter:description" content="{{.Description}} {{.Tags}}: {{range .Tags_list}}{{.}},{{end}}" />
+  <meta name="description" content="{{.Description}}" />
+  <meta property="og:description" content="{{.Description}}" />
+  <meta property="twitter:description" content="{{.Description}}" />
 
-  <meta name="subject" content="{{.Description}} {{.Tags}}: {{range .Tags_list}}{{.}},{{end}}" />
+  <meta name="subject" content="{{.Description}}" />
 
   <meta name='copyright' content='radio.best'>
 
   <meta name='robots' content='index,follow'>
 
-  <meta name='keywords' content="{{.sitename}},{{range .Tags_list}}{{.}},{{end}}">
+  <meta name='keywords' content="{{.keywords}}">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -63,7 +63,7 @@
       "@type": "RadioBroadcastService",
       "name": "{{.sitename}}",
       "description": "{{.Description}}",
-      "keywords": "{{range .Tags_list}}{{.}},{{end}}",
+      "keywords": "{{.keywords}}",
       "logo": {{.quoted_logo}},
       "url": {{.Full_url}}
     }

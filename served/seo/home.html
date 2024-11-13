@@ -35,17 +35,17 @@
   <meta property="og:title" content="{{.sitename}}" />
   <meta name="twitter:title" content="{{.sitename}}" />
 
-  <meta name="description" content="{{.Description}} {{.Tags}}: {{range .Tags_list}}{{.}},{{end}}" />
-  <meta property="og:description" content="{{.Description}} {{.Tags}}: {{range .Tags_list}}{{.}},{{end}}" />
-  <meta property="twitter:description" content="{{.Description}} {{.Tags}}: {{range .Tags_list}}{{.}},{{end}}" />
+  <meta name="description" content="{{.Description}}" />
+  <meta property="og:description" content="{{.Description}}" />
+  <meta property="twitter:description" content="{{.Description}}" />
 
-  <meta name="subject" content="{{.Description}} {{.Tags}}: {{range .Tags_list}}{{.}},{{end}}" />
+  <meta name="subject" content="{{.Description}}" />
 
   <meta name='copyright' content='radio.best'>
 
   <meta name='robots' content='index,follow'>
 
-  <meta name='keywords' content="{{.sitename}},{{range .Tags_list}}{{.}},{{end}}">
+  <meta name='keywords' content="{{.keywords}}">
 
   <meta property="og:image" content={{.logo}} />
   <meta property="twitter:image" content={{.logo}} />
@@ -66,7 +66,7 @@
       "@type": "RadioBroadcastService",
       "name": "{{.sitename}}",
       "description": "{{.Description}}",
-      "keywords": "{{range .Tags_list}}{{.}},{{end}}",
+      "keywords": "{{.keywords}}",
       "logo": {{.quoted_logo}},
       "url": {{.Full_url}}
     }
@@ -75,7 +75,7 @@
 
 <body style="font-size: 18px;">
   <p>
-    {{.Description}}
+    {{.content}}
   </p>
   <p>
     {{.Tags}}:
