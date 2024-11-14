@@ -15,7 +15,7 @@ Technologies:
 Prerequisites 
 
   - install go (1.22.5)
-  - install air
+  - install air: https://github.com/air-verse/air
   - install scylladb
   - npm install in frontend/client
 
