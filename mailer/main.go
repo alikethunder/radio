@@ -25,36 +25,49 @@ var prod_Configuration = map[string]string{
 	"login":       "noreply@radio.best",
 }
 
-var Auth smtp.Auth
-var Tlsconfig *tls.Config
 var C *smtp.Client
 var Configuration map[string]string
 
 func Initialize() {
 	var err error
 
-	if true || os.Getenv("ENV") == "prod" {
+	prod := true || os.Getenv("ENV") == "prod"
+
+	if prod {
 		Configuration = prod_Configuration
 	} else {
 		Configuration = gmail_Configuration
 	}
 
-	Auth = smtp.PlainAuth("", Configuration["login"], Configuration["password"], Configuration["smtpHost"])
+	auth := smtp.PlainAuth("", Configuration["login"], Configuration["password"], Configuration["smtpHost"])
 
-	Tlsconfig = &tls.Config{
+	tlsconfig := &tls.Config{
 		InsecureSkipVerify: true,
 		ServerName:         Configuration["smtpHost"],
 	}
 
-	C, err = smtp.Dial(Configuration["smtpHost"] + ":" + Configuration["smtpPort"])
-	if err != nil {
-		fmt.Println("[mailer initialize] Dial error : ", err)
-		//log.Panic(err)
+	if prod {
+		conn, err := tls.Dial("tcp", Configuration["smtpHost"]+":"+Configuration["smtpPort"], tlsconfig)
+		if err != nil {
+			fmt.Println("[mailer initialize] tls Dial error : ", err)
+		}
+
+		C, err = smtp.NewClient(conn, Configuration["smtpHost"])
+		if err != nil {
+			fmt.Println("[mailer initialize] smtp.NewClient error : ", err)
+		}
+
+	} else {
+		C, err = smtp.Dial(Configuration["smtpHost"] + ":" + Configuration["smtpPort"])
+		if err != nil {
+			fmt.Println("[mailer initialize] smtp Dial error : ", err)
+			//log.Panic(err)
+		}
+
+		C.StartTLS(tlsconfig)
 	}
 
-	C.StartTLS(Tlsconfig)
-
-	if err = C.Auth(Auth); err != nil {
+	if err = C.Auth(auth); err != nil {
 		fmt.Println("[mailer initialize] Auth error : ", err)
 		//log.Panic(err)
 	}
