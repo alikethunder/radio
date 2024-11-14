@@ -2,6 +2,7 @@ build
 served/public
 served/static/sitemaps
 .vscode
+certs
 
 # Logs
 logs
