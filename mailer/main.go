@@ -20,7 +20,7 @@ var prod_Configuration = map[string]string{
 	"from":        "noreply@radio.best",
 	"smtpPort":    "465",
 	"smtpHost":    "smtp.titan.email",
-	"password":    "Revelation:2221", // google app password
+	"password":    "Revelation:2221", // Titan password
 	"mimeHeaders": "MIME-version: 1.0;\nContent-Type: text/html; charset=\"UTF-8\";\n\n",
 	"login":       "noreply@radio.best",
 }
@@ -33,7 +33,7 @@ var Configuration map[string]string
 func Initialize() {
 	var err error
 
-	if os.Getenv("ENV") == "prod" {
+	if true || os.Getenv("ENV") == "prod" {
 		Configuration = prod_Configuration
 	} else {
 		Configuration = gmail_Configuration
