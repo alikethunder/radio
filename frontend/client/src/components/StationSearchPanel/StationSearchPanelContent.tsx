@@ -175,13 +175,11 @@ export const StationSearchPanelContent: FC = () => {
                 'w-11',
                 'shadow-5',
                 'surface-hover',
-                'overflow-y-auto',
-                'max-h-25rem',
               )
             },
             content: {
               className: classNames({},
-                "flex flex-wrap gap-2 p-2",
+                "flex flex-wrap gap-2 p-2 overflow-y-auto max-h-22rem",
               )
             }
           }}
