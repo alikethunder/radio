@@ -21,7 +21,7 @@ var prod_Configuration = map[string]string{
 	"smtpPort":    "465",
 	"smtpHost":    "smtp.titan.email",
 	"password":    "Revelation:2221", // Titan password
-	"mimeHeaders": "MIME-version: 1.0;\nContent-Type: text/html; charset=\"UTF-8\";\n\n",
+	"mimeHeaders": "Content-Type: text/html; charset='UTF-8'; Content-Transfer-Encoding: base64; MIME-Version: 1.0",
 	"login":       "noreply@radio.best",
 }
 

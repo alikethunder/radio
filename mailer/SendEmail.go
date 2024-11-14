@@ -15,7 +15,13 @@ func SendEmail(templateAddress string, data interface{}, to []string, subject st
 	t, _ := template.ParseFiles(templateAddress)
 	//fmt.Println("[SendEmail] template : ", t)
 
-	body.Write([]byte(fmt.Sprintf(subject, Configuration["mimeHeaders"])))
+	body.Write([]byte(fmt.Sprintf("%s: %s\r\n", "From", Configuration["from"])))
+
+	body.Write([]byte(fmt.Sprintf("%s: %s\r\n", "Subject", subject)))
+
+	//body.Write([]byte("\r\n"))
+
+	body.Write([]byte(Configuration["mimeHeaders"]))
 
 	t.Execute(&body, data)
 
