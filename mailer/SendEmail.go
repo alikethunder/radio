@@ -15,13 +15,13 @@ func SendEmail(templateAddress string, data interface{}, to []string, subject st
 	t, _ := template.ParseFiles(templateAddress)
 	//fmt.Println("[SendEmail] template : ", t)
 
-	body.Write([]byte(fmt.Sprintf(subject, mimeHeaders)))
+	body.Write([]byte(fmt.Sprintf(subject, Configuration["mimeHeaders"])))
 
 	t.Execute(&body, data)
 
 	for _, addr := range to {
 
-		if err := C.Mail(from); err != nil {
+		if err := C.Mail(Configuration["from"]); err != nil {
 			fmt.Println("[SendEmail] Mail error : ", err)
 			log.Panic(err)
 		}
