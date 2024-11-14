@@ -173,13 +173,17 @@ export const StationSearchPanelContent: FC = () => {
               },
                 'max-w-25rem',
                 'w-11',
-                'shadow-5',
+                //'blank-shadow-5',
                 'surface-hover',
-              )
+                'text-primary',
+              ),
+              style: {
+                'box-shadow': '0px 0px 22px 10px',
+              }
             },
             content: {
               className: classNames({},
-                "flex flex-wrap gap-2 p-2 overflow-y-auto max-h-22rem",
+                "flex flex-wrap gap-3 p-3 overflow-y-auto max-h-17rem",
               )
             }
           }}
