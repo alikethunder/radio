@@ -175,6 +175,8 @@ export const StationSearchPanelContent: FC = () => {
                 'w-11',
                 'shadow-5',
                 'surface-hover',
+                'overflow-y-auto',
+                'max-h-25rem',
               )
             },
             content: {
