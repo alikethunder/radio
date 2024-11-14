@@ -168,7 +168,7 @@ export const Home = () => {
 
         {
           searched_stations_with_mode?.length ?
-            <div className={`stations_list row-gap-2 column-gap-3 mb-4 ${edit_mode ? 'row-gap-7' : ''}`}>
+            <div className={`stations_list row-gap-3 column-gap-3 mb-7`}>
 
               {
                 edit_mode && root_admin ?
@@ -205,7 +205,7 @@ export const Home = () => {
             </div>
         }
 
-        <div className="shadow-2 p-3 w-12 mt-auto border-round flex flex-column ">
+        <div className="shadow-2 p-3 w-12 mt-auto border-round flex flex-column bg-white ">
           <div className="inline-block text-center">
             {translations_skl.home_page_description}
           </div>

@@ -61,6 +61,7 @@ export const StationCard: FC<Props> = ({ station, }) => {
         'w-9rem',
         'h-13rem',
         'flex-shrink-0 shadow-2 border-round',
+        'bg-white',
       )}>
 
         <div className="flex flex-row gap-1">
