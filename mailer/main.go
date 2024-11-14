@@ -57,6 +57,8 @@ func Initialize() {
 			fmt.Println("[mailer initialize] smtp.NewClient error : ", err)
 		}
 
+		fmt.Println("[mailer initialize] business email initialized")
+
 	} else {
 		C, err = smtp.Dial(Configuration["smtpHost"] + ":" + Configuration["smtpPort"])
 		if err != nil {
