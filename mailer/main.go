@@ -3,30 +3,30 @@ package mailer
 import (
 	"crypto/tls"
 	"fmt"
+	"net/mail"
 	"net/smtp"
 	"os"
 )
 
-var gmail_Configuration = map[string]string{
-	"from":        "test@example.com",
-	"smtpPort":    "587",
-	"smtpHost":    "smtp.gmail.com",
-	"password":    "bmyx gbwy chub subo", // google app password
-	"mimeHeaders": "MIME-version: 1.0;\nContent-Type: text/html; charset=\"UTF-8\";\n\n",
-	"login":       "aleksandr.popugaiev@gmail.com",
+var gmail_Configuration = map[string]interface{}{
+	"from":     "test@example.com",
+	"smtpPort": "587",
+	"smtpHost": "smtp.gmail.com",
+	"password": "bmyx gbwy chub subo", // google app password
+	"login":    "aleksandr.popugaiev@gmail.com",
 }
 
-var prod_Configuration = map[string]string{
-	"from":        "noreply@radio.best",
+var prod_Configuration = map[string]interface{}{
+	"from":        mail.Address{"", "noreply@radio.best"},
 	"smtpPort":    "465",
 	"smtpHost":    "smtp.titan.email",
 	"password":    "Revelation:2221", // Titan password
-	"mimeHeaders": "Content-Type: text/html; charset='UTF-8'; Content-Transfer-Encoding: base64; MIME-Version: 1.0",
+	"mimeHeaders": "Content-Transfer-Encoding: base64",
 	"login":       "noreply@radio.best",
 }
 
 var C *smtp.Client
-var Configuration map[string]string
+var Configuration map[string]interface{}
 
 func Initialize() {
 	var err error
@@ -39,20 +39,20 @@ func Initialize() {
 		Configuration = gmail_Configuration
 	}
 
-	auth := smtp.PlainAuth("", Configuration["login"], Configuration["password"], Configuration["smtpHost"])
+	auth := smtp.PlainAuth("", Configuration["login"].(string), Configuration["password"].(string), Configuration["smtpHost"].(string))
 
 	tlsconfig := &tls.Config{
 		InsecureSkipVerify: true,
-		ServerName:         Configuration["smtpHost"],
+		ServerName:         Configuration["smtpHost"].(string),
 	}
 
 	if prod {
-		conn, err := tls.Dial("tcp", Configuration["smtpHost"]+":"+Configuration["smtpPort"], tlsconfig)
+		conn, err := tls.Dial("tcp", Configuration["smtpHost"].(string)+":"+Configuration["smtpPort"].(string), tlsconfig)
 		if err != nil {
 			fmt.Println("[mailer initialize] tls Dial error : ", err)
 		}
 
-		C, err = smtp.NewClient(conn, Configuration["smtpHost"])
+		C, err = smtp.NewClient(conn, Configuration["smtpHost"].(string))
 		if err != nil {
 			fmt.Println("[mailer initialize] smtp.NewClient error : ", err)
 		}
@@ -60,7 +60,7 @@ func Initialize() {
 		fmt.Println("[mailer initialize] business email initialized")
 
 	} else {
-		C, err = smtp.Dial(Configuration["smtpHost"] + ":" + Configuration["smtpPort"])
+		C, err = smtp.Dial(Configuration["smtpHost"].(string) + ":" + Configuration["smtpPort"].(string))
 		if err != nil {
 			fmt.Println("[mailer initialize] smtp Dial error : ", err)
 			//log.Panic(err)

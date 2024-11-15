@@ -9,7 +9,7 @@ import (
 func SendVc(vc string, to string, name string) {
 	//send verification code (vc) to user (name) email (to)
 
-	subject := "Subject: Verification code \n%s\n\n"
+	subject := "Verification code"
 
 	if err := SendEmail("emails/VerificationCode.html", fiber.Map{
 		"Name":             name,

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html/template"
 	"log"
+	"net/mail"
 	//"net/smtp"
 )
 
@@ -13,26 +14,33 @@ func SendEmail(templateAddress string, data interface{}, to []string, subject st
 	var body bytes.Buffer
 
 	t, _ := template.ParseFiles(templateAddress)
-	//fmt.Println("[SendEmail] template : ", t)
 
-	body.Write([]byte(fmt.Sprintf("%s: %s\r\n", "From", Configuration["from"])))
-
-	body.Write([]byte(fmt.Sprintf("%s: %s\r\n", "Subject", subject)))
-
-	//body.Write([]byte("\r\n"))
-
-	body.Write([]byte(Configuration["mimeHeaders"]))
-
-	t.Execute(&body, data)
+	body.Write([]byte(fmt.Sprintf("%s: %s\r\n", "From", Configuration["from"].(mail.Address).Address)))
 
 	for _, addr := range to {
 
-		if err := C.Mail(Configuration["from"]); err != nil {
+		address := mail.Address{"", addr}
+
+		body.Write([]byte(fmt.Sprintf("%s: %s\r\n", "To", address.Address)))
+
+		body.Write([]byte(fmt.Sprintf("%s: %s\r\n", "Subject", subject)))
+
+		body.Write([]byte(fmt.Sprintf("%s: %s\r\n", "MIME-Version", "1.0")))
+
+		body.Write([]byte(fmt.Sprintf("%s: %s\r\n", "Content-Type", "text/html; charset=UTF-8")))
+
+		body.Write([]byte("\r\n"))
+
+		//body.Write([]byte(Configuration["mimeHeaders"].(string)))
+
+		t.Execute(&body, data)
+		fmt.Println("[email body ] : ", body.String())
+		if err := C.Mail(Configuration["from"].(mail.Address).Address); err != nil {
 			fmt.Println("[SendEmail] Mail error : ", err)
 			log.Panic(err)
 		}
 
-		if err := C.Rcpt(addr); err != nil {
+		if err := C.Rcpt(address.Address); err != nil {
 			fmt.Println("[SendEmail] rcpt error : ", err)
 			log.Panic(err)
 		}
