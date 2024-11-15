@@ -3,15 +3,14 @@
 <html>
 
 <body>
-    <h3>Hello, {{.Name}} !</h3>
-    <br />
-    <h3>Your requested to update your email address at ${Site name}</h3>
+    <h3>{{.hello}}, {{.Name}} !</h3>
+    <h3>{{.you_requested_to_update_your_email_address_at}} <a href="https://radio.best">Radio Best</a></h3>
 
-    <span>To update your email from {{.OldEmal}} to {{.NewEmail}} please follow <a href="{{.domain}}/api/v1/profile/update-email/{{.UpdateHash}}">the link</a></span>
+    <span>{{.to_update_your_email_from}} {{.OldEmal}} {{.to}} {{.NewEmail}} {{.please_follow}} <a href="{{.domain}}/api/v1/profile/update-email/{{.UpdateHash}}">{{.link_to}}</a></span>
     <br>
     <br>
 
-    <span>If this wasn't you, to prevent it please follow <a href="{{.domain}}/api/v1/profile/update-email/{{.DenyHash}}">the link</a></span>
+    <span>{{.if_this_wasnt_you_to_prevent_it}} {{.please_follow}} <a href="{{.domain}}/api/v1/profile/update-email/{{.DenyHash}}">{{.link_to}}</a></span>
 </body>
 
 </html>

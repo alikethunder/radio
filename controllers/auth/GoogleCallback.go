@@ -1,13 +1,13 @@
 package AuthEndpoints
 
 import (
-	"errors"
 	"fmt"
 	"os"
 	"strings"
 	"web_project/cookies"
 	Users "web_project/db/Users"
 
+	"github.com/getsentry/sentry-go"
 	"github.com/goccy/go-json"
 	"github.com/gocql/gocql"
 	"github.com/gofiber/fiber/v2"
@@ -28,33 +28,33 @@ func GoogleCallback(c *fiber.Ctx) error {
 	cookie_g_csrf_token := c.Cookies("g_csrf_token")
 
 	if cookie_g_csrf_token == "" {
-		panic(errors.New("no g_csrf_token cookie"))
+		sentry.CaptureMessage("no g_csrf_token cookie")
 	}
 
 	if c.FormValue("g_csrf_token") == "" {
-		panic(errors.New("no g_csrf_token in body"))
+		sentry.CaptureMessage("no g_csrf_token in body")
 	}
 
 	if c.FormValue("g_csrf_token") != cookie_g_csrf_token {
-		panic(errors.New("not equal csrf from body and cookie"))
+		sentry.CaptureMessage("not equal csrf from body and cookie")
 	}
 
 	token, _, err := new(jwt.Parser).ParseUnverified(c.FormValue("credential"), jwt.MapClaims{})
 
 	if err != nil {
-		panic(err)
+		sentry.CaptureException(err)
 	}
 
 	if credential, ok := token.Claims.(jwt.MapClaims); ok {
 		//fmt.Println("credential ", credential)
 
 		if !strings.Contains(credential["iss"].(string), "accounts.google.com") {
-			panic(errors.New("iss not accounts.google.com"))
+			sentry.CaptureMessage("iss not accounts.google.com")
 		}
 
 		oauth_json_content, err := os.ReadFile(os.Getenv("TEMPL_PATH") + "/settings/google_oauth_" + os.Getenv("ENV") + ".json")
 		if err != nil {
-			panic(err)
+			sentry.CaptureException(err)
 		}
 
 		var google_oauth fiber.Map
@@ -62,11 +62,11 @@ func GoogleCallback(c *fiber.Ctx) error {
 		err = json.Unmarshal(oauth_json_content, &google_oauth)
 
 		if err != nil {
-			panic(err)
+			sentry.CaptureException(err)
 		}
 
 		if credential["aud"] != google_oauth["web"].(map[string]interface{})["client_id"] {
-			panic("wrong client_id")
+			sentry.CaptureMessage("wrong client_id")
 		}
 
 		agent := fiber.Get("https://www.googleapis.com/oauth2/v3/certs")
@@ -75,7 +75,7 @@ func GoogleCallback(c *fiber.Ctx) error {
 
 		if len(errs) > 0 {
 			fmt.Println("googleapis errors : ", body, errs)
-			panic("googleapis errors")
+			sentry.CaptureMessage("googleapis errors")
 		}
 
 		var google_headers fiber.Map
@@ -83,7 +83,7 @@ func GoogleCallback(c *fiber.Ctx) error {
 		err = json.Unmarshal(body, &google_headers)
 
 		if err != nil {
-			panic(err)
+			sentry.CaptureException(err)
 		}
 		//fmt.Println("google_headers : ", google_headers)
 
@@ -96,7 +96,7 @@ func GoogleCallback(c *fiber.Ctx) error {
 		}
 
 		if !id_tokens_equal {
-			panic(errors.New("id tokens not equal"))
+			sentry.CaptureMessage("id tokens not equal")
 		}
 
 		user, err := Users.Create(fiber.Map{
@@ -107,7 +107,7 @@ func GoogleCallback(c *fiber.Ctx) error {
 		})
 
 		if err != nil {
-			panic(err)
+			sentry.CaptureException(err)
 		}
 
 		_, rememberme := state["rememberme"]

@@ -14,18 +14,20 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func RequestUpdateEmail(c *fiber.Ctx) error {
+func RequestUpdateEmail(ctx *fiber.Ctx) error {
 
-	authCookie := c.Cookies(cookies.AuthCookieName)
+	authCookie := ctx.Cookies(cookies.AuthCookieName)
 
 	if authCookie != "" {
 
+		language := ctx.Query("language")
+
 		var req_json fiber.Map
 
-		json.Unmarshal(c.Body(), &req_json)
+		json.Unmarshal(ctx.Body(), &req_json)
 
 		//get the auth cookie info
-		cookie_user := cookies.ParseCookie(c.Cookies(cookies.AuthCookieName))
+		cookie_user := cookies.ParseCookie(ctx.Cookies(cookies.AuthCookieName))
 
 		stored_user, err := db.SelectRow("users", fiber.Map{"email": cookie_user["email"], "id": cookie_user["id"]}, "name")
 
@@ -34,7 +36,7 @@ func RequestUpdateEmail(c *fiber.Ctx) error {
 		if err != nil && err.Error() == "not found" {
 
 			// user not exist
-			return c.SendStatus(fiber.StatusNotFound)
+			return ctx.SendStatus(fiber.StatusNotFound)
 
 		} else {
 
@@ -54,7 +56,7 @@ func RequestUpdateEmail(c *fiber.Ctx) error {
 			); err != nil {
 
 				fmt.Println("[ProfileEndpoints.RequestUpdateEmail] update user err : ", err)
-				return c.SendStatus(fiber.StatusForbidden)
+				return ctx.SendStatus(fiber.StatusForbidden)
 			}
 
 			//create a change link as signed cookie
@@ -84,13 +86,13 @@ func RequestUpdateEmail(c *fiber.Ctx) error {
 				"Name":       stored_user["name"],
 				"OldEmal":    cookie_user["email"],
 				"domain":     domain,
-			})
+			}, language)
 
-			return c.SendStatus(fiber.StatusAccepted)
+			return ctx.SendStatus(fiber.StatusAccepted)
 
 		}
 	}
 
-	cookies.ClearAuthCookies(c)
-	return c.SendStatus(fiber.StatusUnauthorized)
+	cookies.ClearAuthCookies(ctx)
+	return ctx.SendStatus(fiber.StatusUnauthorized)
 }

@@ -4,8 +4,9 @@ import (
 	"bytes"
 	"fmt"
 	"html/template"
-	"log"
 	"net/mail"
+
+	"github.com/getsentry/sentry-go"
 	//"net/smtp"
 )
 
@@ -37,31 +38,31 @@ func SendEmail(templateAddress string, data interface{}, to []string, subject st
 		fmt.Println("[email body ] : ", body.String())
 		if err := C.Mail(Configuration["from"].(mail.Address).Address); err != nil {
 			fmt.Println("[SendEmail] Mail error : ", err)
-			log.Panic(err)
+			sentry.CaptureException(err)
 		}
 
 		if err := C.Rcpt(address.Address); err != nil {
 			fmt.Println("[SendEmail] rcpt error : ", err)
-			log.Panic(err)
+			sentry.CaptureException(err)
 		}
 
 		// Data
 		w, err := C.Data()
 		if err != nil {
 			fmt.Println("[SendEmail] data error : ", err)
-			log.Panic(err)
+			sentry.CaptureException(err)
 		}
 
 		_, err = w.Write(body.Bytes())
 		if err != nil {
 			fmt.Println("[SendEmail] write error : ", err)
-			log.Panic(err)
+			sentry.CaptureException(err)
 		}
 
 		err = w.Close()
 		if err != nil {
 			fmt.Println("[SendEmail] write close error : ", err)
-			log.Panic(err)
+			sentry.CaptureException(err)
 		}
 
 		//c.Quit()

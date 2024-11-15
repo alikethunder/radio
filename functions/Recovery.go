@@ -3,11 +3,13 @@ package functions
 import (
 	"fmt"
 	"runtime/debug"
+
+	"github.com/getsentry/sentry-go"
 )
 
 func Recovery() {
 	if r := recover(); r != nil {
-		fmt.Println("panic error : ", r)
-		fmt.Println("stacktrace from panic: \n" + string(debug.Stack()))
+		sentry.CaptureException(fmt.Errorf("[Recovery] panic error :  %v", r))
+		sentry.CaptureMessage("stacktrace from panic: \n" + string(debug.Stack()))
 	}
 }

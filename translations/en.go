@@ -79,4 +79,10 @@ var En = map[string]string{
 	"no_stations_with_parameters":         "There are no radio stations with these search parameters",
 	"hello":                               "Hello",
 	"here_is_your_verification_code_for":  "Here is your verification code for",
+	"email_update":                        "Email update",
+	"you_requested_to_update_your_email_address_at": "You requested to update your email address at",
+	"to_update_your_email_from":                     "To update your email from",
+	"please_follow":                                 "please follow",
+	"link_to":                                       "the link",
+	"if_this_wasnt_you_to_prevent_it":               "If this wasn't you, to prevent it",
 }

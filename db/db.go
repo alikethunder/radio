@@ -3,6 +3,7 @@ package db
 import (
 	"fmt"
 
+	"github.com/getsentry/sentry-go"
 	"github.com/gocql/gocql"
 )
 
@@ -17,7 +18,7 @@ func init() {
 
 	Session, err = cluster.CreateSession()
 	if err != nil {
-		panic(err)
+		sentry.CaptureException(err)
 	}
 
 	Session.Query("CREATE KEYSPACE IF NOT EXISTS app WITH replication = { 'class' : 'SimpleStrategy', 'replication_factor': 1}").Exec()

@@ -79,4 +79,10 @@ var Ru = map[string]string{
 	"no_stations_with_parameters":         "Нет радиостанций с такими параметрами поиска",
 	"hello":                               "Приветствуем",
 	"here_is_your_verification_code_for":  "Вот ваш проверочный код для",
+	"email_update":                        "Обновление email",
+	"you_requested_to_update_your_email_address_at": "Вы запросили изменение своего email адреса на",
+	"to_update_your_email_from":                     "Чтобы изменить свой email адрес с",
+	"please_follow":                                 "пожалуйста перейдите по",
+	"link_to":                                       "ссылке",
+	"if_this_wasnt_you_to_prevent_it":               "Если это были не вы, чтобы предотвратить взлом",
 }
