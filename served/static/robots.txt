@@ -3,6 +3,7 @@ Allow: /$
 Allow: /?*
 Allow: /station/
 Allow: /sitemaps/
+Allow: /sitemaps/*.xml
 Allow: /*.txt
 Allow: /*.png
 Allow: /*.ico

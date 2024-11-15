@@ -12,7 +12,7 @@ func SendRequestUpdateEmail(credentials fiber.Map) {
 	subject := "Email update"
 
 	if err := SendEmail("emails/RequestUpdateEmail.html", credentials, []string{credentials["NewEmail"].(string)}, subject); err != nil {
-		fmt.Println("[SendVc] error : ", err)
+		fmt.Println("[SendRequestUpdateEmail] error : ", err)
 	}
 
 }

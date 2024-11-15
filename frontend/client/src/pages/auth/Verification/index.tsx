@@ -48,6 +48,7 @@ import { icon_classes } from "@/constants/icon_classes"
 
 import { Helmet } from "react-helmet"
 import { useDebounceCallback } from "usehooks-ts"
+import { reset_password } from "@/API/auth/reset_password"
 
 export const Verification: FC = () => {
 
@@ -138,13 +139,7 @@ export const Verification: FC = () => {
   const resendVC = useDebounceCallback(async () => {
     setSendingVC(true)
 
-    let res = await fetch('/api/v1/auth/reset-password', {
-      method: 'POST',
-      body: JSON.stringify({ email: store.user.email() }),
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
+    let res = await reset_password(store.user.email())
 
     switch (res.status) {
 

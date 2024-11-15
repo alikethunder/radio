@@ -16,13 +16,13 @@ func ResetPassword(c *fiber.Ctx) error {
 
 	c.Accepts("application/json")
 
-	var u fiber.Map
+	var json_user fiber.Map
 
-	json.Unmarshal(c.Body(), &u)
+	json.Unmarshal(c.Body(), &json_user)
 
-	fmt.Println("[ResetPassword] user : ", u)
+	fmt.Println("[ResetPassword] user : ", json_user)
 
-	user, _ := db.SelectRow("users", fiber.Map{"email": u["email"]}, "id", "name")
+	user, _ := db.SelectRow("users", fiber.Map{"email": json_user["email"]}, "id", "name")
 
 	fmt.Println("[ResetPassword] user : ", user)
 
@@ -36,11 +36,11 @@ func ResetPassword(c *fiber.Ctx) error {
 
 			fiber.Map{
 				"id":    user["id"],
-				"email": u["email"].(string),
+				"email": json_user["email"].(string),
 			},
 		)
 
-		mailer.SendVc(vc, u["email"].(string), user["name"].(string))
+		mailer.SendVc(vc, json_user["email"].(string), user["name"].(string), json_user["language"].(string))
 
 		return c.SendStatus(fiber.StatusOK)
 	}

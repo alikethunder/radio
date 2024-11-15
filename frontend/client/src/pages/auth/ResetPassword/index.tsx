@@ -41,6 +41,7 @@ import {
 
 import { Helmet } from "react-helmet"
 import { useDebounceCallback } from "usehooks-ts"
+import { reset_password } from "@/API/auth/reset_password"
 
 type ResetPasswordUser = (Pick<User, 'email'>)
 
@@ -81,13 +82,7 @@ export const ResetPassword: FC = () => {
   const onSubmit: SubmitHandler<ResetPasswordUser> = useDebounceCallback(async (form) => {
     //console.log('form submit : ', form)
 
-    let res = await fetch('/api/v1/auth/reset-password', {
-      method: 'POST',
-      body: JSON.stringify(form),
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
+    let res = await reset_password(form.email)
 
     switch (res.status) {
 

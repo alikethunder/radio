@@ -95,7 +95,7 @@ func Create(user fiber.Map) (fiber.Map, error) {
 		}
 
 		if !oauth_flow {
-			mailer.SendVc(vc, user["email"].(string), user["name"].(string))
+			mailer.SendVc(vc, user["email"].(string), user["name"].(string), "en")
 		}
 
 		return db.SelectRow("users", fiber.Map{"id": user_db["id"], "email": user["email"]}, "name", "email", "id", "admin")
