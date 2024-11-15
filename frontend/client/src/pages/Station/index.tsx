@@ -314,6 +314,10 @@ export const Station = () => {
   }, [external])
 
   const change_station_tags = useDebounceCallback(async (e, field) => {
+    e.target.value = e.value = e.value?.map((tag: string) => tag?.trim())
+
+    //console.log('change_station_tags after trim : ', e.value)
+
     field.onChange(e)
 
     //console.log(e.value)
@@ -652,11 +656,16 @@ export const Station = () => {
 
                     <Chips
                       value={field.value}
-                      onChange={e => change_station_tags(e, field)}
+                      onChange={e => {
+                        //console.log('chips change : ', e)
+                        change_station_tags(e, field)
+                      }}
                       allowDuplicate={false}
                       removable
 
                       removeIcon={<StationTagRemoveTokenIcon onClick={e => click_tag_remove_token_icon(e, field)} />}
+
+                      separator=","
 
                       pt={{
                         token: {
