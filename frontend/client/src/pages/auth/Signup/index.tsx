@@ -86,7 +86,7 @@ export const Signup: FC = () => {
   const onSubmit: SubmitHandler<User> = useDebounceCallback(async (form) => {
     //console.log('form submit : ', form)
 
-    let res = await fetch('/api/v1/auth/signup', {
+    let res = await fetch(`/api/v1/auth/signup?language=${store.translations.language() ?? 'en'}`, {
       method: 'POST',
       body: JSON.stringify(form),
       headers: {

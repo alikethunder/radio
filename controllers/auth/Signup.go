@@ -10,24 +10,26 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func Signup(c *fiber.Ctx) error {
+func Signup(ctx *fiber.Ctx) error {
 
-	c.Accepts("application/json")
+	ctx.Accepts("application/json")
+
+	language := ctx.Query("language")
 
 	var u fiber.Map
 
-	json.Unmarshal(c.Body(), &u)
+	json.Unmarshal(ctx.Body(), &u)
 
 	//fmt.Println("Signup user : ", u)
 
-	if user, err := Users.Create(u); err != nil {
+	if user, err := Users.Create(u, language); err != nil {
 
 		fmt.Println("[Signup] error : ", err)
 
-		return c.SendStatus(fiber.StatusForbidden)
+		return ctx.SendStatus(fiber.StatusForbidden)
 
 	} else {
 		fmt.Println("user created : ", user)
-		return c.Status(fiber.StatusOK).JSON(user)
+		return ctx.Status(fiber.StatusOK).JSON(user)
 	}
 }

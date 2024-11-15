@@ -14,7 +14,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func Create(user fiber.Map) (fiber.Map, error) {
+func Create(user fiber.Map, opt ...string) (fiber.Map, error) {
 
 	//fmt.Println("Create user : ", user)
 	var err error
@@ -95,7 +95,7 @@ func Create(user fiber.Map) (fiber.Map, error) {
 		}
 
 		if !oauth_flow {
-			mailer.SendVc(vc, user["email"].(string), user["name"].(string), "en")
+			mailer.SendVc(vc, user["email"].(string), user["name"].(string), opt[0])
 		}
 
 		return db.SelectRow("users", fiber.Map{"id": user_db["id"], "email": user["email"]}, "name", "email", "id", "admin")
