@@ -59,7 +59,7 @@ export const sessionStore = createStore('sessionStore')(initial_state, {
     translation_checked(language: string | null, field: string) {
       //returns if translation was checked
       //@ts-ignore
-      return get.checked_translation()[language ?? 'en'][field]
+      return get.checked_translation()[language ?? 'en']?.[field]
     },
   }))
   .extendActions((set, get, api) => ({
@@ -67,6 +67,8 @@ export const sessionStore = createStore('sessionStore')(initial_state, {
       //stores that translation was checked
       //@ts-ignore
       const checked_translation = structuredClone(get.checked_translation())
+      //@ts-ignore
+      checked_translation[language] = checked_translation[language] ?? {}
       //@ts-ignore
       checked_translation[language][field] = true
       //@ts-ignore

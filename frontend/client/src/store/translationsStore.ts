@@ -63,9 +63,9 @@ export const translationsStore = createStore('app')(initialState as Translations
     },
     add_translation(field: string, translation: string) {
       //@ts-ignore
-      const lang_dict = structuredClone(get[get.language() ?? 'en']())
+      const lang_dict = structuredClone(get[get.language()]())
       lang_dict[field] = translation
       //@ts-ignore
-      set[get.language() ?? 'en'](lang_dict)
+      set[get.language()](lang_dict)
     },
   }))
