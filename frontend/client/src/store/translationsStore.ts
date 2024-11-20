@@ -3,6 +3,10 @@ import { createStore } from 'zustand-x'
 const initialState = {
   en: {},
   ru: {},
+  sp: {},
+  fr: {},
+  de: {},
+  pt: {},
   language: null,
   languages: [],
 }
@@ -12,6 +16,18 @@ type Translations = {
     [x: string]: string;
   },
   ru: {
+    [x: string]: string;
+  },
+  sp: {
+    [x: string]: string;
+  },
+  fr: {
+    [x: string]: string;
+  },
+  de: {
+    [x: string]: string;
+  },
+  pt: {
     [x: string]: string;
   },
   language: string | null,

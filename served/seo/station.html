@@ -34,9 +34,9 @@
   <meta property="og:title" content="{{.sitename}} - {{.station.name}}" />
   <meta name="twitter:title" content="{{.sitename}} - {{.station.name}}" />
 
-  <meta name="description" content="{{.text_description}} {{.Tags}}: {{range .station.tags}}{{.}},{{end}}" />
-  <meta property="og:description" content="{{.text_description}} {{.Tags}}: {{range .station.tags}}{{.}},{{end}}" />
-  <meta property="twitter:description" content="{{.text_description}} {{.Tags}}: {{range .station.tags}}{{.}},{{end}}" />
+  <meta name="description" content="{{.description}} {{.Tags}}: {{range .station.tags}}{{.}},{{end}}" />
+  <meta property="og:description" content="{{.description}} {{.Tags}}: {{range .station.tags}}{{.}},{{end}}" />
+  <meta property="twitter:description" content="{{.description}} {{.Tags}}: {{range .station.tags}}{{.}},{{end}}" />
 
   <meta name="subject" content="{{.Description}} {{.Tags}}: {{range .station.tags}}{{.}},{{end}}" />
 
@@ -62,7 +62,7 @@
       "@context": "https://schema.org",
       "@type": "RadioStation",
       "name": "{{.sitename}}",
-      "description": "{{.text_description}}",
+      "description": "{{.description}}",
       "keywords": "{{range .station.tags}}{{.}},{{end}}",
       "logo": {{.quoted_logo}},
       "url": {{.Full_url}}
@@ -72,7 +72,7 @@
 
 <body style="font-size: 18px;">
   <p>{{$.sitename}} - {{.station.name}}</p>
-  {{.text_description}}
+  {{.description}}
   <p>
     {{.Tags}}:
     {{range .station.tags}}

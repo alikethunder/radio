@@ -87,7 +87,7 @@ func Index(ctx *fiber.Ctx) error {
 
 			fmt.Printf("[Index] station id %s \n", station_id)
 
-			station, _ := db.SelectRow("stations", fiber.Map{"id": station_id}, "id", "name", "description_"+language, "text_description_"+language, "tags", "avatar")
+			station, _ := db.SelectRow("stations", fiber.Map{"id": station_id}, "id", "name", "description_"+language, "tags", "avatar")
 
 			logo := template.JS(ctx.BaseURL() + "/api/v1/files/stations/" + station_id + "/avatar")
 
@@ -95,7 +95,7 @@ func Index(ctx *fiber.Ctx) error {
 				"station":                          station,
 				"Language":                         language,
 				"Languages":                        languages,
-				"text_description":                 station["text_description_"+language],
+				"description":                      template.HTML(station["description_"+language].(string)),
 				"Tags":                             translations.Dictionary[language]["tags"],
 				"URL":                              ctx.OriginalURL(),
 				"Domain":                           ctx.BaseURL(),

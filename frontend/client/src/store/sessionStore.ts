@@ -18,6 +18,18 @@ type SessionStore = {
     ru: {
       [x: string]: boolean;
     };
+    sp: {
+      [x: string]: boolean;
+    };
+    de: {
+      [x: string]: boolean;
+    };
+    fr: {
+      [x: string]: boolean;
+    };
+    pt: {
+      [x: string]: boolean;
+    };
   };
 }
 
@@ -29,6 +41,10 @@ const initial_state = {
   checked_translation: {
     en: {},
     ru: {},
+    sp: {},
+    de: {},
+    fr: {},
+    pt: {},
   },
 } as SessionStore
 

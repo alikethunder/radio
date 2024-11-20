@@ -151,7 +151,6 @@ export const Station = () => {
       broadcasting: station?.broadcasting ?? false,
       tags: station?.tags ?? [],
       ...Object.fromEntries(languages.map(language => ([`description_${language}`, station[`description_${language}`] ?? '']))),
-      ...Object.fromEntries(languages.map(language => ([`text_description_${language}`, station[`text_description_${language}`] ?? ''])))
     }
   })
 
@@ -294,8 +293,6 @@ export const Station = () => {
       store.translations.languages().forEach(language => {
         //@ts-ignore
         setValue(`description_${language}`, station[`description_${language}`])
-        //@ts-ignore
-        setValue(`text_description_${language}`, station[`text_description_${language}`])
       })
 
       reset()
@@ -391,9 +388,9 @@ export const Station = () => {
         <meta property="og:title" content={`${translations.sitename} - ${station?.name}`} />
         <meta name="twitter:title" content={`${translations.sitename} - ${station?.name}`} />
 
-        <meta name="description" content={`${station?.[`text_description_${language}`]}`} />
-        <meta property="og:description" content={`${station?.[`text_description_${language}`]}`} />
-        <meta property="twitter:description" content={`${station?.[`text_description_${language}`]}`} />
+        <meta name="description" content={`${station?.[`description_${language}`]}`} />
+        <meta property="og:description" content={`${station?.[`description_${language}`]}`} />
+        <meta property="twitter:description" content={`${station?.[`description_${language}`]}`} />
 
         <link rel="canonical" href={`${window.location.origin}${generatePath(app_routes["station$id"], { id: station?.id })}?language=${language}`} />
 
@@ -798,8 +795,6 @@ export const Station = () => {
                     //console.log('description ', language, ' : ', e.htmlValue)
                     //@ts-ignore
                     setValue(`description_${language}`, e.htmlValue ?? '')
-                    //@ts-ignore
-                    setValue(`text_description_${language}`, (e.textValue ?? '').replaceAll(/\r?\n|\r/g, ''))
                   }}
                 />
               </>
