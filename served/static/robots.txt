@@ -1,7 +1,8 @@
 user-agent: *
 Allow: /$
 Allow: /?*
-Allow: /station/
+Allow: /api/v1/files/stations/*
+Allow: /station/*.eot
 Allow: /sitemaps/
 Allow: /sitemaps/*.xml
 Allow: /*.txt

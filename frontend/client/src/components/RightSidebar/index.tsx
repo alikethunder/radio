@@ -152,6 +152,52 @@ export const RightSidebar: FC = () => {
             : <></>
         }
 
+        {
+          root_admin ?
+
+            <Button
+              label={'Upload stations json'}
+              text
+              raised
+              icon={`${icon_classes} pi-file-plus`}
+              className="border-noround w-full h-full px-2 text-2xl shadow_on_hover action_text_font z-0"
+            >
+              <label htmlFor="jsoninput" className="m-0 absolute top-0 bottom-0 left-0 right-0 z-1 cursor-pointer"
+                onClick={(e) => console.log('label   ', e)}
+              ></label>
+              <input
+                type="file"
+                id="jsoninput"
+                name="jsoninput"
+                accept="application/JSON"
+                multiple
+                className="hidden"
+                onChange={async (e) => {
+                  if (e.target.files?.length) {
+                    console.log(e.target.files)
+
+                    const body = new FormData()
+
+                    for (const file of e.target.files) {
+                      if (file.name.includes('data')) {
+                        body.append('json_data', file)
+                      } else {
+                        body.append('json_info', file)
+                      }
+                    }
+
+                    fetch('/api/v1/radio/upload-jsons', {
+                      method: "POST",
+                      body,
+                    })
+                  }
+                }}
+              />
+            </Button>
+            : <></>
+        }
+
+
       </div>
 
       <div className="bottom flex flex-column flex-shrink-0">

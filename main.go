@@ -160,6 +160,8 @@ func main() {
 
 	radio_endpoints.Get("/:id", RadioEndpoints.GetStation)
 
+	radio_endpoints.Post("/upload-jsons", RadioEndpoints.UploadJsons)
+
 	settings_endpoints := v1.Group("/settings")
 
 	settings_endpoints.Get("/sitemap", SettingsEndpoints.GenerateSitemap)
