@@ -17,7 +17,7 @@ func ListStations(ctx *fiber.Ctx) error {
 	admin := db.CheckRootAdmin(ctx)
 
 	if admin {
-		stations = db.List("stations", fiber.Map{}, []string{})
+		stations = db.List("stations", fiber.Map{}, []string{}, constants.Public_Station_List_Props[:]...)
 	} else {
 		// get all broadcasting stations + stations where user is admin
 		stations = db.List("stations", fiber.Map{"broadcasting": true}, []string{}, constants.Public_Station_List_Props[:]...)
@@ -27,7 +27,7 @@ func ListStations(ctx *fiber.Ctx) error {
 
 		if current_user_id != "" {
 
-			admin_stations := db.List("stations", fiber.Map{"broadcasting": false}, []string{"admins CONTAINS '" + current_user_id + "'"})
+			admin_stations := db.List("stations", fiber.Map{"broadcasting": false}, []string{"admins CONTAINS '" + current_user_id + "'"}, constants.Public_Station_List_Props[:]...)
 
 			//fmt.Println("[RadioEndpoints.ListStations] admin_stations ", admin_stations)
 
