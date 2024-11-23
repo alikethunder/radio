@@ -43,7 +43,7 @@ export const StationSearchPanelContent: FC = () => {
 
   const search_stations_text = useStore().persistedApp.search_stations_text()
 
-  const filtered_tags = useMemo(() => station_tags.filter(tag => tag.includes(tags_input_value) && !search_station_tags.includes(tag)), [tags_input_value, station_tags, search_station_tags])
+  const filtered_tags = useMemo(() => station_tags.filter(tag => tag.toLowerCase().includes(tags_input_value) && !search_station_tags.includes(tag)), [tags_input_value, station_tags, search_station_tags])
 
   const [translations] = useTranslations([
     'search_station_name_and_description',
@@ -135,14 +135,14 @@ export const StationSearchPanelContent: FC = () => {
             value={tags_input_value}
             disabled={tags_input_value ? false : !filtered_tags.length}
 
-            onChange={(e) => set_tags_input_value(e.target.value)}
+            onChange={(e) => set_tags_input_value(e.target.value.toLowerCase())}
 
             onFocus={(e) => {
               overlay_panel.current?.show(e, e.target)
             }}
 
             onKeyUp={(e) => {
-              const exact = filtered_tags.find(t => t === (e.target as HTMLInputElement).value)
+
 
               if (
                 e.code == 'Enter'
@@ -153,10 +153,13 @@ export const StationSearchPanelContent: FC = () => {
                   actions.persistedApp.add_tag_to_search(filtered_tags[0])
                   set_tags_input_value('')
 
-                } else if (exact) {
+                } else {
+                  const exact = filtered_tags.find(t => t === (e.target as HTMLInputElement).value)
 
-                  actions.persistedApp.add_tag_to_search(exact)
-                  set_tags_input_value('')
+                  if (exact) {
+                    actions.persistedApp.add_tag_to_search(exact)
+                    set_tags_input_value('')
+                  }
                 }
               }
             }}
