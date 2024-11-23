@@ -135,7 +135,7 @@ export const StationSearchPanelContent: FC = () => {
             value={tags_input_value}
             disabled={tags_input_value ? false : !filtered_tags.length}
 
-            onChange={(e) => set_tags_input_value(e.target.value.toLowerCase())}
+            onChange={(e) => set_tags_input_value((e.target.value ?? '').toLowerCase())}
 
             onFocus={(e) => {
               overlay_panel.current?.show(e, e.target)

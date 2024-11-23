@@ -92,7 +92,7 @@ export const Home = () => {
 
   //useLog(true, 'tags_searched_stations : ', tags_searched_stations)
 
-  const text_searched_stations = useMemo(() => search_stations_text_array.length ? tags_searched_stations?.filter(station => search_stations_text_array.every(w => station[`description_${language}`].toLowerCase().includes(w)) || search_stations_text_array.some(w => station.name.toLowerCase().includes(w))) : tags_searched_stations, [
+  const text_searched_stations = useMemo(() => search_stations_text_array.length ? tags_searched_stations?.filter(station => search_stations_text_array.every(w => (station[`description_${language}`] ?? '').toLowerCase().includes(w)) || search_stations_text_array.some(w => (station.name ?? '').toLowerCase().includes(w))) : tags_searched_stations, [
     search_stations_text_array,
     tags_searched_stations,
     language,
