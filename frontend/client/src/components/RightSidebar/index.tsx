@@ -1,4 +1,4 @@
-import { FC, } from "react"
+import { FC, useMemo, } from "react"
 
 import { Button } from 'primereact/button'
 
@@ -34,7 +34,16 @@ import { classNames } from "primereact/utils"
 
 import { Translation } from "@/layout parts"
 import { useDebounceCallback } from "usehooks-ts"
-import { useFavoriteStations } from "@/hooks"
+import { useFavoriteStations, useTranslations } from "@/hooks"
+
+const languages_translations = {
+  "en": "English (en)",
+  "ru": "Русский (ru)",
+  "sp": "Español (es)",
+  "de": "Deutsch (de)",
+  "fr": "Français (fr)",
+  "pt": "Português (pt)",
+}
 
 export const RightSidebar: FC = () => {
 
@@ -61,6 +70,13 @@ export const RightSidebar: FC = () => {
     console.log('[update_sitemap] result : ', res)
   }, 50)
 
+  const languages_options = useMemo(() => languages.map(code => ({
+    code,
+    translation: languages_translations[code],
+  })), [languages_translations])
+
+  const active_dropdown_language = useMemo(() => languages_options.find(l => l.code == language), [language, languages_options])
+
   return (
     <Sidebar
       visible={rightSidebarOpened}
@@ -85,10 +101,10 @@ export const RightSidebar: FC = () => {
       <div className="top flex flex-column">
 
         <Dropdown
-          value={language}
-          onChange={(e) => actions.translations.language(e.value)}
-          options={languages}
-          optionLabel="name"
+          value={active_dropdown_language}
+          onChange={(e) => actions.translations.language(e.value.code)}
+          options={languages_options}
+          optionLabel="translation"
           className="w-full border-noround border-none flex-shrink-0"
           checkmark
           pt={{

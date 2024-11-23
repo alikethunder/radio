@@ -31,7 +31,7 @@ type Translations = {
     [x: string]: string;
   },
   language: string | null,
-  languages: string[],
+  languages: ("en" | "ru" | "sp" | "fr" | "de" | "pt")[],
 }
 
 export const translationsStore = createStore('app')(initialState as Translations,
