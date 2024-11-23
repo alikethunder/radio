@@ -67,13 +67,13 @@ func Update(table string, orig_insert_parameters fiber.Map, key_parameters fiber
 		query := "UPDATE " + table + " SET " + insertString.String()
 
 		if log {
-			fmt.Println("[Update] query : ", query)
-			fmt.Println("[Update] values : ", values)
+			fmt.Println("[db.Update] query : ", query)
+			fmt.Println("[db.Update] values : ", values)
 		}
 
 		if err := Session.Query(query, values...).Exec(); err != nil {
 
-			fmt.Printf("[Update] table %s with insert parameters %s and key parameters %s, error : %s\n", table, insert_parameters, key_parameters, err)
+			fmt.Printf("[db.Update] table %s with insert parameters %s and key parameters %s, error : %s\n", table, insert_parameters, key_parameters, err)
 
 			return err
 		}
@@ -81,5 +81,5 @@ func Update(table string, orig_insert_parameters fiber.Map, key_parameters fiber
 		return nil
 	}
 
-	return fmt.Errorf("[Update] Error: table %s with insert parameters %s and key parameters %s", table, insert_parameters, key_parameters)
+	return fmt.Errorf("[db.Update] Error: table %s with insert parameters %s and key parameters %s", table, insert_parameters, key_parameters)
 }
