@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"time"
-	"web_project/constants"
 	"web_project/db"
 	"web_project/db/StationTags"
 	"web_project/translations"
@@ -40,7 +39,7 @@ func GenerateSitemap(ctx *fiber.Ctx) error {
 				LastMod:    &now,
 				ChangeFreq: smg.Weekly,
 				Priority:   1,
-				Images:     []*smg.SitemapImage{{"/android-chrome-192x192.png"}},
+				Images:     []*smg.SitemapImage{{ImageLoc: "/android-chrome-192x192.png"}},
 			})
 		}
 
@@ -51,12 +50,12 @@ func GenerateSitemap(ctx *fiber.Ctx) error {
 					LastMod:    &now,
 					ChangeFreq: smg.Weekly,
 					Priority:   1,
-					Images:     []*smg.SitemapImage{{"/android-chrome-192x192.png"}},
+					Images:     []*smg.SitemapImage{{ImageLoc: "/android-chrome-192x192.png"}},
 				})
 			}
 		}
 
-		for _, station := range db.List("stations", fiber.Map{"broadcasting": true}, []string{}, constants.Public_Station_Props()[:]...) {
+		for _, station := range db.List("stations", fiber.Map{"broadcasting": true}, []string{}, "id") {
 			id := station["id"].(gocql.UUID).String()
 			for _, l := range languages {
 				sm.Add(&smg.SitemapLoc{
@@ -64,7 +63,7 @@ func GenerateSitemap(ctx *fiber.Ctx) error {
 					LastMod:    &now,
 					ChangeFreq: smg.Weekly,
 					Priority:   1,
-					Images:     []*smg.SitemapImage{{"/api/v1/files/stations/" + id + "/avatar"}},
+					Images:     []*smg.SitemapImage{{ImageLoc: "/api/v1/files/stations/" + id + "/avatar"}},
 				})
 			}
 		}
