@@ -1,6 +1,4 @@
-import {
-  station_tag_colors
-} from '@/constants/station_tag_colors'
+import station_tag_colors from '&/settings/station_tag_colors.json'
 
 import {
   random_number_from_length

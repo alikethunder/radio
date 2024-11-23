@@ -52,6 +52,8 @@ export const StationTag: FC<Props> = ({ tag, color, onClick, disable_link }) => 
     }
   }, 100), [pathname])
 
+  const raw_color = useMemo(() => result_color?.includes('#') || result_color?.includes('rgb'), [result_color])
+
   return (
     <Tag
       value={tag}
@@ -64,13 +66,20 @@ export const StationTag: FC<Props> = ({ tag, color, onClick, disable_link }) => 
           },
             'py-05',
             'select-none',
-            color?.includes('surface') ? color : `bg-${result_color}`,
+            color?.includes('surface')
+              ? color :
+              (
+                raw_color ? '' : `bg-${result_color}`
+              ),
             'text-sm',
             'font-medium',
             `${disable_link ? '' : (tag_is_in_search ? 'opacity-70' : '')}`
           ),
           style: {
-            color: `var(--${result_color})`,
+            color: raw_color ? result_color : `var(--${result_color})`,
+            ...raw_color ? {
+              'background-color': result_color
+            } : {},
           }
         },
         value: {

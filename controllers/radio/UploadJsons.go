@@ -6,6 +6,8 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"math/rand"
+	"os"
 	"strings"
 
 	"web_project/db"
@@ -25,6 +27,11 @@ func UploadJsons(ctx *fiber.Ctx) error {
 			data_files := form.File["json_data"]
 			info_files := form.File["json_info"]
 
+			var station_tag_colors []string
+
+			station_tag_colors_content, _ := os.ReadFile(os.Getenv("TEMPL_PATH") + "/settings/station_tag_colors.json")
+
+			json.Unmarshal(station_tag_colors_content, &station_tag_colors)
 			//fmt.Println("[UploadJsons] info_files : ", info_files)
 
 			for _, file := range info_files {
@@ -58,6 +65,14 @@ func UploadJsons(ctx *fiber.Ctx) error {
 					json_station["broadcasting"] = true
 					json_station["languages"] = strings.Split(json_station["languages"].(string), ",")
 					json_station["genres"] = strings.Split(json_station["genres"].(string), ",")
+
+					for _, tag := range json_station["tags"].([]interface{}) {
+						tag_exists, _ := db.SelectRow("station_tags", fiber.Map{"name": tag.(string)}, "name")
+
+						if tag_exists == nil {
+							db.Insert("station_tags", fiber.Map{"name": tag.(string), "color": station_tag_colors[rand.Intn(len(station_tag_colors))]})
+						}
+					}
 
 					Stations.Update(id, json_station)
 				}

@@ -46,12 +46,14 @@ export const StationSearchPanel: FC = () => {
   }, [])
 
   useEffect(() => {
-    if (search_station_tags.length) {
-      set_search(s => {
+    set_search(s => {
+      if (search_station_tags.length) {
         s.set('tags', search_station_tags.join(','))
-        return s
-      })
-    }
+      } else {
+        s.delete('tags')
+      }
+      return s
+    })
   }, [search_station_tags])
 
   const panel_ref = useCallback((e: Panel) => {
