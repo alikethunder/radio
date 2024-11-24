@@ -67,11 +67,9 @@ export const Navbar: FC = () => {
               }}>
                 Radio
               </span>
-              <i className={`pi-wave-pulse ${icon_classes}`} style={{
-                transform: 'skew(-3deg, -7deg)'
-              }}></i>
+              <img src="/android-chrome-512x512.png" />
               <span style={{
-                transform: 'skew(18deg, -10deg) translateY(-2px)'
+                //transform: 'skew(18deg, -10deg) translateY(-2px)'
               }}>Best</span>
             </Button>
           </QueryLink>
