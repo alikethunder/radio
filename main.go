@@ -142,7 +142,7 @@ func main() {
 
 	translation_endpoints.Get("/:language/:field", TranslationEndpoints.Translate)
 
-	files_endpoints := v1.Group("/files", compress_get, etag.New(), cache.New(cache.Config{
+	files_endpoints := v1.Group("/files", etag.New(), cache.New(cache.Config{
 		Next:       notGet,
 		Expiration: 24 * 7 * time.Hour,
 	}))
