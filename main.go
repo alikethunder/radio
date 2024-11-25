@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"crypto/tls"
 	"web_project/db"
@@ -28,6 +29,7 @@ import (
 
 	"github.com/gofiber/contrib/websocket"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cache"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/etag"
 	"github.com/gofiber/template/html/v2"
@@ -62,7 +64,14 @@ func init() {
 	}
 }
 
+func notGet(ctx *fiber.Ctx) bool {
+	return ctx.Method() != fiber.MethodGet
+}
+
 func main() {
+	compress_get := compress.New(compress.Config{
+		Next: notGet,
+	})
 
 	defer functions.Recovery()
 
@@ -78,6 +87,16 @@ func main() {
 		JSONEncoder: json.Marshal,
 		JSONDecoder: json.Unmarshal,
 	})
+
+	if os.Getenv("ENV") == "prod" {
+		// Later in the code
+		sentryHandler := sentryfiber.New(sentryfiber.Options{
+			Repanic:         true,
+			WaitForDelivery: true,
+		})
+
+		app.Use(sentryHandler)
+	}
 
 	api := app.Group("/api")
 	v1 := api.Group("/v1")
@@ -112,7 +131,10 @@ func main() {
 
 	profile_endpoints.Get("/update-email/:hash", ProfileEndpoints.UpdateEmail)
 
-	translation_endpoints := v1.Group("/translation", etag.New())
+	translation_endpoints := v1.Group("/translation", compress_get, etag.New(), cache.New(cache.Config{
+		Next:       notGet,
+		Expiration: 24 * 7 * time.Hour,
+	}))
 
 	translation_endpoints.Get("/", TranslationEndpoints.Languages)
 
@@ -120,13 +142,19 @@ func main() {
 
 	translation_endpoints.Get("/:language/:field", TranslationEndpoints.Translate)
 
-	files_endpoints := v1.Group("/files", etag.New())
+	files_endpoints := v1.Group("/files", compress_get, etag.New(), cache.New(cache.Config{
+		Next:       notGet,
+		Expiration: 24 * 7 * time.Hour,
+	}))
 
 	files_endpoints.Get("/:table/:row_id/:field", FilesEndpoints.GetFile)
 
 	files_endpoints.Post("/:table/:row_id/:field", FilesEndpoints.Upload)
 
-	radio_endpoints := v1.Group("/radio", etag.New())
+	radio_endpoints := v1.Group("/radio", compress_get, etag.New(), cache.New(cache.Config{
+		Next:       notGet,
+		Expiration: 4 * time.Hour,
+	}))
 
 	/* fname := flag.String("filename", "audio.mp3", "path of the audio file")
 
@@ -166,7 +194,10 @@ func main() {
 
 	settings_endpoints.Get("/sitemap", SettingsEndpoints.GenerateSitemap)
 
-	tags_endpoints := v1.Group("/tags", etag.New())
+	tags_endpoints := v1.Group("/tags", compress_get, etag.New(), cache.New(cache.Config{
+		Next:       notGet,
+		Expiration: 4 * time.Hour,
+	}))
 
 	tags_endpoints.Get("/", StationTagsEndpoints.ListTags)
 
@@ -214,25 +245,19 @@ func main() {
 		}))
 	}
 
-	app.Use(compress.New())
+	app.Use(compress.New(), etag.New())
 
 	app.Get("/", controllers.Index)
 
+	static_config := fiber.Static{
+		Compress:      true,
+		CacheDuration: 4 * time.Hour,
+	}
 	// Configure app
-	app.Static("/", os.Getenv("TEMPL_PATH")+"/served/public")
-	app.Static("/", os.Getenv("TEMPL_PATH")+"/served/static")
+	app.Static("/", os.Getenv("TEMPL_PATH")+"/served/public", static_config)
+	app.Static("/", os.Getenv("TEMPL_PATH")+"/served/static", static_config)
 
 	app.Get("*", controllers.Index)
-
-	if os.Getenv("ENV") == "prod" {
-		// Later in the code
-		sentryHandler := sentryfiber.New(sentryfiber.Options{
-			Repanic:         true,
-			WaitForDelivery: true,
-		})
-
-		app.Use(sentryHandler)
-	}
 
 	if os.Getenv("ENV") == "prod" {
 
