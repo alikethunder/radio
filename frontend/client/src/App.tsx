@@ -141,7 +141,7 @@ export default function App() {
 
       const current_route_attrs = route_attributes[current_route as keyof typeof route_attributes]
 
-      console.log('[App] current page : ', current_route_attrs)
+      //console.log('[App] current page : ', current_route_attrs)
 
       if (current_route_attrs) {
         actions.app.current_page({ ...current_route_attrs })
@@ -161,17 +161,17 @@ export default function App() {
   useEffect(() => {
     try {
       let user_cookie = getCookie('user') as string
-      console.log('user_cookie : ', user_cookie)
+      //console.log('user_cookie : ', user_cookie)
 
       const user = JSON.parse(decodeURIComponent(user_cookie))
 
-      console.log('[App.tsx] user : ', user)
+      //console.log('[App.tsx] user : ', user)
 
       actions.auth.signedin(true)
 
       actions.user.update_user_data(user)
 
-      console.log('[App] user.favorite_stations : ', user.favorite_stations)
+      //console.log('[App] user.favorite_stations : ', user.favorite_stations)
 
       if (user?.favorite_stations.length) {
         actions.persistedApp.favorite_stations(user.favorite_stations)

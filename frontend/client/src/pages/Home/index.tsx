@@ -33,7 +33,7 @@ export const Home = () => {
 
   const stations = useLoaderData() as Station[]
 
-  useLog(true, '[Home] stations : ', stations)
+  //useLog(true, '[Home] stations : ', stations)
 
   const edit_mode = useStore().app.FormActionsState_edit_mode()
 

@@ -29,7 +29,7 @@ export const FavoriteStations = () => {
 
   const stations = useLoaderData() as Station[]
 
-  useLog(true, '[FavoriteStations] stations : ', stations)
+  //useLog(true, '[FavoriteStations] stations : ', stations)
 
   const language = useStore().translations.language()
 
