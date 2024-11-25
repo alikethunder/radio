@@ -63,14 +63,9 @@ export const Navbar: FC = () => {
               raised
               className="flex flex-row gap-1 border-noround w-full h-full md:px-2 px-1  action_text_font text-xl shadow_on_hover md:text-3xl bangers-font logo-glow"
             >
-              <span style={{
-              }}>
-                Radio
-              </span>
-              <img src="/favicon_120x120.png" />
-              <span style={{
-                //transform: 'skew(18deg, -10deg) translateY(-2px)'
-              }}>Best</span>
+              <span>Radio</span>
+              <img src="/favicon_120x120.png" className="h-3rem sm:h-4rem" />
+              <span>Best</span>
             </Button>
           </QueryLink>
 

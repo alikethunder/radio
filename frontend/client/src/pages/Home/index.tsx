@@ -205,14 +205,14 @@ export const Home = () => {
             </div>
         }
 
-        <div className="shadow-2 p-3 w-12 mt-auto border-round flex flex-column bg-white ">
+        {/* <div className="shadow-2 p-3 w-12 mt-auto border-round flex flex-column bg-white ">
           <div className="inline-block text-center">
             {translations_skl.home_page_description}
           </div>
           <div className="mt-3 flex flex-wrap gap-2">
             {translations_skl.tags}: {station_tags.map(t => <StationTag tag={t} />)}
           </div>
-        </div>
+        </div> */}
       </div >
     </>
   )
