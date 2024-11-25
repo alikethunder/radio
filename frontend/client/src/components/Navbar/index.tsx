@@ -67,7 +67,7 @@ export const Navbar: FC = () => {
               }}>
                 Radio
               </span>
-              <img src="/android-chrome-512x512.png" />
+              <img src="/favicon_120x120.png" />
               <span style={{
                 //transform: 'skew(18deg, -10deg) translateY(-2px)'
               }}>Best</span>
