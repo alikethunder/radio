@@ -91,11 +91,18 @@ func Index(ctx *fiber.Ctx) error {
 
 			logo := template.JS(ctx.BaseURL() + "/api/v1/files/stations/" + station_id + "/avatar")
 
+			station_description := ""
+			if station["description_"+language] != nil {
+				station_description = station["description_"+language].(string)
+			} else {
+				station_description = ""
+			}
+
 			return ctx.Render("seo/station", fiber.Map{
 				"station":                          station,
 				"Language":                         language,
 				"Languages":                        languages,
-				"description":                      template.HTML(station["description_"+language].(string)),
+				"description":                      template.HTML(station_description),
 				"Tags":                             translations.Dictionary[language]["tags"],
 				"URL":                              ctx.OriginalURL(),
 				"Domain":                           ctx.BaseURL(),
