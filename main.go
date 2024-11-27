@@ -247,6 +247,8 @@ func main() {
 
 	app.Use(compress.New(), etag.New())
 
+	app.Get("/manifest.json", controllers.Manifest)
+
 	app.Get("/", controllers.Index)
 
 	static_config := fiber.Static{
