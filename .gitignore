@@ -4,6 +4,7 @@ served/static/sitemaps
 .vscode
 certs
 served/static/favicon.ico.fiber.gz
+served/static/robots.txt.fiber.gz
 
 # Logs
 logs
