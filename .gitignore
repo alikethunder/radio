@@ -3,6 +3,7 @@ served/public
 served/static/sitemaps
 .vscode
 certs
+served/static/favicon.ico.fiber.gz
 
 # Logs
 logs
