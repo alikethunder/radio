@@ -115,6 +115,8 @@ export default function App() {
     }
   }, [])
 
+  const current_station = useStore().player.current_station()
+
   const windowSize = useWindowSize()
 
   /* useEffect(() => {
@@ -279,8 +281,10 @@ export default function App() {
 
       <Outlet />
 
-      <Player />
-
+      {
+        current_station ? <Player /> : <></>
+      }
+      
       <Toasts />
 
       <ConfirmDialog />

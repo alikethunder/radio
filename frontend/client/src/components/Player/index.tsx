@@ -55,7 +55,7 @@ export const Player: FC = () => {
         audio_ref.pause()
       }
     }
-  }, [playing, current_station])
+  }, [playing, current_station, audio_ref])
 
   useEffect(() => {
     if (audio_ref) {

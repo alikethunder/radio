@@ -85,4 +85,6 @@ var En = map[string]string{
 	"please_follow":                                 "please follow",
 	"link_to":                                       "the link",
 	"if_this_wasnt_you_to_prevent_it":               "If this wasn't you, to prevent it",
+	"main_page":                                     "Main page",
+	"main_page_with_player":                         "Main page with player",
 }

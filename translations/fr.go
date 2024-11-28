@@ -85,4 +85,6 @@ var Fr = map[string]string{
 	"please_follow":                                 "veuillez suivre",
 	"link_to":                                       "le lien",
 	"if_this_wasnt_you_to_prevent_it":               "Si ce n'était pas vous, pour l'empêcher",
+	"main_page":                                     "Page principale",
+	"main_page_with_player":                         "Page principale avec lecteur",
 }

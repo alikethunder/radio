@@ -85,4 +85,6 @@ var Sp = map[string]string{
 	"please_follow":                                 "por favor sigue",
 	"link_to":                                       "el enlace",
 	"if_this_wasnt_you_to_prevent_it":               "Si no fuiste tú, para prevenirlo",
+	"main_page":                                     "Página principal",
+	"main_page_with_player":                         "Página principal con reproductor",
 }

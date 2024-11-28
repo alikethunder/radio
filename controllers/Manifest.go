@@ -35,7 +35,7 @@ func Manifest(ctx *fiber.Ctx) error {
 				"icons": []fiber.Map{
 					{
 						"src":   ctx.BaseURL() + "/star.png",
-						"sizes": "120x120",
+						"sizes": "241x241",
 					},
 				},
 			},
@@ -81,7 +81,34 @@ func Manifest(ctx *fiber.Ctx) error {
 			},
 		},
 		"screenshots": []fiber.Map{
-			{},
+			{
+				"src":         ctx.BaseURL() + "/screenshot_wide.png",
+				"sizes":       "3455x1794",
+				"type":        "image/png",
+				"form_factor": "wide",
+				"label":       translations.Dictionary[language]["main_page"],
+			},
+			{
+				"src":         ctx.BaseURL() + "/screenshot_wide_player.png",
+				"sizes":       "3455x1794",
+				"type":        "image/png",
+				"form_factor": "wide",
+				"label":       translations.Dictionary[language]["main_page_with_player"],
+			},
+			{
+				"src":         ctx.BaseURL() + "/screenshot_narrow.png",
+				"sizes":       "390x844",
+				"type":        "image/png",
+				"form_factor": "narrow",
+				"label":       translations.Dictionary[language]["main_page"],
+			},
+			{
+				"src":         ctx.BaseURL() + "/screenshot_narrow_player.png",
+				"sizes":       "390x844",
+				"type":        "image/png",
+				"form_factor": "narrow",
+				"label":       translations.Dictionary[language]["main_page_with_player"],
+			},
 		},
 	}
 

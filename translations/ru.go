@@ -85,4 +85,6 @@ var Ru = map[string]string{
 	"please_follow":                                 "пожалуйста перейдите по",
 	"link_to":                                       "ссылке",
 	"if_this_wasnt_you_to_prevent_it":               "Если это были не вы, чтобы предотвратить взлом",
+	"main_page":                                     "Домашняя страница",
+	"main_page_with_player":                         "Домашняя страница с плеером",
 }

@@ -85,4 +85,6 @@ var De = map[string]string{
 	"please_follow":                                 "bitte folgen Sie",
 	"link_to":                                       "dem Link",
 	"if_this_wasnt_you_to_prevent_it":               "Wenn das nicht Sie waren, um es zu verhindern",
+	"main_page":                                     "Hauptseite mit",
+	"main_page_with_player":                         "Hauptseite mit Player",
 }
