@@ -312,7 +312,11 @@ export default function App() {
 
   const install_pwa = useCallback(() => {
     setTimeout(() => {
-      pwa_event?.prompt()
+      try{
+        pwa_event?.prompt()
+      } catch(e){
+        console.log('no pwa event error : ', e)
+      }
       actions.session.pwa_event(null)
     }, 6000)
   },[pwa_event])
