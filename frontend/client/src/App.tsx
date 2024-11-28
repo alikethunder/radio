@@ -1,4 +1,4 @@
-import React, { useEffect, } from "react"
+import React, { useCallback, useEffect, } from "react"
 
 import {
   Outlet,
@@ -18,8 +18,6 @@ import './index.sass'
 import Sockette from 'sockette'
 
 import { useWindowSize } from "usehooks-ts"
-
-import { Button } from 'primereact/button'
 
 import { ConfirmDialog } from 'primereact/confirmdialog'
 
@@ -55,7 +53,8 @@ import {
 } from '@/constants/router'
 
 import { get_station } from "@/API/station/get_station"
-import { update_json } from "./API/profile/update_json"
+import { update_json } from "@/API/profile/update_json"
+import { sessionStore } from "@/store/sessionStore"
 
 //console.log('typeof window : ', typeof window)
 
@@ -266,6 +265,69 @@ export default function App() {
     }
   }, [language, languages])
 
+  useEffect(() => {
+    (async () => {
+
+      if ('serviceWorker' in navigator) {
+        const prev_sws = await navigator.serviceWorker.getRegistrations()
+
+        for (const sw of prev_sws) {
+          await sw.unregister()
+        }
+
+        try {
+
+          const serviceWorkerRegistration = await navigator.serviceWorker.register(`${window.location.origin}/service-worker.js`, {
+            scope: '/'
+          })
+
+        } catch (e) {
+          console.log('[service-worker] init err : ', e)
+        }
+      }
+    })()
+  }, [])
+
+  const pwa_event = useStore().session.pwa_event()
+
+  useEffect(() => {
+    if (window.PWAInstallEvent) {
+      actions.session.pwa_event(window.PWAInstallEvent)
+    } else {
+      //@ts-ignore
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+
+        window.PWAInstallEvent = e
+        actions.session.pwa_event(e)
+      }, { once: true })
+    }
+  }, [])
+
+  useEffect(() => {
+    document.addEventListener('PWAEvent', (e) => {
+      actions.session.pwa_event(window.PWAInstallEvent)
+    }, { once: true })
+  }, [])
+
+  const install_pwa = useCallback(() => {
+    setTimeout(() => {
+      pwa_event?.prompt()
+      actions.session.pwa_event(null)
+    }, 6000)
+  },[pwa_event])
+
+  useEffect(() => {
+    if (pwa_event) {
+      document.addEventListener('mousedown', install_pwa, { once: true })
+      document.addEventListener('mousemove', install_pwa, { once: true })
+      document.addEventListener('touchmove', install_pwa, { once: true })
+      document.addEventListener('touchstart', install_pwa, { once: true })
+      document.addEventListener('touchcancel', install_pwa, { once: true })
+      document.addEventListener('touchmove', install_pwa, { once: true })
+    }
+  }, [pwa_event])
+
   return (
     <PrimeReactProvider value={{
       appendTo: 'self',
@@ -284,7 +346,7 @@ export default function App() {
       {
         current_station ? <Player /> : <></>
       }
-      
+
       <Toasts />
 
       <ConfirmDialog />

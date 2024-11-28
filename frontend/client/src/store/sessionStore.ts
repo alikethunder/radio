@@ -31,6 +31,7 @@ type SessionStore = {
       [x: string]: boolean;
     };
   };
+  pwa_event: any;
 }
 
 const initial_state = {
@@ -46,6 +47,7 @@ const initial_state = {
     fr: {},
     pt: {},
   },
+  pwa_event: null,
 } as SessionStore
 
 export const sessionStore = createStore('sessionStore')(initial_state, {

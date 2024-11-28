@@ -16,6 +16,7 @@ declare global {
       Reader: Reader;
       Config: Config;
     };
+    PWAInstallEvent: any;
   }
   interface ObjectConstructor {
     entries<T extends {}>(o: T): ReadonlyArray<Entry<T>>

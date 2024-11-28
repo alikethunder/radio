@@ -29,7 +29,7 @@
 
   <meta name="subject" content="{{.Description}}" />
 
-  <link rel="manifest" href="{{.Domain}}/manifest.json"/>
+  <link rel="manifest" href="{{.Domain}}/manifest.json" />
 
   <meta name='copyright' content='radio.best'>
 
@@ -117,6 +117,21 @@
     <div><img src="https://mc.yandex.ru/watch/99021993" style="position:absolute; left:-9999px;" alt="" /></div>
   </noscript>
   <!-- /Yandex.Metrika counter -->
+
+  <script type="text/javascript">
+    window.addEventListener('load', function () {
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        //console.log('[PWA] onbeforeinstallprompt index.html');
+
+        window.PWAInstallEvent = e
+
+        const event = new Event('PWAEvent', { "bubbles": true })
+
+        document.dispatchEvent(event)
+      }, { once: true })
+    })
+  </script>
 </head>
 
 <body class="h-screen">
