@@ -118,17 +118,10 @@ export const Home = () => {
   //useLog(true, 'searched_stations_with_mode : ', searched_stations_with_mode)
 
   const [translations] = useTranslations([
-    "home_page_description",
     "tags",
     'sitename',
     'no_stations_with_parameters',
   ], true)
-
-
-  const translations_skl = useTranslationsSkeleton({
-    "home_page_description": ["w-12"],
-    "tags": ['w-4rem'],
-  }, true)
 
   return (
     <>
@@ -204,15 +197,6 @@ export const Home = () => {
               {translations.no_stations_with_parameters}
             </div>
         }
-
-        {/* <div className="shadow-2 p-3 w-12 mt-auto border-round flex flex-column bg-white ">
-          <div className="inline-block text-center">
-            {translations_skl.home_page_description}
-          </div>
-          <div className="mt-3 flex flex-wrap gap-2">
-            {translations_skl.tags}: {station_tags.map(t => <StationTag tag={t} />)}
-          </div>
-        </div> */}
       </div >
     </>
   )

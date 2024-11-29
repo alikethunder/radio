@@ -32,6 +32,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cache"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/etag"
+	"github.com/gofiber/fiber/v2/utils"
 	"github.com/gofiber/template/html/v2"
 	"golang.org/x/crypto/acme/autocert"
 
@@ -134,6 +135,9 @@ func main() {
 	translation_endpoints := v1.Group("/translation", compress_get, etag.New(), cache.New(cache.Config{
 		Next:       notGet,
 		Expiration: 24 * 7 * time.Hour,
+		KeyGenerator: func(ctx *fiber.Ctx) string {
+			return utils.CopyString(ctx.Path() + ctx.Query("fields"))
+		},
 	}))
 
 	translation_endpoints.Get("/", TranslationEndpoints.Languages)

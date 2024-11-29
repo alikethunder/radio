@@ -56,9 +56,6 @@ export const AddStationToFavorites: FC<Props> = ({ id }) => {
   ])
 
   const [translations] = useTranslations([
-    'play',
-    'pause',
-    'sitename',
     'add_to_favorites',
   ], true)
 
