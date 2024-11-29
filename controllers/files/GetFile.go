@@ -10,11 +10,11 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func GetFile(c *fiber.Ctx) error {
+func GetFile(ctx *fiber.Ctx) error {
 
-	row_id := c.Params("row_id")
-	table := c.Params("table")
-	field := c.Params("field")
+	row_id := ctx.Params("row_id")
+	table := ctx.Params("table")
+	field := ctx.Params("field")
 	fmt.Printf("[FilesEndpoints.GetFile] row_id %s, table %s, field %s \n", row_id, table, field)
 
 	if row_id != "" && table != "" && field != "" {
@@ -24,15 +24,18 @@ func GetFile(c *fiber.Ctx) error {
 			fmt.Printf("[FilesEndpoints.GetFile] %s %d \n", field, len(result[field].([]byte)))
 
 			if len(result[field].([]byte)) > 0 {
-				return c.Status(fiber.StatusOK).Send(result[field].([]byte))
+				if table == "stations" && field == "avatar" {
+					ctx.Set("Cache-Control", "public, max-age=31536000")
+				}
+				return ctx.Status(fiber.StatusOK).Send(result[field].([]byte))
 			}
 		}
 	}
 
 	if table == "stations" && field == "avatar" {
-		return c.Redirect("/radio.png")
+		return ctx.Redirect("/radio.png")
 	}
 
-	return c.SendStatus(fiber.StatusBadRequest)
+	return ctx.SendStatus(fiber.StatusBadRequest)
 
 }
