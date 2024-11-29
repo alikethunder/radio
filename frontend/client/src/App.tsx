@@ -311,23 +311,27 @@ export default function App() {
   }, [])
 
   const install_pwa = useCallback(() => {
-    try {
-      pwa_event?.prompt()
-    } catch (e) {
-      console.log('no pwa event error : ', e)
+    if (store.session.pwa_event()) {
+      try {
+        store.session.pwa_event()?.prompt()
+      } catch (e) {
+        console.log('no pwa event error : ', e)
+      }
+      actions.session.pwa_event(null)
     }
-    actions.session.pwa_event(null)
-  }, [pwa_event])
+  }, [])
 
   useEffect(() => {
-    if (pwa_event) {
-      document.addEventListener('mousedown', install_pwa, { once: true })
-      document.addEventListener('mousemove', install_pwa, { once: true })
-      document.addEventListener('touchmove', install_pwa, { once: true })
-      document.addEventListener('touchstart', install_pwa, { once: true })
-      document.addEventListener('touchcancel', install_pwa, { once: true })
-      document.addEventListener('touchmove', install_pwa, { once: true })
-    }
+    setTimeout(() => {
+      if (store.session.pwa_event()) {
+        document.addEventListener('mousedown', install_pwa, { once: true })
+        document.addEventListener('mousemove', install_pwa, { once: true })
+        document.addEventListener('touchmove', install_pwa, { once: true })
+        document.addEventListener('touchstart', install_pwa, { once: true })
+        document.addEventListener('touchcancel', install_pwa, { once: true })
+        document.addEventListener('touchmove', install_pwa, { once: true })
+      }
+    }, 10000)
   }, [pwa_event])
 
   return (
