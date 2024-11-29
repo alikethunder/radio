@@ -20,6 +20,8 @@ import Sockette from 'sockette'
 import { useWindowSize } from "usehooks-ts"
 
 import { ConfirmDialog } from 'primereact/confirmdialog'
+import { Tooltip } from "primereact/tooltip"
+import { tooltip_options } from "@/constants/tooltip_options"
 
 import {
   Toasts,
@@ -29,7 +31,7 @@ import {
   StationSearchPanel,
 } from '@/components'
 
-import { useLog, usePageInList } from '@/hooks'
+import { useLog, usePageInList, useTranslations } from '@/hooks'
 
 import {
   WS,
@@ -334,6 +336,10 @@ export default function App() {
     }, 10000)
   }, [pwa_event])
 
+  const [translations] = useTranslations([
+    'add_to_favorites',
+  ], true)
+
   return (
     <PrimeReactProvider value={{
       appendTo: 'self',
@@ -356,6 +362,10 @@ export default function App() {
       <Toasts />
 
       <ConfirmDialog />
+
+      <Tooltip target='[data-targetid=player_add_to_fav]' {...{ ...tooltip_options, position: 'top' }} >
+        {translations.add_to_favorites}
+      </Tooltip>
 
     </PrimeReactProvider>
   )

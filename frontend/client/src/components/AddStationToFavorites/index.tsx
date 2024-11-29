@@ -8,16 +8,20 @@ import {
   store,
 } from "@/store"
 
-import { tooltip_options } from "@/constants/tooltip_options"
 import { useTranslations } from "@/hooks"
 import { useDebounceCallback } from "usehooks-ts"
 import { update_json } from "@/API/profile/update_json"
+import { Tooltip } from "primereact/tooltip"
+import { tooltip_options } from "@/constants/tooltip_options"
+import { v7 } from "uuid"
 
 type Props = {
   id?: string;
+  className?: string;
+  "data-targetid"?: string;
 }
 
-export const AddStationToFavorites: FC<Props> = ({ id }) => {
+export const AddStationToFavorites: FC<Props> = ({ id, className, "data-targetid": dataTargetid, ...rest }) => {
 
   const signedin = useStore().auth.signedin()
 
@@ -59,22 +63,34 @@ export const AddStationToFavorites: FC<Props> = ({ id }) => {
     'add_to_favorites',
   ], true)
 
+  const targetid = useMemo(() => dataTargetid ?? v7(), [])
+  
   return (
-    <Button
-      icon={`pi ${favorite_station ? 'pi-star-fill' : 'pi-star'}`}
-      rounded
-      outlined
-      raised
-      aria-label={translations.add_to_favorites}
-      tooltip={translations.add_to_favorites}
-      tooltipOptions={tooltip_options}
-      className={`p-0 w-2rem h-2rem shadow_on_hover flex-shrink-0`}
-      severity={`warning`}
+    <>
+      <Button
+        {...rest}
+        icon={`pi ${favorite_station ? 'pi-star-fill' : 'pi-star'}`}
+        rounded
+        outlined
+        raised
+        aria-label={translations.add_to_favorites}
+        className={`p-0 w-2rem h-2rem shadow_on_hover flex-shrink-0 ${className ?? ''}`}
+        severity={`warning`}
 
-      onClick={(e) => {
-        e.preventDefault()
-        click_add_to_favorites(id)
-      }}
-    />
+        onClick={(e) => {
+          e.preventDefault()
+          click_add_to_favorites(id)
+        }}
+
+        data-targetid={targetid}
+      />
+
+      {
+        dataTargetid ? <></> :
+          <Tooltip target={`[data-targetid="${targetid}"]`} {...{ ...tooltip_options, position: 'top' }} >
+            {translations.add_to_favorites}
+          </Tooltip>
+      }
+    </>
   )
 }
