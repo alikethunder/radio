@@ -55,7 +55,7 @@ func GenerateSitemap(ctx *fiber.Ctx) error {
 			}
 		}
 
-		for _, station := range db.List("stations", fiber.Map{"broadcasting": true}, []string{}, "id") {
+		for _, station := range db.List("stations", fiber.Map{"broadcasting": true}, []string{}, "", "id") {
 			id := station["id"].(gocql.UUID).String()
 			for _, l := range languages {
 				sm.Add(&smg.SitemapLoc{

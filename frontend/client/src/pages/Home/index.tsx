@@ -1,9 +1,10 @@
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 
 import {
-  useLoaderData,
   generatePath,
 } from "react-router-dom"
+
+import { ProgressSpinner } from 'primereact/progressspinner'
 
 import { QueryLink, StationCard, StationTag } from "@/components"
 
@@ -12,13 +13,13 @@ import {
 } from '@/constants/router'
 
 import {
+  store,
   useStore,
 } from "@/store"
 
 import {
   useFormState,
   useTranslations,
-  useTranslationsSkeleton,
 } from '@/hooks'
 
 import {
@@ -28,10 +29,12 @@ import {
 import { Station } from "@/types"
 
 import { Helmet } from "react-helmet"
+import { list } from "@/API/station/list"
 
 export const Home = () => {
 
-  const stations = useLoaderData() as Station[]
+  const [stations, set_stations] = useState<Station[]>([])
+  const [loading, set_loading] = useState(true)
 
   //useLog(true, '[Home] stations : ', stations)
 
@@ -46,8 +49,6 @@ export const Home = () => {
   const language = useStore().translations.language()
 
   const languages = useStore().translations.languages()
-
-  const station_tags = useStore().app.station_tags().map(t => t.name)
 
   const some_station_admin = useMemo(() => signedin
     && current_user_id
@@ -64,6 +65,28 @@ export const Home = () => {
     isValid: true,
     isSubmitting: false,
   })
+
+  useEffect(() => {
+    (async () => {
+      const limit = 50
+      let from
+      while (true) {
+
+        const res = await list({ limit, admin: store.user.admin(), ...from ? { from } : {} })
+
+        //console.log(`[stations] list result : `, res)
+
+        set_stations(s => s.concat(res))
+
+        if (!res.length || res.length < limit) {
+          set_loading(false)
+          break
+        }
+
+        from = res[res.length - 1].id
+      }
+    })()
+  }, [])
 
   useFormState({
     submit() {
@@ -160,7 +183,7 @@ export const Home = () => {
       <div className="sm:py-5 py-3 sm:px-6 px-2 w-full h-full overflow-y-auto page home_page flex-grow-1 flex flex-column">
 
         {
-          searched_stations_with_mode?.length ?
+          searched_stations_with_mode?.length || loading ?
             <div className={`stations_list row-gap-3 column-gap-3 mb-7`}>
 
               {
@@ -191,6 +214,11 @@ export const Home = () => {
                 <StationCard station={station} />
               )}
 
+              {
+                loading ?
+                  <ProgressSpinner className="w-3rem h-3rem my-8 mx-6" strokeWidth="3" fill="var(--surface-ground)" animationDuration=".7s" />
+                  : <></>
+              }
             </div>
             :
             <div className="font-semibold text-2xl text-center">

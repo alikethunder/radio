@@ -51,7 +51,7 @@ func Index(ctx *fiber.Ctx) error {
 		additional_selectors = append(additional_selectors, "tags CONTAINS '"+query_tags+"'")
 	}
 
-	stations_list := db.List("stations", fiber.Map{"broadcasting": true}, additional_selectors, "id", "name")
+	stations_list := db.List("stations", fiber.Map{"broadcasting": true}, additional_selectors, "", "id", "name")
 
 	if agents.IsCrawler(ctx.Get("User-Agent")) {
 

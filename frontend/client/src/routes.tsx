@@ -71,12 +71,6 @@ export const routes = [
 
       {
         path: app_routes.root,
-        loader: async ({ request }: Loader_params) => {
-          //console.log('Home loader')
-
-          const stations = await stations_list()
-          return stations
-        },
         element: <Home />,
         shouldRevalidate: () => false,
       },

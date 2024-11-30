@@ -7,7 +7,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func List(table string, key_parameters fiber.Map, additional_selectors []string, select_parameters ...string) (results []fiber.Map) {
+func List(table string, key_parameters fiber.Map, additional_selectors []string, limit string, select_parameters ...string) (results []fiber.Map) {
 
 	var selectString strings.Builder
 
@@ -55,12 +55,11 @@ func List(table string, key_parameters fiber.Map, additional_selectors []string,
 		if len(additional_selectors) > 0 {
 
 			if len(key_parameters) > 0 {
-				selectString.WriteString(` AND`)
+				selectString.WriteString(` AND `)
 			}
 
 			for i, value := range additional_selectors {
 
-				selectString.WriteString(` `)
 				selectString.WriteString(value)
 
 				if i != len(additional_selectors)-1 {
@@ -68,6 +67,10 @@ func List(table string, key_parameters fiber.Map, additional_selectors []string,
 				}
 			}
 		}
+	}
+
+	if limit != "" {
+		selectString.WriteString(" LIMIT " + limit)
 	}
 
 	selectString.WriteString(` ALLOW FILTERING`)
