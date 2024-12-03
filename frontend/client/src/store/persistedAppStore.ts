@@ -32,6 +32,13 @@ export const persistedAppStore = createStore('app')(initial_state,
     favorite_station: (id?: string) => id && get.favorite_stations().includes(id),
   }))
   .extendActions((set, get, api) => ({
+    add_tag_to_search: (tag: string) => {
+      const cur_text = get.search_stations_text()
+
+      if (!cur_text.includes(tag)) {
+        set.search_stations_text(cur_text + " " + tag)
+      }
+    },
     toggle_favorite_station: (id: string) => {
       const cur_stations = get.favorite_stations()
 

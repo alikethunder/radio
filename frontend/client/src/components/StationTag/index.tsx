@@ -12,7 +12,7 @@ import {
   useStore,
 } from "@/store"
 import { useLocation, useNavigate } from "react-router-dom"
-import { app_routes } from "@/constants/router"
+import { all_routes, app_routes } from "@/constants/router"
 
 type Props = {
   tag: string;
@@ -42,10 +42,13 @@ export const StationTag: FC<Props> = ({ tag, color, onClick, disable_link }) => 
 
       actions.persistedApp.add_tag_to_search(tag)
 
-      if (pathname != app_routes.root) {
+      /* if (![
+        app_routes.root,
+        app_routes.my_stations
+      ].includes(pathname as typeof all_routes[number])) {
         console.log('[StationTag]   navigate')
         navigate(app_routes.root)
-      }
+      } */
 
       actions.persistedApp.search_panel_closed(false)
     }
