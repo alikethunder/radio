@@ -29,7 +29,7 @@ export const StationTag: FC<Props> = ({ tag, color, onClick, disable_link }) => 
   const tag_is_in_search = useMemo(() => search_stations_text.includes(tag.toLowerCase()), [search_stations_text])
 
   const click = useCallback(useDebounceCallback((e) => {
-    console.log(e, tag)
+    //console.log(e, tag)
     if (onClick) {
       onClick()
     }
