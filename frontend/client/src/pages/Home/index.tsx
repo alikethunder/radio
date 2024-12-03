@@ -59,8 +59,6 @@ export const Home = () => {
     current_user_id
   ])
 
-  const search_station_tags = useStore().persistedApp.search_station_tags()
-
   const [formState, set_formState] = useState({
     isValid: true,
     isSubmitting: false,
@@ -109,17 +107,26 @@ export const Home = () => {
 
   const search_stations_text = useStore().persistedApp.search_stations_text()
 
-  const search_stations_text_array = useMemo(() => search_stations_text.replaceAll(',', '').replaceAll('-', '').replaceAll('_', '').toLowerCase().split(' ').filter(w => !!w), [search_stations_text])
-
-  const tags_searched_stations = useMemo(() => search_station_tags.length ? stations?.filter(station => search_station_tags.every(tag => station.tags.includes(tag))) : stations, [search_station_tags, stations])
+  const search_stations_text_array = useMemo(() => search_stations_text.replaceAll(',', '').replaceAll('-', '').replaceAll('_', '').split(' ').filter(w => !!w), [search_stations_text])
 
   //useLog(true, 'tags_searched_stations : ', tags_searched_stations)
 
-  const text_searched_stations = useMemo(() => search_stations_text_array.length ? tags_searched_stations?.filter(station => search_stations_text_array.every(w => (station[`description_${language}`] ?? '').toLowerCase().includes(w)) || search_stations_text_array.some(w => (station.name ?? '').toLowerCase().includes(w))) : tags_searched_stations, [
-    search_stations_text_array,
-    tags_searched_stations,
-    language,
-  ])
+  const text_searched_stations = useMemo(() =>
+    search_stations_text_array.length ?
+      stations?.filter(
+        station => search_stations_text_array.every(
+          word =>
+            (station[`description_${language}`] ?? '').toLowerCase().includes(word)
+            || (station.name ?? '').toLowerCase().includes(word)
+            || station.tags.some(tag => tag.toLowerCase().includes(word))
+        )
+      )
+      : stations
+    , [
+      search_stations_text_array,
+      stations,
+      language,
+    ])
 
   //useLog(true, 'text_searched_stations : ', text_searched_stations)
 

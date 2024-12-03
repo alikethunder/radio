@@ -29,9 +29,9 @@ export const StationTag: FC<Props> = ({ tag, color, onClick, disable_link }) => 
 
   const result_color = color ?? useStore().app.get_station_tag(tag)?.color
 
-  const search_station_tags = useStore().persistedApp.search_station_tags()
+  const search_stations_text = useStore().persistedApp.search_stations_text()
 
-  const tag_is_in_search = useMemo(() => search_station_tags.includes(tag), [search_station_tags])
+  const tag_is_in_search = useMemo(() => search_stations_text.includes(tag.toLowerCase()), [search_stations_text])
 
   const click = useCallback(useDebounceCallback((e) => {
     if (onClick) {

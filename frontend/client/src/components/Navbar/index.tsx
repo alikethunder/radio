@@ -32,12 +32,9 @@ import './index.sass'
 export const Navbar: FC = () => {
 
   const current_page = useStore().app.current_page()
-
-  const search_station_tags = useStore().persistedApp.search_station_tags()
+  const search_stations_text = useStore().persistedApp.search_stations_text()
 
   const search_panel_closed = useStore().persistedApp.search_panel_closed()
-
-  const search_button_badge_value = useMemo(() => search_station_tags.length, [search_station_tags,])
 
   const [show_stations_search] = useShowSearchPanel()
 
@@ -94,17 +91,14 @@ export const Navbar: FC = () => {
               >
                 <i className={`pi pi-search-${search_panel_closed ? 'plus' : 'minus'} p-overlay-badge`}>
                   <Badge
-                    value={search_button_badge_value}
                     severity="warning"
                     style={{
-                      fontSize: '0.6rem',
-                      lineHeight: '.7rem',
-                      height: '0.8rem',
-                      width: '.8rem',
-                      minWidth: '.8rem',
-                      right: '.1rem',
-                      top: '.1rem',
-                      ...search_button_badge_value ? {} : {
+                      height: '0.5rem',
+                      width: '.5rem',
+                      minWidth: '.5rem',
+                      right: '0.25rem',
+                      top: '0.075rem',
+                      ...search_stations_text ? {} : {
                         display: 'none'
                       },
                     }}
