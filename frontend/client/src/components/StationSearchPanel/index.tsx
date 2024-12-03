@@ -28,7 +28,7 @@ export const StationSearchPanel: FC = () => {
 
   const search_station_tags = useStore().persistedApp.search_station_tags()
 
-  const search_panel_collapsed = useStore().persistedApp.search_panel_collapsed()
+  const search_panel_closed = useStore().persistedApp.search_panel_closed()
 
   const [show_stations_search] = useShowSearchPanel()
 
@@ -39,9 +39,7 @@ export const StationSearchPanel: FC = () => {
     const tags = searchParams.get('tags')?.split(',').filter(tag => !!tag)
     if (tags?.length) {
       tags?.forEach(tag => { if (tag) actions.persistedApp.add_tag_to_search(tag) })
-      actions.persistedApp.search_panel_collapsed(false)
-      //@ts-ignore
-      store.persistedApp.search_panel()?.expand()
+      actions.persistedApp.search_panel_closed(false)
     }
   }, [])
 
@@ -56,50 +54,11 @@ export const StationSearchPanel: FC = () => {
     })
   }, [search_station_tags])
 
-  const panel_ref = useCallback((e: Panel) => {
-    if (e) actions.persistedApp.search_panel(e)
-  }, [])
-
   return (
-    <Panel
-      ref={panel_ref}
-      toggleable
-
-      collapsed={search_panel_collapsed}
-
-      pt={{
-        root: {
-          className: classNames({
-            'hidden': !show_stations_search,
-          },
-          )
-        },
-        header: {
-          style: {
-            display: 'none'
-          }
-        },
-        toggleableContent: {
-          //panel content
-          className: classNames({},
-            'shadow-2',
-          )
-        },
-        content: {
-          //panel content
-          className: classNames({},
-            'flex',
-            'flex-row',
-            'flex-wrap',
-            'p-2',
-            'gap-4',
-            'justify-content-center',
-            'align-items-end',
-          )
-        }
-      }}
-    >
+    <div
+      //ref={panel_ref}
+      className={`search_panel z-1 flex flex-row flex-wrap p-2 gap-4 justify-content-center align-items-end transition-transform transition-duration-200 transition-ease-in-out ${show_stations_search ? '' : 'hidden'} ${search_panel_closed ? '-translate-y-100' : 'translate-y-0  shadow-2'}`}>
       <StationSearchPanelContent />
-    </Panel >
+    </div>
   )
 }

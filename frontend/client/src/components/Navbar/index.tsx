@@ -35,7 +35,7 @@ export const Navbar: FC = () => {
 
   const search_station_tags = useStore().persistedApp.search_station_tags()
 
-  const search_panel_collapsed = useStore().persistedApp.search_panel_collapsed()
+  const search_panel_closed = useStore().persistedApp.search_panel_closed()
 
   const search_button_badge_value = useMemo(() => search_station_tags.length, [search_station_tags,])
 
@@ -46,13 +46,12 @@ export const Navbar: FC = () => {
   ], true)
 
   const click_search = useDebounceCallback((e) => {
-    store.persistedApp.search_panel()?.toggle(e)
-    actions.persistedApp.search_panel_collapsed(!store.persistedApp.search_panel_collapsed())
+    actions.persistedApp.search_panel_closed(!store.persistedApp.search_panel_closed())
   }, 50)
 
   return (
     <>
-      <div className="flex flex-shrink-0 shadow-2 h-3rem sm:h-4rem justify-content-between bg-white border-bottom-1 border-solid border-100 border-top-none border-left-none border-right-none">
+      <div className={`flex flex-shrink-0 h-3rem sm:h-4rem justify-content-between bg-white border-bottom-1 border-solid border-100 border-top-none border-left-none border-right-none z-2 ${search_panel_closed ? 'shadow-2' : ''}`}>
 
         <div className="left h-full flex gap-1 sm:gap-2">
 
@@ -84,7 +83,6 @@ export const Navbar: FC = () => {
           {
             show_stations_search ?
               <Button
-                //icon={`pi pi-search-${search_panel_collapsed ? 'plus' : 'minus'}`}
                 rounded
                 outlined
                 raised
@@ -94,7 +92,7 @@ export const Navbar: FC = () => {
 
                 onClick={click_search}
               >
-                <i className={`pi pi-search-${search_panel_collapsed ? 'plus' : 'minus'} p-overlay-badge`}>
+                <i className={`pi pi-search-${search_panel_closed ? 'plus' : 'minus'} p-overlay-badge`}>
                   <Badge
                     value={search_button_badge_value}
                     severity="warning"

@@ -47,8 +47,7 @@ export const StationTag: FC<Props> = ({ tag, color, onClick, disable_link }) => 
         navigate(app_routes.root)
       }
 
-      store.persistedApp.search_panel()?.expand(e)
-      actions.persistedApp.search_panel_collapsed(false)
+      actions.persistedApp.search_panel_closed(false)
     }
   }, 100), [pathname])
 

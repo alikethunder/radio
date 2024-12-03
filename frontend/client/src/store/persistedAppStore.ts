@@ -5,9 +5,8 @@ import { v7 } from 'uuid'
 
 type PersistedApp = {
   rememberme: boolean;
-  search_panel: Panel | null;
   search_station_tags: string[];
-  search_panel_collapsed: boolean;
+  search_panel_closed: boolean;
   search_stations_text: string;
   favorite_stations: string[],
   user_uuid: string,
@@ -15,9 +14,8 @@ type PersistedApp = {
 
 const initial_state = {
   rememberme: false,
-  search_panel: null,
   search_station_tags: [],
-  search_panel_collapsed: true,
+  search_panel_closed: true,
   search_stations_text: '',
   favorite_stations: [],
   user_uuid: v7(),
