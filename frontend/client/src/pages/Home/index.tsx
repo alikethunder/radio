@@ -19,6 +19,7 @@ import {
 
 import {
   useFormState,
+  useStationsSearch,
   useTranslations,
 } from '@/hooks'
 
@@ -105,47 +106,9 @@ export const Home = () => {
     },
   }, formState, root_admin || some_station_admin)
 
-  const search_stations_text = useStore().persistedApp.search_stations_text()
+  const searched_stations = useStationsSearch(stations)
 
-  const search_stations_text_array = useMemo(() => search_stations_text.replaceAll(',', '').replaceAll('-', '').replaceAll('_', '').split(' ').filter(w => !!w), [search_stations_text])
-
-  //useLog(true, 'tags_searched_stations : ', tags_searched_stations)
-
-  const text_searched_stations = useMemo(() =>
-    search_stations_text_array.length ?
-      stations?.filter(
-        station => search_stations_text_array.every(
-          word =>
-            (station[`description_${language}`] ?? '').toLowerCase().includes(word)
-            || (station.name ?? '').toLowerCase().includes(word)
-            || station.tags.some(tag => tag.toLowerCase().includes(word))
-        )
-      )
-      : stations
-    , [
-      search_stations_text_array,
-      stations,
-      language,
-    ])
-
-  //useLog(true, 'text_searched_stations : ', text_searched_stations)
-
-  const searched_stations_with_mode = useMemo(() => edit_mode ?
-    (
-      root_admin ?
-        text_searched_stations
-        :
-        text_searched_stations.filter(station => current_user_id && station.admins?.includes(current_user_id))
-    )
-    :
-    text_searched_stations?.filter(station => station.broadcasting),
-    [
-      text_searched_stations,
-      edit_mode,
-      root_admin,
-    ])
-
-  //useLog(true, 'searched_stations_with_mode : ', searched_stations_with_mode)
+  //useLog(true, 'searched_stations : ', searched_stations)
 
   const [translations] = useTranslations([
     "tags",
@@ -190,7 +153,7 @@ export const Home = () => {
       <div className="sm:py-5 py-3 sm:px-6 px-2 w-full h-full overflow-y-auto page home_page flex-grow-1 flex flex-column">
 
         {
-          searched_stations_with_mode?.length || loading ?
+          searched_stations?.length || loading ?
             <div className={`stations_list row-gap-3 column-gap-3 mb-7`}>
 
               {
@@ -217,7 +180,7 @@ export const Home = () => {
                   : <></>
               }
 
-              {searched_stations_with_mode?.map(station =>
+              {searched_stations?.map(station =>
                 <StationCard station={station} />
               )}
 

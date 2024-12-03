@@ -1,8 +1,6 @@
-import { FC, useCallback, useMemo, useRef, useState } from "react"
+import { FC, useEffect, useState } from "react"
 
 import { InputText } from "primereact/inputtext"
-
-import { OverlayPanel } from 'primereact/overlaypanel'
 
 import { IconField } from "primereact/iconfield"
 
@@ -14,20 +12,16 @@ import { StationTagRemoveTokenIcon } from "@/layout parts"
 
 import {
   actions,
-  store,
   useStore,
 } from "@/store"
 
 import {
   useTranslations,
-  useTranslationsSkeleton,
 } from '@/hooks'
 
 import {
   StationTag,
 } from '@/components'
-
-import { useDebounceCallback } from "usehooks-ts"
 
 export const StationSearchPanelContent: FC = () => {
 
@@ -36,6 +30,10 @@ export const StationSearchPanelContent: FC = () => {
   const [translations] = useTranslations([
     'search_radiostations',
   ], true)
+
+  useEffect(() => {
+    actions.persistedApp.search_stations_text_array(search_stations_text.replaceAll(',', '').replaceAll('-', '').replaceAll('_', '').split(' ').filter(w => !!w))
+  }, [search_stations_text])
 
   return (
     <>
