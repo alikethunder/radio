@@ -32,7 +32,9 @@ export const StationSearchPanelContent: FC = () => {
   ], true)
 
   useEffect(() => {
-    actions.persistedApp.search_stations_text_array(search_stations_text.replaceAll(',', '').replaceAll('-', '').replaceAll('_', '').split(' ').filter(w => !!w))
+    actions.persistedApp.search_stations_text_array(
+      search_stations_text.replaceAll(',', '').replaceAll('-', ' ').replaceAll('_', '').toLowerCase().split(' ').filter(w => !!w)
+    )
   }, [search_stations_text])
 
   return (
@@ -53,7 +55,7 @@ export const StationSearchPanelContent: FC = () => {
             className="w-full"
             value={search_stations_text}
 
-            onChange={(e) => actions.persistedApp.search_stations_text(e.target.value.toLowerCase())}
+            onChange={(e) => actions.persistedApp.search_stations_text(e.target.value)}
           />
 
         </IconField>

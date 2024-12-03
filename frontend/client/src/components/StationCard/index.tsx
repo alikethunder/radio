@@ -126,7 +126,7 @@ export const StationCard: FC<Props> = ({ station, }) => {
             </QueryLink>
           </div>
 
-          <div className="station_tags_container text-center text_hidden_overflow line-clamp-2">
+          <div className="station_tags_container text-center text_hidden_overflow line-clamp-2 flex-shrink-0">
             {
               station.tags.map(tag => <StationTag tag={tag} />)
             }
