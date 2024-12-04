@@ -1,13 +1,15 @@
 package controllers
 
 import (
+	"encoding/json"
 	"fmt"
 	"html/template"
+	"os"
 	"slices"
 	"strings"
+	"web_project/constants"
 	"web_project/cookies"
 	"web_project/db"
-	"web_project/db/StationTags"
 	"web_project/translations"
 
 	"github.com/gocql/gocql"
@@ -31,51 +33,61 @@ func Index(ctx *fiber.Ctx) error {
 		return e == language
 	})
 
-	query_tags := ctx.Query("tags")
+	var languages_maps []fiber.Map
 
-	var tags []string
+	for _, lang := range languages {
+		code := constants.Language_codes[lang]
 
-	additional_selectors := []string{}
-
-	if query_tags == "" {
-
-		tags_list := StationTags.ListTags()
-
-		tags = make([]string, len(tags_list))
-
-		for i, tag_map := range tags_list {
-			tags[i] = tag_map["name"].(string)
+		if code == nil {
+			code = lang
 		}
-	} else {
-		tags = strings.Split(query_tags, ",")
-		additional_selectors = append(additional_selectors, "tags CONTAINS '"+query_tags+"'")
+
+		languages_maps = append(languages_maps, fiber.Map{
+			"name": lang,
+			"code": code,
+		})
 	}
 
-	stations_list := db.List("stations", fiber.Map{"broadcasting": true}, additional_selectors, "", "id", "name")
-
 	if agents.IsCrawler(ctx.Get("User-Agent")) {
+
+		var lang_translations fiber.Map
+
+		lang_translations_json, _ := os.ReadFile(os.Getenv("TEMPL_PATH") + "/settings/languages_translations.json")
+
+		json.Unmarshal(lang_translations_json, &lang_translations)
+
+		for _, lang_map := range languages_maps {
+			lang_map["translation"] = lang_translations[lang_map["name"].(string)]
+		}
 
 		if ctx.Path() == "/" {
 
 			logo := template.JS(ctx.BaseURL() + "/android-chrome-192x192.png")
 
 			return ctx.Render("seo/home", fiber.Map{
-				"Description":                      translations.Dictionary[language]["home_page_description"],
-				"content":                          template.HTML(translations.Dictionary[language]["home_page_content"]),
-				"keywords":                         translations.Dictionary[language]["home_page_keywords"],
-				"Tags":                             translations.Dictionary[language]["tags"],
-				"Tags_list":                        tags,
-				"Language":                         language,
-				"Languages":                        languages,
-				"URL":                              ctx.OriginalURL(),
-				"Domain":                           ctx.BaseURL(),
-				"Full_url":                         template.JS("\"" + fmt.Sprintf("%s%s", ctx.BaseURL(), ctx.OriginalURL()) + "\""),
-				"Stations":                         translations.Dictionary[language]["radiostations"],
-				"Stations_list":                    stations_list,
+				"Language": language,
+
+				"sitename": translations.Dictionary[language]["sitename"],
+
+				"Languages": languages_maps,
+
+				"Description": translations.Dictionary[language]["home_page_description"],
+
+				"content": template.HTML(translations.Dictionary[language]["home_page_content"]),
+
+				"keywords": translations.Dictionary[language]["home_page_keywords"],
+
+				"URL": ctx.OriginalURL(),
+
+				"Domain": ctx.BaseURL(),
+
+				"Full_url": template.JS("\"" + fmt.Sprintf("%s%s", ctx.BaseURL(), ctx.OriginalURL()) + "\""),
+
 				"links_to_page_on_other_languages": translations.Dictionary[language]["links_to_page_on_other_languages"],
-				"sitename":                         translations.Dictionary[language]["sitename"],
-				"logo":                             logo,
-				"quoted_logo":                      template.JS("\"" + logo + "\""),
+
+				"logo": logo,
+
+				"quoted_logo": template.JS("\"" + logo + "\""),
 			})
 		}
 
@@ -99,18 +111,29 @@ func Index(ctx *fiber.Ctx) error {
 			}
 
 			return ctx.Render("seo/station", fiber.Map{
-				"station":                          station,
-				"Language":                         language,
-				"Languages":                        languages,
-				"description":                      template.HTML(station_description),
-				"Tags":                             translations.Dictionary[language]["tags"],
-				"URL":                              ctx.OriginalURL(),
-				"Domain":                           ctx.BaseURL(),
-				"Full_url":                         template.JS("\"" + fmt.Sprintf("%s%s", ctx.BaseURL(), ctx.OriginalURL()) + "\""),
+				"station": station,
+
+				"Language": language,
+
+				"Languages": languages_maps,
+
+				"description": template.HTML(station_description),
+
+				"Tags": translations.Dictionary[language]["tags"],
+
+				"URL": ctx.OriginalURL(),
+
+				"Domain": ctx.BaseURL(),
+
+				"Full_url": template.JS("\"" + fmt.Sprintf("%s%s", ctx.BaseURL(), ctx.OriginalURL()) + "\""),
+
 				"links_to_page_on_other_languages": translations.Dictionary[language]["links_to_page_on_other_languages"],
-				"sitename":                         translations.Dictionary[language]["sitename"],
-				"logo":                             logo,
-				"quoted_logo":                      template.JS("\"" + logo + "\""),
+
+				"sitename": translations.Dictionary[language]["sitename"],
+
+				"logo": logo,
+
+				"quoted_logo": template.JS("\"" + logo + "\""),
 			})
 		}
 	}
@@ -158,20 +181,24 @@ func Index(ctx *fiber.Ctx) error {
 	logo := template.JS(ctx.BaseURL() + "/android-chrome-192x192.png")
 
 	return ctx.Render("public/index", fiber.Map{
-		"Description":                      translations.Dictionary[language]["home_page_description"],
-		"keywords":                         translations.Dictionary[language]["home_page_keywords"],
-		"Tags":                             translations.Dictionary[language]["tags"],
-		"Tags_list":                        tags,
-		"Language":                         language,
-		"Languages":                        languages,
-		"URL":                              ctx.OriginalURL(),
-		"Domain":                           ctx.BaseURL(),
-		"Full_url":                         template.JS("\"" + fmt.Sprintf("%s%s", ctx.BaseURL(), ctx.OriginalURL()) + "\""),
-		"Stations":                         translations.Dictionary[language]["radiostations"],
-		"Stations_list":                    stations_list,
-		"links_to_page_on_other_languages": translations.Dictionary[language]["links_to_page_on_other_languages"],
-		"sitename":                         translations.Dictionary[language]["sitename"],
-		"logo":                             logo,
-		"quoted_logo":                      template.JS("\"" + logo + "\""),
+		"Language": language,
+
+		"sitename": translations.Dictionary[language]["sitename"],
+
+		"Description": translations.Dictionary[language]["home_page_description"],
+
+		"Languages": languages_maps,
+
+		"keywords": translations.Dictionary[language]["home_page_keywords"],
+
+		"URL": ctx.OriginalURL(),
+
+		"Domain": ctx.BaseURL(),
+
+		"Full_url": template.JS("\"" + fmt.Sprintf("%s%s", ctx.BaseURL(), ctx.OriginalURL()) + "\""),
+
+		"logo": logo,
+
+		"quoted_logo": template.JS("\"" + logo + "\""),
 	})
 }

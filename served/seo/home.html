@@ -4,8 +4,9 @@
 <head>
   <meta charSet="utf-8" />
 
-  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=0, minimum-scale=1" />
-  
+  <meta name="viewport"
+    content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=0, minimum-scale=1" />
+
   <title>{{.sitename}}</title>
   <meta name='pagename' content="{{.sitename}}">
 
@@ -27,7 +28,7 @@
   <meta content="yes" name="apple-mobile-web-app-capable" />
 
   {{range .Languages}}
-  <meta property="og:locale:alternate" content={{.}} />
+  <meta property="og:locale:alternate" content={{.code}} />
   {{end}}
 
   <meta property="og:site_name" content="{{.sitename}}" />
@@ -77,26 +78,18 @@
   <p>
     {{.content}}
   </p>
-  <p>
-    {{.Tags}}:
-    {{range .Tags_list}}
-    <a href="{{$.Domain}}/?language={{$.Language}}&tags={{.}}">{{.}}</a>,
-    {{end}}
-  </p>
-  <p>
-    {{.Stations}}:
 
-    {{range .Stations_list}}
-    <a href="{{$.Domain}}/station/{{.id}}?language={{$.Language}}">{{.name}}</a>,
-    {{end}}
-  </p>
   <p>
-  <p>
-    {{.links_to_page_on_other_languages}}:
-  </p>
-  {{range .Languages}}
-  <a rel="alternate" hreflang="{{.}}" href="{{$.Domain}}?language={{.}}">{{.}} - {{$.sitename}}</a>,
-  {{end}}
+    <p>
+      {{.links_to_page_on_other_languages}}:
+    </p>
+    <ul>
+      {{range .Languages}}
+        <li>
+          <a rel="alternate" hreflang="{{.code}}" href="{{$.Domain}}?language={{.name}}">{{.translation}} - {{$.sitename}}</a>
+        </li>
+      {{end}}
+    </ul>
   </p>
 </body>
 

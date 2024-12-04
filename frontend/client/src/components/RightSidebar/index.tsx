@@ -34,16 +34,8 @@ import { classNames } from "primereact/utils"
 
 import { Translation } from "@/layout parts"
 import { useDebounceCallback } from "usehooks-ts"
-import { useFavoriteStations, useTranslations } from "@/hooks"
-
-const languages_translations = {
-  "en": "English (en)",
-  "ru": "Русский (ru)",
-  "sp": "Español (es)",
-  "de": "Deutsch (de)",
-  "fr": "Français (fr)",
-  "pt": "Português (pt)",
-}
+import { useFavoriteStations, } from "@/hooks"
+import languages_translations from '&/settings/languages_translations.json'
 
 export const RightSidebar: FC = () => {
 
