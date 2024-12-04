@@ -12,11 +12,11 @@ require (
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/joho/godotenv v1.5.1
 	github.com/monperrus/crawler-user-agents v0.0.0-20241023055648-e464fa7cb229
-	github.com/sabloger/sitemap-generator v1.3.0
 	golang.org/x/crypto v0.28.0
 )
 
 require (
+	github.com/alikethunder/sitemap-generator v1.3.1 // indirect
 	github.com/andybalholm/brotli v1.1.0 // indirect
 	github.com/fasthttp/websocket v1.5.8 // indirect
 	github.com/gofiber/template v1.8.3 // indirect

@@ -4,15 +4,17 @@ import (
 	"fmt"
 	"os"
 	"time"
+	"web_project/constants"
 	"web_project/db"
-	"web_project/db/StationTags"
 	"web_project/translations"
 
+	"github.com/alikethunder/sitemap-generator/smg"
 	"github.com/getsentry/sentry-go"
 	"github.com/gocql/gocql"
 	"github.com/gofiber/fiber/v2"
-	"github.com/sabloger/sitemap-generator/smg"
 )
+
+const baseURL = "https://radio.best"
 
 func GenerateSitemap(ctx *fiber.Ctx) error {
 
@@ -23,7 +25,7 @@ func GenerateSitemap(ctx *fiber.Ctx) error {
 
 		smi := smg.NewSitemapIndex(true)
 		smi.SetCompress(false)
-		smi.SetHostname("https://radio.best")
+		smi.SetHostname(baseURL)
 		smi.SetOutputPath("./served/static/sitemaps/")
 		smi.SetServerURI("/sitemaps/")
 
@@ -33,37 +35,52 @@ func GenerateSitemap(ctx *fiber.Ctx) error {
 
 		languages := translations.Languages()
 
-		for _, l := range languages {
+		var main_alternates []*smg.SitemapAlternateLoc
+
+		for _, lang := range languages {
+
+			main_alternates = append(main_alternates, &smg.SitemapAlternateLoc{
+				Hreflang: constants.Language_codes[lang].(string),
+				Href:     baseURL + "?language=" + lang,
+				Rel:      "alternate",
+			})
+		}
+
+		for _, lang := range languages {
+
 			sm.Add(&smg.SitemapLoc{
-				Loc:        "?language=" + l,
+				Loc:        "?language=" + lang,
 				LastMod:    &now,
 				ChangeFreq: smg.Weekly,
 				Priority:   1,
 				Images:     []*smg.SitemapImage{{ImageLoc: "/android-chrome-192x192.png"}},
+				Alternate:  main_alternates,
 			})
 		}
 
-		for _, tag := range StationTags.ListTags() {
-			for _, l := range languages {
-				sm.Add(&smg.SitemapLoc{
-					Loc:        "?language=" + l + "?tags=" + tag["name"].(string),
-					LastMod:    &now,
-					ChangeFreq: smg.Weekly,
-					Priority:   1,
-					Images:     []*smg.SitemapImage{{ImageLoc: "/android-chrome-192x192.png"}},
+		for _, station := range db.List("stations", fiber.Map{"broadcasting": true}, []string{}, "", "id") {
+
+			id := station["id"].(gocql.UUID).String()
+
+			var station_alternates []*smg.SitemapAlternateLoc
+
+			for _, lang := range languages {
+
+				station_alternates = append(station_alternates, &smg.SitemapAlternateLoc{
+					Hreflang: constants.Language_codes[lang].(string),
+					Href:     baseURL + "/station/" + id + "?language=" + lang,
+					Rel:      "alternate",
 				})
 			}
-		}
 
-		for _, station := range db.List("stations", fiber.Map{"broadcasting": true}, []string{}, "", "id") {
-			id := station["id"].(gocql.UUID).String()
-			for _, l := range languages {
+			for _, lang := range languages {
 				sm.Add(&smg.SitemapLoc{
-					Loc:        "/station/" + id + "?language=" + l,
+					Loc:        "/station/" + id + "?language=" + lang,
 					LastMod:    &now,
 					ChangeFreq: smg.Weekly,
 					Priority:   1,
 					Images:     []*smg.SitemapImage{{ImageLoc: "/api/v1/files/stations/" + id + "/avatar"}},
+					Alternate:  station_alternates,
 				})
 			}
 		}
