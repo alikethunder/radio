@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"html/template"
 	"os"
-	"slices"
 	"strings"
 	"web_project/constants"
 	"web_project/cookies"
@@ -29,9 +28,7 @@ func Index(ctx *fiber.Ctx) error {
 		language = "en"
 	}
 
-	languages := slices.DeleteFunc(translations.Languages(), func(e string) bool {
-		return e == language
-	})
+	languages := translations.Languages()
 
 	var languages_maps []fiber.Map
 

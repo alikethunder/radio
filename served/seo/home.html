@@ -28,7 +28,9 @@
   <meta content="yes" name="apple-mobile-web-app-capable" />
 
   {{range .Languages}}
-  <meta property="og:locale:alternate" content={{.code}} />
+    <link rel="alternate" hreflang="{{.code}}" href="{{$.Domain}}?language={{.name}}" />
+
+    <meta property="og:locale:alternate" content={{.code}} />
   {{end}}
 
   <meta property="og:site_name" content="{{.sitename}}" />
