@@ -1,4 +1,4 @@
-import { FC, useCallback, useMemo } from "react"
+import { FC, memo, useCallback, useMemo } from "react"
 
 import { classNames } from 'primereact/utils'
 
@@ -18,7 +18,7 @@ type Props = {
   disable_link?: boolean;
 }
 
-export const StationTag: FC<Props> = ({ tag, color, onClick, disable_link }) => {
+export const StationTag: FC<Props> = memo(({ tag, color, onClick, disable_link }) => {
 
   const { pathname } = useLocation()
 
@@ -77,4 +77,4 @@ export const StationTag: FC<Props> = ({ tag, color, onClick, disable_link }) => 
       </span>
     </span>
   )
-}
+})

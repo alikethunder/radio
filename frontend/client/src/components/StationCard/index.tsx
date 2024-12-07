@@ -1,4 +1,4 @@
-import { FC, } from "react"
+import { FC, memo, } from "react"
 
 import {
   QueryLink,
@@ -28,7 +28,7 @@ type Props = {
   station: Station;
 }
 
-export const StationCard: FC<Props> = ({ station, }) => {
+export const StationCard: FC<Props> = memo(({ station, }) => {
 
   const current_station = useStore().player.current_station()
 
@@ -147,4 +147,4 @@ export const StationCard: FC<Props> = ({ station, }) => {
       }
     </div>
   )
-}
+})

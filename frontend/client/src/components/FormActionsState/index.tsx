@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo } from "react"
+import { FC, memo, useEffect, useMemo } from "react"
 
 //import { TabMenu } from 'primereact/tabmenu'
 import { Button } from 'primereact/button'
@@ -13,7 +13,7 @@ page that will include form and will need the form state actions has to set and 
 if it will be present the buttons will be rendered according to FormActionsState_state
 */
 
-export const FormActionsState: FC = () => {
+export const FormActionsState: FC = memo(() => {
 
   const edit_mode = useStore().app.FormActionsState_state()
 
@@ -109,4 +109,4 @@ export const FormActionsState: FC = () => {
       </div>
       : <></>
   )
-}
+})

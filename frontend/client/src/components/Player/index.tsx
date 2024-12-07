@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from "react"
+import { FC, memo, useCallback, useEffect, useState } from "react"
 
 import {
   generatePath,
@@ -32,7 +32,7 @@ import { useDebounceCallback } from "usehooks-ts"
 
 import './index.sass'
 
-export const Player: FC = () => {
+export const Player: FC = memo(() => {
 
   const [audio_ref, set_audio_ref] = useState<HTMLAudioElement | null>(null)
 
@@ -115,7 +115,7 @@ export const Player: FC = () => {
         <div className="flex flex-column social_info">
           <div className="flex gap-1 flex-column">
             {/* <span className="text-gray-500 favorited">125</span> */}
-            <AddStationToFavorites id={current_station?.id} data-targetid="player_add_to_fav"/>
+            <AddStationToFavorites id={current_station?.id} data-targetid="player_add_to_fav" />
 
             {/* <Tooltip target='.favorited' >
               {translations_skl.added_to_favorites}
@@ -261,4 +261,4 @@ export const Player: FC = () => {
 
     </div>
   )
-}
+})

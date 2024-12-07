@@ -1,4 +1,4 @@
-import { FC, useMemo, } from "react"
+import { FC, memo, useCallback, } from "react"
 
 import { Button } from 'primereact/button'
 
@@ -24,12 +24,11 @@ import {
   QueryLink,
 } from '@/components'
 
-import { icon_classes } from "@/constants/icon_classes"
 import { useDebounceCallback } from "usehooks-ts"
 
 import './index.sass'
 
-export const Navbar: FC = () => {
+export const Navbar: FC = memo(() => {
 
   const current_page = useStore().app.current_page()
   const search_stations_text = useStore().persistedApp.search_stations_text()
@@ -46,6 +45,16 @@ export const Navbar: FC = () => {
     actions.persistedApp.search_panel_closed(!store.persistedApp.search_panel_closed())
   }, 50)
 
+  const click_root = useCallback(
+    useDebounceCallback(() => actions.session.rightSidebarOpened(false), 50)
+    , [])
+
+  const open_rsb = useCallback(
+    useDebounceCallback(
+      () => actions.session.rightSidebarOpened(true)
+      , 50)
+    , [])
+
   return (
     <>
       <div className={`flex flex-shrink-0 h-3rem sm:h-4rem justify-content-between bg-white border-bottom-1 border-solid border-100 border-top-none border-left-none border-right-none z-2 ${search_panel_closed ? 'shadow-2' : ''}`}>
@@ -53,7 +62,7 @@ export const Navbar: FC = () => {
         <div className="left h-full flex gap-1 sm:gap-2">
 
           <QueryLink to={app_routes.root}
-            onClick={() => actions.session.rightSidebarOpened(false)}>
+            onClick={click_root}>
             <Button
               text
               raised
@@ -119,9 +128,9 @@ export const Navbar: FC = () => {
             severity="info"
             text
             icon="pi pi-bars text-2xl md:text-3xl"
-            onClick={() => actions.session.rightSidebarOpened(true)} />
+            onClick={open_rsb} />
         </div>
       </div>
     </>
   )
-}
+})

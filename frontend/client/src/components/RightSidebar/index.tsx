@@ -1,4 +1,4 @@
-import { FC, useMemo, } from "react"
+import { FC, memo, useCallback, useMemo, } from "react"
 
 import { Button } from 'primereact/button'
 
@@ -37,7 +37,7 @@ import { useDebounceCallback } from "usehooks-ts"
 import { useFavoriteStations, } from "@/hooks"
 import languages_translations from '&/settings/languages_translations.json'
 
-export const RightSidebar: FC = () => {
+export const RightSidebar: FC = memo(() => {
 
   const rightSidebarOpened = useTrackedStore().session.rightSidebarOpened()
 
@@ -68,6 +68,35 @@ export const RightSidebar: FC = () => {
   })), [languages_translations])
 
   const active_dropdown_language = useMemo(() => languages_options.find(l => l.code == language), [language, languages_options])
+
+  const close_rsb = useCallback(
+    useDebounceCallback(() => actions.session.rightSidebarOpened(false), 50)
+    , [])
+
+  const change_jsons = useCallback(
+    useDebounceCallback(
+      async (e) => {
+        if (e.target.files?.length) {
+          console.log(e.target.files)
+
+          const body = new FormData()
+
+          for (const file of e.target.files) {
+            if (file.name.includes('data')) {
+              body.append('json_data', file)
+            } else {
+              body.append('json_info', file)
+            }
+          }
+
+          fetch('/api/v1/radio/upload-jsons', {
+            method: "POST",
+            body,
+          })
+        }
+      }
+      , 50)
+    , [])
 
   return (
     <Sidebar
@@ -110,7 +139,7 @@ export const RightSidebar: FC = () => {
 
         {
           signedin ?
-            <QueryLink to={generatePath(app_routes.user_profile$id, { id: store.user.id() })} onClick={() => actions.session.rightSidebarOpened(false)}>
+            <QueryLink to={generatePath(app_routes.user_profile$id, { id: store.user.id() })} onClick={close_rsb}>
               <Button
                 label={route_attributes[app_routes.user_profile$id].name as unknown as string}
                 text
@@ -120,7 +149,7 @@ export const RightSidebar: FC = () => {
               />
             </QueryLink>
             :
-            <QueryLink to={app_routes.signin} onClick={() => actions.session.rightSidebarOpened(false)}>
+            <QueryLink to={app_routes.signin} onClick={close_rsb}>
               <Button
                 label={route_attributes[app_routes.signin].name as unknown as string}
                 text
@@ -134,7 +163,7 @@ export const RightSidebar: FC = () => {
 
         {
           favorite_stations.length ?
-            <QueryLink to={app_routes.my_stations} onClick={() => actions.session.rightSidebarOpened(false)}>
+            <QueryLink to={app_routes.my_stations} onClick={close_rsb}>
               <Button
                 //todo: stations quantity like "My stations (5)"
                 label={route_attributes[app_routes.my_stations].name as unknown as string}
@@ -171,7 +200,6 @@ export const RightSidebar: FC = () => {
               className="border-noround w-full h-full px-2 text-2xl shadow_on_hover action_text_font z-0"
             >
               <label htmlFor="jsoninput" className="m-0 absolute top-0 bottom-0 left-0 right-0 z-1 cursor-pointer"
-                onClick={(e) => console.log('label   ', e)}
               ></label>
               <input
                 type="file"
@@ -180,31 +208,11 @@ export const RightSidebar: FC = () => {
                 accept="application/JSON"
                 multiple
                 className="hidden"
-                onChange={async (e) => {
-                  if (e.target.files?.length) {
-                    console.log(e.target.files)
-
-                    const body = new FormData()
-
-                    for (const file of e.target.files) {
-                      if (file.name.includes('data')) {
-                        body.append('json_data', file)
-                      } else {
-                        body.append('json_info', file)
-                      }
-                    }
-
-                    fetch('/api/v1/radio/upload-jsons', {
-                      method: "POST",
-                      body,
-                    })
-                  }
-                }}
+                onChange={change_jsons}
               />
             </Button>
             : <></>
         }
-
 
       </div>
 
@@ -226,4 +234,4 @@ export const RightSidebar: FC = () => {
 
     </Sidebar>
   )
-}
+})

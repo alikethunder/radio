@@ -1,9 +1,9 @@
-import { forwardRef } from "react"
+import { forwardRef, memo } from "react"
 import { NavLink, useLocation, NavLinkProps } from "react-router-dom"
 
 //navlink can know if it's active
 
-export const QueryNavLink = forwardRef<HTMLAnchorElement, NavLinkProps>(({ children, to, ...props }, ref) => {
+const QueryNavLink_comp = forwardRef<HTMLAnchorElement, NavLinkProps>(({ children, to, ...props }, ref) => {
   let { search } = useLocation()
 
   return (
@@ -12,3 +12,5 @@ export const QueryNavLink = forwardRef<HTMLAnchorElement, NavLinkProps>(({ child
     </NavLink>
   )
 })
+
+export const QueryNavLink = memo(QueryNavLink_comp)

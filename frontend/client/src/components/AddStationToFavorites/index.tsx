@@ -1,4 +1,4 @@
-import { FC, useMemo, } from "react"
+import { FC, memo, useMemo, } from "react"
 
 import { Button } from 'primereact/button'
 
@@ -21,7 +21,7 @@ type Props = {
   "data-targetid"?: string;
 }
 
-export const AddStationToFavorites: FC<Props> = ({ id, className, "data-targetid": dataTargetid, ...rest }) => {
+export const AddStationToFavorites: FC<Props> = memo(({ id, className, "data-targetid": dataTargetid, ...rest }) => {
 
   const signedin = useStore().auth.signedin()
 
@@ -64,7 +64,7 @@ export const AddStationToFavorites: FC<Props> = ({ id, className, "data-targetid
   ], true)
 
   const targetid = useMemo(() => dataTargetid ?? v7(), [])
-  
+
   return (
     <>
       <Button
@@ -93,4 +93,4 @@ export const AddStationToFavorites: FC<Props> = ({ id, className, "data-targetid
       }
     </>
   )
-}
+})

@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react"
+import { FC, memo, useEffect, useState } from "react"
 
 import { InputText } from "primereact/inputtext"
 
@@ -23,7 +23,7 @@ import {
   StationTag,
 } from '@/components'
 
-export const StationSearchPanelContent: FC = () => {
+export const StationSearchPanelContent: FC = memo(() => {
 
   const search_stations_text = useStore().persistedApp.search_stations_text()
 
@@ -64,4 +64,4 @@ export const StationSearchPanelContent: FC = () => {
 
     </>
   )
-}
+})

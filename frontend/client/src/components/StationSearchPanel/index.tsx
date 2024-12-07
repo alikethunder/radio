@@ -1,4 +1,4 @@
-import { FC, } from "react"
+import { FC, memo, } from "react"
 
 import { StationSearchPanelContent } from "./StationSearchPanelContent"
 
@@ -12,7 +12,7 @@ import {
 
 import './index.sass'
 
-export const StationSearchPanel: FC = () => {
+export const StationSearchPanel: FC = memo(() => {
 
   const search_panel_closed = useStore().persistedApp.search_panel_closed()
 
@@ -24,4 +24,4 @@ export const StationSearchPanel: FC = () => {
       <StationSearchPanelContent />
     </div>
   )
-}
+})
