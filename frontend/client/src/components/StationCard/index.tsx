@@ -26,9 +26,12 @@ import { Ripple } from "primereact/ripple"
 
 type Props = {
   station: Station;
+  style: {
+    [x: string]: any;
+  }
 }
 
-export const StationCard: FC<Props> = memo(({ station, }) => {
+export const StationCard: FC<Props> = memo(({ station, style, }) => {
 
   const current_station = useStore().player.current_station()
 
@@ -46,7 +49,7 @@ export const StationCard: FC<Props> = memo(({ station, }) => {
   }, 50)
 
   return (
-    <div className="flex flex-column gap-2 w-9rem">
+    <div className="flex flex-column gap-2 w-9rem" style={style}>
 
       <div className={classNames({
         'current_station active_element': current_station?.id == station.id,
@@ -147,4 +150,6 @@ export const StationCard: FC<Props> = memo(({ station, }) => {
       }
     </div>
   )
+}, (oldProps, newProps) => {
+  return oldProps.station.id === newProps.station.id
 })

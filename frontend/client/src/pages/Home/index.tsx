@@ -1,12 +1,12 @@
-import { useEffect, useMemo, useState } from "react"
+import { forwardRef, LegacyRef, memo, useEffect, useMemo, useRef, useState } from "react"
+import { FixedSizeGrid as Grid } from 'react-window'
+import AutoSizer from "react-virtualized-auto-sizer"
 
 import {
   generatePath,
 } from "react-router-dom"
 
-import { ProgressSpinner } from 'primereact/progressspinner'
-
-import { QueryLink, StationCard, StationTag } from "@/components"
+import { QueryLink, StationCard, StationsLoadSpinner, StationTag } from "@/components"
 
 import {
   app_routes,
@@ -31,6 +31,83 @@ import { Station } from "@/types"
 
 import { Helmet } from "react-helmet"
 import { list } from "@/API/station/list"
+import { useDebounceCallback, useMediaQuery, useResizeObserver } from "usehooks-ts"
+
+type Size = {
+  width?: number
+  height?: number
+}
+
+const card_size = {
+  width: 144,
+  height: 208,
+}
+
+const gap = 16
+
+const GridCell = memo(({ columnIndex, rowIndex, style, data }: {
+  columnIndex: number, rowIndex: number, style: {
+    [x: string]: any
+  }, data: {
+    py: number,
+    px: number,
+    gapx: number,
+    mobile: boolean,
+    stations: Station[],
+    columns: number,
+  }
+}) => {
+
+  if (!rowIndex && !columnIndex) {
+    console.log('GridCell data : ', style, data)
+  }
+
+  return <StationCard station={data.stations[rowIndex * data.columns + columnIndex]} style={{
+    ...style,
+    top: `${parseFloat(style.top) + data.py + gap}px`,
+    left: `${parseFloat(style.left) + data.px + (data.mobile ? data.gapx : 0)}px`,
+    width: style.width - data.gapx,
+    height: style.height - gap,
+  }} />
+}, (o, n) => {
+  //console.log('GridCell o,n : ', o, n)
+  return o.data.py === n.data.py
+    && o.data.px === n.data.px
+    && o.data.gapx === n.data.gapx
+    && o.data.mobile === n.data.mobile
+    && o.style.left.toFixed(2) === n.style.left.toFixed(2)
+    && o.style.top.toFixed(2) === n.style.top.toFixed(2)
+    && o.columnIndex === n.columnIndex
+    && o.rowIndex === n.rowIndex
+})
+
+const innerElementType = memo(forwardRef(({ style, children, ...rest }: {
+  style: {
+    [x: string]: any
+  },
+  children: any
+}, ref: LegacyRef<HTMLDivElement>) => {
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        ...style,
+        height: `${parseFloat(style.height) + 2 * (children[0].props.data.py ?? 32)}`
+      }}
+      children={children}
+      {...rest}
+    />
+  )
+}), (o, n) => {
+  //console.log('innerElementType o,n : ', o, n)
+  return o.children.length === n.children.length
+    && o.style.height.toFixed(2) === n.style.height.toFixed(2)
+    && o.style.width.toFixed(2) === n.style.width.toFixed(2)
+    && o.style.pointerEvents === n.style.pointerEvents
+  //&& o.children[0].props.data.gapx === n.children[0].props.data.gapx
+  //&& o.children[0].props.data.mobile === n.children[0].props.data.mobile
+})
 
 export const Home = () => {
 
@@ -116,6 +193,64 @@ export const Home = () => {
     'no_stations_with_parameters',
   ], true)
 
+  const ref = useRef<HTMLDivElement>(null)
+
+  const [{ width, height }, setSize] = useState<Size>({
+    width: undefined,
+    height: undefined,
+  })
+
+  const onResize = useDebounceCallback(setSize, 200)
+
+  useResizeObserver({
+    ref,
+    onResize,
+  })
+
+  const mobile = useMediaQuery('(max-width: 768px)')
+
+  const py = useMemo(() => mobile ? 16 : 32, [mobile])
+
+  const px = useMemo(() => mobile ? 0 : 48, [mobile])
+
+  const columns = useMemo(() => {
+    if (width) {
+      return Math.floor(
+        mobile ?
+          (width - gap * .5) / (card_size.width + gap * .5)
+          :
+          (width + gap - 2 * px) / (card_size.width + gap))
+    }
+  }, [
+    width,
+    px,
+    mobile,
+  ])
+
+  const gapx = useMemo(() => {
+    if (columns && width) {
+      const r = Number((
+        (width - 2 * px - columns * card_size.width) / (columns + (mobile ? 1 : -1))
+      ).toFixed(2))
+      console.log('gapx : ', width, columns, r)
+      return r
+    }
+  }, [
+    width,
+    px,
+    columns,
+    mobile,
+  ])
+
+  const rows = useMemo(() => {
+    if (columns && searched_stations.length) {
+      return Math.ceil(searched_stations.length / columns)
+    }
+  }, [
+    searched_stations,
+    columns,
+  ])
+
   return (
     <>
       <Helmet>
@@ -150,51 +285,79 @@ export const Home = () => {
 
       </Helmet>
 
-      <div className="sm:py-5 py-3 sm:px-6 px-2 w-full h-full overflow-y-auto page home_page flex-grow-1 flex flex-column">
+      <div className="w-full h-full overflow-y-auto page home_page flex-grow-1 flex flex-column" ref={ref}>
 
         {
+          columns && rows && gapx ?
+            <AutoSizer>
+              {({ height, width }) =>
+                <Grid
+                  itemData={{
+                    stations: searched_stations,
+                    py,
+                    px,
+                    gapx,
+                    mobile,
+                    columns,
+                  }}
+                  innerElementType={innerElementType}
+                  height={height}
+                  width={width}
+                  columnWidth={card_size.width + gapx}
+                  rowHeight={card_size.height + gap}
+                  columnCount={columns}
+                  rowCount={rows}
+                >
+                  {GridCell}
+                </Grid>
+              }
+            </AutoSizer>
+            : <></>
+        }
+
+        {/* {
           searched_stations?.length || loading ?
-            <div className={`stations_list row-gap-3 column-gap-3 mb-7`}>
+            <>
+              <div className={`stations_list row-gap-3 column-gap-3 mb-7`}>
 
-              {
-                edit_mode && root_admin ?
-                  <QueryLink to={generatePath(`${app_routes["station$id"]}/${'?edit'/* app_routes.edit */}`, { id: "new" })} className="flex flex-column gap-2 text-primary">
-                    <div className="flex flex-row overflow-hidden flex-shrink-0 shadow-2 border-round align-self-center shadow_on_hover w-9rem h-10rem">
+                {
+                  edit_mode && root_admin ?
+                    <QueryLink to={generatePath(`${app_routes["station$id"]}/${'?edit'}`, { id: "new" })} className="flex flex-column gap-2 text-primary">
+                      <div className="flex flex-row overflow-hidden flex-shrink-0 shadow-2 border-round align-self-center shadow_on_hover w-9rem h-13rem">
 
-                      <div className="station_card_icon align-self-center flex align-items-center justify-content-center">
-                        <i className="pi pi-plus-circle" style={{ fontSize: '2rem' }}></i>
+                        <div className="station_card_icon align-self-center flex align-items-center justify-content-center">
+                          <i className="pi pi-plus-circle" style={{ fontSize: '2rem' }}></i>
+                        </div>
+
+                        <div className="station_card_header align-self-center font-semibold flex-grow-1 text-center action_text_font">
+                          Create new radio
+                        </div>
                       </div>
 
-                      <div className="station_card_header align-self-center font-semibold flex-grow-1 text-center action_text_font">
-                        Create new radio
+                      <div className="flex flex-row flex-wrap align-items-start gap-1">
+
+                        <StationTag tag="A" color="" />
+
+                        <StationTag tag="A" color="" />
                       </div>
-                    </div>
-
-                    <div className="flex flex-row flex-wrap align-items-start gap-1">
-
-                      <StationTag tag="A" color="" />
-
-                      <StationTag tag="A" color="" />
-                    </div>
-                  </QueryLink>
-                  : <></>
-              }
-
-              {searched_stations?.map(station =>
-                <StationCard station={station} />
-              )}
-
-              {
-                loading ?
-                  <ProgressSpinner className="w-3rem h-3rem my-8 mx-6" strokeWidth="3" fill="var(--surface-ground)" animationDuration=".7s" />
-                  : <></>
-              }
-            </div>
+                    </QueryLink>
+                    : <></>
+                }
+                {searched_stations?.map(station =>
+                  <StationCard station={station} />
+                )}
+                {
+                  loading ?
+                    <StationsLoadSpinner />
+                    : <></>
+                }
+              </div>
+            </>
             :
             <div className="font-semibold text-2xl text-center">
               {translations.no_stations_with_parameters}
             </div>
-        }
+        } */}
       </div >
     </>
   )
