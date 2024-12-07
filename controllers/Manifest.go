@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"os"
 	"web_project/translations"
 
 	"github.com/gofiber/fiber/v2"
@@ -20,13 +21,13 @@ func Manifest(ctx *fiber.Ctx) error {
 		"short_name":       "Radio Best",
 		"description":      translations.Dictionary[language]["home_page_description"],
 		"theme_color":      "#00a1f7",
-		"background_color": "transparent",
+		"background_color": "#fff",
 		"orientation":      "portrait",
 		"categories":       []string{"music", "entertainment", "lifestyle", "news"},
 		"display":          "standalone",
 		"start_url":        ctx.BaseURL(),
 		"manifest_version": 2,
-		"version":          "1",
+		"version":          os.Getenv("VERSION"),
 		"shortcuts": []fiber.Map{
 			{
 				"name":       translations.Dictionary[language]["my_stations"],
