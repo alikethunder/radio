@@ -64,7 +64,8 @@ export const Home = memo(() => {
         set_stations(s => s.concat(res))
 
         if (!res.length || res.length < limit) {
-          //set_loading(false)
+          console.log('set loading false ')
+          set_loading(false)
           break
         }
 
