@@ -45,7 +45,7 @@ const card_size = {
 
 const gap = 16
 
-const GridCell = memo(({ columnIndex, rowIndex, style, data }: {
+const GridCell = ({ columnIndex, rowIndex, style, data }: {
   columnIndex: number, rowIndex: number, style: {
     [x: string]: any
   }, data: {
@@ -69,17 +69,7 @@ const GridCell = memo(({ columnIndex, rowIndex, style, data }: {
     width: style.width - data.gapx,
     height: style.height - gap,
   }} />
-}, (o, n) => {
-  //console.log('GridCell o,n : ', o, n)
-  return o.data.py === n.data.py
-    && o.data.px === n.data.px
-    && o.data.gapx === n.data.gapx
-    && o.data.mobile === n.data.mobile
-    && o.style.left.toFixed(2) === n.style.left.toFixed(2)
-    && o.style.top.toFixed(2) === n.style.top.toFixed(2)
-    && o.columnIndex === n.columnIndex
-    && o.rowIndex === n.rowIndex
-})
+}
 
 const innerElementType = memo(forwardRef(({ style, children, ...rest }: {
   style: {
@@ -87,7 +77,6 @@ const innerElementType = memo(forwardRef(({ style, children, ...rest }: {
   },
   children: any
 }, ref: LegacyRef<HTMLDivElement>) => {
-
   return (
     <div
       ref={ref}
@@ -99,14 +88,59 @@ const innerElementType = memo(forwardRef(({ style, children, ...rest }: {
       {...rest}
     />
   )
-}), (o, n) => {
-  //console.log('innerElementType o,n : ', o, n)
-  return o.children.length === n.children.length
-    && o.style.height.toFixed(2) === n.style.height.toFixed(2)
-    && o.style.width.toFixed(2) === n.style.width.toFixed(2)
-    && o.style.pointerEvents === n.style.pointerEvents
-  //&& o.children[0].props.data.gapx === n.children[0].props.data.gapx
-  //&& o.children[0].props.data.mobile === n.children[0].props.data.mobile
+}))
+
+const Stations_grid = memo(({
+  stations,
+  py,
+  px,
+  gapx,
+  mobile,
+  columns,
+  rows,
+  search_stations_text,
+}: {
+  stations: Station[],
+  py: number,
+  px: number,
+  gapx?: number,
+  mobile: boolean,
+  columns?: number,
+  rows?: number,
+  search_stations_text: string,
+}) => {
+  return (
+    columns && rows && gapx ? <AutoSizer>
+      {({ height, width }) =>
+        <Grid
+          itemData={{
+            stations,
+            py,
+            px,
+            gapx,
+            mobile,
+            columns,
+            search_stations_text,
+          }}
+          innerElementType={innerElementType}
+          height={height}
+          width={width}
+          columnWidth={card_size.width + gapx}
+          rowHeight={card_size.height + gap}
+          columnCount={columns}
+          rowCount={rows}
+        >
+          {GridCell}
+        </Grid>
+      }
+    </AutoSizer>
+      : <></>
+  )
+}, (o, n) => {
+  return o.stations.length === n.stations.length
+    && o.search_stations_text === n.search_stations_text
+    && o.columns === n.columns
+    && o.rows === n.rows
 })
 
 export const Home = () => {
@@ -144,7 +178,7 @@ export const Home = () => {
 
   useEffect(() => {
     (async () => {
-      const limit = 50
+      const limit = 200
       let from
       while (true) {
 
@@ -182,6 +216,8 @@ export const Home = () => {
 
     },
   }, formState, root_admin || some_station_admin)
+
+  const search_stations_text = useStore().persistedApp.search_stations_text()
 
   const searched_stations = useStationsSearch(stations)
 
@@ -287,33 +323,16 @@ export const Home = () => {
 
       <div className="w-full h-full overflow-y-auto page home_page flex-grow-1 flex flex-column" ref={ref}>
 
-        {
-          columns && rows && gapx ?
-            <AutoSizer>
-              {({ height, width }) =>
-                <Grid
-                  itemData={{
-                    stations: searched_stations,
-                    py,
-                    px,
-                    gapx,
-                    mobile,
-                    columns,
-                  }}
-                  innerElementType={innerElementType}
-                  height={height}
-                  width={width}
-                  columnWidth={card_size.width + gapx}
-                  rowHeight={card_size.height + gap}
-                  columnCount={columns}
-                  rowCount={rows}
-                >
-                  {GridCell}
-                </Grid>
-              }
-            </AutoSizer>
-            : <></>
-        }
+        <Stations_grid
+          stations={searched_stations}
+          columns={columns}
+          rows={rows}
+          py={py}
+          px={px}
+          gapx={gapx}
+          mobile={mobile}
+          search_stations_text={search_stations_text}
+        />
 
         {/* {
           searched_stations?.length || loading ?

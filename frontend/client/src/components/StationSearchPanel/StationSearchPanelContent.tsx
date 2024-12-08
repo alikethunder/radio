@@ -1,4 +1,4 @@
-import { FC, memo, useEffect, useState } from "react"
+import { FC, memo, useCallback, useEffect, useState } from "react"
 
 import { InputText } from "primereact/inputtext"
 
@@ -9,6 +9,8 @@ import { InputIcon } from "primereact/inputicon"
 import { classNames } from 'primereact/utils'
 
 import { StationTagRemoveTokenIcon } from "@/layout parts"
+
+import debounce from 'lodash.debounce'
 
 import {
   actions,
@@ -22,6 +24,7 @@ import {
 import {
   StationTag,
 } from '@/components'
+import { useDebounceCallback } from "usehooks-ts"
 
 export const StationSearchPanelContent: FC = memo(() => {
 
@@ -32,10 +35,16 @@ export const StationSearchPanelContent: FC = memo(() => {
   ], true)
 
   useEffect(() => {
-    actions.persistedApp.search_stations_text_array(
-      search_stations_text.replaceAll(',', '').replaceAll('-', ' ').replaceAll('_', '').toLowerCase().split(' ').filter(w => !!w)
-    )
+    debounce(() => {
+      actions.persistedApp.search_stations_text_array(
+        search_stations_text.replaceAll(',', '').replaceAll('-', ' ').replaceAll('_', '').toLowerCase().split(' ').filter(w => !!w)
+      )
+    }, 100)()
   }, [search_stations_text])
+
+  const clear_input = useCallback(
+    useDebounceCallback(() => actions.persistedApp.search_stations_text(''), 100)
+    , [])
 
   return (
     <>
@@ -46,7 +55,7 @@ export const StationSearchPanelContent: FC = memo(() => {
 
           {
             search_stations_text ?
-              <InputIcon className="pi pi-times cursor-pointer" onClick={() => actions.persistedApp.search_stations_text('')} />
+              <InputIcon className="pi pi-times cursor-pointer" onClick={clear_input} />
               : <></>
           }
 
