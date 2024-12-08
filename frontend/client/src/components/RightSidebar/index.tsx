@@ -214,6 +214,21 @@ export const RightSidebar: FC = memo(() => {
             : <></>
         }
 
+        {
+          root_admin ?
+            <QueryLink to={generatePath(`${app_routes["station$id"]}/${'?edit'}`, { id: "new" })} onClick={close_rsb}>
+              <Button
+                //todo: stations quantity like "My stations (5)"
+                label={'Create new station'}
+                text
+                raised
+                icon={`${icon_classes} pi-plus-circle`}
+                className="border-noround w-full h-full px-2 text-2xl shadow_on_hover action_text_font"
+              />
+            </QueryLink>
+            : <></>
+        }
+
       </div>
 
       <div className="bottom flex flex-column flex-shrink-0">

@@ -32,6 +32,7 @@ type Props = {
 }
 
 export const StationCard: FC<Props> = memo(({ station, style, }) => {
+  //console.log(style)
 
   const current_station = useStore().player.current_station()
 
@@ -50,7 +51,7 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
 
   return (
     station ?
-      <div className="flex flex-column gap-2 w-9rem" style={style}>
+      <div className="flex flex-column gap-2" style={style}>
 
         <div className={classNames({
           'current_station active_element': current_station?.id == station.id,
@@ -62,7 +63,7 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
           'text-primary',
           'shadow_on_hover',
           'element_with_overlay',
-          'w-9rem',
+          'w-full',
           'h-13rem',
           'flex-shrink-0 shadow-2 border-round',
           'bg-white',
@@ -141,7 +142,7 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
 
         {
           edit_mode ?
-            <div className="flex flex-row flex-wrap flex-shrink-0 align-items-start gap-1 overflow-hidden h-3rem">
+            <div className="flex flex-row flex-wrap flex-shrink-0 align-items-start gap-1 overflow-hidden">
 
               <StationTag tag="Broadcasting" color={station.broadcasting ? 'green-400' : 'surface-300'} disable_link />
 
@@ -154,4 +155,8 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
   )
 }, (o, n) => {
   return o.station?.id === n.station?.id
+  && o.style.height === n.style.height
+  && o.style.top === n.style.top
+  && o.style.width === n.style.width
+  && o.style.left === n.style.left
 })

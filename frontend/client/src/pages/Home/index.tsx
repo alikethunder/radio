@@ -38,14 +38,9 @@ type Size = {
   height?: number
 }
 
-const card_size = {
-  width: 144,
-  height: 208,
-}
-
 const gap = 16
 
-const GridCell = ({ columnIndex, rowIndex, style, data }: {
+const GridCell = memo(({ columnIndex, rowIndex, style, data }: {
   columnIndex: number, rowIndex: number, style: {
     [x: string]: any
   }, data: {
@@ -55,23 +50,35 @@ const GridCell = ({ columnIndex, rowIndex, style, data }: {
     mobile: boolean,
     stations: Station[],
     columns: number,
+    search_stations_text: string,
   }
 }) => {
 
-  if (!rowIndex && !columnIndex) {
+  if (rowIndex == 0 && columnIndex == 1) {
     console.log('GridCell data : ', style, data)
   }
 
   return <StationCard station={data.stations[rowIndex * data.columns + columnIndex]} style={{
     ...style,
-    top: `${parseFloat(style.top) + data.py + gap}px`,
+    top: `${parseFloat(style.top) + data.py}px`,
     left: `${parseFloat(style.left) + data.px + (data.mobile ? data.gapx : 0)}px`,
     width: style.width - data.gapx,
     height: style.height - gap,
   }} />
-}
+}, (o, n) => {
+  return o.data.py === n.data.py
+    && o.data.px === n.data.px
+    && o.data.gapx === n.data.gapx
+    && o.data.mobile === n.data.mobile
+    && o.style.left.toFixed(2) === n.style.left.toFixed(2)
+    && o.style.top.toFixed(2) === n.style.top.toFixed(2)
+    && o.columnIndex === n.columnIndex
+    && o.rowIndex === n.rowIndex
+    && o.data.stations.length === n.data.stations.length
+    && o.data.search_stations_text === n.data.search_stations_text
+})
 
-const innerElementType = memo(forwardRef(({ style, children, ...rest }: {
+const innerElementType = forwardRef(({ style, children, ...rest }: {
   style: {
     [x: string]: any
   },
@@ -82,13 +89,13 @@ const innerElementType = memo(forwardRef(({ style, children, ...rest }: {
       ref={ref}
       style={{
         ...style,
-        height: `${parseFloat(style.height) + 2 * (children[0].props.data.py ?? 32)}`
+        height: `${parseFloat(style.height) + 2 * (children[0].props.data.py ?? 32) - gap}`
       }}
       children={children}
       {...rest}
     />
   )
-}))
+})
 
 const Stations_grid = memo(({
   stations,
@@ -99,6 +106,7 @@ const Stations_grid = memo(({
   columns,
   rows,
   search_stations_text,
+  card_size,
 }: {
   stations: Station[],
   py: number,
@@ -108,7 +116,12 @@ const Stations_grid = memo(({
   columns?: number,
   rows?: number,
   search_stations_text: string,
+  card_size: {
+    height: number,
+    width: number,
+  },
 }) => {
+  console.log('Stations_grid : ', gapx)
   return (
     columns && rows && gapx ? <AutoSizer>
       {({ height, width }) =>
@@ -137,10 +150,10 @@ const Stations_grid = memo(({
       : <></>
   )
 }, (o, n) => {
-  return o.stations.length === n.stations.length
-    && o.search_stations_text === n.search_stations_text
-    && o.columns === n.columns
+  return o.columns === n.columns
     && o.rows === n.rows
+    && o.card_size.height === n.card_size.height
+    && o.gapx === n.gapx
 })
 
 export const Home = () => {
@@ -151,6 +164,11 @@ export const Home = () => {
   //useLog(true, '[Home] stations : ', stations)
 
   const edit_mode = useStore().app.FormActionsState_edit_mode()
+
+  const card_size = useMemo(() => ({
+    width: 144,
+    height: edit_mode ? 272 : 208,
+  }), [edit_mode])
 
   const signedin = useStore().auth.signedin()
 
@@ -189,7 +207,7 @@ export const Home = () => {
         set_stations(s => s.concat(res))
 
         if (!res.length || res.length < limit) {
-          set_loading(false)
+          //set_loading(false)
           break
         }
 
@@ -323,60 +341,32 @@ export const Home = () => {
 
       <div className="w-full h-full overflow-y-auto page home_page flex-grow-1 flex flex-column" ref={ref}>
 
-        <Stations_grid
-          stations={searched_stations}
-          columns={columns}
-          rows={rows}
-          py={py}
-          px={px}
-          gapx={gapx}
-          mobile={mobile}
-          search_stations_text={search_stations_text}
-        />
-
-        {/* {
+        {
           searched_stations?.length || loading ?
             <>
-              <div className={`stations_list row-gap-3 column-gap-3 mb-7`}>
+              <Stations_grid
+                stations={searched_stations}
+                columns={columns}
+                rows={rows}
+                py={py}
+                px={px}
+                gapx={gapx}
+                mobile={mobile}
+                search_stations_text={search_stations_text}
+                card_size={card_size}
+              />
 
-                {
-                  edit_mode && root_admin ?
-                    <QueryLink to={generatePath(`${app_routes["station$id"]}/${'?edit'}`, { id: "new" })} className="flex flex-column gap-2 text-primary">
-                      <div className="flex flex-row overflow-hidden flex-shrink-0 shadow-2 border-round align-self-center shadow_on_hover w-9rem h-13rem">
-
-                        <div className="station_card_icon align-self-center flex align-items-center justify-content-center">
-                          <i className="pi pi-plus-circle" style={{ fontSize: '2rem' }}></i>
-                        </div>
-
-                        <div className="station_card_header align-self-center font-semibold flex-grow-1 text-center action_text_font">
-                          Create new radio
-                        </div>
-                      </div>
-
-                      <div className="flex flex-row flex-wrap align-items-start gap-1">
-
-                        <StationTag tag="A" color="" />
-
-                        <StationTag tag="A" color="" />
-                      </div>
-                    </QueryLink>
-                    : <></>
-                }
-                {searched_stations?.map(station =>
-                  <StationCard station={station} />
-                )}
-                {
-                  loading ?
-                    <StationsLoadSpinner />
-                    : <></>
-                }
-              </div>
+              {/* {
+                loading ?
+                  <StationsLoadSpinner />
+                  : <></>
+              } */}
             </>
             :
             <div className="font-semibold text-2xl text-center">
               {translations.no_stations_with_parameters}
             </div>
-        } */}
+        }
       </div >
     </>
   )
