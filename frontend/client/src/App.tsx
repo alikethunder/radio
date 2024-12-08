@@ -324,16 +324,16 @@ export default function App() {
   }, [])
 
   useEffect(() => {
-    setTimeout(() => {
-      if (store.session.pwa_event()) {
+    if (store.session.pwa_event()) {
+      setTimeout(() => {
         document.addEventListener('mousedown', install_pwa, { once: true })
         document.addEventListener('mousemove', install_pwa, { once: true })
         document.addEventListener('touchmove', install_pwa, { once: true })
         document.addEventListener('touchstart', install_pwa, { once: true })
         document.addEventListener('touchcancel', install_pwa, { once: true })
         document.addEventListener('touchmove', install_pwa, { once: true })
-      }
-    }, 10000)
+      }, 10000)
+    }
   }, [pwa_event])
 
   const [translations] = useTranslations([

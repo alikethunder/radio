@@ -33,37 +33,41 @@ export const Stations_grid = memo(({
   card_size: Size,
   loading: boolean,
 }) => {
-  console.log('[Stations_grid] : ', loading, stations)
+
+  //console.log('[Stations_grid] : ', loading, stations)
+
   return (
-    columns && rows && gapx ? <AutoSizer>
-      {({ height, width }) =>
-        <Grid
-          itemData={{
-            stations,
-            py,
-            px,
-            gapx,
-            mobile,
-            columns,
-            search_stations_text,
-            loading,
-          }}
+    columns && rows && gapx
+      ?
+      <AutoSizer>
+        {({ height, width }) =>
+          <Grid
+            itemData={{
+              stations,
+              py,
+              px,
+              gapx,
+              mobile,
+              columns,
+              search_stations_text,
+              loading,
+            }}
 
-          innerElementType={innerElementType}
+            innerElementType={innerElementType}
 
-          height={height}
-          width={width}
+            height={height}
+            width={width}
 
-          columnWidth={(card_size.width ?? 0) + gapx}
-          rowHeight={(card_size.height ?? 0) + gap}
+            columnWidth={(card_size.width ?? 0) + gapx}
+            rowHeight={(card_size.height ?? 0) + gap}
 
-          columnCount={columns}
-          rowCount={rows}
-        >
-          {GridCell}
-        </Grid>
-      }
-    </AutoSizer>
+            columnCount={columns}
+            rowCount={rows}
+          >
+            {GridCell}
+          </Grid>
+        }
+      </AutoSizer>
       : <></>
   )
 }, (o, n) => {

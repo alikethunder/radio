@@ -155,14 +155,14 @@ func main() {
 
 	files_endpoints.Post("/:table/:row_id/:field", FilesEndpoints.Upload)
 
-	radio_endpoints := v1.Group("/radio", compress_get, etag.New()) /* cache.New(cache.Config{
+	radio_endpoints := v1.Group("/radio", compress_get, etag.New(), cache.New(cache.Config{
 		Next:       notGet,
 		Expiration: 30 * time.Minute,
 		KeyGenerator: func(ctx *fiber.Ctx) string {
 			return utils.CopyString(ctx.Path() + ctx.Query("from") + ctx.Query("limit") + ctx.Query("admin"))
 		},
-	}), */
-
+	}),
+	)
 	/* fname := flag.String("filename", "audio.mp3", "path of the audio file")
 
 	flag.Parse()

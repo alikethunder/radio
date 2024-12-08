@@ -32,7 +32,7 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading }) => {
 
   const searched_stations = useStationsSearch(stations)
 
-  useLog(true, '[StationsGrid] searched_stations : ', searched_stations, loading)
+  //useLog(true, '[StationsGrid] searched_stations : ', searched_stations, loading)
 
   const [translations] = useTranslations([
     'no_stations_with_parameters',
