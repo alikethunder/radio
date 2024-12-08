@@ -172,14 +172,7 @@ export const routes = [
           if (!favorite_stations.length) {
             return redirect(app_routes.root)
           }
-
-          const stations = await fetch(`/api/v1/radio/stations-by-id`, {
-            method: 'POST',
-            body: JSON.stringify({
-              ids: favorite_stations.join(',')
-            }),
-          })
-          return stations
+          return null
         },
         shouldRevalidate: () => false,
       },

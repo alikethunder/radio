@@ -1,15 +1,11 @@
-import {
-  useLoaderData,
-} from "react-router-dom"
-
-import { StationCard, } from "@/components"
+import { StationsGrid, } from "@/components"
 
 import {
   useStore,
 } from "@/store"
 
 import {
-  useStationsSearch,
+  useFavoriteStations,
   useTranslations,
 } from '@/hooks'
 
@@ -20,16 +16,40 @@ import {
 import { Station } from "@/types"
 
 import { Helmet } from "react-helmet"
+import { useEffect, useState } from "react"
 
 export const FavoriteStations = () => {
 
-  const stations = useLoaderData() as Station[]
+  //const stations = useLoaderData() as Station[]
+  const [stations, set_stations] = useState<Station[]>([])
+  const [loading, set_loading] = useState(true)
 
-  //useLog(true, '[FavoriteStations] stations : ', stations)
+  const favorite_stations = useFavoriteStations()
 
-  const language = useStore().translations.language()
+  useEffect(() => {
+    if (favorite_stations.length) {
+      console.log(`[FavoriteStations] favorite_stations : `, favorite_stations);
+      (async () => {
 
-  const searched_stations = useStationsSearch(stations)
+        const res = await fetch(`/api/v1/radio/stations-by-id`, {
+          method: 'POST',
+          body: JSON.stringify({
+            ids: favorite_stations.join(',')
+          }),
+        })
+
+        const json = await res.json()
+        console.log(`[FavoriteStations] list result : `, json)
+
+        set_stations(json)
+
+        set_loading(false)
+
+      })()
+    }
+  }, [favorite_stations])
+
+  useLog(true, '[FavoriteStations] stations : ', stations)
 
   const [translations] = useTranslations([
     "my_stations",
@@ -41,30 +61,14 @@ export const FavoriteStations = () => {
       <Helmet>
         <title>{translations.my_stations}</title>
 
-        {
-          language ? <meta property="og:locale" content={language} /> : <></>
-        }
-
         <meta name="description" content={translations.my_stations} />
 
       </Helmet>
 
-      <div className="sm:py-5 py-3 sm:px-6 px-2 w-full h-full overflow-y-auto page favorite_stations_page flex-grow-1 flex flex-column">
-
-        {
-          searched_stations?.length ?
-            <div className={`stations_list row-gap-2 column-gap-3 mb-4`}>
-              {searched_stations?.map(station =>
-                <StationCard station={station} />
-              )}
-            </div>
-            :
-            <div className="font-semibold text-2xl text-center">
-              {translations.no_stations_with_parameters}
-            </div>
-        }
-
-      </div >
+      <StationsGrid
+        stations={stations}
+        loading={loading}
+      />
     </>
   )
 }
