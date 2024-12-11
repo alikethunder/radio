@@ -68,6 +68,7 @@ export const FavoriteStations = () => {
       <StationsGrid
         stations={stations}
         loading={loading}
+        place={'my_stations'}
       />
     </>
   )

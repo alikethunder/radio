@@ -17,9 +17,10 @@ import { useLog, useStationsSearch, useTranslations } from "@/hooks"
 type Props = {
   stations: Station[];
   loading: boolean;
+  place: 'home' | 'my_stations';
 }
 
-export const StationsGrid: FC<Props> = memo(({ stations, loading }) => {
+export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
 
   const edit_mode = useStore().app.FormActionsState_edit_mode()
 
@@ -113,6 +114,7 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading }) => {
             search_stations_text={search_stations_text}
             card_size={card_size}
             loading={loading}
+            place={place}
           />
           :
           <div className="font-semibold text-2xl text-center">
@@ -123,4 +125,5 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading }) => {
   )
 }, (o, n) => {
   return o.stations.length === n.stations.length
+  && o.place === n.place
 })

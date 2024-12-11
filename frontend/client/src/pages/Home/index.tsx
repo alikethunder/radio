@@ -66,6 +66,13 @@ export const Home = memo(() => {
         if (!res.length || res.length < limit) {
           //console.log('set loading false ')
           set_loading(false)
+
+          set_stations(s => {
+            //console.log('[Home] stations : ', s)
+            //window.stations = s
+            return s
+          })
+
           break
         }
 
@@ -93,10 +100,23 @@ export const Home = memo(() => {
     },
   }, formState, root_admin || some_station_admin)
 
+  /* const grid_ref = useStore().app.stations_grid_ref()
+
+  useEffect(() => {
+    console.log('[Home] grid ref : ', grid_ref)
+
+    if (grid_ref) {
+      const scroll = store.persistedApp.home_scroll()
+      grid_ref.scrollTo()
+
+    }
+  }, [grid_ref]) */
+
   return (
     <StationsGrid
       stations={stations}
       loading={loading}
+      place={'home'}
     />
   )
 })

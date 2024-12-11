@@ -1,5 +1,5 @@
 import { Station } from "@/types"
-import { memo } from "react"
+import { FC, memo, useMemo, } from "react"
 import AutoSizer from "react-virtualized-auto-sizer"
 import { FixedSizeGrid as Grid } from 'react-window'
 
@@ -9,19 +9,12 @@ import { innerElementType } from "./innerElementType"
 import { gap } from './constants'
 
 import { Size } from '@/types/size'
+import {
+  actions,
+  store,
+} from "@/store"
 
-export const Stations_grid = memo(({
-  stations,
-  py,
-  px,
-  gapx,
-  mobile,
-  columns,
-  rows,
-  search_stations_text,
-  card_size,
-  loading,
-}: {
+type Props = {
   stations: Station[],
   py: number,
   px: number,
@@ -32,9 +25,26 @@ export const Stations_grid = memo(({
   search_stations_text: string,
   card_size: Size,
   loading: boolean,
+  place: 'home' | 'my_stations',
+}
+
+export const Stations_grid: FC<Props> = memo(({
+  stations,
+  py,
+  px,
+  gapx,
+  mobile,
+  columns,
+  rows,
+  search_stations_text,
+  card_size,
+  loading,
+  place,
 }) => {
 
   //console.log('[Stations_grid] : ', loading, stations)
+
+  const scroll_prop = useMemo(() => `${place}_scroll` as 'home_scroll' | 'my_stations_scroll', [place])
 
   return (
     columns && rows && gapx
@@ -42,6 +52,7 @@ export const Stations_grid = memo(({
       <AutoSizer>
         {({ height, width }) =>
           <Grid
+
             itemData={{
               stations,
               py,
@@ -54,6 +65,15 @@ export const Stations_grid = memo(({
             }}
 
             innerElementType={innerElementType}
+            overscanRowCount={5}
+
+            initialScrollTop={store.persistedApp[scroll_prop]()}
+
+            onScroll={({
+              scrollTop,
+            }) => {
+              actions.persistedApp[scroll_prop](scrollTop)
+            }}
 
             height={height}
             width={width}
@@ -77,4 +97,5 @@ export const Stations_grid = memo(({
     && o.gapx === n.gapx
     && o.stations.length === n.stations.length
     && o.loading === n.loading
+    && o.place === n.place
 })

@@ -10,6 +10,8 @@ type PersistedApp = {
   search_panel_closed: boolean;
   favorite_stations: string[],
   user_uuid: string,
+  home_scroll: number;
+  my_stations_scroll: number;
 }
 
 const initial_state = {
@@ -19,6 +21,8 @@ const initial_state = {
   search_panel_closed: true,
   favorite_stations: [],
   user_uuid: v7(),
+  home_scroll: 0,
+  my_stations_scroll: 0,
 } as PersistedApp
 
 export const persistedAppStore = createStore('app')(initial_state,
