@@ -66,7 +66,7 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
           'w-full',
           'h-13rem',
           'flex-shrink-0 shadow-2 border-round',
-          'bg-white',
+          'surface-card',
         )}>
 
           <div className="flex flex-row gap-1">

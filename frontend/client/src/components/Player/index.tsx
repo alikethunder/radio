@@ -100,7 +100,7 @@ export const Player: FC = memo(() => {
   }, [])
 
   return (
-    <div id="player" className={`flex flex-row flex-shrink-0 shadow-3 h-9rem justify-content-center bg-white p-2 sm:p-2 gap-3 mt-auto ${current_station ? 'opened' : ''}`}>
+    <div id="player" className={`flex flex-row flex-shrink-0 shadow-3 h-9rem justify-content-center surface-card p-2 sm:p-2 gap-3 mt-auto ${current_station ? 'opened' : ''}`}>
 
       <audio
         src=""

@@ -57,7 +57,7 @@ export const Navbar: FC = memo(() => {
 
   return (
     <>
-      <div className={`flex flex-shrink-0 h-3rem sm:h-4rem justify-content-between bg-white border-bottom-1 border-solid border-100 border-top-none border-left-none border-right-none z-2 ${search_panel_closed ? 'shadow-2' : ''}`}>
+      <div className={`flex flex-shrink-0 h-3rem sm:h-4rem justify-content-between surface-card border-bottom-1 border-solid border-100 border-top-none border-left-none border-right-none z-2 ${search_panel_closed ? 'shadow-2' : ''}`}>
 
         <div className="left h-full flex gap-1 sm:gap-2">
 

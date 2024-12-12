@@ -159,7 +159,7 @@ export const UserProfile = () => {
         headerClassName: 'text-center',
         contentClassName: 'text-center sm:text-xl -ml-3 bg-transparent',
         draggable: false,
-        className: 'w-30rem max-w-full mx-7 bg-white',
+        className: 'w-30rem max-w-full mx-7 surface-card',
         accept: async () => {
           const update_email_resp = await fetch(`/api/v1/profile/request-update-email?language=${store.translations.language() ?? 'en'}`, {
             method: 'POST',
