@@ -12,7 +12,7 @@ import oauth_prod from '&/settings/google_oauth_prod.json'
 export const GoogleOAuth: FC<{ rememberme?: boolean }> = ({ rememberme }) => {
 
   const language = useStore().translations.language()
-
+  const theme = useStore().persistedApp.theme()
   useEffect(() => {
     try {
       window.google.accounts.id.initialize({
@@ -28,8 +28,9 @@ export const GoogleOAuth: FC<{ rememberme?: boolean }> = ({ rememberme }) => {
         document.getElementById("google_signin"),
         {
           locale: language,
-          theme: "filled_blue",
+          theme: theme == 'light' ? "filled_blue" : 'filled_black',
           size: "large",
+          width: '255',
           //use 'state' to pass parameters within google-callback request
           state: JSON.stringify({
             redirect_to: store.session.prev_pathname(),
@@ -41,9 +42,9 @@ export const GoogleOAuth: FC<{ rememberme?: boolean }> = ({ rememberme }) => {
     } catch (e) {
       console.log('google init error : ', e)
     }
-  }, [rememberme, language])
+  }, [rememberme, language, theme])
 
   return (
-    <div id="google_signin" className="mb-4 align-self-center" />
+    <div id="google_signin" className="mb-4 align-self-center overflow-hidden border-round-md" />
   )
 }

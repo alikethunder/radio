@@ -15,7 +15,6 @@ import {
   store,
 } from "@/store"
 
-import './index.sass'
 import { generatePath } from "react-router-dom"
 
 import { classNames } from "primereact/utils"
@@ -107,9 +106,11 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
                   play_click(station)
                 }}>
 
-                <div className="overlay_background surface-900 absolute top-0 bottom-0 right-0 left-0"></div>
+                <div className="overlay_background bg-primary absolute top-0 bottom-0 right-0 left-0"></div>
 
-                <div className="overlay_text text-white font-semibold z-1">
+                <div className="overlay_text font-semibold z-1" style={{
+                  color: 'var(--primary-color-text)'
+                }}>
                   <i className={`pi ${current_station?.id == station.id && playing ? 'pi-pause' : 'pi-play'}`} style={{ fontSize: '2rem' }}></i>
                 </div>
 
@@ -155,8 +156,8 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
   )
 }, (o, n) => {
   return o.station?.id === n.station?.id
-  && o.style.height === n.style.height
-  && o.style.top === n.style.top
-  && o.style.width === n.style.width
-  && o.style.left === n.style.left
+    && o.style.height === n.style.height
+    && o.style.top === n.style.top
+    && o.style.width === n.style.width
+    && o.style.left === n.style.left
 })
