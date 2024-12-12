@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, } from "react"
+import React, { useCallback, useEffect, memo, } from "react"
 
 import {
   Outlet,
@@ -57,10 +57,11 @@ import {
 import { get_station } from "@/API/station/get_station"
 import { update_json } from "@/API/profile/update_json"
 import { sessionStore } from "@/store/sessionStore"
+import { Helmet } from "react-helmet"
 
 //console.log('typeof window : ', typeof window)
 
-export default function App() {
+export default memo(function App() {
 
   const navigate = useNavigate()
 
@@ -340,12 +341,17 @@ export default function App() {
     'add_to_favorites',
   ], true)
 
+  const theme = useStore().persistedApp.theme()
+
   return (
     <PrimeReactProvider value={{
       appendTo: 'self',
       ripple: true,
     }}>
       {/*  <WS /> */}
+      <Helmet>
+        <link rel="stylesheet" href={`/assets/themes/soho_${theme}.css`} />
+      </Helmet>
 
       <Navbar />
 
@@ -369,4 +375,4 @@ export default function App() {
 
     </PrimeReactProvider>
   )
-}
+})

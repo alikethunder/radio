@@ -12,6 +12,7 @@ type PersistedApp = {
   user_uuid: string,
   home_scroll: number;
   my_stations_scroll: number;
+  theme: 'light' | 'dark';
 }
 
 const initial_state = {
@@ -23,6 +24,7 @@ const initial_state = {
   user_uuid: v7(),
   home_scroll: 0,
   my_stations_scroll: 0,
+  theme: 'light',
 } as PersistedApp
 
 export const persistedAppStore = createStore('app')(initial_state,

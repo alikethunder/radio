@@ -1,8 +1,5 @@
 @import '@/sass/index'
 
-:root
-  --color-secondary: #{$secondaryColor}
-
 *:not(.pi)
   font-family: "IBM Plex Sans", sans-serif!important
 
@@ -19,7 +16,6 @@
     font-style: normal
 
 $md: 768.1px
-$box-shadow: 0 0 5px 1px
 
 html
   font-size: 16px
@@ -40,20 +36,6 @@ body
 
 .p-inputtext.p-disabled
   opacity: 1
-
-.p-inputtext, .p-dropdown:hover
-  &:not(:disabled):not(.p-invalid):not([data-p-disabled="true"]):not(.p-dropdown-label)
-    outline: 0 none
-    outline-offset: 0
-    box-shadow: $box-shadow $primaryLightColor
-    border-color: $primaryLightColor
-
-.p-inputtext.p-invalid.p-component
-  box-shadow: $box-shadow $errorColor
-
-.shadow_on_hover
-  &:hover, &:focus, &.active_element
-    box-shadow: $box-shadow!important
 
 .p-icon-field-left>.p-inputtext
   padding-left: 2.2rem

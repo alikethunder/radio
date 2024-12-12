@@ -14,7 +14,27 @@ export default defineConfig({
     sourcemap: true,
     chunkSizeWarningLimit: 1500,
     target: 'es2015',
-    outDir: '../../served/public'
+    outDir: '../../served/public',
+    rollupOptions: {
+      input: {
+        main: path.resolve(__dirname, './index.html'),
+        soho_light: path.resolve(__dirname, './src/sass/soho_light.sass'),
+        soho_dark: path.resolve(__dirname, './src/sass/soho_dark.sass'),
+      },
+      output: {
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name.endsWith('.css')) {
+            // Extract theme name from the file path
+            const themeMatch = assetInfo.name.match(/soho_(light|dark)/);
+            if (themeMatch) {
+              return `assets/themes/${themeMatch[0]}.css`;
+            }
+            return 'assets/[name]-[hash].[ext]'
+          }
+          return 'assets/[name].[ext]';
+        }
+      }
+    }
   },
   plugins: [
     injectHTML(),
