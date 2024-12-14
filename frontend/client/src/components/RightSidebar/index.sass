@@ -11,5 +11,17 @@
 .right_sidebar
   .upgrade
     animation: fade50to100 1.5s infinite
-  .p-button-label
-    font-weight: 700
+  
+  .top, .bottom
+    button
+      box-shadow: none
+      border-top: 1px solid var(--surface-border)
+      .p-button-label
+        font-weight: 700
+  .top
+    &>*:last-child
+      border-bottom: 1px solid var(--surface-border)
+  .bottom
+
+  
+  
