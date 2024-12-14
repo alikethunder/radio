@@ -58,7 +58,10 @@ export const ThemeSwitcher: FC = memo(() => {
           theme == 'light' ? '#fff' : '#000'
           :
           theme == 'light' ? '#000' : '#fff',
-        borderWidth: '1.6px',
+        ...theme_loading ?
+          theme == 'light' ? {} : { borderWidth: '1.6px' }
+          :
+          theme == 'light' ? { borderWidth: '1.6px' } : {},
       }}
 
       onClick={change_theme}
