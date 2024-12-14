@@ -82,6 +82,8 @@ export const Station = () => {
 
   const [search, set_search] = useSearchParams()
 
+  const theme = useStore().persistedApp.theme()
+  
   useEffect(() => {
     if (station.id == 'new') {
       set_search(s => {
@@ -613,9 +615,18 @@ export const Station = () => {
               icon={`pi text-4xl ${playing && current_station?.id == station.id ? 'pi-pause' : 'pi-play'}`}
 
               pt={{
+                root: {
+                  style: {
+                    backgroundColor: 'var(--maskbg)',
+                    borderColor: '#fff',
+                    color: theme == 'light' ? 'var(--maskbg)' : '#fff',
+                  }
+                },
                 icon: {
                   style: {
                     paddingLeft: playing && current_station?.id == station.id ? '0' : '4px',
+                    color: '#fff',
+                    fontWeight: 600,
                   }
                 }
               }}

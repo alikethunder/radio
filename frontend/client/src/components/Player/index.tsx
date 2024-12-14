@@ -42,6 +42,8 @@ export const Player: FC = memo(() => {
 
   const current_station = useStore().player.current_station()
 
+  const theme = useStore().persistedApp.theme()
+
   useEffect(() => {
     if (current_station && audio_ref) {
       if (playing) {
@@ -162,9 +164,18 @@ export const Player: FC = memo(() => {
           icon={`pi text-3xl ${playing ? 'pi-pause' : 'pi-play'}`}
 
           pt={{
+            root: {
+              style: {
+                backgroundColor: 'var(--maskbg)',
+                borderColor: '#fff',
+                color: theme == 'light' ? 'var(--maskbg)' : '#fff',
+              }
+            },
             icon: {
               style: {
                 paddingLeft: playing ? '0' : '4px',
+                color: '#fff',
+                fontWeight: 600,
               }
             }
           }}
