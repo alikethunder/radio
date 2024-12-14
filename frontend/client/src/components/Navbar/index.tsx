@@ -58,7 +58,7 @@ export const Navbar: FC = memo(() => {
 
   return (
     <>
-      <div className={`flex flex-shrink-0 h-3rem sm:h-4rem justify-content-between surface-card border-bottom-1 border-solid border-100 border-top-none border-left-none border-right-none z-2 ${search_panel_closed ? 'shadow-2' : ''}`}>
+      <div className={`flex flex-shrink-0 h-3rem sm:h-4rem justify-content-between surface-card z-2 ${search_panel_closed ? 'shadow-2' : ''}`}>
 
         <div className="left h-full flex gap-1 sm:gap-2">
 
@@ -67,7 +67,7 @@ export const Navbar: FC = memo(() => {
             <Button
               text
               raised
-              className="flex flex-row gap-1 border-noround w-full h-full md:px-2 px-1  action_text_font text-xl shadow_on_hover md:text-3xl bangers-font logo-glow"
+              className="flex flex-row gap-1 border-noround w-full h-full md:px-2 px-1  action_text_font text-xl shadow_on_hover md:text-3xl bangers-font logo-glow shadow-none border-none"
             >
               <span>Radio</span>
               <img src="/favicon_120x120.png" className="h-3rem sm:h-4rem" />
