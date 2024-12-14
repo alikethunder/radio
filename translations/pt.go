@@ -90,4 +90,5 @@ var Pt = map[string]string{
 	"if_this_wasnt_you_to_prevent_it":               "Se não foi você, para evitar isso",
 	"main_page":                                     "Página principal",
 	"main_page_with_player":                         "Página principal com reprodutor",
+	"feedback":                                      "Feedback",
 }

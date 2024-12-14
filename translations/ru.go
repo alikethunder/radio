@@ -89,4 +89,5 @@ var Ru = map[string]string{
 	"if_this_wasnt_you_to_prevent_it":               "Если это были не вы, чтобы предотвратить взлом",
 	"main_page":                                     "Домашняя страница",
 	"main_page_with_player":                         "Домашняя страница с плеером",
+	"feedback":                                      "Обратная связь",
 }

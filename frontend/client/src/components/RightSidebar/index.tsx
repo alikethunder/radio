@@ -119,7 +119,7 @@ export const RightSidebar: FC = memo(() => {
         }
       }}
     >
-      <div className="top flex flex-column">
+      <div className="top flex flex-column flex-shrink-0">
 
         <Dropdown
           value={active_dropdown_language}
@@ -232,6 +232,18 @@ export const RightSidebar: FC = memo(() => {
       </div>
 
       <div className="bottom flex flex-column flex-shrink-0">
+
+        <a href={`https://t.me/radio${language}best`} target="_blank" className="w-full">
+          <Button
+            label={<Translation capitalize field="feedback" className="w-4" /> as unknown as string}
+            text
+            raised
+            icon={`${icon_classes} pi-telegram`}
+            iconPos="right"
+            className="border-noround action_text_font px-2 text-xl shadow_on_hover w-full"
+          />
+        </a>
+
         {
           signedin ?
             <Button
@@ -241,7 +253,7 @@ export const RightSidebar: FC = memo(() => {
               icon={`${icon_classes} pi-sign-out`}
               onClick={click_logout}
               iconPos="right"
-              className="border-noround text-gray-800 text-left action_text_font text-2xl shadow_on_hover"
+              className="border-noround text-color-secondary px-2 text-left action_text_font text-2xl shadow_on_hover"
             />
             : <></>
         }
