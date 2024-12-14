@@ -205,13 +205,19 @@ export const Player: FC = memo(() => {
         pt={{
           range: {
             className: classNames({},
-              'bg-secondary'
-            )
+              'bg-secondary',
+              'shadow_glow',
+            ),
+            style: {
+              color: 'var(--secondary-color)',
+            }
           },
           handle: {
             className: classNames({},
               'hover:bg-cyan-500',
               'border-secondary',
+              'text-cyan-500',
+              'shadow_on_hover',
             ),
           }
         }}
@@ -223,7 +229,7 @@ export const Player: FC = memo(() => {
           {/* current station name */}
           {
             current_station ?
-              <QueryLink to={generatePath(app_routes["station$id"], { id: current_station?.id })} className="radio_card_header align-self-center font-semibold text-primary text_hidden_overflow line-clamp-2 text-center">
+              <QueryLink to={generatePath(app_routes["station$id"], { id: current_station?.id })} className="radio_card_header align-self-center font-bold text-primary text_hidden_overflow line-clamp-2 text-center">
                 {current_station?.name}
               </QueryLink>
               : <></>

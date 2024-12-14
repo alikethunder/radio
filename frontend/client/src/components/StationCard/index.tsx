@@ -23,6 +23,8 @@ import { useDebounceCallback } from "usehooks-ts"
 import { Station } from "@/types"
 import { Ripple } from "primereact/ripple"
 
+import './index.sass'
+
 type Props = {
   station: Station;
   style: {
@@ -60,7 +62,7 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
           'gap-1',
           'overflow-hidden',
           'text-primary',
-          'shadow_on_hover',
+          'shadow_card',
           'element_with_overlay',
           'w-full',
           'h-13rem',
@@ -108,10 +110,10 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
 
                 <div className="overlay_background p-component-overlay absolute top-0 bottom-0 right-0 left-0"></div>
 
-                <div className="overlay_text font-semibold z-1" style={{
+                <div className="overlay_text z-1" style={{
                   color: '#fff'
                 }}>
-                  <i className={`pi ${current_station?.id == station.id && playing ? 'pi-pause' : 'pi-play'}`} style={{
+                  <i className={`font-semibold pi ${current_station?.id == station.id && playing ? 'pi-pause' : 'pi-play'}`} style={{
                     fontSize: '2rem',
                     textShadow: '0 0 7px',
                   }}></i>
@@ -130,7 +132,7 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
 
             <div className="flex flex-column justify-content-center flex-grow-1">
 
-              <QueryLink to={generatePath(app_routes["station$id"], { id: station.id })} className="font-semibold text-primary text-center station_name mb-1  text_hidden_overflow line-clamp-3 action_text_font text-lg">
+              <QueryLink to={generatePath(app_routes["station$id"], { id: station.id })} className="font-bold text-primary text-center station_name mb-1  text_hidden_overflow line-clamp-3 action_text_font text-lg">
                 {station.name}
               </QueryLink>
             </div>

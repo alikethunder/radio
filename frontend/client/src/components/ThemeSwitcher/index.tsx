@@ -23,7 +23,7 @@ export const ThemeSwitcher: FC = memo(() => {
 
   useEffect(() => {
     set_theme_loading(true)
-    
+
     fetch(`/assets/themes/soho_${theme}.css`).then(resp => {
       return resp.text()
     }).then(text => {
@@ -54,7 +54,10 @@ export const ThemeSwitcher: FC = memo(() => {
       tooltipOptions={tooltip_options}
       className="p-0 w-2rem h-2rem shadow_on_hover align-self-center flex flex-shrink-0 justify-content-center align-items-center icon_button_text_shadow"
       style={{
-        color: theme == 'light' ? '#000' : '#fff'
+        color: theme_loading ?
+          theme == 'light' ? '#fff' : '#000'
+          :
+          theme == 'light' ? '#000' : '#fff'
       }}
 
       onClick={change_theme}
