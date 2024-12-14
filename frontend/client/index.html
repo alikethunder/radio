@@ -1,6 +1,18 @@
 <html lang={{.Language}}>
 
 <head>
+  <style id="theme_css"></style>
+  <script>
+    const theme = localStorage.getItem('theme') || window?.matchMedia?.('(prefers-color-scheme:dark)')?.matches ? 'dark' : 'light'
+
+    localStorage.setItem('theme', theme)
+
+    fetch(`/assets/themes/soho_${theme}.css`).then(resp => {
+      return resp.text()
+    }).then(text => {
+      document.getElementById("theme_css").innerHTML = text
+    })
+  </script>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-XSP8Y55XTL"></script>
   <script>
@@ -49,9 +61,9 @@
   <meta property="og:locale" content={{.Language}} />
 
   {{range .Languages}}
-    <link rel="alternate" hreflang="{{.code}}" href="{{$.Domain}}?language={{.name}}" />
+  <link rel="alternate" hreflang="{{.code}}" href="{{$.Domain}}?language={{.name}}" />
 
-    <meta property="og:locale:alternate" content={{.code}} />
+  <meta property="og:locale:alternate" content={{.code}} />
   {{end}}
 
   <meta property="og:site_name" content="{{.sitename}}" />
@@ -138,7 +150,7 @@
 
 <body class="h-screen">
   <!--!!!do not remove anything-->
-  <div id="app" class="h-screen flex flex-column overflow-x-hidden"><!--app-html--></div>
+  <div id="app" class="h-screen flex flex-column overflow-x-hidden "><!--app-html--></div>
 
   <script type="module" src="/src/index.tsx"></script>
 

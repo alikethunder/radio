@@ -57,8 +57,6 @@ import {
 import { get_station } from "@/API/station/get_station"
 import { update_json } from "@/API/profile/update_json"
 import { sessionStore } from "@/store/sessionStore"
-import { Helmet } from "react-helmet"
-import { useAsyncMemo } from "use-async-memo"
 
 //console.log('typeof window : ', typeof window)
 
@@ -342,32 +340,12 @@ export default memo(function App() {
     'add_to_favorites',
   ], true)
 
-  const theme = useStore().persistedApp.theme()
-
-  const [theme_loading, set_theme_loading] = useState(false)
-
-  const theme_style_text = useAsyncMemo(() => {
-    set_theme_loading(true)
-    return fetch(`/assets/themes/soho_${theme}.css`).then(resp => {
-      return resp.text()
-    }).finally(() => {
-      set_theme_loading(false)
-    })
-  }, [theme])
-
-  const theme_style = useMemo(() => {
-    return <style>{theme_style_text}</style>
-  }, [theme_style_text])
-
   return (
     <PrimeReactProvider value={{
       appendTo: 'self',
       ripple: true,
     }}>
       {/*  <WS /> */}
-      <Helmet>
-        {theme_style}
-      </Helmet>
 
       <Navbar />
 

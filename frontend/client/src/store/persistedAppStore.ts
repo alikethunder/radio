@@ -24,7 +24,7 @@ const initial_state = {
   user_uuid: v7(),
   home_scroll: 0,
   my_stations_scroll: 0,
-  theme: 'light',
+  theme: window?.matchMedia?.('(prefers-color-scheme:dark)')?.matches ? 'dark' : 'light',
 } as PersistedApp
 
 export const persistedAppStore = createStore('app')(initial_state,

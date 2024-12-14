@@ -189,17 +189,6 @@ export const RightSidebar: FC = memo(() => {
             : <></>
         }
 
-        <Button
-          label={'Change theme'}
-          text
-          raised
-          icon={`${icon_classes} pi-lightbulb`}
-          className="border-noround w-full h-full px-2 text-2xl shadow_on_hover action_text_font"
-          onClick={() => {
-            actions.persistedApp.theme(store.persistedApp.theme() == 'light' ? 'dark' : 'light')
-          }}
-        />
-
         {
           root_admin ?
 

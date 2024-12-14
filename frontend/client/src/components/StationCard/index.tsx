@@ -106,12 +106,15 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
                   play_click(station)
                 }}>
 
-                <div className="overlay_background bg-primary absolute top-0 bottom-0 right-0 left-0"></div>
+                <div className="overlay_background p-component-overlay absolute top-0 bottom-0 right-0 left-0"></div>
 
                 <div className="overlay_text font-semibold z-1" style={{
-                  color: 'var(--primary-color-text)'
+                  color: '#fff'
                 }}>
-                  <i className={`pi ${current_station?.id == station.id && playing ? 'pi-pause' : 'pi-play'}`} style={{ fontSize: '2rem' }}></i>
+                  <i className={`pi ${current_station?.id == station.id && playing ? 'pi-pause' : 'pi-play'}`} style={{
+                    fontSize: '2rem',
+                    textShadow: '0 0 7px',
+                  }}></i>
                 </div>
 
               </div>

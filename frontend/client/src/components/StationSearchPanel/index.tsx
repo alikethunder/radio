@@ -10,8 +10,6 @@ import {
   useShowSearchPanel,
 } from '@/hooks'
 
-import './index.sass'
-
 export const StationSearchPanel: FC = memo(() => {
 
   const search_panel_closed = useStore().persistedApp.search_panel_closed()

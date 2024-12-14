@@ -22,6 +22,7 @@ import {
 import {
   FormActionsState,
   QueryLink,
+  ThemeSwitcher,
 } from '@/components'
 
 import { useDebounceCallback } from "usehooks-ts"
@@ -118,6 +119,7 @@ export const Navbar: FC = memo(() => {
               </Button>
               : <></>
           }
+          <ThemeSwitcher />
           <FormActionsState />
 
         </div>
