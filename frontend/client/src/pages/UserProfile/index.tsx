@@ -192,9 +192,9 @@ export const UserProfile = () => {
   return (
     <>
       <Helmet>
-        <title>{translations.sitename} - {user_data.name}</title>
+        <title>{translations.sitename} - {user_data?.name}</title>
 
-        <link rel="canonical" href={`${window.location.origin}/user-profile/${user_data.id}?language=${language}`} />
+        <link rel="canonical" href={`${window.location.origin}/user-profile/${user_data?.id}?language=${language}`} />
 
       </Helmet>
 

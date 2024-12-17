@@ -34,7 +34,7 @@ import { classNames } from "primereact/utils"
 
 import { Translation } from "@/layout parts"
 import { useDebounceCallback } from "usehooks-ts"
-import { useFavoriteStations, } from "@/hooks"
+import { useFavoriteStations, useTranslations, } from "@/hooks"
 import languages_translations from '&/settings/languages_translations.json'
 
 export const RightSidebar: FC = memo(() => {
@@ -98,6 +98,11 @@ export const RightSidebar: FC = memo(() => {
       , 50)
     , [])
 
+  const [translations] = useTranslations([
+    'logout',
+    'feedback',
+  ], true)
+
   return (
     <Sidebar
       visible={rightSidebarOpened}
@@ -115,7 +120,7 @@ export const RightSidebar: FC = memo(() => {
           }
         },
         content: {
-          className: 'flex flex-column justify-content-between p-0'
+          className: 'flex flex-column justify-content-between p-0 pb-2'
         }
       }}
     >
@@ -145,7 +150,7 @@ export const RightSidebar: FC = memo(() => {
                 text
                 raised
                 icon={`${icon_classes} ${route_attributes[app_routes.user_profile$id].icon} `}
-                className="border-noround w-full h-full px-2 action_text_font text-2xl shadow_on_hover"
+                className="border-noround w-full px-2 action_text_font text-2xl shadow_on_hover"
               />
             </QueryLink>
             :
@@ -155,8 +160,7 @@ export const RightSidebar: FC = memo(() => {
                 text
                 raised
                 icon={`${icon_classes} ${route_attributes[app_routes.signin].icon}`}
-                iconPos="right"
-                className="border-noround w-full h-full px-2 text-primary shadow_on_hover action_text_font text-2xl"
+                className="border-noround w-full px-2 text-primary shadow_on_hover action_text_font text-2xl"
               />
             </QueryLink>
         }
@@ -170,7 +174,7 @@ export const RightSidebar: FC = memo(() => {
                 text
                 raised
                 icon={`${icon_classes} ${route_attributes[app_routes.my_stations].icon}`}
-                className="border-noround w-full h-full px-2 text-2xl shadow_on_hover action_text_font"
+                className="border-noround w-full px-2 text-2xl shadow_on_hover action_text_font"
               />
             </QueryLink>
             : <></>
@@ -223,7 +227,7 @@ export const RightSidebar: FC = memo(() => {
                 text
                 raised
                 icon={`${icon_classes} pi-plus-circle`}
-                className="border-noround w-full h-full px-2 text-2xl shadow_on_hover action_text_font"
+                className="border-noround w-full px-2 text-2xl shadow_on_hover action_text_font"
               />
             </QueryLink>
             : <></>
@@ -235,11 +239,10 @@ export const RightSidebar: FC = memo(() => {
 
         <a href={`https://t.me/radio${language}best`} target="_blank" className="w-full">
           <Button
-            label={<Translation capitalize field="feedback" className="w-4" /> as unknown as string}
+            label={translations.feedback}
             text
             raised
             icon={`${icon_classes} pi-telegram`}
-            iconPos="right"
             className="border-noround action_text_font px-2 text-xl shadow_on_hover w-full"
           />
         </a>
@@ -247,13 +250,12 @@ export const RightSidebar: FC = memo(() => {
         {
           signedin ?
             <Button
-              label={<Translation capitalize field="logout" className="w-4" /> as unknown as string}
+              label={translations.logout}
               text
               raised
               icon={`${icon_classes} pi-sign-out`}
               onClick={click_logout}
-              iconPos="right"
-              className="border-noround text-color-secondary px-2 text-left action_text_font text-2xl shadow_on_hover"
+              className="border-noround text-color-secondary px-2 action_text_font text-2xl shadow_on_hover"
             />
             : <></>
         }

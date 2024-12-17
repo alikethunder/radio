@@ -63,7 +63,11 @@ export const Navbar: FC = memo(() => {
         <div className="left h-full flex gap-1 sm:gap-2">
 
           <QueryLink to={app_routes.root}
-            onClick={click_root}>
+            onClick={click_root}
+            style={{
+              borderRight: '1px solid var(--surface-border)',
+            }}
+          >
             <Button
               text
               raised
