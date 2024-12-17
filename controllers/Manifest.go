@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"encoding/json"
 	"os"
 	"web_project/translations"
 
@@ -16,16 +17,38 @@ func Manifest(ctx *fiber.Ctx) error {
 		language = "en"
 	}
 
+	var lang_tags fiber.Map
+
+	lang_tags_json, _ := os.ReadFile(os.Getenv("TEMPL_PATH") + "/settings/languages_translations.json")
+
+	json.Unmarshal(lang_tags_json, &lang_tags)
+
 	manifest := fiber.Map{
-		"name":             "Radio Best",
-		"short_name":       "Radio Best",
-		"description":      translations.Dictionary[language]["home_page_description"],
-		"theme_color":      "#00a1f7",
-		"background_color": "#fff",
-		"orientation":      "portrait",
-		"categories":       []string{"music", "entertainment", "lifestyle", "news"},
-		"display":          "standalone",
-		"start_url":        ctx.BaseURL(),
+		"name":                        "Radio Best",
+		"short_name":                  "Radio Best",
+		"description":                 translations.Dictionary[language]["home_page_description"],
+		"theme_color":                 "#00a1f7",
+		"background_color":            "#fff",
+		"orientation":                 "portrait",
+		"categories":                  []string{"music", "entertainment", "lifestyle", "news"},
+		"display":                     "standalone",
+		"start_url":                   ctx.BaseURL(),
+		"id":                          ctx.BaseURL(),
+		"dir":                         "ltr",
+		"lang":                        lang_tags[language],
+		"prefer_related_applications": false,
+		"related_applications": []fiber.Map{
+			{
+				"platform": "webapp",
+				"url":      ctx.BaseURL(),
+			},
+		},
+		"scope": ctx.BaseURL(),
+		"scope_extensions": []fiber.Map{
+			{
+				"origin": "*.radio.best",
+			},
+		},
 		"manifest_version": 2,
 		"version":          os.Getenv("VERSION"),
 		"shortcuts": []fiber.Map{
