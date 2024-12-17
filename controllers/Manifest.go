@@ -49,6 +49,7 @@ func Manifest(ctx *fiber.Ctx) error {
 				"origin": "*.radio.best",
 			},
 		},
+		"handle_links":     "preferred",
 		"manifest_version": 2,
 		"version":          os.Getenv("VERSION"),
 		"shortcuts": []fiber.Map{
