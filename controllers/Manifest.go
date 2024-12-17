@@ -19,7 +19,7 @@ func Manifest(ctx *fiber.Ctx) error {
 
 	var lang_tags fiber.Map
 
-	lang_tags_json, _ := os.ReadFile(os.Getenv("TEMPL_PATH") + "/settings/languages_translations.json")
+	lang_tags_json, _ := os.ReadFile(os.Getenv("TEMPL_PATH") + "/settings/languages_tags.json")
 
 	json.Unmarshal(lang_tags_json, &lang_tags)
 
