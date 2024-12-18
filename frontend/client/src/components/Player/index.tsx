@@ -154,7 +154,7 @@ export const Player: FC = memo(() => {
       <div className="flex flex-column justify-content-between -ml-2 sm:ml-0">
 
         <Button
-          className="shadow_on_hover p-0 flex-shrink-0"
+          className="shadow_on_hover active_element p-0 flex-shrink-0 hover:text-primary hover:border-primary"
 
           rounded
           outlined

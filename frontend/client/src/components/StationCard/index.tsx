@@ -62,7 +62,7 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
           'gap-1',
           'overflow-hidden',
           'text-primary',
-          'shadow_card',
+          'shadow_card hover:border-primary',
           'element_with_overlay',
           'w-full',
           'h-13rem',
