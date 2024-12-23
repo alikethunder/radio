@@ -5,6 +5,7 @@ import {
 } from '@/constants/router'
 
 import { createJSONStorage } from 'zustand/middleware'
+import { Station } from '@/types';
 
 type SessionStore = {
   rightSidebarOpened: boolean;
@@ -32,6 +33,12 @@ type SessionStore = {
     };
   };
   pwa_event: any;
+  stations_home: Station[];
+  stations_favorite: Station[];
+  stations_home_loaded: boolean;
+  stations_favorite_loaded: boolean;
+  stations_home_last_id: string | null;
+  stations_favorite_last_id: string | null;
 }
 
 const initial_state = {
@@ -48,6 +55,12 @@ const initial_state = {
     pt: {},
   },
   pwa_event: null,
+  stations_home: [],
+  stations_home_loaded: false,
+  stations_home_last_id: null,
+  stations_favorite: [],
+  stations_favorite_loaded: false,
+  stations_favorite_last_id: null,
 } as SessionStore
 
 export const sessionStore = createStore('sessionStore')(initial_state, {
@@ -75,5 +88,13 @@ export const sessionStore = createStore('sessionStore')(initial_state, {
       checked_translation[language][field] = true
       //@ts-ignore
       set.checked_translation(checked_translation)
+    },
+    add_stations_home(stations: Station[]) {
+      const stations_home = get.stations_home()
+      set.stations_home(stations_home.concat(stations))
+    },
+    add_stations_favorite(stations: Station[]) {
+      const stations_favorite = get.stations_favorite()
+      set.stations_favorite(stations_favorite.concat(stations))
     },
   }))

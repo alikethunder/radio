@@ -1,6 +1,8 @@
 import { StationsGrid, } from "@/components"
 
 import {
+  actions,
+  store,
   useStore,
 } from "@/store"
 
@@ -21,14 +23,14 @@ import { useEffect, useState } from "react"
 export const FavoriteStations = () => {
 
   //const stations = useLoaderData() as Station[]
-  const [stations, set_stations] = useState<Station[]>([])
-  const [loading, set_loading] = useState(true)
+  const stations = useStore().session.stations_favorite()
+  const loading = !useStore().session.stations_favorite_loaded()
 
   const favorite_stations = useFavoriteStations()
 
   useEffect(() => {
-    if (favorite_stations.length) {
-      console.log(`[FavoriteStations] favorite_stations : `, favorite_stations);
+    if (favorite_stations.length && !store.session.stations_favorite_loaded()) {
+      //console.log(`[FavoriteStations] favorite_stations : `, favorite_stations);
       (async () => {
 
         const res = await fetch(`/api/v1/radio/stations-by-id`, {
@@ -39,14 +41,15 @@ export const FavoriteStations = () => {
         })
 
         const json = await res.json()
-        console.log(`[FavoriteStations] list result : `, json)
+        //console.log(`[FavoriteStations] list result : `, json)
 
-        set_stations(json)
+        actions.session.add_stations_favorite(json)
+        actions.session.stations_favorite_last_id(json[json.length - 1].id)
 
-        set_loading(false)
+        actions.session.stations_favorite_loaded(true)
 
       })()
-    }
+    } 
   }, [favorite_stations])
 
   useLog(true, '[FavoriteStations] stations : ', stations)

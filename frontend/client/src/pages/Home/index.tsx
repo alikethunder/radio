@@ -5,6 +5,7 @@ import {
 } from "@/components"
 
 import {
+  actions,
   store,
   useStore,
 } from "@/store"
@@ -24,8 +25,8 @@ import { list } from "@/API/station/list"
 
 export const Home = memo(() => {
 
-  const [stations, set_stations] = useState<Station[]>([])
-  const [loading, set_loading] = useState(true)
+  const stations = useStore().session.stations_home()
+  const loading = !useStore().session.stations_home_loaded()
 
   //useLog(true, '[Home] stations : ', stations)
 
@@ -52,33 +53,27 @@ export const Home = memo(() => {
   })
 
   useEffect(() => {
-    (async () => {
-      const limit = 200
-      let from
-      while (true) {
+    if (!store.session.stations_home_loaded()) {
+      (async () => {
+        const limit = 200
+        while (true) {
+          const from = store.session.stations_home_last_id()
 
-        const res = await list({ limit, admin: store.user.admin(), ...from ? { from } : {} })
+          const res = await list({ limit, admin: store.user.admin(), ...from ? { from } : {} })
 
-        //console.log(`[stations] list result : `, res)
+          //console.log(`[stations] list result : `, res)
+          actions.session.add_stations_home(res)
+          actions.session.stations_home_last_id(res[res.length - 1].id)
 
-        set_stations(s => s.concat(res))
+          if (!res.length || res.length < limit) {
+            //console.log('set loading false ')
+            actions.session.stations_home_loaded(true)
+            break
+          }
 
-        if (!res.length || res.length < limit) {
-          //console.log('set loading false ')
-          set_loading(false)
-
-          set_stations(s => {
-            //console.log('[Home] stations : ', s)
-            //window.stations = s
-            return s
-          })
-
-          break
         }
-
-        from = res[res.length - 1].id
-      }
-    })()
+      })()
+    }
   }, [])
 
   useFormState({
