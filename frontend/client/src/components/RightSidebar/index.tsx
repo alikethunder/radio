@@ -32,10 +32,11 @@ import { generatePath } from "react-router-dom"
 import { icon_classes } from "@/constants/icon_classes"
 import { classNames } from "primereact/utils"
 
-import { Translation } from "@/layout parts"
 import { useDebounceCallback } from "usehooks-ts"
 import { useFavoriteStations, useTranslations, } from "@/hooks"
 import languages_translations from '&/settings/languages_translations.json'
+
+const urlListLength = 9500
 
 export const RightSidebar: FC = memo(() => {
 
@@ -102,6 +103,43 @@ export const RightSidebar: FC = memo(() => {
     'logout',
     'feedback',
   ], true)
+
+  const index_now = useDebounceCallback(async () => {
+
+    const indexed_stations = store.persistedApp.indexed_stations()
+
+    const stations = store.session.stations_home()
+
+    const languages = store.translations.languages()
+
+    const not_indexed_stations = stations.filter(s => !indexed_stations.includes(s.id))
+
+    const urlList = not_indexed_stations.flatMap(s => languages.map(l => `https://${window.location.origin}/station/${s.id}/?language=${l}`))
+
+    for (let i = 0; i < urlList.length; i += urlListLength) {
+
+      if (window.location.origin.includes('localhost')) {
+
+        //console.log('[index_now] urlList ', i, ' : ', urlList.slice(i, i + urlListLength))
+
+      } else {
+
+        const res = await fetch('https://api.indexnow.org/indexnow', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            host: "radio.best",
+            key: "7fbf9f93-4ae3-4375-acfd-a3b1e049d992",
+            urlList: urlList.slice(i, i + urlListLength),
+          }),
+        })
+
+      }
+    }
+
+  }, 100)
 
   return (
     <Sidebar
@@ -222,7 +260,6 @@ export const RightSidebar: FC = memo(() => {
           root_admin ?
             <QueryLink to={generatePath(`${app_routes["station$id"]}/${'?edit'}`, { id: "new" })} onClick={close_rsb}>
               <Button
-                //todo: stations quantity like "My stations (5)"
                 label={'Create new station'}
                 text
                 raised
@@ -230,6 +267,19 @@ export const RightSidebar: FC = memo(() => {
                 className="border-noround w-full px-2 text-2xl shadow_on_hover action_text_font"
               />
             </QueryLink>
+            : <></>
+        }
+
+        {
+          root_admin ?
+            <Button
+              label={'Index Now'}
+              text
+              raised
+              icon={`${icon_classes} pi-info-circle`}
+              className="border-noround w-full px-2 text-2xl shadow_on_hover action_text_font flex-shrink-0"
+              onClick={index_now}
+            />
             : <></>
         }
 

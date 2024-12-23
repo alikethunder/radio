@@ -13,6 +13,7 @@ type PersistedApp = {
   home_scroll: number;
   my_stations_scroll: number;
   theme: 'light' | 'dark';
+  indexed_stations: string[];
 }
 
 const initial_state = {
@@ -25,6 +26,7 @@ const initial_state = {
   home_scroll: 0,
   my_stations_scroll: 0,
   theme: window?.matchMedia?.('(prefers-color-scheme:dark)')?.matches ? 'dark' : 'light',
+  indexed_stations: [],
 } as PersistedApp
 
 export const persistedAppStore = createStore('app')(initial_state,
