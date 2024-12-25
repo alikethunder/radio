@@ -6,6 +6,7 @@ import (
 	"net/mail"
 	"net/smtp"
 	"os"
+	"web_project/constants"
 )
 
 var gmail_Configuration = map[string]interface{}{
@@ -17,12 +18,12 @@ var gmail_Configuration = map[string]interface{}{
 }
 
 var prod_Configuration = map[string]interface{}{
-	"from":        mail.Address{"", "noreply@radio.best"},
+	"from":        mail.Address{"", "noreply@" + constants.BaseURL},
 	"smtpPort":    "465",
 	"smtpHost":    "smtp.titan.email",
 	"password":    "Revelation:2221", // Titan password
 	"mimeHeaders": "Content-Transfer-Encoding: base64",
-	"login":       "noreply@radio.best",
+	"login":       "noreply@" + constants.BaseURL,
 }
 
 var C *smtp.Client

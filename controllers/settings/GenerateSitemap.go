@@ -14,8 +14,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-const baseURL = "https://radio.best"
-
 func GenerateSitemap(ctx *fiber.Ctx) error {
 
 	admin := db.CheckRootAdmin(ctx)
@@ -25,7 +23,7 @@ func GenerateSitemap(ctx *fiber.Ctx) error {
 
 		smi := smg.NewSitemapIndex(true)
 		smi.SetCompress(false)
-		smi.SetHostname(baseURL)
+		smi.SetHostname(constants.BaseURL)
 		smi.SetOutputPath("./served/static/sitemaps/")
 		smi.SetServerURI("/sitemaps/")
 
@@ -41,7 +39,7 @@ func GenerateSitemap(ctx *fiber.Ctx) error {
 
 			main_alternates = append(main_alternates, &smg.SitemapAlternateLoc{
 				Hreflang: constants.Language_codes[lang].(string),
-				Href:     baseURL + "?language=" + lang,
+				Href:     constants.BaseURL + "?language=" + lang,
 				Rel:      "alternate",
 			})
 		}
@@ -68,7 +66,7 @@ func GenerateSitemap(ctx *fiber.Ctx) error {
 
 				station_alternates = append(station_alternates, &smg.SitemapAlternateLoc{
 					Hreflang: constants.Language_codes[lang].(string),
-					Href:     baseURL + "/station/" + id + "?language=" + lang,
+					Href:     constants.BaseURL + "/station/" + id + "?language=" + lang,
 					Rel:      "alternate",
 				})
 			}
@@ -104,5 +102,5 @@ func GenerateSitemap(ctx *fiber.Ctx) error {
 		}
 	}
 
-	return ctx.SendStatus(fiber.StatusForbidden)
+	return ctx.SendStatus(fiber.StatusUnauthorized)
 }

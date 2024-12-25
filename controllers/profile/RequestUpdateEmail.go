@@ -6,6 +6,7 @@ import (
 
 	"github.com/goccy/go-json"
 
+	"web_project/constants"
 	"web_project/cookies"
 	"web_project/db"
 	"web_project/functions"
@@ -76,7 +77,7 @@ func RequestUpdateEmail(ctx *fiber.Ctx) error {
 			domain := "http://localhost:" + os.Getenv("PORT")
 
 			if os.Getenv("ENV") == "prod" {
-				domain = "https://radio.best"
+				domain = "https://" + constants.BaseURL
 			}
 
 			mailer.SendRequestUpdateEmail(fiber.Map{

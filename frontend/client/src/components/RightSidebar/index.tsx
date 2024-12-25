@@ -36,8 +36,6 @@ import { useDebounceCallback } from "usehooks-ts"
 import { useFavoriteStations, useTranslations, } from "@/hooks"
 import languages_translations from '&/settings/languages_translations.json'
 
-const urlListLength = 9500
-
 export const RightSidebar: FC = memo(() => {
 
   const rightSidebarOpened = useTrackedStore().session.rightSidebarOpened()
@@ -106,38 +104,7 @@ export const RightSidebar: FC = memo(() => {
 
   const index_now = useDebounceCallback(async () => {
 
-    const indexed_stations = store.persistedApp.indexed_stations()
-
-    const stations = store.session.stations_home()
-
-    const languages = store.translations.languages()
-
-    const not_indexed_stations = stations.filter(s => !indexed_stations.includes(s.id))
-
-    const urlList = not_indexed_stations.flatMap(s => languages.map(l => `https://${window.location.origin}/station/${s.id}/?language=${l}`))
-
-    for (let i = 0; i < urlList.length; i += urlListLength) {
-
-      if (window.location.origin.includes('localhost')) {
-
-        //console.log('[index_now] urlList ', i, ' : ', urlList.slice(i, i + urlListLength))
-
-      } else {
-
-        const res = await fetch('https://api.indexnow.org/indexnow', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            host: "radio.best",
-            key: "7fbf9f93-4ae3-4375-acfd-a3b1e049d992",
-            urlList: urlList.slice(i, i + urlListLength),
-          }),
-        })
-
-      }
-    }
+    await fetch('/api/v1/settings/indexnow')
 
   }, 100)
 

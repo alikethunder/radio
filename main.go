@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"crypto/tls"
+	"web_project/constants"
 	"web_project/db"
 	DBPlans "web_project/db/Plans"
 	"web_project/db/StationCounters"
@@ -201,6 +202,8 @@ func main() {
 
 	settings_endpoints.Get("/sitemap", SettingsEndpoints.GenerateSitemap)
 
+	settings_endpoints.Get("/indexnow", SettingsEndpoints.IndexNow)
+
 	tags_endpoints := v1.Group("/tags", compress_get, etag.New(), cache.New(cache.Config{
 		Next:       notGet,
 		Expiration: 4 * time.Hour,
@@ -285,7 +288,7 @@ func main() {
 		m := &autocert.Manager{
 			Prompt: autocert.AcceptTOS,
 			// Replace with your domain
-			HostPolicy: autocert.HostWhitelist("radio.best", "www.radio.best"),
+			HostPolicy: autocert.HostWhitelist(constants.BaseURL, "www."+constants.BaseURL),
 			// Folder to store the certificates
 			Cache: autocert.DirCache("./certs"),
 		}

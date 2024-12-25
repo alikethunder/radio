@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"os"
+	"web_project/constants"
 	"web_project/translations"
 
 	"github.com/gofiber/fiber/v2"
@@ -46,7 +47,7 @@ func Manifest(ctx *fiber.Ctx) error {
 		"scope": ctx.BaseURL(),
 		"scope_extensions": []fiber.Map{
 			{
-				"origin": "*.radio.best",
+				"origin": "*." + constants.BaseURL,
 			},
 		},
 		"handle_links":     "preferred",
