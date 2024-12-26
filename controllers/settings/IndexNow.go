@@ -11,6 +11,7 @@ import (
 )
 
 const urlListLength = 9500
+const key = "7fbf9f93-4ae3-4375-acfd-a3b1e049d992"
 
 func IndexNow(ctx *fiber.Ctx) error {
 
@@ -27,6 +28,7 @@ func IndexNow(ctx *fiber.Ctx) error {
 
 		total_lists := int(math.Ceil(float64(total_urls) / urlListLength))
 		//fmt.Println("[IndexNow] total_lists : ", total_lists)
+		responses := make([]fiber.Map, total_lists)
 
 		i := 0
 		n := 0
@@ -66,15 +68,31 @@ func IndexNow(ctx *fiber.Ctx) error {
 					}
 				}
 			}
-			n++
+
+			//fmt.Println("[IndexNow] urlList : ", urlList)
 			//send urlList to indexnow
+
+			agent := fiber.Post("https://api.indexnow.org/indexnow")
+
+			agent.JSON(fiber.Map{
+				"host":        constants.BaseURL,
+				"key":         key,
+				"keyLocation": "https://" + constants.BaseURL + "/" + key + ".txt",
+				"urlList":     urlList,
+			})
+
+			status, response, errs := agent.Bytes()
+
+			responses[n] = fiber.Map{
+				"status":   status,
+				"response": response,
+				"errs":     errs,
+			}
+			n++
+
 		}
+		return ctx.Status(fiber.StatusOK).JSON(responses)
 
-		//fmt.Println("[IndexNow] urlLists : ", urlLists)
-
-		/* if err == nil {
-			return ctx.SendStatus(fiber.StatusOK)
-		} */
 	}
 
 	return ctx.SendStatus(fiber.StatusUnauthorized)

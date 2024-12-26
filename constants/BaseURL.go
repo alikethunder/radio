@@ -1,3 +1,3 @@
 package constants
 
-var BaseURL = "https://radio.best"
+var BaseURL = "radio.best"
