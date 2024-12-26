@@ -1,6 +1,7 @@
 package SettingsEndpoints
 
 import (
+	"fmt"
 	"math"
 	"web_project/constants"
 	"web_project/db"
@@ -21,74 +22,54 @@ func IndexNow(ctx *fiber.Ctx) error {
 
 		stations := db.List("stations", fiber.Map{"broadcasting": true}, []string{}, "", "id")
 
-		//fmt.Println("[IndexNow] stations : ", stations)
-
 		total_urls := len(stations) * len(translations.Languages())
 		//fmt.Println("[IndexNow] total_urls : ", total_urls)
 
-		total_lists := int(math.Ceil(float64(total_urls) / urlListLength))
-		//fmt.Println("[IndexNow] total_lists : ", total_lists)
-		responses := make([]fiber.Map, total_lists)
+		urlList := make([]string, total_urls)
 
 		i := 0
+
+		for _, station := range stations {
+			station_id := station["id"].(gocql.UUID).String()
+
+			station_url := "https://" + constants.BaseURL + "/station/" + station_id
+
+			for _, lang := range translations.Languages() {
+
+				urlList[i] = station_url + "?language=" + lang
+				i++
+
+			}
+		}
+
+		responses := []fiber.Map{}
 		n := 0
 
-		for n < total_lists {
-			remaining := total_urls - n*urlListLength
-			//fmt.Println("[IndexNow] remaining : ", remaining)
-			var length int
+		for n < total_urls {
+			fin := math.Min(float64(n+urlListLength), float64(total_urls))
 
-			if remaining >= urlListLength {
-				length = urlListLength
-			} else {
-				length = remaining
-			}
-			urlList := make([]string, length)
-
-			for _, station := range stations {
-				station_id := station["id"].(gocql.UUID).String()
-
-				station_url := "https://" + constants.BaseURL + "/station/" + station_id
-
-				for _, lang := range translations.Languages() {
-
-					urlList[i] = station_url + "?language=" + lang
-					//fmt.Println("[IndexNow] urlList[ ", i, "] : ", urlList[i])
-					i++
-
-					if n == total_lists-1 {
-
-						if i == remaining {
-							break
-						}
-					} else {
-						if i == urlListLength {
-							i = 0
-						}
-					}
-				}
-			}
-
-			//fmt.Println("[IndexNow] urlList : ", urlList)
 			//send urlList to indexnow
 
 			agent := fiber.Post("https://api.indexnow.org/indexnow")
+
+			fmt.Printf("[IndexNow] urlList[%d:%d] : %v\n", n, int(fin), urlList[n:int(fin)])
 
 			agent.JSON(fiber.Map{
 				"host":        constants.BaseURL,
 				"key":         key,
 				"keyLocation": "https://" + constants.BaseURL + "/" + key + ".txt",
-				"urlList":     urlList,
+				"urlList":     urlList[n:int(fin)],
 			})
 
 			status, response, errs := agent.Bytes()
 
-			responses[n] = fiber.Map{
+			responses = append(responses, fiber.Map{
 				"status":   status,
 				"response": response,
 				"errs":     errs,
-			}
-			n++
+			})
+
+			n += urlListLength
 
 		}
 		return ctx.Status(fiber.StatusOK).JSON(responses)

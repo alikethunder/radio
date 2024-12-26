@@ -56,7 +56,7 @@ func UploadJsons(ctx *fiber.Ctx) error {
 					if existing_station == nil {
 						id = "new"
 					} else {
-						fmt.Println("[UploadJsons] existing station: ", existing_station)
+						//fmt.Println("[UploadJsons] existing station: ", existing_station)
 						id = existing_station["id"].(gocql.UUID).String()
 					}
 
