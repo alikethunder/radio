@@ -18,6 +18,8 @@ import {
 } from "@/store"
 
 import {
+  useLog,
+  usePageInList,
   useTranslations,
 } from '@/hooks'
 
@@ -25,6 +27,7 @@ import {
   StationTag,
 } from '@/components'
 import { useDebounceCallback } from "usehooks-ts"
+import { app_routes } from "@/constants/router"
 
 export const StationSearchPanelContent: FC = memo(() => {
 
@@ -46,12 +49,36 @@ export const StationSearchPanelContent: FC = memo(() => {
     useDebounceCallback(() => actions.persistedApp.search_stations_text(''), 100)
     , [])
 
+  const fav_loading = !useStore().session.stations_favorite_loaded()
+  const home_loading = !useStore().session.stations_home_loaded()
+
+  const [home_page] = usePageInList([app_routes.root])
+  const [fav_page] = usePageInList([app_routes.my_stations])
+
   return (
     <>
       <div className="max-w-full w-20rem flex flex-column justify-content-center gap-1 align-self-stretch">
 
         {/* text search */}
         <IconField className="w-full align-self-start">
+
+          {
+            (
+              fav_loading
+              && fav_page
+            )
+              || (
+                home_loading
+                && home_page
+              )
+              ?
+              <InputIcon className="pi pi-spinner pi-spin" style={{
+                ...search_stations_text ? {
+                  right: '2rem',
+                } : {},
+              }} />
+              : <></>
+          }
 
           {
             search_stations_text ?
