@@ -561,7 +561,8 @@ export const Station = () => {
                   currentTarget.onerror = null
                   set_profile_photo_exists(false)
                 }}
-              />
+                loading="lazy"
+                />
 
               {
                 avatar_data_url || profile_photo_exists ? <></> :

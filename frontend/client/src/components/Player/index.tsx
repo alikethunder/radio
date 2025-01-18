@@ -134,6 +134,8 @@ export const Player: FC = memo(() => {
               <img
                 style={{ display: 'none' }}
                 src={`/api/v1/files/stations/${current_station?.id}/avatar`}
+                
+                loading="lazy"
 
                 onError={({ currentTarget }) => {
                   set_avatar_not_exists(current_station?.id)

@@ -101,6 +101,7 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
 
                     if (p) p.style.display = 'none'
                   }}
+                  loading="lazy"
                 />
               </div>
 
