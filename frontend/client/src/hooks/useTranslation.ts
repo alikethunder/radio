@@ -26,7 +26,7 @@ export const useTranslation = (field: string, capitalize?: boolean,): [string, b
 
       })()
     }
-  }, [language, field, translation_checked])
+  }, [language, translation_checked])
 
   return [translation, translation_checked ? false : loading]
 }
