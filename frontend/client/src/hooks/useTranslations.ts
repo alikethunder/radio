@@ -12,7 +12,7 @@ export const useTranslations = <T extends string>(fields: T[], capitalize?: bool
 
   const language = useStore().translations.language()
 
-  const translations = useStore().translations.get_translations(fields)
+  const translations = useStore().translations.get_translations(fields) as unknown as ObjectFromList<T>
 
   useEffect(() => {
     if (language) {
@@ -41,16 +41,18 @@ export const useTranslations = <T extends string>(fields: T[], capitalize?: bool
 
           })
 
+        }).finally(() => {
           set_loading(false)
         })
 
       } else {
         set_loading(false)
       }
-
     }
-  }, [language, fields,])
+  }, [
+    language,
+  ])
 
-  return [translations as unknown as ObjectFromList<T>, loading]
+  return [translations, loading]
 
 }

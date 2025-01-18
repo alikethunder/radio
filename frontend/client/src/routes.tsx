@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Profiler } from "react"
 import { redirect, } from "react-router-dom"
 import App from "@/App"
 
@@ -58,9 +58,11 @@ let signedin = false
 export const routes = [
   {
     path: app_routes.root,
-    element: <App />,
+    element: <Profiler id="App" onRender={(id, phase) => {
+      console.log('App render, id , phase : ', id, phase)
+    }}><App /></Profiler>,
     loader() {
-      //console.log('root loader')
+      console.log('root loader')
       actions.app.current_page({})
       return null
     },

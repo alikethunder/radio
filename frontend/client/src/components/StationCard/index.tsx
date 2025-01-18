@@ -143,7 +143,7 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
 
             <div className="station_tags_container text-center text_hidden_overflow line-clamp-2 flex-shrink-0">
               {
-                station.tags.map(tag => <StationTag tag={tag} />)
+                station.tags.map(tag => <StationTag tag={tag} key={tag} />)
               }
             </div>
           </div>

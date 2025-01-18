@@ -261,7 +261,7 @@ export const Player: FC = memo(() => {
         <div className="station_tags_container text_hidden_overflow line-clamp-2 max-w-15rem text-center">
           {/* current station tags (clickable, opens the main page with search with clicked tag)  */}
           {
-            current_station?.tags?.map(tag => <StationTag tag={tag} />)
+            current_station?.tags?.map(tag => <StationTag tag={tag} key={tag}/>)
           }
 
         </div>
