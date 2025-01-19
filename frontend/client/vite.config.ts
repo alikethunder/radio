@@ -51,7 +51,6 @@ export default defineConfig({
       sourcemaps: {
         assets: "./assets/**"
       },
-
     }),
   ],
   css: {

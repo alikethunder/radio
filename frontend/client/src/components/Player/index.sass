@@ -4,3 +4,30 @@
   transform-origin: bottom
   &.opened
     transform: translateY(0)
+
+  .player_play_button
+    width: 48px
+    height: 48px
+    &>*
+      width: 28px
+      height: 28px
+      color: #fff
+      font-weight: 600
+      text-shadow: 0 0 7px
+
+      &.padding_left_2px
+        padding-left: 2px!important
+
+    [fill-opacity]
+      fill-opacity: .95
+
+    path:last-of-type
+      color: red
+
+    &:hover
+      *
+        color: inherit
+        filter: brightness(1.5)
+
+    &.p-disabled
+      opacity: .8

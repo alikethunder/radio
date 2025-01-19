@@ -7,6 +7,8 @@ import {
 //import { TabMenu } from 'primereact/tabmenu'
 import { Button } from 'primereact/button'
 
+import { MdSignalWifiConnectedNoInternet0 } from "react-icons/md"
+
 import {
   actions,
   useStore,
@@ -44,20 +46,40 @@ export const Player: FC = memo(() => {
 
   const theme = useStore().persistedApp.theme()
 
+  const [offline, set_offline] = useState(false)
+
+  const manage_play = useCallback(() => {
+
+    const current_station = store.player.current_station()
+    const playing = store.player.playing()
+
+    set_audio_ref(audio_ref => {
+      set_offline(offline => {
+        if (current_station && audio_ref) {
+          if (playing && !offline) {
+            audio_ref.src = current_station?.external_enable ? current_station?.external : ''
+            audio_ref.play().catch((e) => {
+              console.log('[Player] play error : ', e)
+              actions.player.playing(false)
+              audio_ref.pause()
+            })
+          } else {
+            audio_ref.pause()
+            //audio_ref.removeAttribute('src')
+          }
+        }
+        return offline
+      })
+
+      return audio_ref
+    })
+  }, [])
+
   useEffect(() => {
-    if (current_station && audio_ref) {
-      if (playing) {
-        audio_ref.src = current_station?.external_enable ? current_station?.external : ''
-        audio_ref.play().catch((e) => {
-          console.log('[Player] play error : ', e)
-          actions.player.playing(false)
-          audio_ref.pause()
-        })
-      } else {
-        audio_ref.pause()
-      }
-    }
-  }, [playing, current_station, audio_ref])
+    manage_play()
+  }, [
+    playing,
+  ])
 
   useEffect(() => {
     if (audio_ref) {
@@ -97,8 +119,25 @@ export const Player: FC = memo(() => {
     }
   }, 50)
 
-  const set_audio_ref_func = useCallback((e: HTMLAudioElement) => {
-    set_audio_ref(e)
+  const onoffline = useCallback((e: Event) => {
+    set_offline(true)
+    manage_play()
+  }, [])
+
+  const ononline = useCallback((e: Event) => {
+    set_offline(false)
+    manage_play()
+  }, [])
+
+  useEffect(() => {
+    window.addEventListener('online', ononline)
+
+    window.addEventListener('offline', onoffline)
+
+    return () => {
+      window.removeEventListener('offline', onoffline)
+      window.removeEventListener('online', ononline)
+    }
   }, [])
 
   return (
@@ -109,7 +148,7 @@ export const Player: FC = memo(() => {
         style={{
           display: 'none'
         }}
-        ref={set_audio_ref_func}
+        ref={set_audio_ref}
       />
 
       <div className="flex flex-row flex-wrap-reverse gap-2 align-items-end justify-content-center">
@@ -134,7 +173,7 @@ export const Player: FC = memo(() => {
               <img
                 style={{ display: 'none' }}
                 src={`/api/v1/files/stations/${current_station?.id}/avatar`}
-                
+
                 loading="lazy"
 
                 onError={({ currentTarget }) => {
@@ -156,34 +195,34 @@ export const Player: FC = memo(() => {
       <div className="flex flex-column justify-content-between -ml-2 sm:ml-0">
 
         <Button
-          className="shadow_on_hover active_element p-0 flex-shrink-0 hover:text-primary hover:border-primary"
+          className={`shadow_on_hover active_element p-0 flex-shrink-0 hover:text-primary hover:border-primary player_play_button justify-content-center ${playing ? '' : 'paused'}`}
 
           rounded
           outlined
           raised
           aria-label={`${playing ? translations.pause : translations.play}`}
           severity="info"
-          icon={`pi text-3xl ${playing ? 'pi-pause' : 'pi-play'}`}
 
           pt={{
             root: {
               style: {
                 backgroundColor: 'var(--maskbg)',
-                borderColor: '#fff',
-                color: theme == 'light' ? 'var(--maskbg)' : '#fff',
+                borderColor: offline ? 'red' : '#fff',
+                color: offline ? 'red' : theme == 'light' ? 'var(--maskbg)' : '#fff',
               }
             },
-            icon: {
-              style: {
-                paddingLeft: playing ? '0' : '4px',
-                color: '#fff',
-                fontWeight: 600,
-              }
-            }
           }}
 
           onClick={switch_playing}
-        />
+          disabled={offline}
+        >
+          {
+            offline ?
+              <MdSignalWifiConnectedNoInternet0 />
+              :
+              <i className={`pi text-3xl ${playing ? 'pi-pause' : 'pi-play padding_left_2px'}`}></i>
+          }
+        </Button>
 
         <div className="flex flex-column justify-content-between align-items-center text-gray-500 gap-1">
 
@@ -263,7 +302,7 @@ export const Player: FC = memo(() => {
         <div className="station_tags_container text_hidden_overflow line-clamp-2 max-w-15rem text-center">
           {/* current station tags (clickable, opens the main page with search with clicked tag)  */}
           {
-            current_station?.tags?.map(tag => <StationTag tag={tag} key={tag}/>)
+            current_station?.tags?.map(tag => <StationTag tag={tag} key={tag} />)
           }
 
         </div>
