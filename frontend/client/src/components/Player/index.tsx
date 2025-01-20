@@ -79,6 +79,7 @@ export const Player: FC = memo(() => {
     manage_play()
   }, [
     playing,
+    current_station,
   ])
 
   useEffect(() => {
