@@ -1,4 +1,4 @@
-import { FC, memo, useCallback, useEffect, } from "react"
+import { ChangeEvent, FC, memo, useCallback, useEffect, } from "react"
 
 import { InputText } from "primereact/inputtext"
 
@@ -14,7 +14,6 @@ import {
 } from "@/store"
 
 import {
-  useLog,
   usePageInList,
   useTranslations,
 } from '@/hooks'
@@ -49,6 +48,8 @@ export const StationSearchPanelContent: FC = memo(() => {
 
   const [home_page] = usePageInList([app_routes.root])
   const [fav_page] = usePageInList([app_routes.my_stations])
+
+  const update_search = useCallback((e: ChangeEvent) => actions.persistedApp.search_stations_text((e.target as HTMLInputElement).value), [])
 
   return (
     <>
@@ -87,7 +88,7 @@ export const StationSearchPanelContent: FC = memo(() => {
             className="w-full"
             value={search_stations_text}
 
-            onChange={(e) => actions.persistedApp.search_stations_text(e.target.value)}
+            onChange={update_search}
           />
 
         </IconField>
