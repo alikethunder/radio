@@ -1,6 +1,6 @@
-import { useMemo, } from "react"
+import { useEffect, useState, useTransition, } from "react"
 
-import { useStore } from "@/store"
+import { actions, useStore } from "@/store"
 import { Station } from "@/types"
 
 export const useStationsSearch = (stations: Station[]) => {
@@ -15,37 +15,44 @@ export const useStationsSearch = (stations: Station[]) => {
 
   const current_user_id = useStore().user.id()
 
-  const text_searched_stations = useMemo(() =>
-    search_stations_text_array.length ?
-      stations?.filter(
-        station => search_stations_text_array.every(
-          word =>
-            (station[`description_${language}`] ?? '').toLowerCase().includes(word)
-            || (station.name ?? '').toLowerCase().includes(word)
-            || station.tags.some(tag => tag.toLowerCase().includes(word))
-        )
-      )
-      : stations
-    , [
-      search_stations_text_array,
-      stations,
-      language,
-    ])
+  const [searched_stations_with_mode, set_searched_stations_with_mode] = useState(stations)
 
-  const searched_stations_with_mode = useMemo(() => edit_mode ?
-    (
-      root_admin ?
-        text_searched_stations
-        :
-        text_searched_stations.filter(station => current_user_id && station.admins?.includes(current_user_id))
-    )
-    :
-    text_searched_stations?.filter(station => station.broadcasting),
-    [
-      text_searched_stations,
-      edit_mode,
-      root_admin,
-    ])
+  const [isPending, startTransition] = useTransition()
+
+  useEffect(() => {
+    startTransition(() => {
+      const text_searched_stations = search_stations_text_array.length ?
+        stations?.filter(
+          station => search_stations_text_array.every(
+            word =>
+              (station[`description_${language}`] ?? '').toLowerCase().includes(word)
+              || (station.name ?? '').toLowerCase().includes(word)
+              || station.tags.some(tag => tag.toLowerCase().includes(word))
+          )
+        )
+        : stations
+
+      set_searched_stations_with_mode(
+        edit_mode ?
+          (
+            root_admin ?
+              text_searched_stations
+              :
+              text_searched_stations.filter(station => current_user_id && station.admins?.includes(current_user_id))
+          )
+          :
+          text_searched_stations?.filter(station => station.broadcasting)
+      )
+    })
+  }, [
+    search_stations_text_array,
+    stations,
+    language,
+  ])
+
+  useEffect(() => {
+    actions.app.text_search_in_progress(isPending)
+  }, [isPending])
 
   return searched_stations_with_mode
 }

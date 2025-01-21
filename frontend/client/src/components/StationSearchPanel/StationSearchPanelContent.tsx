@@ -1,14 +1,10 @@
-import { FC, memo, useCallback, useEffect, useState } from "react"
+import { FC, memo, useCallback, useEffect, } from "react"
 
 import { InputText } from "primereact/inputtext"
 
 import { IconField } from "primereact/iconfield"
 
 import { InputIcon } from "primereact/inputicon"
-
-import { classNames } from 'primereact/utils'
-
-import { StationTagRemoveTokenIcon } from "@/layout parts"
 
 import debounce from 'lodash.debounce'
 
@@ -23,9 +19,6 @@ import {
   useTranslations,
 } from '@/hooks'
 
-import {
-  StationTag,
-} from '@/components'
 import { useDebounceCallback } from "usehooks-ts"
 import { app_routes } from "@/constants/router"
 
@@ -52,6 +45,8 @@ export const StationSearchPanelContent: FC = memo(() => {
   const fav_loading = !useStore().session.stations_favorite_loaded()
   const home_loading = !useStore().session.stations_home_loaded()
 
+  const text_search_in_progress = useStore().app.text_search_in_progress()
+
   const [home_page] = usePageInList([app_routes.root])
   const [fav_page] = usePageInList([app_routes.my_stations])
 
@@ -71,6 +66,7 @@ export const StationSearchPanelContent: FC = memo(() => {
                 home_loading
                 && home_page
               )
+              || text_search_in_progress
               ?
               <InputIcon className="pi pi-spinner pi-spin" style={{
                 ...search_stations_text ? {

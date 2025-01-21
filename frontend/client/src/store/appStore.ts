@@ -39,6 +39,7 @@ type AppStore = {
   FormActionsState_isValid: boolean;
   FormActionsState_show: boolean;
   station_tags: StationTag[]; //all possible station tags
+  text_search_in_progress: boolean;
 }
 
 const initial_state = {
@@ -64,6 +65,7 @@ const initial_state = {
   FormActionsState_isValid: false,
   FormActionsState_show: false,
   station_tags: [],
+  text_search_in_progress: false,
 } as AppStore
 
 export const appStore = createStore('app')(initial_state)
