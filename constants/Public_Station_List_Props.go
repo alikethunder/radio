@@ -9,6 +9,6 @@ var Public_Station_List_Props = [...]string{
 	"tags",
 	"admins",
 	"broadcasting",
-	//"genres",
-	//"languages",
+	"genres",
+	"languages",
 }
