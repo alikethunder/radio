@@ -204,6 +204,8 @@ func main() {
 
 	settings_endpoints.Get("/indexnow", SettingsEndpoints.IndexNow)
 
+	settings_endpoints.Get("/genres", SettingsEndpoints.Genres)
+
 	tags_endpoints := v1.Group("/tags", compress_get, etag.New(), cache.New(cache.Config{
 		Next:       notGet,
 		Expiration: 4 * time.Hour,

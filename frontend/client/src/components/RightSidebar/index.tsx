@@ -108,6 +108,12 @@ export const RightSidebar: FC = memo(() => {
 
   }, 100)
 
+  const get_genres = useDebounceCallback(async () => {
+    const resp = await fetch('/api/v1/settings/genres')
+    const json = await resp.json()
+    console.log('genres : ', json)
+  }, 100)
+
   return (
     <Sidebar
       visible={rightSidebarOpened}
@@ -246,6 +252,19 @@ export const RightSidebar: FC = memo(() => {
               icon={`${icon_classes} pi-info-circle`}
               className="border-noround w-full px-2 text-2xl shadow_on_hover action_text_font flex-shrink-0"
               onClick={index_now}
+            />
+            : <></>
+        }
+
+        {
+          root_admin ?
+            <Button
+              label={'Get genres'}
+              text
+              raised
+              icon={`${icon_classes} pi-info-circle`}
+              className="border-noround w-full px-2 text-2xl shadow_on_hover action_text_font flex-shrink-0"
+              onClick={get_genres}
             />
             : <></>
         }

@@ -87,16 +87,18 @@ func GoogleCallback(c *fiber.Ctx) error {
 		}
 		//fmt.Println("google_headers : ", google_headers)
 
-		id_tokens_equal := false
+		if google_headers["keys"] != nil {
+			id_tokens_equal := false
 
-		for _, key := range google_headers["keys"].([]interface{}) {
-			if key.(map[string]interface{})["kid"] == token.Header["kid"] {
-				id_tokens_equal = true
+			for _, key := range google_headers["keys"].([]interface{}) {
+				if key.(map[string]interface{})["kid"] == token.Header["kid"] {
+					id_tokens_equal = true
+				}
 			}
-		}
 
-		if !id_tokens_equal {
-			sentry.CaptureMessage("id tokens not equal")
+			if !id_tokens_equal {
+				sentry.CaptureMessage("id tokens not equal")
+			}
 		}
 
 		user, err := Users.Create(fiber.Map{
