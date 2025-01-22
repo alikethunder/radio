@@ -11,4 +11,5 @@ var Public_Station_List_Props = [...]string{
 	"broadcasting",
 	"genres",
 	"languages",
+	"country",
 }
