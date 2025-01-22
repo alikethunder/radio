@@ -108,11 +108,23 @@ export const RightSidebar: FC = memo(() => {
 
   }, 100)
 
-  const get_genres = useDebounceCallback(async () => {
-    const resp = await fetch('/api/v1/settings/genres')
-    const json = await resp.json()
-    console.log('genres : ', json)
-  }, 100)
+  const upload_genres = useCallback(useDebounceCallback(async (e) => {
+
+    if (e.target.files?.length) {
+      console.log(e.target.files)
+
+      const body = new FormData()
+
+      for (const file of e.target.files) {
+        body.append('genres', file)
+      }
+
+      fetch('/api/v1/settings/genres', {
+        method: "POST",
+        body,
+      })
+    }
+  }, 100), [])
 
   return (
     <Sidebar
@@ -259,13 +271,24 @@ export const RightSidebar: FC = memo(() => {
         {
           root_admin ?
             <Button
-              label={'Get genres'}
+              label={'Upload genres'}
               text
               raised
-              icon={`${icon_classes} pi-info-circle`}
-              className="border-noround w-full px-2 text-2xl shadow_on_hover action_text_font flex-shrink-0"
-              onClick={get_genres}
-            />
+              icon={`${icon_classes} pi-file-plus`}
+              className="border-noround w-full h-full px-2 text-2xl shadow_on_hover action_text_font z-0"
+            >
+              <label htmlFor="genresinput" className="m-0 absolute top-0 bottom-0 left-0 right-0 z-1 cursor-pointer"
+              ></label>
+              <input
+                type="file"
+                id="genresinput"
+                name="genresinput"
+                accept="application/JSON"
+                multiple
+                className="hidden"
+                onChange={upload_genres}
+              />
+            </Button>
             : <></>
         }
 

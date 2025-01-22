@@ -3,19 +3,16 @@ package SettingsEndpoints
 import (
 	"encoding/json"
 	"os"
-	"strings"
 	"web_project/db"
+
+	"math/rand"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-func Genres(ctx *fiber.Ctx) error {
+func UploadGenres(ctx *fiber.Ctx) error {
 
 	admin := db.CheckRootAdmin(ctx)
-
-	genres := fiber.Map{}
-
-	var genres_array []fiber.Map
 
 	var station_tag_colors []string
 
@@ -24,29 +21,31 @@ func Genres(ctx *fiber.Ctx) error {
 	json.Unmarshal(station_tag_colors_content, &station_tag_colors)
 
 	if admin {
-		stations := db.List("stations", fiber.Map{}, []string{}, "", "genres")
+		if form, err := ctx.MultipartForm(); err == nil {
+			genres_file := form.File["genres"]
 
-		for _, station := range stations {
+			for _, file := range genres_file {
+				var json_data []fiber.Map
+				data := make([]byte, file.Size)
 
-			for _, genre := range station["genres"].([]string) {
+				file_data, _ := file.Open()
 
-				trimmed := strings.TrimSpace(genre)
+				file_data.Read(data)
+				file_data.Close()
 
-				genres[trimmed] = fiber.Map{
-					"en": trimmed,
+				json.Unmarshal(data, &json_data)
+
+				for _, genre := range json_data {
+
+					genre["color"] = station_tag_colors[rand.Intn(len(station_tag_colors))]
+
+					db.Insert("genres", genre)
+
 				}
 			}
 		}
 
-		/* for _, genre := range genres {
-			genre.(fiber.Map)["color"] = station_tag_colors[rand.Intn(len(station_tag_colors))]
-		} */
-
-		for _, genre := range genres {
-			genres_array = append(genres_array, genre.(fiber.Map))
-		}
-
-		return ctx.Status(fiber.StatusOK).JSON(genres_array)
+		return ctx.SendStatus(fiber.StatusOK)
 	}
 
 	return ctx.SendStatus(fiber.StatusUnauthorized)

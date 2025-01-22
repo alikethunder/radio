@@ -70,7 +70,10 @@ func UploadJsons(ctx *fiber.Ctx) error {
 						tag_exists, _ := db.SelectRow("station_tags", fiber.Map{"name": tag.(string)}, "name")
 
 						if tag_exists == nil {
-							db.Insert("station_tags", fiber.Map{"name": tag.(string), "color": station_tag_colors[rand.Intn(len(station_tag_colors))]})
+							db.Insert("station_tags", fiber.Map{
+								"name":  tag.(string),
+								"color": station_tag_colors[rand.Intn(len(station_tag_colors))],
+							})
 						}
 					}
 
