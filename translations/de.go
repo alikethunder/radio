@@ -91,4 +91,5 @@ var De = map[string]string{
 	"main_page":                                     "Hauptseite mit",
 	"main_page_with_player":                         "Hauptseite mit Player",
 	"feedback":                                      "Rückmeldung",
+	"filter_by_countries":                           "Nach Ländern filtern",
 }

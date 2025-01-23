@@ -92,4 +92,5 @@ var Sp = map[string]string{
 	"main_page":                                     "Página principal",
 	"main_page_with_player":                         "Página principal con reproductor",
 	"feedback":                                      "Retroalimentación",
+	"filter_by_countries":                           "filtrar por países",
 }

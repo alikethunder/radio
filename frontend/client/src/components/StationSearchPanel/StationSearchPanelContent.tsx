@@ -37,6 +37,7 @@ export const StationSearchPanelContent: FC = memo(() => {
 
   const [translations] = useTranslations([
     'search_radiostations',
+    'filter_by_countries',
   ], true)
 
   useEffect(() => {
@@ -117,7 +118,7 @@ export const StationSearchPanelContent: FC = memo(() => {
         itemTemplate={countryItemTemplate}
         display="chip"
         filter
-        placeholder="Select Countries"
+        placeholder={translations.filter_by_countries}
         className="max-w-20rem w-full relative" />
 
     </>

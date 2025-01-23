@@ -91,4 +91,5 @@ var En = map[string]string{
 	"main_page":                                     "Main page",
 	"main_page_with_player":                         "Main page with player",
 	"feedback":                                      "Feedback",
+	"filter_by_countries":                           "filter by countries",
 }

@@ -91,4 +91,5 @@ var Fr = map[string]string{
 	"main_page":                                     "Page principale",
 	"main_page_with_player":                         "Page principale avec lecteur",
 	"feedback":                                      "Retour d'information",
+	"filter_by_countries":                           "filtrer par pays",
 }
