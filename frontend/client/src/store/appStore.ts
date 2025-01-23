@@ -5,16 +5,8 @@ import {
 } from "react-router-dom"
 
 import {
-  app_routes,
-} from '@/constants/router'
-
-import {
   FormState
 } from '@/types/FormState'
-
-import {
-  StationTag,
-} from '@/types'
 
 type AppStore = {
   isClient: boolean;
@@ -38,7 +30,6 @@ type AppStore = {
   FormActionsState_form: FormState["form"];
   FormActionsState_isValid: boolean;
   FormActionsState_show: boolean;
-  station_tags: StationTag[]; //all possible station tags
   text_search_in_progress: boolean;
 }
 
@@ -64,19 +55,12 @@ const initial_state = {
   FormActionsState_form: undefined,
   FormActionsState_isValid: false,
   FormActionsState_show: false,
-  station_tags: [],
   text_search_in_progress: false,
 } as AppStore
 
 export const appStore = createStore('app')(initial_state)
   .extendSelectors((state, get, api) => ({
     FormActionsState_edit_mode: () => get.FormActionsState_state() == 'edit',
-    get_station_tag(name: string) {
-      return get.station_tags()?.find(t => t.name == name)
-    },
   }))
   .extendActions((set, get, api) => ({
-    update_tags: (tags: StationTag[]) => {
-      set.station_tags([...get.station_tags(), ...tags].filter((t, i, a) => i === a.indexOf(t)))
-    },
   }))

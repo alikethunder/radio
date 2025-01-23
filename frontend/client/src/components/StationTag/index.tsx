@@ -22,7 +22,7 @@ export const StationTag: FC<Props> = memo(({ tag, color, onClick, disable_link }
 
   const { pathname } = useLocation()
 
-  const result_color = color ?? useStore().app.get_station_tag(tag)?.color
+  const result_color = color ?? useStore().session.get_station_tag(tag)?.color
 
   const search_stations_text = useStore().persistedApp.search_stations_text()
 

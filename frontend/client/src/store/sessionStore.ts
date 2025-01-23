@@ -7,6 +7,10 @@ import {
 import { createJSONStorage } from 'zustand/middleware'
 import { Station } from '@/types';
 
+import {
+  StationTag,
+} from '@/types'
+
 type SessionStore = {
   rightSidebarOpened: boolean;
   leftSidebarOpened: boolean;
@@ -39,6 +43,8 @@ type SessionStore = {
   stations_favorite_loaded: boolean;
   stations_home_last_id: string | null;
   stations_favorite_last_id: string | null;
+  station_tags: StationTag[]; //all possible station tags
+
 }
 
 const initial_state = {
@@ -61,6 +67,7 @@ const initial_state = {
   stations_favorite: [],
   stations_favorite_loaded: false,
   stations_favorite_last_id: null,
+  station_tags: [],
 } as SessionStore
 
 export const sessionStore = createStore('sessionStore')(initial_state, {
@@ -75,6 +82,9 @@ export const sessionStore = createStore('sessionStore')(initial_state, {
       //returns if translation was checked
       //@ts-ignore
       return get.checked_translation()[language ?? 'en']?.[field]
+    },
+    get_station_tag(name: string) {
+      return get.station_tags()?.find(t => t.name == name)
     },
   }))
   .extendActions((set, get, api) => ({
@@ -96,5 +106,8 @@ export const sessionStore = createStore('sessionStore')(initial_state, {
     add_stations_favorite(stations: Station[]) {
       const stations_favorite = get.stations_favorite()
       set.stations_favorite(stations_favorite.concat(stations))
+    },
+    update_tags: (tags: StationTag[]) => {
+      set.station_tags([...get.station_tags(), ...tags].filter((t, i, a) => i === a.indexOf(t)))
     },
   }))

@@ -321,7 +321,7 @@ export const Station = () => {
 
     //console.log(e.value)
 
-    const new_tags = (e.value as string[])?.filter(name => !store.app.get_station_tag(name)).map(name => ({
+    const new_tags = (e.value as string[])?.filter(name => !store.session.get_station_tag(name)).map(name => ({
       name,
       color: random_station_tag_color()
     }))
@@ -336,7 +336,7 @@ export const Station = () => {
 
       const json = await resp.json()
 
-      actions.app.update_tags(json)
+      actions.session.update_tags(json)
     }
   }, 50)
 

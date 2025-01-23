@@ -101,7 +101,7 @@ export default memo(function App() {
     (async () => {
       const resp = await fetch('/api/v1/tags/')
       const json = await resp.json()
-      actions.app.station_tags(json ?? [])
+      actions.session.station_tags(json ?? [])
     })()
   }, [])
 
