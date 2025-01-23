@@ -23,7 +23,7 @@ func GenerateSitemap(ctx *fiber.Ctx) error {
 
 		smi := smg.NewSitemapIndex(true)
 		smi.SetCompress(false)
-		smi.SetHostname(constants.BaseURL)
+		smi.SetHostname("https://" + constants.BaseURL)
 		smi.SetOutputPath("./served/static/sitemaps/")
 		smi.SetServerURI("/sitemaps/")
 
