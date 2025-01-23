@@ -20,10 +20,11 @@ func GenerateSitemap(ctx *fiber.Ctx) error {
 
 	if admin {
 		now := time.Now().UTC()
+		baseURL := "https://" + constants.BaseURL
 
 		smi := smg.NewSitemapIndex(true)
 		smi.SetCompress(false)
-		smi.SetHostname("https://" + constants.BaseURL)
+		smi.SetHostname(baseURL)
 		smi.SetOutputPath("./served/static/sitemaps/")
 		smi.SetServerURI("/sitemaps/")
 
@@ -39,7 +40,7 @@ func GenerateSitemap(ctx *fiber.Ctx) error {
 
 			main_alternates = append(main_alternates, &smg.SitemapAlternateLoc{
 				Hreflang: constants.Language_codes[lang].(string),
-				Href:     constants.BaseURL + "?language=" + lang,
+				Href:     baseURL + "?language=" + lang,
 				Rel:      "alternate",
 			})
 		}
@@ -66,7 +67,7 @@ func GenerateSitemap(ctx *fiber.Ctx) error {
 
 				station_alternates = append(station_alternates, &smg.SitemapAlternateLoc{
 					Hreflang: constants.Language_codes[lang].(string),
-					Href:     constants.BaseURL + "/station/" + id + "?language=" + lang,
+					Href:     baseURL + "/station/" + id + "?language=" + lang,
 					Rel:      "alternate",
 				})
 			}
