@@ -164,7 +164,7 @@ func main() {
 
 	radio_endpoints := v1.Group("/radio", compress_get, etag.New(), cache.New(cache.Config{
 		Next:       notGet,
-		Expiration: 30 * time.Minute,
+		Expiration: 24 * 7 * time.Hour,
 		KeyGenerator: func(ctx *fiber.Ctx) string {
 			return utils.CopyString(ctx.Path() + ctx.Query("from") + ctx.Query("limit") + ctx.Query("admin"))
 		},
@@ -204,7 +204,10 @@ func main() {
 
 	radio_endpoints.Post("/upload-jsons", RadioEndpoints.UploadJsons)
 
-	settings_endpoints := v1.Group("/settings")
+	settings_endpoints := v1.Group("/settings", compress_get, etag.New(), cache.New(cache.Config{
+		Next:       notGet,
+		Expiration: 24 * 7 * time.Hour,
+	}))
 
 	settings_endpoints.Get("/sitemap", SettingsEndpoints.GenerateSitemap)
 
@@ -224,7 +227,7 @@ func main() {
 
 	tags_endpoints := v1.Group("/tags", compress_get, etag.New(), cache.New(cache.Config{
 		Next:       notGet,
-		Expiration: 4 * time.Hour,
+		Expiration: 24 * 7 * time.Hour,
 	}))
 
 	tags_endpoints.Get("/", StationTagsEndpoints.ListTags)

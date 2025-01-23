@@ -74,6 +74,10 @@ export default memo(function App() {
 
   const signedin = useStore().auth.signedin()
 
+  const language = useStore().translations.language()
+
+  const languages = useStore().translations.languages()
+
   const [searchParams, set_search] = useSearchParams()
 
   useEffect(() => {
@@ -104,6 +108,36 @@ export default memo(function App() {
       actions.session.station_tags(json ?? [])
     })()
   }, [])
+
+  useEffect(() => {
+    if (language) {
+      (async () => {
+        const resp = await fetch(`/api/v1/settings/languages/${language ?? 'en'}`)
+        const json = await resp.json()
+        actions.session.station_languages(json ?? [])
+      })()
+    }
+  }, [language])
+
+  useEffect(() => {
+    if (language) {
+      (async () => {
+        const resp = await fetch(`/api/v1/settings/countries/${language ?? 'en'}`)
+        const json = await resp.json()
+        actions.session.station_countries(json ?? [])
+      })()
+    }
+  }, [language])
+
+  useEffect(() => {
+    if (language) {
+      (async () => {
+        const resp = await fetch(`/api/v1/settings/genres/${language ?? 'en'}`)
+        const json = await resp.json()
+        actions.session.station_genres(json ?? [])
+      })()
+    }
+  }, [language])
 
   useEffect(() => {
     //console.log('get station')
@@ -252,10 +286,6 @@ export default memo(function App() {
       }
     })()
   }, [])
-
-  const language = useStore().translations.language()
-
-  const languages = useStore().translations.languages()
 
   useEffect(() => {
     //update language in url

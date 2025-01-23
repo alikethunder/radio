@@ -9,6 +9,9 @@ import { Station } from '@/types';
 
 import {
   StationTag,
+  StationLanguage,
+  StationCountry,
+  StationGenre
 } from '@/types'
 
 type SessionStore = {
@@ -44,7 +47,9 @@ type SessionStore = {
   stations_home_last_id: string | null;
   stations_favorite_last_id: string | null;
   station_tags: StationTag[]; //all possible station tags
-
+  station_languages: StationLanguage[]; //all possible station languages
+  station_countries: StationCountry[]; //all possible station countries
+  station_genres: StationGenre[]; //all possible station genres
 }
 
 const initial_state = {
@@ -68,6 +73,9 @@ const initial_state = {
   stations_favorite_loaded: false,
   stations_favorite_last_id: null,
   station_tags: [],
+  station_languages: [],
+  station_countries: [],
+  station_genres: [],
 } as SessionStore
 
 export const sessionStore = createStore('sessionStore')(initial_state, {
