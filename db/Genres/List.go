@@ -6,7 +6,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func ListGenres(language string) (tags []fiber.Map) {
+func List(language string) (tags []fiber.Map) {
 
 	lang := []string{"en", "color", "icon"}
 

@@ -6,11 +6,6 @@ import (
 	"web_project/db"
 )
 
-/*
-	name text,  								tag name
-	color text, 								tag color
-*/
-
 func Initialize() {
 	if err := db.Session.Query(`CREATE TABLE IF NOT EXISTS genres (
 		en text PRIMARY KEY,

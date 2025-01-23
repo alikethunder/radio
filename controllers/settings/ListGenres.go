@@ -14,7 +14,7 @@ func ListGenres(ctx *fiber.Ctx) error {
 		language = "en"
 	}
 
-	genres := Genres.ListGenres(language)
+	genres := Genres.List(language)
 
 	return ctx.Status(fiber.StatusOK).JSON(genres)
 

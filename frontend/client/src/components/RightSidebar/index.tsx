@@ -126,6 +126,42 @@ export const RightSidebar: FC = memo(() => {
     }
   }, 100), [])
 
+  const upload_countries = useCallback(useDebounceCallback(async (e) => {
+
+    if (e.target.files?.length) {
+      console.log(e.target.files)
+
+      const body = new FormData()
+
+      for (const file of e.target.files) {
+        body.append('countries', file)
+      }
+
+      fetch('/api/v1/settings/countries', {
+        method: "POST",
+        body,
+      })
+    }
+  }, 100), [])
+
+  const upload_languages = useCallback(useDebounceCallback(async (e) => {
+
+    if (e.target.files?.length) {
+      console.log(e.target.files)
+
+      const body = new FormData()
+
+      for (const file of e.target.files) {
+        body.append('languages', file)
+      }
+
+      fetch('/api/v1/settings/languages', {
+        method: "POST",
+        body,
+      })
+    }
+  }, 100), [])
+
   return (
     <Sidebar
       visible={rightSidebarOpened}
@@ -287,6 +323,54 @@ export const RightSidebar: FC = memo(() => {
                 multiple
                 className="hidden"
                 onChange={upload_genres}
+              />
+            </Button>
+            : <></>
+        }
+
+        {
+          root_admin ?
+            <Button
+              label={'Upload countries'}
+              text
+              raised
+              icon={`${icon_classes} pi-file-plus`}
+              className="border-noround w-full h-full px-2 text-2xl shadow_on_hover action_text_font z-0"
+            >
+              <label htmlFor="countriesinput" className="m-0 absolute top-0 bottom-0 left-0 right-0 z-1 cursor-pointer"
+              ></label>
+              <input
+                type="file"
+                id="countriesinput"
+                name="countriesinput"
+                accept="application/JSON"
+                multiple
+                className="hidden"
+                onChange={upload_countries}
+              />
+            </Button>
+            : <></>
+        }
+
+        {
+          root_admin ?
+            <Button
+              label={'Upload languages'}
+              text
+              raised
+              icon={`${icon_classes} pi-file-plus`}
+              className="border-noround w-full h-full px-2 text-2xl shadow_on_hover action_text_font z-0"
+            >
+              <label htmlFor="languagesinput" className="m-0 absolute top-0 bottom-0 left-0 right-0 z-1 cursor-pointer"
+              ></label>
+              <input
+                type="file"
+                id="languagesinput"
+                name="languagesinput"
+                accept="application/JSON"
+                multiple
+                className="hidden"
+                onChange={upload_languages}
               />
             </Button>
             : <></>

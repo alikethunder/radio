@@ -10,7 +10,9 @@ import (
 	"crypto/tls"
 	"web_project/constants"
 	"web_project/db"
+	"web_project/db/Countries"
 	"web_project/db/Genres"
+	"web_project/db/Languages"
 	DBPlans "web_project/db/Plans"
 	"web_project/db/StationCounters"
 	"web_project/db/StationTags"
@@ -53,6 +55,8 @@ func init() {
 	StationCounters.Initialize()
 	StationTags.Initialize()
 	Genres.Initialize()
+	Languages.Initialize()
+	Countries.Initialize()
 
 	if os.Getenv("ENV") == "prod" {
 		// To initialize Sentry's handler, you need to initialize Sentry itself beforehand
@@ -208,7 +212,15 @@ func main() {
 
 	settings_endpoints.Post("/genres", SettingsEndpoints.UploadGenres)
 
-	settings_endpoints.Get("/:language", SettingsEndpoints.ListGenres)
+	settings_endpoints.Get("/genres/:language", SettingsEndpoints.ListGenres)
+
+	settings_endpoints.Post("/languages", SettingsEndpoints.UploadLanguages)
+
+	settings_endpoints.Get("/languages/:language", SettingsEndpoints.ListLanguages)
+
+	settings_endpoints.Post("/countries", SettingsEndpoints.UploadCountries)
+
+	settings_endpoints.Get("/countries/:language", SettingsEndpoints.ListCountries)
 
 	tags_endpoints := v1.Group("/tags", compress_get, etag.New(), cache.New(cache.Config{
 		Next:       notGet,
