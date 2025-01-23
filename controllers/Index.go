@@ -107,15 +107,34 @@ func Index(ctx *fiber.Ctx) error {
 				station_description = ""
 			}
 
-			for i, genre := range station["genres"].([]string) {
-				genre_row, _ := db.SelectRow("genres", fiber.Map{"en": genre}, language, "icon")
+			if station["genres"] != nil {
+				if len(station["genres"].([]string)) > 0 {
+					for i, genre := range station["genres"].([]string) {
+						if genre != "" {
+							genre_row, _ := db.SelectRow("genres", fiber.Map{"en": genre}, language, "icon")
 
-				station["genres"].([]string)[i] = genre_row["icon"].(string) + " " + genre_row[language].(string)
+							station["genres"].([]string)[i] = genre_row["icon"].(string) + " " + genre_row[language].(string)
+						}
+					}
+				}
 			}
 
-			country_row, _ := db.SelectRow("countries", fiber.Map{"en": station["country"]}, "flag", language)
+			if station["country"] != nil && station["country"] != "" {
+				country_row, _ := db.SelectRow("countries", fiber.Map{"en": station["country"]}, "flag", language)
 
-			station["country"] = country_row["flag"].(string) + " " + country_row[language].(string)
+				flag := ""
+				lang := ""
+
+				if country_row["flag"] != nil {
+					flag = country_row["flag"].(string) + " "
+				}
+
+				if country_row[language] != nil {
+					lang = country_row[language].(string)
+				}
+
+				station["country"] = flag + lang
+			}
 
 			return ctx.Render("seo/station", fiber.Map{
 				"station": station,
