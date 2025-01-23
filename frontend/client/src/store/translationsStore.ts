@@ -1,5 +1,7 @@
 import { createStore } from 'zustand-x'
 
+import type {Language} from '@/types'
+
 const initialState = {
   en: {},
   ru: {},
@@ -30,8 +32,8 @@ type Translations = {
   pt: {
     [x: string]: string;
   },
-  language: string | null,
-  languages: ("en" | "ru" | "sp" | "fr" | "de" | "pt")[],
+  language: Language | null,
+  languages: Language[],
 }
 
 export const translationsStore = createStore('app')(initialState as Translations,

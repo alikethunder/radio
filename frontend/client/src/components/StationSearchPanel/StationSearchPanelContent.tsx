@@ -1,10 +1,12 @@
-import { ChangeEvent, FC, memo, useCallback, useEffect, } from "react"
+import { ChangeEvent, FC, memo, useCallback, useEffect, useState, } from "react"
 
 import { InputText } from "primereact/inputtext"
 
 import { IconField } from "primereact/iconfield"
 
 import { InputIcon } from "primereact/inputicon"
+
+import { MultiSelect, MultiSelectChangeEvent } from 'primereact/multiselect'
 
 import debounce from 'lodash.debounce'
 
@@ -14,16 +16,24 @@ import {
 } from "@/store"
 
 import {
+  useLog,
   usePageInList,
   useTranslations,
 } from '@/hooks'
 
 import { useDebounceCallback } from "usehooks-ts"
 import { app_routes } from "@/constants/router"
+import { StationCountry } from "@/types"
 
 export const StationSearchPanelContent: FC = memo(() => {
 
   const search_stations_text = useStore().persistedApp.search_stations_text()
+
+  const search_selected_countries = useStore().persistedApp.search_selected_countries()
+
+  const countries = useStore().session.station_countries()
+
+  const language = useStore().translations.language()
 
   const [translations] = useTranslations([
     'search_radiostations',
@@ -51,49 +61,64 @@ export const StationSearchPanelContent: FC = memo(() => {
 
   const update_search = useCallback((e: ChangeEvent) => actions.persistedApp.search_stations_text((e.target as HTMLInputElement).value), [])
 
+  const countryItemTemplate = useCallback((option: StationCountry) => <div className="flex flex-row align-items-center gap-1"><span className="text-2xl">{option?.flag}</span> {option?.[language ?? 'en']}</div>
+    , [language])
+
+  const change_countries = useCallback((e: MultiSelectChangeEvent) => {
+    actions.persistedApp.search_selected_countries(e.value)
+  }, [])
+
   return (
     <>
-      <div className="max-w-full w-20rem flex flex-column justify-content-center gap-1 align-self-stretch">
+      {/* text search */}
+      <IconField className="max-w-20rem w-full">
 
-        {/* text search */}
-        <IconField className="w-full align-self-start">
-
-          {
-            (
-              fav_loading
-              && fav_page
+        {
+          (
+            fav_loading
+            && fav_page
+          )
+            || (
+              home_loading
+              && home_page
             )
-              || (
-                home_loading
-                && home_page
-              )
-              || text_search_in_progress
-              ?
-              <InputIcon className="pi pi-spinner pi-spin" style={{
-                ...search_stations_text ? {
-                  right: '2rem',
-                } : {},
-              }} />
-              : <></>
-          }
+            || text_search_in_progress
+            ?
+            <InputIcon className="pi pi-spinner pi-spin" style={{
+              ...search_stations_text ? {
+                right: '2rem',
+              } : {},
+            }} />
+            : <></>
+        }
 
-          {
-            search_stations_text ?
-              <InputIcon className="pi pi-times cursor-pointer" onClick={clear_input} />
-              : <></>
-          }
+        {
+          search_stations_text ?
+            <InputIcon className="pi pi-times cursor-pointer" onClick={clear_input} />
+            : <></>
+        }
 
-          <InputText
-            placeholder={translations.search_radiostations}
-            className="w-full"
-            value={search_stations_text}
+        <InputText
+          placeholder={translations.search_radiostations}
+          className="w-full"
+          value={search_stations_text}
 
-            onChange={update_search}
-          />
+          onChange={update_search}
+        />
 
-        </IconField>
+      </IconField>
 
-      </div>
+      {/* Countries */}
+      <MultiSelect
+        value={search_selected_countries}
+        onChange={change_countries}
+        options={countries}
+        optionLabel={language ?? 'en'}
+        itemTemplate={countryItemTemplate}
+        display="chip"
+        filter
+        placeholder="Select Countries"
+        className="max-w-20rem w-full relative" />
 
     </>
   )

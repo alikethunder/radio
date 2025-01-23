@@ -57,6 +57,7 @@ import {
 import { get_station } from "@/API/station/get_station"
 import { update_json } from "@/API/profile/update_json"
 import { sessionStore } from "@/store/sessionStore"
+import { StationCountry, Language } from "./types"
 
 //console.log('typeof window : ', typeof window)
 
@@ -123,8 +124,10 @@ export default memo(function App() {
     if (language) {
       (async () => {
         const resp = await fetch(`/api/v1/settings/countries/${language ?? 'en'}`)
-        const json = await resp.json()
-        actions.session.station_countries(json ?? [])
+        const json = await resp.json() as StationCountry[]
+        actions.session.station_countries((json ?? []).sort((a, b) => {
+          return (a[language] ?? '') > (b[language] ?? '') ? 1 : -1
+        }))
       })()
     }
   }, [language])
@@ -272,7 +275,7 @@ export default memo(function App() {
           const nav_lang = navigator.language.substring(0, 2)
 
           if (languages.includes(nav_lang)) {
-            actions.translations.language(nav_lang)
+            actions.translations.language(nav_lang as Language)
           } else {
             //navigator language is not supported
             //find supported in navigator languages

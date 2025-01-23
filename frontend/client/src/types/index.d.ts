@@ -41,7 +41,7 @@ export type User = {
   ]?: string | null;
 }
 
-export type FrontUser = (Pick<User, 'name' | 'email' | 'created' | 'photo'>) & { id: string | null } & {favorite_stations: string[]}
+export type FrontUser = (Pick<User, 'name' | 'email' | 'created' | 'photo'>) & { id: string | null } & { favorite_stations: string[] }
 
 export type VerificationUser = (Pick<User, 'verification_code' | 'name' | 'email' | 'created'>) & { id: string | null }
 
@@ -50,3 +50,4 @@ export type { StationTag } from './StationTag'
 export type { StationLanguage } from './StationLanguage'
 export type { StationGenre } from './StationGenre'
 export type { StationCountry } from './StationCountry'
+export type { Language } from './Language'

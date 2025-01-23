@@ -1,8 +1,7 @@
+import type { Language } from './Language'
+
 export type StationLanguage = {
   en: string,
-  pt?: string,
-  ru?: string,
-  fr?: string,
-  sp?: string,
-  de?: string,
+} & {
+  [key in Exclude<Language, 'en'>]?: string
 }

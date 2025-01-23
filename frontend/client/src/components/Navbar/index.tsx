@@ -1,4 +1,4 @@
-import { FC, memo, useCallback, } from "react"
+import { FC, memo, useCallback, useMemo, } from "react"
 
 import { Button } from 'primereact/button'
 
@@ -32,7 +32,16 @@ import './index.sass'
 export const Navbar: FC = memo(() => {
 
   const current_page = useStore().app.current_page()
+
   const search_stations_text = useStore().persistedApp.search_stations_text()
+
+  const search_selected_countries = useStore().persistedApp.search_selected_countries()
+
+  const show_search_badge = useMemo(() => search_stations_text.length
+    || search_selected_countries.length, [
+    search_stations_text.length,
+    search_selected_countries.length,
+  ])
 
   const search_panel_closed = useStore().persistedApp.search_panel_closed()
 
@@ -115,7 +124,7 @@ export const Navbar: FC = memo(() => {
                       minWidth: '.5rem',
                       right: '0.25rem',
                       top: '0.075rem',
-                      ...search_stations_text ? {} : {
+                      ...show_search_badge ? {} : {
                         display: 'none'
                       },
                     }}
