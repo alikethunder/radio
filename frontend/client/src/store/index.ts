@@ -19,11 +19,6 @@ export const rootStore = {
   player: playerStore,
   session: sessionStore,
   translations: translationsStore,
-  /*contextMenu: contextMenuStore,
-  editor: editorStore,
-  modal: modalStore,
-  repo: repoStore,
-  toolbar: toolbarStore, */
 };
 
 // Global hook selectors

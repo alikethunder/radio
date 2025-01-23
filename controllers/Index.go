@@ -96,7 +96,7 @@ func Index(ctx *fiber.Ctx) error {
 
 			fmt.Printf("[Index] station id %s \n", station_id)
 
-			station, _ := db.SelectRow("stations", fiber.Map{"id": station_id}, "id", "name", "description_"+language, "tags", "avatar")
+			station, _ := db.SelectRow("stations", fiber.Map{"id": station_id}, "id", "name", "description_"+language, "tags", "avatar", "country", "genres")
 
 			logo := template.JS(ctx.BaseURL() + "/api/v1/files/stations/" + station_id + "/avatar")
 
@@ -106,6 +106,16 @@ func Index(ctx *fiber.Ctx) error {
 			} else {
 				station_description = ""
 			}
+
+			for i, genre := range station["genres"].([]string) {
+				genre_row, _ := db.SelectRow("genres", fiber.Map{"en": genre}, language, "icon")
+
+				station["genres"].([]string)[i] = genre_row["icon"].(string) + " " + genre_row[language].(string)
+			}
+
+			country_row, _ := db.SelectRow("countries", fiber.Map{"en": station["country"]}, "flag", language)
+
+			station["country"] = country_row["flag"].(string) + " " + country_row[language].(string)
 
 			return ctx.Render("seo/station", fiber.Map{
 				"station": station,

@@ -36,17 +36,17 @@
   <meta property="og:title" content="{{.sitename}} - {{.station.name}}" />
   <meta name="twitter:title" content="{{.sitename}} - {{.station.name}}" />
 
-  <meta name="description" content="{{.description}} {{.Tags}}: {{range .station.tags}}{{.}},{{end}}" />
-  <meta property="og:description" content="{{.description}} {{.Tags}}: {{range .station.tags}}{{.}},{{end}}" />
-  <meta property="twitter:description" content="{{.description}} {{.Tags}}: {{range .station.tags}}{{.}},{{end}}" />
+  <meta name="description" content="{{.description}} {{.station.country}}. {{range .station.genres}}{{.}},{{end}} {{.Tags}}: {{range .station.tags}}{{.}},{{end}}" />
+  <meta property="og:description" content="{{.description}} {{.station.country}}. {{range .station.genres}}{{.}},{{end}} {{.Tags}}: {{range .station.tags}}{{.}},{{end}}" />
+  <meta property="twitter:description" content="{{.description}} {{.station.country}}. {{range .station.genres}}{{.}},{{end}} {{.Tags}}: {{range .station.tags}}{{.}},{{end}}" />
 
-  <meta name="subject" content="{{.Description}} {{.Tags}}: {{range .station.tags}}{{.}},{{end}}" />
+  <meta name="subject" content="{{.Description}} {{.station.country}}. {{range .station.genres}}{{.}},{{end}} {{.Tags}}: {{range .station.tags}}{{.}},{{end}}" />
 
   <meta name='copyright' content='radio.best'>
 
   <meta name='robots' content='index,follow'>
 
-  <meta name='keywords' content="{{.sitename}},{{.station.name}},{{range .station.tags}}{{.}},{{end}}">
+  <meta name='keywords' content="{{.sitename}},{{.station.name}},{{range .station.genres}}{{.}},{{end}}{{range .station.tags}}{{.}},{{end}}">
 
   <meta property="og:image" content={{.logo}} />
   <meta property="twitter:image" content={{.logo}} />
@@ -65,16 +65,27 @@
       "@type": "RadioStation",
       "name": "{{.sitename}}",
       "description": "{{.description}}",
-      "keywords": "{{range .station.tags}}{{.}},{{end}}",
+      "keywords": "{{range .station.genres}}{{.}},{{end}}{{range .station.tags}}{{.}},{{end}}",
       "logo": {{.quoted_logo}},
       "url": {{.Full_url}}
     }
   </script>
 </head>
 
-<body style="font-size: 18px;">
-  <p>{{$.sitename}} - {{.station.name}}</p>
-  {{.description}}
+<body style="font-size: 18px; padding: 8px;">
+  <p style="text-align: center;">{{$.sitename}} - {{.station.name}}</p>
+  <p style="display: flex;">
+    <img
+      style="width: 128px;height: 128px;margin-right: 8px; "
+      src="/api/v1/files/stations/{{.station.id}}/avatar"
+
+      loading="lazy"
+    />
+    {{.description}}
+  </p>
+  
+  <p>{{.station.country}}</p>
+  <p>{{range .station.genres}}{{.}}, {{end}}</p>
   <p>
     {{.Tags}}:
     {{range .station.tags}}
