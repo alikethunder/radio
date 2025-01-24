@@ -109,11 +109,21 @@ func Index(ctx *fiber.Ctx) error {
 
 			if station["genres"] != nil {
 				if len(station["genres"].([]string)) > 0 {
-					for i, genre := range station["genres"].([]string) {
-						if genre != "" {
+					for i, genre := range station["genres"].([]interface{}) {
+						if genre != "" && genre != nil {
 							genre_row, _ := db.SelectRow("genres", fiber.Map{"en": genre}, language, "icon")
 
-							station["genres"].([]string)[i] = genre_row["icon"].(string) + " " + genre_row[language].(string)
+							icon := ""
+							if genre_row["icon"] != nil {
+								icon = genre_row["icon"].(string) + " "
+							}
+
+							tr := genre.(string)
+							if genre_row[language] != nil && genre_row[language] != "" {
+								tr = genre_row[language].(string)
+							}
+
+							station["genres"].([]string)[i] = icon + tr
 						}
 					}
 				}
