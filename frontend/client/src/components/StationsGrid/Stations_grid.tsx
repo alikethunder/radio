@@ -13,6 +13,7 @@ import {
   actions,
   store,
 } from "@/store"
+import { useLog } from "@/hooks"
 
 type Props = {
   stations: Station[],
@@ -46,8 +47,15 @@ export const Stations_grid: FC<Props> = memo(({
 
   const scroll_prop = useMemo(() => `${place}_scroll` as 'home_scroll' | 'my_stations_scroll', [place])
 
+  useLog(true, '[Stations_grid] : ', columns, gapx, rows, loading)
+
   return (
-    columns && rows && gapx
+    columns
+      && gapx
+      && (
+        rows
+        || loading
+      )
       ?
       <AutoSizer>
         {({ height, width }) =>
@@ -82,7 +90,7 @@ export const Stations_grid: FC<Props> = memo(({
             rowHeight={(card_size.height ?? 0) + gap}
 
             columnCount={columns}
-            rowCount={rows}
+            rowCount={rows ?? 1}
           >
             {GridCell}
           </Grid>

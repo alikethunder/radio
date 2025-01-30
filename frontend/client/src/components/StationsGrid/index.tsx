@@ -55,8 +55,10 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
 
   const mobile = useMediaQuery('(max-width: 768px)')
 
+  //padding y
   const py = useMemo(() => mobile ? 16 : 32, [mobile])
 
+  //padding x
   const px = useMemo(() => mobile ? 0 : 48, [mobile])
 
   const columns = useMemo(() => {

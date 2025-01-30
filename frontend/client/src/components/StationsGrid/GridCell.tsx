@@ -24,8 +24,8 @@ export const GridCell = memo(({ columnIndex, rowIndex, style, data }: {
 }) => {
   const index = rowIndex * data.columns + columnIndex
 
- /*  if (index == data.stations.length) {
-    console.log('GridCell data : ', index, data.loading)
+  /* if (data.loading){
+    console.log('[GridCell] ', index, data.stations.length)
   } */
 
   return data.loading && index == data.stations.length ?
