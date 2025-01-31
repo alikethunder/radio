@@ -9,6 +9,8 @@ export type Station = {
   render_order: number,
   external: string,
   external_enable: boolean,
+  languages: string[] | null,
+  genres: string[] | null,
 } & {
   [x: string]: string,
 }

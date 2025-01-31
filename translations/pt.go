@@ -92,4 +92,6 @@ var Pt = map[string]string{
 	"main_page_with_player":                         "Página principal com reprodutor",
 	"feedback":                                      "Feedback",
 	"filter_by_countries":                           "filtrar por países",
+	"country":                                       "país",
+	"genre":                                         "gênero",
 }

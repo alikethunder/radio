@@ -62,7 +62,7 @@ export const routes = [
       console.log('App render, id , phase : ', id, phase)
     }}><App /></Profiler>,
     loader() {
-      console.log('root loader')
+      //console.log('root loader')
       actions.app.current_page({})
       return null
     },

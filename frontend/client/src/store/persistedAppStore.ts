@@ -1,8 +1,7 @@
 import { createStore } from 'zustand-x'
 
-import { Panel } from 'primereact/panel'
 import { v7 } from 'uuid'
-import { StationCountry } from '@/types/StationCountry';
+import { StationCountry, StationGenre, StationLanguage } from '@/types';
 
 type PersistedApp = {
   rememberme: boolean;
@@ -15,6 +14,8 @@ type PersistedApp = {
   my_stations_scroll: number;
   theme: 'light' | 'dark';
   search_selected_countries: StationCountry[];
+  search_selected_languages: StationLanguage[];
+  search_selected_genres: StationGenre[];
 }
 
 const initial_state = {
@@ -28,6 +29,8 @@ const initial_state = {
   my_stations_scroll: 0,
   theme: window?.matchMedia?.('(prefers-color-scheme:dark)')?.matches ? 'dark' : 'light',
   search_selected_countries: [],
+  search_selected_languages: [],
+  search_selected_genres: [],
 } as PersistedApp
 
 export const persistedAppStore = createStore('app')(initial_state,

@@ -57,9 +57,12 @@ import {
 import { get_station } from "@/API/station/get_station"
 import { update_json } from "@/API/profile/update_json"
 import { sessionStore } from "@/store/sessionStore"
-import { StationCountry, Language } from "./types"
+import { StationCountry, Language, StationLanguage, StationGenre } from "./types"
 
-//console.log('typeof window : ', typeof window)
+const get_alphabet_sort = (language: Language | null) => ((a: StationLanguage | StationCountry | StationGenre, b: StationLanguage | StationCountry | StationGenre) => {
+  language ??= 'en'
+  return (a[language] ?? '') > (b[language] ?? '') ? 1 : -1
+})
 
 export default memo(function App() {
 
@@ -110,12 +113,14 @@ export default memo(function App() {
     })()
   }, [])
 
+  const alphabet_sort = useMemo(() => get_alphabet_sort(language), [language])
+
   useEffect(() => {
     if (language) {
       (async () => {
         const resp = await fetch(`/api/v1/settings/languages/${language ?? 'en'}`)
-        const json = await resp.json()
-        actions.session.station_languages(json ?? [])
+        const json = await resp.json() as StationLanguage[]
+        actions.session.station_languages((json ?? []).sort(alphabet_sort))
       })()
     }
   }, [language])
@@ -125,9 +130,7 @@ export default memo(function App() {
       (async () => {
         const resp = await fetch(`/api/v1/settings/countries/${language ?? 'en'}`)
         const json = await resp.json() as StationCountry[]
-        actions.session.station_countries((json ?? []).sort((a, b) => {
-          return (a[language] ?? '') > (b[language] ?? '') ? 1 : -1
-        }))
+        actions.session.station_countries((json ?? []).sort(alphabet_sort))
       })()
     }
   }, [language])
@@ -136,8 +139,8 @@ export default memo(function App() {
     if (language) {
       (async () => {
         const resp = await fetch(`/api/v1/settings/genres/${language ?? 'en'}`)
-        const json = await resp.json()
-        actions.session.station_genres(json ?? [])
+        const json = await resp.json() as StationGenre[]
+        actions.session.station_genres((json ?? []).sort(alphabet_sort))
       })()
     }
   }, [language])

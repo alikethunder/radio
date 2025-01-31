@@ -47,7 +47,7 @@ export const Stations_grid: FC<Props> = memo(({
 
   const scroll_prop = useMemo(() => `${place}_scroll` as 'home_scroll' | 'my_stations_scroll', [place])
 
-  useLog(true, '[Stations_grid] : ', columns, gapx, rows, loading)
+  //useLog(true, '[Stations_grid] : ', columns, gapx, rows, loading)
 
   return (
     columns

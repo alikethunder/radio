@@ -23,7 +23,8 @@ import {
 
 import { useDebounceCallback } from "usehooks-ts"
 import { app_routes } from "@/constants/router"
-import { StationCountry } from "@/types"
+import { StationCountry, StationGenre } from "@/types"
+import { StationGenreTag } from "@/components/StationGenreTag"
 
 export const StationSearchPanelContent: FC = memo(() => {
 
@@ -31,13 +32,26 @@ export const StationSearchPanelContent: FC = memo(() => {
 
   const search_selected_countries = useStore().persistedApp.search_selected_countries()
 
+  const search_selected_languages = useStore().persistedApp.search_selected_languages()
+
+  const search_selected_genres = useStore().persistedApp.search_selected_genres()
+
+  useLog(true, '[StationSearchPanelContent] search_selected_languages, search_selected_genres : ', search_selected_languages, search_selected_genres)
+
+
   const countries = useStore().session.station_countries()
+
+  const station_languages = useStore().session.station_languages()
+
+  const station_genres = useStore().session.station_genres()
 
   const language = useStore().translations.language()
 
   const [translations] = useTranslations([
     'search_radiostations',
-    'filter_by_countries',
+    'country',
+    'genre',
+    "language",
   ], true)
 
   useEffect(() => {
@@ -65,8 +79,21 @@ export const StationSearchPanelContent: FC = memo(() => {
   const countryItemTemplate = useCallback((option: StationCountry) => <div className="flex flex-row align-items-center gap-1"><span className="text-2xl">{option?.flag}</span> {option?.[language ?? 'en']}</div>
     , [language])
 
+  const genreItemTemplate = useCallback((option: StationGenre) => <StationGenreTag genre={option} />
+    , [])
+
   const change_countries = useCallback((e: MultiSelectChangeEvent) => {
     actions.persistedApp.search_selected_countries(e.value)
+  }, [])
+
+  const change_languages = useCallback((e: MultiSelectChangeEvent) => {
+    console.log('change_languages : ', e.value)
+    actions.persistedApp.search_selected_languages(e.value)
+  }, [])
+
+  const change_genres = useCallback((e: MultiSelectChangeEvent) => {
+    console.log('change_genres : ', e.value)
+    actions.persistedApp.search_selected_genres(e.value)
   }, [])
 
   return (
@@ -109,6 +136,18 @@ export const StationSearchPanelContent: FC = memo(() => {
 
       </IconField>
 
+      {/* Genres */}
+      <MultiSelect
+        value={search_selected_genres}
+        onChange={change_genres}
+        options={station_genres}
+        optionLabel={language ?? 'en'}
+        itemTemplate={genreItemTemplate}
+        display="chip"
+        filter
+        placeholder={translations.genre}
+        className="max-w-20rem w-full relative" />
+
       {/* Countries */}
       <MultiSelect
         value={search_selected_countries}
@@ -118,7 +157,18 @@ export const StationSearchPanelContent: FC = memo(() => {
         itemTemplate={countryItemTemplate}
         display="chip"
         filter
-        placeholder={translations.filter_by_countries}
+        placeholder={translations.country}
+        className="max-w-20rem w-full relative" />
+
+      {/* Languages */}
+      <MultiSelect
+        value={search_selected_languages}
+        onChange={change_languages}
+        options={station_languages}
+        optionLabel={language ?? 'en'}
+        display="chip"
+        filter
+        placeholder={translations.language}
         className="max-w-20rem w-full relative" />
 
     </>

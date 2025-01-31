@@ -92,4 +92,6 @@ var En = map[string]string{
 	"main_page_with_player":                         "Main page with player",
 	"feedback":                                      "Feedback",
 	"filter_by_countries":                           "filter by countries",
+	"country":                                       "country",
+	"genre":                                         "genre",
 }

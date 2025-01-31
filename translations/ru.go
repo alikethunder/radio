@@ -91,4 +91,6 @@ var Ru = map[string]string{
 	"main_page_with_player":                         "Домашняя страница с плеером",
 	"feedback":                                      "Обратная связь",
 	"filter_by_countries":                           "фильтр по странам",
+	"country":                                       "Страна",
+	"genre":                                         "Жанр",
 }

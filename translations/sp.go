@@ -93,4 +93,6 @@ var Sp = map[string]string{
 	"main_page_with_player":                         "Página principal con reproductor",
 	"feedback":                                      "Retroalimentación",
 	"filter_by_countries":                           "filtrar por países",
+	"country":                                       "país",
+	"genre":                                         "género",
 }

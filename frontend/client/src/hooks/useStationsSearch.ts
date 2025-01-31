@@ -2,6 +2,9 @@ import { useEffect, useMemo, useState, useTransition, } from "react"
 
 import { actions, useStore } from "@/store"
 import { Station } from "@/types"
+import { useLog } from "./useLog";
+
+const get_en = (obj: { en: string; }) => obj.en
 
 export const useStationsSearch = (stations: Station[]) => {
 
@@ -17,7 +20,19 @@ export const useStationsSearch = (stations: Station[]) => {
 
   const search_selected_countries = useStore().persistedApp.search_selected_countries()
 
-  const countries = useMemo(() => search_selected_countries.map(country => country.en), [search_selected_countries])
+  const search_selected_languages = useStore().persistedApp.search_selected_languages()
+
+  const search_selected_genres = useStore().persistedApp.search_selected_genres()
+
+  useLog(true, '[useStationsSearch] search_selected_languages, search_selected_genres : ', search_selected_languages, search_selected_genres)
+
+  const countries = useMemo(() => search_selected_countries.map(get_en), [search_selected_countries])
+
+  const languages = useMemo(() => search_selected_languages.map(get_en), [search_selected_languages])
+
+  const genres = useMemo(() => search_selected_genres.map(get_en), [search_selected_genres])
+
+  useLog(true, '[useStationsSearch] languages, genres : ', languages, genres)
 
   const [searched_stations_with_mode, set_searched_stations_with_mode] = useState(stations)
 
@@ -48,13 +63,19 @@ export const useStationsSearch = (stations: Station[]) => {
 
       const country_filtered = countries.length ? admin_filtered.filter(station => countries.includes(station.country)) : admin_filtered
 
-      set_searched_stations_with_mode(country_filtered)
+      const language_filtered = languages.length ? country_filtered.filter(station => station.languages?.find(lang => languages.includes(lang))) : country_filtered
+
+      const genre_filtered = genres.length ? language_filtered.filter(station => station.genres?.find(genre => genres.includes(genre))) : language_filtered
+
+      set_searched_stations_with_mode(genre_filtered)
     })
   }, [
     search_stations_text_array,
     stations,
     language,
-    countries
+    countries,
+    languages,
+    genres,
   ])
 
   useEffect(() => {
