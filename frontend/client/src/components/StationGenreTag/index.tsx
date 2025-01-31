@@ -26,7 +26,7 @@ export const StationGenreTag: FC<Props> = memo(({ genre, onClick, disable_link }
 
   const language = useStore().translations.language()
 
-  const tag_is_in_search = useMemo(() => search_selected_genres.find(genre => genre.en.includes(genre.en)), [search_selected_genres])
+  const tag_is_in_search = useMemo(() => search_selected_genres.find(g => g.en == genre.en), [search_selected_genres])
 
   const click = useCallback(useDebounceCallback((e) => {
     if (onClick) {
@@ -35,9 +35,9 @@ export const StationGenreTag: FC<Props> = memo(({ genre, onClick, disable_link }
 
     if (!disable_link) {
 
-      actions.persistedApp.add_tag_to_search(e.target.textContent)
+      /* actions.persistedApp.add_tag_to_search(e.target.textContent)
 
-      actions.persistedApp.search_panel_closed(false)
+      actions.persistedApp.search_panel_closed(false) */
     }
   }, 100), [pathname])
 

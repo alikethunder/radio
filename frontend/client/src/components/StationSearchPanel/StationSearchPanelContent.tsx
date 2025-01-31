@@ -36,9 +36,6 @@ export const StationSearchPanelContent: FC = memo(() => {
 
   const search_selected_genres = useStore().persistedApp.search_selected_genres()
 
-  useLog(true, '[StationSearchPanelContent] search_selected_languages, search_selected_genres : ', search_selected_languages, search_selected_genres)
-
-
   const countries = useStore().session.station_countries()
 
   const station_languages = useStore().session.station_languages()
@@ -76,7 +73,7 @@ export const StationSearchPanelContent: FC = memo(() => {
 
   const update_search = useCallback((e: ChangeEvent) => actions.persistedApp.search_stations_text((e.target as HTMLInputElement).value), [])
 
-  const countryItemTemplate = useCallback((option: StationCountry) => <div className="flex flex-row align-items-center gap-1"><span className="text-2xl">{option?.flag}</span> {option?.[language ?? 'en']}</div>
+  const countryItemTemplate = useCallback((option: StationCountry) => <span className="inline-block max-w-full overflow-hidden text-overflow-ellipsis white-space-nowrap"><span className="text-2xl">{option?.flag}</span> {option?.[language ?? 'en']}</span>
     , [language])
 
   const genreItemTemplate = useCallback((option: StationGenre) => <StationGenreTag genre={option} />
@@ -87,90 +84,114 @@ export const StationSearchPanelContent: FC = memo(() => {
   }, [])
 
   const change_languages = useCallback((e: MultiSelectChangeEvent) => {
-    console.log('change_languages : ', e.value)
     actions.persistedApp.search_selected_languages(e.value)
   }, [])
 
   const change_genres = useCallback((e: MultiSelectChangeEvent) => {
-    console.log('change_genres : ', e.value)
     actions.persistedApp.search_selected_genres(e.value)
   }, [])
 
   return (
     <>
-      {/* text search */}
-      <IconField className="max-w-20rem w-full">
 
-        {
-          (
-            fav_loading
-            && fav_page
-          )
-            || (
-              home_loading
-              && home_page
+      <div className="flex flex-column w-full max-w-20rem gap-3">
+        {/* text search */}
+        <IconField className="max-w-20rem w-full">
+
+          {
+            (
+              fav_loading
+              && fav_page
             )
-            || text_search_in_progress
-            ?
-            <InputIcon className="pi pi-spinner pi-spin" style={{
-              ...search_stations_text ? {
-                right: '2rem',
-              } : {},
-            }} />
-            : <></>
-        }
+              || (
+                home_loading
+                && home_page
+              )
+              || text_search_in_progress
+              ?
+              <InputIcon className="pi pi-spinner pi-spin" style={{
+                ...search_stations_text ? {
+                  right: '2rem',
+                } : {},
+              }} />
+              : <></>
+          }
 
-        {
-          search_stations_text ?
-            <InputIcon className="pi pi-times cursor-pointer" onClick={clear_input} />
-            : <></>
-        }
+          {
+            search_stations_text ?
+              <InputIcon className="pi pi-times cursor-pointer" onClick={clear_input} />
+              : <></>
+          }
 
-        <InputText
-          placeholder={translations.search_radiostations}
-          className="w-full"
-          value={search_stations_text}
+          <InputText
+            placeholder={translations.search_radiostations}
+            className="w-full"
+            value={search_stations_text}
 
-          onChange={update_search}
+            onChange={update_search}
+          />
+
+        </IconField>
+
+        {/* Genres */}
+        <MultiSelect
+          value={search_selected_genres}
+          onChange={change_genres}
+          options={station_genres}
+          optionLabel={language ?? 'en'}
+          itemTemplate={genreItemTemplate}
+          display="chip"
+          filter
+          placeholder={translations.genre}
+          className="w-20rem max-w-full relative"
+          pt={{
+            panel: {
+              className: 'w-20rem max-w-full'
+            }
+          }}
         />
 
-      </IconField>
+      </div>
 
-      {/* Genres */}
-      <MultiSelect
-        value={search_selected_genres}
-        onChange={change_genres}
-        options={station_genres}
-        optionLabel={language ?? 'en'}
-        itemTemplate={genreItemTemplate}
-        display="chip"
-        filter
-        placeholder={translations.genre}
-        className="max-w-20rem w-full relative" />
+      <div className="flex flex-column w-full max-w-20rem gap-3">
+        {/* Countries */}
+        <MultiSelect
+          value={search_selected_countries}
+          onChange={change_countries}
+          options={countries}
+          optionLabel={language ?? 'en'}
+          itemTemplate={countryItemTemplate}
+          display="chip"
+          filter
+          placeholder={translations.country}
+          className="max-w-20rem w-full relative"
+          pt={{
+            panel: {
+              className: 'w-20rem max-w-full'
+            },
+          }}
 
-      {/* Countries */}
-      <MultiSelect
-        value={search_selected_countries}
-        onChange={change_countries}
-        options={countries}
-        optionLabel={language ?? 'en'}
-        itemTemplate={countryItemTemplate}
-        display="chip"
-        filter
-        placeholder={translations.country}
-        className="max-w-20rem w-full relative" />
+          
+        />
 
-      {/* Languages */}
-      <MultiSelect
-        value={search_selected_languages}
-        onChange={change_languages}
-        options={station_languages}
-        optionLabel={language ?? 'en'}
-        display="chip"
-        filter
-        placeholder={translations.language}
-        className="max-w-20rem w-full relative" />
+        {/* Languages */}
+        <MultiSelect
+          value={search_selected_languages}
+          onChange={change_languages}
+          options={station_languages}
+          optionLabel={language ?? 'en'}
+          display="chip"
+          filter
+          placeholder={translations.language}
+          className="w-20rem max-w-full relative"
+          pt={{
+            panel: {
+              className: 'w-20rem max-w-full'
+            }
+          }}
+        />
 
+      </div>
     </>
   )
 })
