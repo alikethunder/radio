@@ -115,6 +115,10 @@ export const sessionStore = createStore('sessionStore')(initial_state, {
       const stations_favorite = get.stations_favorite()
       set.stations_favorite(stations_favorite.concat(stations))
     },
+    remove_stations_favorite(stations: Station[]) {
+      const stations_favorite = get.stations_favorite()
+      set.stations_favorite(stations_favorite.filter(station => !stations.find(rem_station => station.id === rem_station.id)))
+    },
     update_tags: (tags: StationTag[]) => {
       set.station_tags([...get.station_tags(), ...tags].filter((t, i, a) => i === a.indexOf(t)))
     },

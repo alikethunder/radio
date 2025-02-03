@@ -83,7 +83,7 @@ export const Station = () => {
   const [search, set_search] = useSearchParams()
 
   const theme = useStore().persistedApp.theme()
-  
+
   useEffect(() => {
     if (station.id == 'new') {
       set_search(s => {
@@ -562,7 +562,7 @@ export const Station = () => {
                   set_profile_photo_exists(false)
                 }}
                 loading="lazy"
-                />
+              />
 
               {
                 avatar_data_url || profile_photo_exists ? <></> :
@@ -636,7 +636,7 @@ export const Station = () => {
             />
 
             <div className="flex flex-column">
-              <AddStationToFavorites id={station.id} />
+              <AddStationToFavorites station={station} />
             </div>
           </div>
 

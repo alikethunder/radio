@@ -157,7 +157,11 @@ export const Player: FC = memo(() => {
         <div className="flex flex-column social_info">
           <div className="flex gap-1 flex-column">
             {/* <span className="text-gray-500 favorited">125</span> */}
-            <AddStationToFavorites id={current_station?.id} data-targetid="player_add_to_fav" />
+            {
+              current_station ?
+                <AddStationToFavorites station={current_station} data-targetid="player_add_to_fav" />
+                : <></>
+            }
 
             {/* <Tooltip target='.favorited' >
               {translations_skl.added_to_favorites}

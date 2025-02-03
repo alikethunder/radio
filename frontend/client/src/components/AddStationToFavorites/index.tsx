@@ -1,4 +1,4 @@
-import { FC, memo, useMemo, } from "react"
+import { FC, memo, useCallback, useMemo, } from "react"
 
 import { Button } from 'primereact/button'
 
@@ -14,20 +14,29 @@ import { update_json } from "@/API/profile/update_json"
 import { Tooltip } from "primereact/tooltip"
 import { tooltip_options } from "@/constants/tooltip_options"
 import { v7 } from "uuid"
+import { Station } from "@/types"
 
 type Props = {
-  id?: string;
+  station: Station;
   className?: string;
   "data-targetid"?: string;
 }
 
-export const AddStationToFavorites: FC<Props> = memo(({ id, className, "data-targetid": dataTargetid, ...rest }) => {
+export const AddStationToFavorites: FC<Props> = memo(({ station, className, "data-targetid": dataTargetid, ...rest }) => {
+
+  const { id } = station
 
   const signedin = useStore().auth.signedin()
 
-  const click_add_to_favorites = useDebounceCallback(async (id) => {
+  const click_add_to_favorites = useCallback(useDebounceCallback(async (id) => {
 
     const signedin = store.auth.signedin()
+
+    const anonym_favorite_station = store.persistedApp.favorite_station(id)
+
+    const user_favorite_station = store.user.favorite_station(id)
+
+    const favorite_station = signedin ? user_favorite_station : anonym_favorite_station
 
     actions.persistedApp.toggle_favorite_station(id)
 
@@ -47,7 +56,15 @@ export const AddStationToFavorites: FC<Props> = memo(({ id, className, "data-tar
       update_json({ favorite_stations: store.persistedApp.favorite_stations() })
 
     }
-  }, 50)
+
+    if (!favorite_station) {
+      //add new station to favorite list
+      actions.session.add_stations_favorite([station])
+    } else {
+      //remove station from favorite list
+      actions.session.remove_stations_favorite([station])
+    }
+  }, 50), [])
 
   const anonym_favorite_station = useStore().persistedApp.favorite_station(id)
 
