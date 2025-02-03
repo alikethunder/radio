@@ -32,7 +32,7 @@ export const useStationsSearch = (stations: Station[]) => {
 
   const genres = useMemo(() => search_selected_genres.map(get_en), [search_selected_genres])
 
-  useLog(true, '[useStationsSearch] languages, genres : ', languages, genres)
+  //useLog(true, '[useStationsSearch] languages, genres : ', languages, genres)
 
   const [searched_stations_with_mode, set_searched_stations_with_mode] = useState(stations)
 
