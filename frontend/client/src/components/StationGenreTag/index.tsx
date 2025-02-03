@@ -50,7 +50,7 @@ export const StationGenreTag: FC<Props> = memo(({ genre, onClick, disable_link }
         'cursor-pointer shadow_on_hover shadow-2': !tag_is_in_search && !disable_link,
         'opacity-70': tag_is_in_search && !disable_link,
       },
-        `py-05 select-none text-sm font-medium border-round inline-flex`,
+        `py-05 select-none text-sm font-medium border-round inline-flex max-w-full`,
       )}
 
       style={{
@@ -60,7 +60,7 @@ export const StationGenreTag: FC<Props> = memo(({ genre, onClick, disable_link }
         padding: '.125rem .4rem',
       }}
     >
-      <span className="value inline-flex align-items-center justify-content-center" style={{
+      <span className="value inline-block max-w-full overflow-hidden text-overflow-ellipsis white-space-nowrap" style={{
         lineHeight: 1.25,
         color: 'white',
         fontSize: '16px',
