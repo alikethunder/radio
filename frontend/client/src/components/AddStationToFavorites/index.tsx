@@ -64,7 +64,7 @@ export const AddStationToFavorites: FC<Props> = memo(({ station, className, "dat
       //remove station from favorite list
       actions.session.remove_stations_favorite([station])
     }
-  }, 50), [])
+  }, 50), [id])
 
   const anonym_favorite_station = useStore().persistedApp.favorite_station(id)
 
