@@ -21,7 +21,7 @@ export const StationSearchPanel: FC = memo(() => {
   return (
     <div className={`transition-all transition-duration-200 transition-ease-in-out ${search_panel_opened ? 'max-h-full' : 'max-h-0'}`}>
       <div
-        className={`search_panel z-1 surface-card flex flex-row flex-wrap flex-shrink-0 p-2 gap-3 justify-content-center align-items-center transition-all transition-duration-200 transition-ease-in-out ${search_panel_opened ? 'translate-y-0  shadow-2' : '-translate-y-100 -mb-7'}`}>
+        className={`search_panel relative z-1 surface-card flex flex-row flex-wrap flex-shrink-0 p-2 gap-3 justify-content-center align-items-center transition-all transition-duration-200 transition-ease-in-out ${search_panel_opened ? 'translate-y-0  shadow-2' : '-translate-y-100 -mb-7'}`}>
         <StationSearchPanelContent />
       </div>
     </div>
