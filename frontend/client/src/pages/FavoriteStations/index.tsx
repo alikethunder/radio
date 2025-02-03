@@ -52,7 +52,7 @@ export const FavoriteStations = () => {
     } 
   }, [favorite_stations])
 
-  useLog(true, '[FavoriteStations] stations : ', stations)
+  //useLog(true, '[FavoriteStations] stations : ', stations)
 
   const [translations] = useTranslations([
     "my_stations",
