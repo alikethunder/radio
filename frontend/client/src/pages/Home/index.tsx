@@ -25,8 +25,8 @@ import { list } from "@/API/station/list"
 
 export const Home = memo(() => {
 
-  const stations = useStore().session.stations_home()
-  const loading = !useStore().session.stations_home_loaded()
+  const stations = useStore().app.stations_home()
+  const loading = !useStore().app.stations_home_loaded()
 
   //useLog(true, '[Home] stations : ', stations)
 
@@ -53,21 +53,21 @@ export const Home = memo(() => {
   })
 
   useEffect(() => {
-    if (!store.session.stations_home_loaded()) {
+    if (!store.app.stations_home_loaded()) {
       (async () => {
-        const limit = 200
+        const limit = 400
         while (true) {
-          const from = store.session.stations_home_last_id()
+          const from = store.app.stations_home_last_id()
 
           const res = await list({ limit, admin: store.user.admin(), ...from ? { from } : {} })
 
           //console.log(`[stations] list result : `, res)
-          actions.session.add_stations_home(res)
-          actions.session.stations_home_last_id(res[res.length - 1].id)
+          actions.app.add_stations_home(res)
+          actions.app.stations_home_last_id(res[res.length - 1].id)
 
           if (!res.length || res.length < limit) {
             //console.log('set loading false ')
-            actions.session.stations_home_loaded(true)
+            actions.app.stations_home_loaded(true)
             break
           }
 

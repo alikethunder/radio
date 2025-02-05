@@ -164,7 +164,7 @@ func main() {
 
 	radio_endpoints := v1.Group("/radio", compress_get, etag.New(), cache.New(cache.Config{
 		Next:       notGet,
-		Expiration: 24 * 7 * time.Hour,
+		Expiration: 4 * time.Hour,
 		KeyGenerator: func(ctx *fiber.Ctx) string {
 			return utils.CopyString(ctx.Path() + ctx.Query("from") + ctx.Query("limit") + ctx.Query("admin"))
 		},

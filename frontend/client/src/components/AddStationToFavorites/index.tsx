@@ -59,10 +59,10 @@ export const AddStationToFavorites: FC<Props> = memo(({ station, className, "dat
 
     if (!favorite_station) {
       //add new station to favorite list
-      actions.session.add_stations_favorite([station])
+      actions.app.add_stations_favorite([station])
     } else {
       //remove station from favorite list
-      actions.session.remove_stations_favorite([station])
+      actions.app.remove_stations_favorite([station])
     }
   }, 50), [id])
 

@@ -63,8 +63,8 @@ export const StationSearchPanelContent: FC = memo(() => {
     useDebounceCallback(() => actions.persistedApp.search_stations_text(''), 100)
     , [])
 
-  const fav_loading = !useStore().session.stations_favorite_loaded()
-  const home_loading = !useStore().session.stations_home_loaded()
+  const fav_loading = !useStore().app.stations_favorite_loaded()
+  const home_loading = !useStore().app.stations_home_loaded()
 
   const text_search_in_progress = useStore().app.text_search_in_progress()
 

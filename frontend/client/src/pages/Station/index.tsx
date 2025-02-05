@@ -632,7 +632,10 @@ export const Station = () => {
                 }
               }}
 
-              onClick={click_play}
+              onClick={(e)=>{
+                e.preventDefault()
+                click_play()
+              }}
             />
 
             <div className="flex flex-column">

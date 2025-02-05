@@ -23,13 +23,13 @@ import { useEffect, useState } from "react"
 export const FavoriteStations = () => {
 
   //const stations = useLoaderData() as Station[]
-  const stations = useStore().session.stations_favorite()
-  const loading = !useStore().session.stations_favorite_loaded()
+  const stations = useStore().app.stations_favorite()
+  const loading = !useStore().app.stations_favorite_loaded()
 
   const favorite_stations = useFavoriteStations()
 
   useEffect(() => {
-    if (favorite_stations.length && !store.session.stations_favorite_loaded()) {
+    if (favorite_stations.length && !store.app.stations_favorite_loaded()) {
       //console.log(`[FavoriteStations] favorite_stations : `, favorite_stations);
       (async () => {
 
@@ -43,10 +43,10 @@ export const FavoriteStations = () => {
         const json = await res.json()
         //console.log(`[FavoriteStations] list result : `, json)
 
-        actions.session.add_stations_favorite(json)
-        actions.session.stations_favorite_last_id(json[json.length - 1].id)
+        actions.app.add_stations_favorite(json)
+        actions.app.stations_favorite_last_id(json[json.length - 1].id)
 
-        actions.session.stations_favorite_loaded(true)
+        actions.app.stations_favorite_loaded(true)
 
       })()
     } 
