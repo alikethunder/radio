@@ -24,7 +24,7 @@ export const useStationsSearch = (stations: Station[]) => {
 
   const search_selected_genres = useStore().persistedApp.search_selected_genres()
 
-  useLog(true, '[useStationsSearch] search_selected_languages, search_selected_genres : ', search_selected_languages, search_selected_genres)
+  //useLog(true, '[useStationsSearch] search_selected_languages, search_selected_genres : ', search_selected_languages, search_selected_genres)
 
   const countries = useMemo(() => search_selected_countries.map(get_en), [search_selected_countries])
 
