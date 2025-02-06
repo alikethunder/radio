@@ -1,13 +1,18 @@
 import { FC, memo, useEffect, } from "react"
 
 import {
+  AddStationToFavorites,
   QueryLink,
+  StationGenreTag,
   StationTag,
 } from '@/components'
 
 import {
   app_routes,
 } from '@/constants/router'
+
+import { FaRegShareFromSquare } from "react-icons/fa6"
+import { RiInfoCardLine } from "react-icons/ri"
 
 import {
   actions,
@@ -24,6 +29,8 @@ import { Station } from "@/types"
 import { Ripple } from "primereact/ripple"
 
 import './index.sass'
+import { Button } from "primereact/button"
+import { useTranslations } from "@/hooks"
 
 type Props = {
   station: Station;
@@ -49,6 +56,12 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
       actions.player.current_station(station)
     }
   }, 50)
+
+  const [translations] = useTranslations([
+    'open_search_stations_panel',
+    'share',
+    'about_station',
+  ], true)
 
   return (
     station ?
@@ -142,10 +155,45 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
               </QueryLink>
             </div>
 
-            <div className="station_tags_container text-center text_hidden_overflow line-clamp-2 flex-shrink-0">
-              {
+            <div className="actions_container flex flex-row justify-content-around align-items-center">
+              {/* {
                 station.tags.map(tag => <StationTag tag={tag} key={tag} />)
-              }
+              } */}
+
+              {/* {
+                station.genres?.map(genre => <StationGenreTag genre_en={genre} key={genre} />)
+              } */}
+
+              <AddStationToFavorites station={station} />
+
+              <Button
+                rounded
+                outlined
+                raised
+                aria-label={translations.share}
+                tooltip={translations.share}
+                className={`p-0 w-2rem h-2rem shadow_on_hover align-self-center flex flex-shrink-0 justify-content-center align-items-center`}
+                severity={`info`}
+
+              //onClick={click_search}
+              >
+                <FaRegShareFromSquare />
+              </Button>
+
+              <Button
+                rounded
+                outlined
+                raised
+                aria-label={translations.about_station}
+                tooltip={translations.about_station}
+                className={`p-0 w-2rem h-2rem shadow_on_hover align-self-center flex flex-shrink-0 justify-content-center align-items-center text-white`}
+                severity={`info`}
+
+              //onClick={click_search}
+              >
+                <RiInfoCardLine />
+              </Button>
+
             </div>
           </div>
 

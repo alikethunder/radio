@@ -94,4 +94,7 @@ var Fr = map[string]string{
 	"filter_by_countries":                           "filtrer par pays",
 	"country":                                       "pays",
 	"genre":                                         "genre",
+	"switch_theme":                                  "Changer de thème",
+	"share":                                         "partager",
+	"about_station":                                 "à propos de la station",
 }

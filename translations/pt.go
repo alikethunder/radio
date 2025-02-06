@@ -94,4 +94,7 @@ var Pt = map[string]string{
 	"filter_by_countries":                           "filtrar por países",
 	"country":                                       "país",
 	"genre":                                         "gênero",
+	"switch_theme":                                  "Mudar tema",
+	"share":                                         "compartilhar",
+	"about_station":                                 "sobre a estação",
 }

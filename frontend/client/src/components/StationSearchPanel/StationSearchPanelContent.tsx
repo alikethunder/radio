@@ -76,7 +76,7 @@ export const StationSearchPanelContent: FC = memo(() => {
   const countryItemTemplate = useCallback((option: StationCountry) => <span className="inline-block max-w-full overflow-hidden text-overflow-ellipsis white-space-nowrap"><span className="text-2xl">{option?.flag}</span> {option?.[language ?? 'en']}</span>
     , [language])
 
-  const genreItemTemplate = useCallback((option: StationGenre) => <StationGenreTag genre={option} />
+  const genreItemTemplate = useCallback((option: StationGenre) => <StationGenreTag genre_en={option.en} />
     , [])
 
   const change_countries = useCallback((e: MultiSelectChangeEvent) => {

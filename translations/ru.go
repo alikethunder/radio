@@ -93,4 +93,7 @@ var Ru = map[string]string{
 	"filter_by_countries":                           "фильтр по странам",
 	"country":                                       "Страна",
 	"genre":                                         "Жанр",
+	"switch_theme":                                  "Сменить тему",
+	"share":                                         "поделиться",
+	"about_station":                                 "о станции",
 }

@@ -95,4 +95,7 @@ var Sp = map[string]string{
 	"filter_by_countries":                           "filtrar por países",
 	"country":                                       "país",
 	"genre":                                         "género",
+	"switch_theme":                                  "Cambiar tema",
+	"share":                                         "compartir",
+	"about_station":                                 "sobre la estación",
 }

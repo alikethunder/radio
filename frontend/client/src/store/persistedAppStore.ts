@@ -56,4 +56,12 @@ export const persistedAppStore = createStore('app')(initial_state,
 
       set.favorite_stations(cur_stations.includes(id) ? cur_stations.filter(cur_id => cur_id != id) : [...cur_stations, id])
     },
+    toggle_genre_search(genre: StationGenre) {
+      const cur_genres = get.search_selected_genres()
+      if (cur_genres.find(g=>g.en === genre.en)) {
+        set.search_selected_genres(cur_genres.filter(g=>g.en !== genre.en))
+      } else {
+        set.search_selected_genres([...cur_genres, genre])
+      }
+    }
   }))

@@ -94,4 +94,7 @@ var En = map[string]string{
 	"filter_by_countries":                           "filter by countries",
 	"country":                                       "country",
 	"genre":                                         "genre",
+	"switch_theme":                                  "switch theme",
+	"share":                                         "share",
+	"about_station":                                 "about the station",
 }

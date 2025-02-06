@@ -302,7 +302,7 @@ export const RightSidebar: FC = memo(() => {
             />
             : <></>
         }
-
+{/* 
         {
           root_admin ?
             <Button
@@ -314,7 +314,7 @@ export const RightSidebar: FC = memo(() => {
               onClick={trim}
             />
             : <></>
-        }
+        } */}
         {/* 
         {
           root_admin ?

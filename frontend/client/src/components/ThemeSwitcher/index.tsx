@@ -7,6 +7,7 @@ import { actions, useStore, store } from "@/store"
 
 import { tooltip_options } from "@/constants/tooltip_options"
 import { useDebounceCallback } from "usehooks-ts"
+import { useTranslations } from "@/hooks"
 
 export const ThemeSwitcher: FC = memo(() => {
 
@@ -42,6 +43,10 @@ export const ThemeSwitcher: FC = memo(() => {
       :
       theme == 'light' ? 'pi-moon' : 'pi-sun'
   }, [theme_loading, theme])
+  
+    const [translations] = useTranslations([
+      'switch_theme',
+    ], true)
 
   return (
     <Button
@@ -49,8 +54,8 @@ export const ThemeSwitcher: FC = memo(() => {
       rounded
       outlined
       raised
-      aria-label="Сохраняется"
-      tooltip="Сохраняется"
+      aria-label={translations.switch_theme}
+      tooltip={translations.switch_theme}
       tooltipOptions={tooltip_options}
       className="p-0 w-2rem h-2rem shadow_on_hover align-self-center flex flex-shrink-0 justify-content-center align-items-center icon_button_text_shadow"
       style={{

@@ -86,15 +86,15 @@ export const Navbar: FC = memo(() => {
               className="flex flex-row gap-1 border-noround w-full h-full md:px-2 px-1  action_text_font text-xl shadow_on_hover md:text-3xl bangers-font logo-glow shadow-none border-none"
             >
               <span>Radio</span>
-              <img src="/favicon_120x120.png" className="h-3rem sm:h-4rem w-3rem sm:w-4rem" loading="lazy" 
-              style={{
-                opacity: 0,
-                transition: 'opacity .3s ease'
-              }} 
+              <img src="/favicon_120x120.png" className="h-3rem sm:h-4rem w-3rem sm:w-4rem" loading="lazy"
+                style={{
+                  opacity: 0,
+                  transition: 'opacity .3s ease'
+                }}
 
-              onLoad={(e)=>{
-                (e.target as HTMLImageElement).style.opacity = '1'
-              }}/>
+                onLoad={(e) => {
+                  (e.target as HTMLImageElement).style.opacity = '1'
+                }} />
               <span>Best</span>
             </Button>
           </QueryLink>
@@ -118,6 +118,7 @@ export const Navbar: FC = memo(() => {
                 outlined
                 raised
                 aria-label={translations.open_search_stations_panel}
+                tooltip={translations.open_search_stations_panel}
                 className={`p-0 w-2rem h-2rem shadow_on_hover align-self-center flex flex-shrink-0 justify-content-center align-items-center`}
                 severity={`info`}
 

@@ -82,6 +82,9 @@ export const sessionStore = createStore('sessionStore')(initial_state, {
     get_station_tag(name: string) {
       return get.station_tags()?.find(t => t.name == name)
     },
+    get_genre(en: string) {
+      return get.station_genres()?.find(t => t.en == en)
+    }
   }))
   .extendActions((set, get, api) => ({
     translation_checked(language: string, field: string) {
