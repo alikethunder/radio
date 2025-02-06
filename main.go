@@ -206,6 +206,8 @@ func main() {
 
 	radio_endpoints.Post("/remove-jsons", RadioEndpoints.RemoveJsons)
 
+	radio_endpoints.Post("/update-json", RadioEndpoints.UpdateJson)
+
 	settings_endpoints := v1.Group("/settings", compress_get, etag.New(), cache.New(cache.Config{
 		Next:       notGet,
 		Expiration: 24 * 7 * time.Hour,

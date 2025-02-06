@@ -38,7 +38,7 @@ func Update(id string, updated_fields fiber.Map) interface{} {
 
 	}
 
-	fmt.Println("[Stations.Update] updated_fields :", updated_fields)
+	//fmt.Println("[Stations.Update] updated_fields :", updated_fields)
 
 	if err := db.Update(
 		"stations",
