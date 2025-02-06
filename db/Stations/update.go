@@ -1,9 +1,9 @@
 package Stations
 
 import (
-	"fmt"
-	"github.com/gocql/gocql"
 	"web_project/db"
+
+	"github.com/gocql/gocql"
 
 	"github.com/gofiber/fiber/v2"
 )
