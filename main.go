@@ -215,6 +215,8 @@ func main() {
 
 	settings_endpoints.Get("/sitemap", SettingsEndpoints.GenerateSitemap)
 
+	settings_endpoints.Get("/trim", SettingsEndpoints.TrimStations)
+
 	settings_endpoints.Get("/indexnow", SettingsEndpoints.IndexNow)
 
 	settings_endpoints.Post("/genres", SettingsEndpoints.UploadGenres)

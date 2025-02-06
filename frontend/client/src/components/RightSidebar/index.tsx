@@ -61,6 +61,12 @@ export const RightSidebar: FC = memo(() => {
     console.log('[update_sitemap] result : ', res)
   }, 50)
 
+  const trim = useDebounceCallback(async () => {
+    const res = await fetch('/api/v1/settings/trim')
+
+    console.log('[trim] result : ', res)
+  }, 50)
+
   const languages_options = useMemo(() => languages.map(code => ({
     code,
     translation: languages_translations[code],
@@ -296,6 +302,19 @@ export const RightSidebar: FC = memo(() => {
             />
             : <></>
         }
+
+        {
+          root_admin ?
+            <Button
+              label={'Trim'}
+              text
+              raised
+              icon={`${icon_classes} pi-exclamation-triangle`}
+              className="border-noround w-full h-full px-2 text-2xl shadow_on_hover action_text_font"
+              onClick={trim}
+            />
+            : <></>
+        }
         {/* 
         {
           root_admin ?
@@ -346,7 +365,7 @@ export const RightSidebar: FC = memo(() => {
             </Button>
             : <></>
         }
- */}
+ */}{/* 
         {
           root_admin ?
 
@@ -370,7 +389,7 @@ export const RightSidebar: FC = memo(() => {
             </Button>
             : <></>
         }
-
+ */}
         {
           root_admin ?
             <QueryLink to={generatePath(`${app_routes["station$id"]}/${'?edit'}`, { id: "new" })} onClick={close_rsb}>
