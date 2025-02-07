@@ -58,10 +58,18 @@ export const persistedAppStore = createStore('app')(initial_state,
     },
     toggle_genre_search(genre: StationGenre) {
       const cur_genres = get.search_selected_genres()
-      if (cur_genres.find(g=>g.en === genre.en)) {
-        set.search_selected_genres(cur_genres.filter(g=>g.en !== genre.en))
+      if (cur_genres.find(g => g.en === genre.en)) {
+        set.search_selected_genres(cur_genres.filter(g => g.en !== genre.en))
       } else {
         set.search_selected_genres([...cur_genres, genre])
       }
-    }
+    },
+    toggle_language_search(language: StationLanguage) {
+      const cur_languages = get.search_selected_languages()
+      if (cur_languages.find(g => g.en === language.en)) {
+        set.search_selected_languages(cur_languages.filter(g => g.en !== language.en))
+      } else {
+        set.search_selected_languages([...cur_languages, language])
+      }
+    },
   }))

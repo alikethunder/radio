@@ -84,7 +84,13 @@ export const sessionStore = createStore('sessionStore')(initial_state, {
     },
     get_genre(en: string) {
       return get.station_genres()?.find(t => t.en == en)
-    }
+    },
+    get_country(en?: string) {
+      return en ? get.station_countries()?.find(t => t.en.toLowerCase() == en.toLowerCase()) : null
+    },
+    get_language(en: string) {
+      return get.station_languages()?.find(t => t.en == en)
+    },
   }))
   .extendActions((set, get, api) => ({
     translation_checked(language: string, field: string) {

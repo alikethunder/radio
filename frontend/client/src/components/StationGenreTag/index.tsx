@@ -69,7 +69,7 @@ export const StationGenreTag: FC<Props> = memo(({ genre_en, onClick, disable_lin
         color: 'white',
         fontSize: '16px',
       }}>
-        <span className="text-xl mr-1">{genre?.icon}</span> {genre?.[language ?? 'en']}
+        <span className="text-xl mr-1 line-height-1">{genre?.icon}</span> {genre?.[language ?? 'en']}
       </span>
     </span>
   )
