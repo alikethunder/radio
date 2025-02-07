@@ -123,6 +123,10 @@ export const Station = () => {
 
   const language = useStore().translations.language()
 
+  const [image_loading, set_image_loading] = useState(true)
+
+  const [station_avatar, set_station_avatar] = useState<string>(`/api/v1/files/stations/${station?.id}/avatar`)
+
   const station_admin = useMemo(() => Boolean(
     signedin
     && current_user_id
@@ -549,24 +553,31 @@ export const Station = () => {
           <div className="flex flex-row gap-3">
 
             <div
-              style={{ backgroundImage: `url(${avatar_data_url || `/api/v1/files/stations/${station.id}/avatar`})` }}
+              style={{ backgroundImage: `url(${avatar_data_url || station_avatar})` }}
 
               className={`element_with_overlay shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-round-xl flex flex-shrink-0 align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode ? 'cursor-pointer' : ''}`}
             >
               <img
                 style={{ display: 'none' }}
-                src={`/api/v1/files/stations/${station.id}/avatar`}
+                src={station_avatar}
 
                 onError={({ currentTarget }) => {
                   currentTarget.onerror = null
                   set_profile_photo_exists(false)
+                  set_station_avatar('/radio.png')
                 }}
+
+                onLoad={(e) => {
+                  set_image_loading(false)
+                }}
+                
                 loading="lazy"
               />
 
               {
-                avatar_data_url || profile_photo_exists ? <></> :
-                  <i className="pi pi-wave-pulse text-4xl md:text-6xl"></i>
+                image_loading ?
+                  <i className="pi pi-spin pi-spinner text-400" style={{ fontSize: '2rem' }}></i>
+                  : <></>
               }
 
               {
@@ -632,7 +643,7 @@ export const Station = () => {
                 }
               }}
 
-              onClick={(e)=>{
+              onClick={(e) => {
                 e.preventDefault()
                 click_play()
               }}

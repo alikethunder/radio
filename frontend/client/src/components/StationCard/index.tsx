@@ -1,8 +1,9 @@
-import { FC, memo, useEffect, } from "react"
+import { FC, memo, useCallback, useEffect, useState, } from "react"
 
 import {
   AddStationToFavorites,
   QueryLink,
+  StationAvatar,
   StationGenreTag,
   StationTag,
 } from '@/components'
@@ -67,6 +68,10 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
 
   const about_station_tooltip = useTooltip(translations.about_station)
 
+  const open_station_info = useCallback(() => {
+    actions.app.station_info_dialog(station)
+  }, [])
+
   return (
     station ?
       <div className="flex flex-column gap-2" style={style}>
@@ -100,27 +105,10 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
                 play_click(station)
               }} >
 
-              <i className="pi pi-wave-pulse " style={{ fontSize: '2rem' }}></i>
-
-              <div className="absolute w-full h-full top-0 left-0 bg-no-repeat bg-contain bg-center surface-100 station_image"
-                style={{
-                  backgroundImage: `url(/api/v1/files/stations/${station.id}/avatar)`,
-                }} >
-
-                <img
-                  style={{ display: 'none' }}
-                  src={`/api/v1/files/stations/${station.id}/avatar`}
-
-                  onError={({ currentTarget }) => {
-                    currentTarget.onerror = null
-
-                    const p = currentTarget.closest('.station_image') as HTMLElement
-
-                    if (p) p.style.display = 'none'
-                  }}
-                  loading="lazy"
-                />
-              </div>
+              <StationAvatar
+                id={station?.id}
+                className="absolute w-full h-full top-0 left-0 surface-100"
+              />
 
               <div
                 className="overlay absolute top-0 bottom-0 right-0 left-0 flex align-items-center justify-content-center text-center cursor-pointer"
@@ -192,7 +180,7 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
                 className={`p-0 w-2rem h-2rem shadow_on_hover align-self-center flex flex-shrink-0 justify-content-center align-items-center text-600`}
                 severity={`info`}
 
-                //onClick={click_search}
+                onClick={open_station_info}
 
                 {...about_station_tooltip}
               >

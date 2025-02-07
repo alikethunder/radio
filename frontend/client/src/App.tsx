@@ -28,6 +28,7 @@ import {
   Player,
   StationSearchPanel,
   DynamicTooltip,
+  StationInfoDialog,
 } from '@/components'
 
 import { useLog, usePageInList, useTranslations } from '@/hooks'
@@ -395,6 +396,8 @@ export default memo(function App() {
       <ConfirmDialog />
 
       <DynamicTooltip />
+
+      <StationInfoDialog />
 
     </PrimeReactProvider>
   )

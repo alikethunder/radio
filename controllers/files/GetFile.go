@@ -15,7 +15,12 @@ func GetFile(ctx *fiber.Ctx) error {
 	row_id := ctx.Params("row_id")
 	table := ctx.Params("table")
 	field := ctx.Params("field")
+
 	fmt.Printf("[FilesEndpoints.GetFile] row_id %s, table %s, field %s \n", row_id, table, field)
+
+	/* if table == "stations" && field == "avatar" {
+		return ctx.SendStatus(fiber.StatusNotFound)
+	} */
 
 	if row_id != "" && table != "" && field != "" {
 
@@ -32,10 +37,6 @@ func GetFile(ctx *fiber.Ctx) error {
 		}
 	}
 
-	if table == "stations" && field == "avatar" {
-		return ctx.Redirect("/radio.png")
-	}
-
-	return ctx.SendStatus(fiber.StatusBadRequest)
+	return ctx.SendStatus(fiber.StatusNotFound)
 
 }
