@@ -65,7 +65,6 @@ var De = map[string]string{
 	"links_to_page_on_other_languages":   "Links zu Seiten in anderen Sprachen",
 	"sitename":                           "Radio Best",
 	"add_to_favorites":                   "zu Favoriten hinzufügen",
-	"added_to_favorites":                 "zu Favoriten hinzugefügt",
 	"wrong_password":                     "falsches Passwort",
 	"user_not_exist":                     "Benutzer mit dieser E-Mail existiert nicht",
 	"something_went_wrong_try_again":     "Etwas ist schief gelaufen, bitte versuchen Sie es später erneut",

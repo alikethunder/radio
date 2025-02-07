@@ -66,7 +66,6 @@ var Sp = map[string]string{
 	"links_to_page_on_other_languages":   "Enlaces a páginas en otros idiomas",
 	"sitename":                           "Radio Best",
 	"add_to_favorites":                   "añadir a favoritos",
-	"added_to_favorites":                 "añadido a favoritos",
 	"wrong_password":                     "contraseña incorrecta",
 	"user_not_exist":                     "El usuario con este correo no existe",
 	"something_went_wrong_try_again":     "Algo salió mal, por favor intenta de nuevo más tarde",

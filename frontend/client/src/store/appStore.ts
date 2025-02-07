@@ -39,6 +39,8 @@ type AppStore = {
   stations_favorite: Station[];
   stations_favorite_loaded: boolean;
   stations_favorite_last_id: string | null;
+  hover_tooltip_targetid: string;
+  hover_tooltip_content: string;
 }
 
 const initial_state = {
@@ -70,6 +72,8 @@ const initial_state = {
   stations_favorite: [],
   stations_favorite_loaded: false,
   stations_favorite_last_id: null,
+  hover_tooltip_targetid: 'null',
+  hover_tooltip_content: '',
 } as AppStore
 
 export const appStore = createStore('app')(initial_state)

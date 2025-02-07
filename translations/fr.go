@@ -65,7 +65,6 @@ var Fr = map[string]string{
 	"links_to_page_on_other_languages":   "Liens vers la page dans d'autres langues",
 	"sitename":                           "Radio Best",
 	"add_to_favorites":                   "ajouter aux favoris",
-	"added_to_favorites":                 "ajouté aux favoris",
 	"wrong_password":                     "mot de passe incorrect",
 	"user_not_exist":                     "Utilisateur avec cet email n'existe pas",
 	"something_went_wrong_try_again":     "Quelque chose s'est mal passé, veuillez réessayer plus tard",

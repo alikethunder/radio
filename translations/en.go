@@ -65,7 +65,6 @@ var En = map[string]string{
 	"links_to_page_on_other_languages":   "Links to page on other languages",
 	"sitename":                           "Radio Best",
 	"add_to_favorites":                   "add to favorites",
-	"added_to_favorites":                 "added to favorites",
 	"wrong_password":                     "wrong password",
 	"user_not_exist":                     "User with such email doesn't exist",
 	"something_went_wrong_try_again":     "Something went wrong, please try again later",

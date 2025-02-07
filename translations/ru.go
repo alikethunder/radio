@@ -64,7 +64,6 @@ var Ru = map[string]string{
 	"links_to_page_on_other_languages":   "Ссылки на страницу на других языках",
 	"sitename":                           "Radio Best",
 	"add_to_favorites":                   "добавить в избранное",
-	"added_to_favorites":                 "добавили в избранное",
 	"wrong_password":                     "неверный пароль",
 	"user_not_exist":                     "Пользователь с таким email не существует",
 	"something_went_wrong_try_again":     "Что-то пошло не так, пожалуйста попробуйте позже",

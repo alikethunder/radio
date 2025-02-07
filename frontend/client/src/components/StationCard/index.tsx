@@ -30,7 +30,7 @@ import { Ripple } from "primereact/ripple"
 
 import './index.sass'
 import { Button } from "primereact/button"
-import { useTranslations } from "@/hooks"
+import { useTooltip, useTranslations } from "@/hooks"
 
 type Props = {
   station: Station;
@@ -62,6 +62,10 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
     'share',
     'about_station',
   ], true)
+
+  const share_tooltip = useTooltip(translations.share)
+
+  const about_station_tooltip = useTooltip(translations.about_station)
 
   return (
     station ?
@@ -155,7 +159,7 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
               </QueryLink>
             </div>
 
-            <div className="actions_container flex flex-row justify-content-around align-items-center">
+            <div className="flex flex-row justify-content-around align-items-center pb-1">
               {/* {
                 station.tags.map(tag => <StationTag tag={tag} key={tag} />)
               } */}
@@ -170,12 +174,13 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
                 rounded
                 outlined
                 raised
-                aria-label={translations.share}
-                tooltip={translations.share}
                 className={`p-0 w-2rem h-2rem shadow_on_hover align-self-center flex flex-shrink-0 justify-content-center align-items-center`}
                 severity={`info`}
 
-              //onClick={click_search}
+                //onClick={click_search}
+
+                {...share_tooltip}
+
               >
                 <FaRegShareFromSquare />
               </Button>
@@ -184,12 +189,12 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
                 rounded
                 outlined
                 raised
-                aria-label={translations.about_station}
-                tooltip={translations.about_station}
-                className={`p-0 w-2rem h-2rem shadow_on_hover align-self-center flex flex-shrink-0 justify-content-center align-items-center text-white`}
+                className={`p-0 w-2rem h-2rem shadow_on_hover align-self-center flex flex-shrink-0 justify-content-center align-items-center text-600`}
                 severity={`info`}
 
-              //onClick={click_search}
+                //onClick={click_search}
+
+                {...about_station_tooltip}
               >
                 <RiInfoCardLine />
               </Button>

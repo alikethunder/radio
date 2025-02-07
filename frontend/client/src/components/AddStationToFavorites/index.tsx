@@ -8,21 +8,18 @@ import {
   store,
 } from "@/store"
 
-import { useTranslations } from "@/hooks"
+import { useTooltip, useTranslations } from "@/hooks"
 import { useDebounceCallback } from "usehooks-ts"
 import { update_json } from "@/API/profile/update_json"
-import { Tooltip } from "primereact/tooltip"
-import { tooltip_options } from "@/constants/tooltip_options"
 import { v7 } from "uuid"
 import { Station } from "@/types"
 
 type Props = {
   station: Station;
   className?: string;
-  "data-targetid"?: string;
 }
 
-export const AddStationToFavorites: FC<Props> = memo(({ station, className, "data-targetid": dataTargetid, ...rest }) => {
+export const AddStationToFavorites: FC<Props> = memo(({ station, className, ...rest }) => {
 
   const { id } = station
 
@@ -78,36 +75,33 @@ export const AddStationToFavorites: FC<Props> = memo(({ station, className, "dat
 
   const [translations] = useTranslations([
     'add_to_favorites',
+    'remove_from_favorites',
   ], true)
 
-  const targetid = useMemo(() => dataTargetid ?? v7(), [])
+  const ariaLabel = useMemo(() => favorite_station ? translations.remove_from_favorites : translations.add_to_favorites, [
+    favorite_station,
+    translations.add_to_favorites,
+    translations.remove_from_favorites,
+  ])
+
+  const tooltip = useTooltip(ariaLabel)
 
   return (
-    <>
-      <Button
-        {...rest}
-        icon={`pi ${favorite_station ? 'pi-star-fill' : 'pi-star'}`}
-        rounded
-        outlined
-        raised
-        aria-label={translations.add_to_favorites}
-        className={`p-0 w-2rem h-2rem shadow_on_hover flex-shrink-0 ${className ?? ''}`}
-        severity={`warning`}
+    <Button
+      {...rest}
+      icon={`pi ${favorite_station ? 'pi-star-fill' : 'pi-star'}`}
+      rounded
+      outlined
+      raised
+      className={`p-0 w-2rem h-2rem shadow_on_hover flex-shrink-0 ${className ?? ''}`}
+      severity={`warning`}
 
-        onClick={(e) => {
-          e.preventDefault()
-          click_add_to_favorites(id)
-        }}
+      onClick={(e) => {
+        e.preventDefault()
+        click_add_to_favorites(id)
+      }}
 
-        data-targetid={targetid}
-      />
-
-      {
-        dataTargetid ? <></> :
-          <Tooltip target={`[data-targetid="${targetid}"]`} {...{ ...tooltip_options, position: 'top' }} >
-            {translations.add_to_favorites}
-          </Tooltip>
-      }
-    </>
+      {...tooltip}
+    />
   )
 })

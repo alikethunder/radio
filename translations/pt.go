@@ -65,7 +65,6 @@ var Pt = map[string]string{
 	"links_to_page_on_other_languages":   "Links para a página em outros idiomas",
 	"sitename":                           "Radio Best",
 	"add_to_favorites":                   "adicionar aos favoritos",
-	"added_to_favorites":                 "adicionado aos favoritos",
 	"wrong_password":                     "senha incorreta",
 	"user_not_exist":                     "Usuário com este email não existe",
 	"something_went_wrong_try_again":     "Algo deu errado, por favor, tente novamente mais tarde",

@@ -104,10 +104,6 @@ export const Player: FC = memo(() => {
     'pause',
   ], true)
 
-  const translations_skl = useTranslationsSkeleton({
-    'added_to_favorites': ['w-8rem'],
-  }, true)
-
   const switch_playing = useDebounceCallback(() => actions.player.switch_playing(), 50)
 
   const click_volume_icon = useDebounceCallback(() => {
@@ -159,13 +155,9 @@ export const Player: FC = memo(() => {
             {/* <span className="text-gray-500 favorited">125</span> */}
             {
               current_station ?
-                <AddStationToFavorites station={current_station} data-targetid="player_add_to_fav" />
+                <AddStationToFavorites station={current_station} />
                 : <></>
             }
-
-            {/* <Tooltip target='.favorited' >
-              {translations_skl.added_to_favorites}
-            </Tooltip> */}
           </div>
         </div>
 
