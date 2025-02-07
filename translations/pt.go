@@ -96,4 +96,5 @@ var Pt = map[string]string{
 	"switch_theme":                                  "Mudar tema",
 	"share":                                         "compartilhar",
 	"about_station":                                 "sobre a estação",
+	"remove_from_favorites":                         "remover dos favoritos",
 }

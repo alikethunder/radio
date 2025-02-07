@@ -95,4 +95,5 @@ var Ru = map[string]string{
 	"switch_theme":                                  "Сменить тему",
 	"share":                                         "поделиться",
 	"about_station":                                 "о станции",
+	"remove_from_favorites":                         "Убрать из избранного",
 }

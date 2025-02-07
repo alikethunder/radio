@@ -96,4 +96,5 @@ var En = map[string]string{
 	"switch_theme":                                  "switch theme",
 	"share":                                         "share",
 	"about_station":                                 "about the station",
+	"remove_from_favorites":                         "remove from favorites",
 }

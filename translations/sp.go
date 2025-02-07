@@ -97,4 +97,5 @@ var Sp = map[string]string{
 	"switch_theme":                                  "Cambiar tema",
 	"share":                                         "compartir",
 	"about_station":                                 "sobre la estación",
+	"remove_from_favorites":                         "eliminar de favoritos",
 }

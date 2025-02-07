@@ -96,4 +96,5 @@ var De = map[string]string{
 	"switch_theme":                                  "Thema wechseln",
 	"share":                                         "teilen",
 	"about_station":                                 "über die Station",
+	"remove_from_favorites":                         "aus Favoriten entfernen",
 }

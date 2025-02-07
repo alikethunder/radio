@@ -96,4 +96,5 @@ var Fr = map[string]string{
 	"switch_theme":                                  "Changer de thème",
 	"share":                                         "partager",
 	"about_station":                                 "à propos de la station",
+	"remove_from_favorites":                         "retirer des favoris",
 }
