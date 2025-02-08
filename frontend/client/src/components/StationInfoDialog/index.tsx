@@ -88,7 +88,17 @@ export const StationInfoDialog: FC = memo(() => {
         </span>
         <div className="flex flex-row flex-wrap gap-1">
           {
-            station?.languages?.map(language => <StationLanguageTag language_en={language} />)
+            station?.languages?.map((language, i, arr) =>
+              <>
+                <StationLanguageTag language_en={language} />
+                {
+                  i < arr.length - 1 &&
+                  <span className="text-base">
+                    ,
+                  </span>
+                }
+              </>
+            )
           }
         </div>
       </div>

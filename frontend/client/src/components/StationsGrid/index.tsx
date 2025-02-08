@@ -128,4 +128,5 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
 }, (o, n) => {
   return o.stations.length === n.stations.length
   && o.place === n.place
+  && o.loading === n.loading
 })

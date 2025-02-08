@@ -35,7 +35,11 @@ export const AddStationToFavorites: FC<Props> = memo(({ station, className, ...r
 
     const favorite_station = signedin ? user_favorite_station : anonym_favorite_station
 
-    actions.persistedApp.toggle_favorite_station(id)
+    if (signedin) {
+      actions.user.toggle_favorite_station(id)
+    } else {
+      actions.persistedApp.toggle_favorite_station(id)
+    }
 
     const likes = store.persistedApp.favorite_station(id) ? '+1' : '-1'
     //update station like count
@@ -48,10 +52,7 @@ export const AddStationToFavorites: FC<Props> = memo(({ station, className, ...r
     })
 
     if (signedin) {
-      actions.user.toggle_favorite_station(id)
-
-      update_json({ favorite_stations: store.persistedApp.favorite_stations() })
-
+      update_json({ favorite_stations: store.user.favorite_stations() })
     }
 
     if (!favorite_station) {
@@ -104,4 +105,7 @@ export const AddStationToFavorites: FC<Props> = memo(({ station, className, ...r
       {...tooltip}
     />
   )
+}, (o, n) => {
+  return o.station.id == n.station.id
+    && o.className == n.className
 })

@@ -106,4 +106,7 @@ export const Stations_grid: FC<Props> = memo(({
     && o.stations.length === n.stations.length
     && o.loading === n.loading
     && o.place === n.place
+    && o.stations.length === n.stations.length
+    && o.stations[0]?.id === n.stations[0]?.id
+    && o.stations[o.stations.length-1]?.id === n.stations[n.stations.length-1]?.id
 })

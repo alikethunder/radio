@@ -1,4 +1,5 @@
-import { FC, memo, useState, } from "react"
+import { useLog } from "@/hooks";
+import { FC, memo, useEffect, useState, } from "react"
 
 type props = {
   id?: string;
@@ -10,6 +11,10 @@ export const StationAvatar: FC<props> = memo(({ id, className }) => {
   const [image_loading, set_image_loading] = useState(true)
 
   const [station_avatar, set_station_avatar] = useState<string>(`/api/v1/files/stations/${id}/avatar`)
+
+  useEffect(() => {
+    set_station_avatar(`/api/v1/files/stations/${id}/avatar`)
+  }, [id])
 
   return (
     id ?
@@ -23,7 +28,7 @@ export const StationAvatar: FC<props> = memo(({ id, className }) => {
           src={station_avatar}
 
           onError={({ currentTarget }) => {
-            currentTarget.onerror = null
+            //currentTarget.onerror = null
 
             set_station_avatar('/radio.png')
           }}
@@ -43,4 +48,7 @@ export const StationAvatar: FC<props> = memo(({ id, className }) => {
       </div>
       : <></>
   )
+}, (o, n) => {
+  return o?.id == n?.id
+    && o?.className == n?.className
 })

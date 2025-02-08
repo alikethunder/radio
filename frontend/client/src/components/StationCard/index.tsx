@@ -70,7 +70,7 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
 
   const open_station_info = useCallback(() => {
     actions.app.station_info_dialog(station)
-  }, [])
+  }, [station.id])
 
   return (
     station ?
