@@ -200,6 +200,8 @@ func main() {
 
 	radio_endpoints.Post("/stations-by-id", RadioEndpoints.ListStationsById)
 
+	radio_endpoints.Get("/description/:id/:language", RadioEndpoints.GetStationDescription)
+
 	radio_endpoints.Get("/:id", RadioEndpoints.GetStation)
 
 	radio_endpoints.Post("/upload-jsons", RadioEndpoints.UploadJsons)

@@ -10,7 +10,7 @@ import {
   useStore,
 } from "@/store"
 import { useLocation, useNavigate } from "react-router-dom"
-import { StationGenre } from "@/types"
+import { tag_text_class } from '@/constants/classes'
 
 type Props = {
   genre_en: string;
@@ -36,7 +36,7 @@ export const StationGenreTag: FC<Props> = memo(({ genre_en, onClick, disable_lin
     }
 
     if (!disable_link && !tag_is_in_search) {
-      
+
       if (genre) {
         actions.persistedApp.toggle_genre_search(genre)
       }
@@ -54,7 +54,7 @@ export const StationGenreTag: FC<Props> = memo(({ genre_en, onClick, disable_lin
         'cursor-pointer shadow_on_hover shadow-2': !tag_is_in_search && !disable_link,
         'opacity-70': tag_is_in_search && !disable_link,
       },
-        `py-05 select-none text-sm font-medium border-round inline-flex max-w-full`,
+        `py-05 select-none font-medium border-round inline-flex max-w-full ${tag_text_class}`,
       )}
 
       style={{
@@ -64,12 +64,15 @@ export const StationGenreTag: FC<Props> = memo(({ genre_en, onClick, disable_lin
         padding: '.125rem .4rem',
       }}
     >
-      <span className="value inline-block max-w-full overflow-hidden text-overflow-ellipsis white-space-nowrap" style={{
-        lineHeight: 1.25,
+      <span className="value inline-block max-w-full overflow-hidden text-overflow-ellipsis white-space-nowrap " style={{
         color: 'white',
-        fontSize: '16px',
       }}>
-        <span className="text-xl mr-1 line-height-1">{genre?.icon}</span> {genre?.[language ?? 'en']}
+        <span
+          className="text-xl mr-1"
+          style={{
+            lineHeight: .875,
+          }}
+        >{genre?.icon}</span> {genre?.[language ?? 'en']}
       </span>
     </span>
   )

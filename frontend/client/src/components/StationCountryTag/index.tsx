@@ -3,6 +3,7 @@ import { FC, memo, useCallback, useMemo } from "react"
 import { classNames } from 'primereact/utils'
 
 import { useDebounceCallback } from "usehooks-ts"
+import { tag_text_class } from '@/constants/classes'
 
 import {
   actions,
@@ -13,9 +14,10 @@ type Props = {
   en: string;
   onClick?: () => void;
   disable_link?: boolean;
+  className?: string;
 }
 
-export const StationCountryTag: FC<Props> = memo(({ en, onClick, disable_link }) => {
+export const StationCountryTag: FC<Props> = memo(({ en, onClick, disable_link, className }) => {
 
   const station_country = useStore().session.get_country(en)
 
@@ -48,9 +50,15 @@ export const StationCountryTag: FC<Props> = memo(({ en, onClick, disable_link })
         'cursor-pointer': !tag_is_in_search && !disable_link,
         'opacity-70': tag_is_in_search && !disable_link,
       },
-        `inline text-base font-semibold select-none inline-block max-w-full overflow-hidden text-overflow-ellipsis white-space-nowrap text-primary`,
-      )}>
-      <span className="text-xl line-height-1 mr-1">
+        `inline font-semibold select-none inline-block max-w-full overflow-hidden text-overflow-ellipsis white-space-nowrap text-primary ${tag_text_class} ${className ?? ''}`,
+      )}
+      style={{
+        fontSize: '1rem',
+      }}
+      >
+      <span className="line-height-1 mr-1" style={{
+        fontSize: '1.25rem',
+      }}>
         {station_country?.flag}
       </span>
 

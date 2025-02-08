@@ -162,11 +162,11 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
                 rounded
                 outlined
                 raised
-                className={`p-0 w-2rem h-2rem shadow_on_hover align-self-center flex flex-shrink-0 justify-content-center align-items-center`}
+                className={`p-0 w-2rem h-2rem shadow_on_hover align-self-center flex flex-shrink-0 justify-content-center align-items-center opacity-0`}
                 severity={`info`}
 
                 //onClick={click_search}
-
+                disabled
                 {...share_tooltip}
 
               >

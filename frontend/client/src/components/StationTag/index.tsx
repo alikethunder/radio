@@ -10,6 +10,7 @@ import {
   useStore,
 } from "@/store"
 import { useLocation, useNavigate } from "react-router-dom"
+import { tag_text_class } from '@/constants/classes'
 
 type Props = {
   tag: string;
@@ -52,7 +53,7 @@ export const StationTag: FC<Props> = memo(({ tag, color, onClick, disable_link }
         'cursor-pointer shadow_on_hover shadow-2': !tag_is_in_search && !disable_link,
         'opacity-70': tag_is_in_search && !disable_link,
       },
-        `py-05 select-none text-sm font-medium border-round inline-flex 
+        `py-05 select-none ${tag_text_class} font-medium border-round inline-flex 
         ${color?.includes('surface')
           ? color :
           (
@@ -66,7 +67,7 @@ export const StationTag: FC<Props> = memo(({ tag, color, onClick, disable_link }
           'background-color': result_color
         } : {},
         margin: '.125rem',
-        padding: '.125rem .4rem',
+        padding: '.125rem .25rem',
       }}
     >
       <span className="value" style={{

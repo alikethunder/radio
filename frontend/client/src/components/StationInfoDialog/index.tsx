@@ -1,4 +1,4 @@
-import { FC, memo, useMemo, } from "react"
+import { FC, memo, useMemo, useState, } from "react"
 
 import {
   actions,
@@ -6,21 +6,34 @@ import {
 } from "@/store"
 
 import { Dialog } from "primereact/dialog"
-import { Button } from "primereact/button"
 import { StationAvatar } from "../StationAvatar"
 import { StationTag } from "../StationTag"
 import { useTranslations } from "@/hooks"
 import { StationGenreTag } from "../StationGenreTag"
 import { StationLanguageTag } from "../StationLanguageTag"
 import { StationCountryTag } from "../StationCountryTag"
+import { useAsyncMemo } from "use-async-memo"
+import { Skeleton } from "primereact/skeleton"
+
+import { tag_text_class } from '@/constants/classes'
 
 export const StationInfoDialog: FC = memo(() => {
 
   const station = useStore().app.station_info_dialog()
 
-  const country = useStore().session.get_country(station?.country)
-
   const language = useStore().translations.language()
+
+  const [desc_loading, set_desc_loading] = useState(false)
+
+  const description = useAsyncMemo(async () => {
+    if (station?.id && language) {
+      set_desc_loading(true)
+      const res = await fetch(`/api/v1/radio/description/${station.id}/${language}`)
+      const text = await res.text()
+      set_desc_loading(false)
+      return text
+    }
+  }, [station?.id, language])
 
   const [translations] = useTranslations([
     'tags',
@@ -39,7 +52,7 @@ export const StationInfoDialog: FC = memo(() => {
 
         <div className="flex flex-column gap-2">
 
-          <span className="font-bold">
+          <span className="font-bold text-base sm:text-xl">
             {
               station?.name
             }
@@ -68,16 +81,19 @@ export const StationInfoDialog: FC = memo(() => {
 
       pt={{
         header: {
-          className: 'p-3 sm:p-4',
+          className: 'p-3 sm:p-4 pr-2 sm:pr-2 pb-0 sm:pb-0',
         },
         content: {
-          className: 'flex flex-column gap-3',
+          className: 'flex flex-column gap-2 sm:gap-3 p-3 sm:p-4 pr-2 sm:pr-2 pt-2 sm:pt-3',
+        },
+        headerIcons: {
+          className: '-mt-2 sm:-mt-3',
         }
       }}
     >
 
       <div className="flex flex-row gap-2">
-        <span className="text-base font-semibold area_name">
+        <span className={`font-semibold ${tag_text_class}`}>
           {translations.language}:
         </span>
         <div className="flex flex-row flex-wrap gap-1">
@@ -98,7 +114,7 @@ export const StationInfoDialog: FC = memo(() => {
       </div>
 
       <div className="flex flex-row gap-2">
-        <span className="text-base font-semibold area_name">
+        <span className={`font-semibold ${tag_text_class}`}>
           {translations.genre}:
         </span>
         <div className="flex flex-row flex-wrap gap-1">
@@ -109,7 +125,7 @@ export const StationInfoDialog: FC = memo(() => {
       </div>
 
       <div className="flex flex-row gap-2">
-        <span className="text-base font-semibold area_name">
+        <span className={`font-semibold ${tag_text_class}`}>
           {translations.tags}:
         </span>
         <div className="flex flex-row flex-wrap gap-1">
@@ -119,9 +135,17 @@ export const StationInfoDialog: FC = memo(() => {
         </div>
       </div>
 
-      <p className="m-0">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      <p className={`m-0 ${tag_text_class}`}>
+        {
+          desc_loading ?
+            <>
+              <Skeleton className="w-full mb-2" />
+              <Skeleton className="w-full mb-2" />
+              <Skeleton className="w-full mb-2" />
+            </>
+            :
+            description
+        }
       </p>
     </Dialog>
   )

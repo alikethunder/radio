@@ -3,6 +3,7 @@ import { FC, memo, useCallback, useMemo } from "react"
 import { classNames } from 'primereact/utils'
 
 import { useDebounceCallback } from "usehooks-ts"
+import { tag_text_class } from '@/constants/classes'
 
 import {
   actions,
@@ -13,9 +14,10 @@ type Props = {
   language_en: string;
   onClick?: () => void;
   disable_link?: boolean;
+  className?: string;
 }
 
-export const StationLanguageTag: FC<Props> = memo(({ language_en, onClick, disable_link }) => {
+export const StationLanguageTag: FC<Props> = memo(({ language_en, onClick, disable_link, className }) => {
 
   const station_language = useStore().session.get_language(language_en)
 
@@ -48,7 +50,7 @@ export const StationLanguageTag: FC<Props> = memo(({ language_en, onClick, disab
         'cursor-pointer': !tag_is_in_search && !disable_link,
         'opacity-70': tag_is_in_search && !disable_link,
       },
-        `select-none font-medium inline-block max-w-full overflow-hidden text-overflow-ellipsis white-space-nowrap text-primary`,
+        `select-none font-medium inline-block max-w-full overflow-hidden text-overflow-ellipsis white-space-nowrap text-primary ${tag_text_class} ${className ?? ''}`,
       )}
     >
       {station_language?.[language ?? 'en']}
