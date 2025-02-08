@@ -26,6 +26,18 @@ import { app_routes } from "@/constants/router"
 import { StationCountry, StationGenre } from "@/types"
 import { StationGenreTag } from "@/components/StationGenreTag"
 
+const multiselect_pt = {
+  panel: {
+    className: 'w-20rem max-w-full'
+  },
+  header: {
+    className: 'p-2'
+  },
+  item: {
+    className: 'p-2'
+  }
+}
+
 export const StationSearchPanelContent: FC = memo(() => {
 
   const search_stations_text = useStore().persistedApp.search_stations_text()
@@ -144,11 +156,7 @@ export const StationSearchPanelContent: FC = memo(() => {
           filter
           placeholder={translations.genre}
           className="w-20rem max-w-full relative"
-          pt={{
-            panel: {
-              className: 'w-20rem max-w-full'
-            }
-          }}
+          pt={multiselect_pt}
         />
 
       </div>
@@ -165,13 +173,7 @@ export const StationSearchPanelContent: FC = memo(() => {
           filter
           placeholder={translations.country}
           className="max-w-20rem w-full relative"
-          pt={{
-            panel: {
-              className: 'w-20rem max-w-full'
-            },
-          }}
-
-          
+          pt={multiselect_pt}
         />
 
         {/* Languages */}
@@ -184,11 +186,7 @@ export const StationSearchPanelContent: FC = memo(() => {
           filter
           placeholder={translations.language}
           className="w-20rem max-w-full relative"
-          pt={{
-            panel: {
-              className: 'w-20rem max-w-full'
-            }
-          }}
+          pt={multiselect_pt}
         />
 
       </div>
