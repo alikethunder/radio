@@ -135,18 +135,22 @@ export const StationInfoDialog: FC = memo(() => {
         </div>
       </div>
 
-      <p className={`m-0 select-none ${tag_text_class}`}>
-        {
-          desc_loading ?
-            <>
-              <Skeleton className="w-full mb-2" />
-              <Skeleton className="w-full mb-2" />
-              <Skeleton className="w-full mb-2" />
-            </>
-            :
-            description
-        }
-      </p>
+      {
+        desc_loading || description ?
+          <p className={`m-0 -ml-2 mr-1 select-none p-2 pr-3 border-round-md border-1 border-solid shadow-2 surface-border ${tag_text_class}`}>
+            {
+              desc_loading ?
+                <>
+                  <Skeleton className="w-full mb-2" />
+                  <Skeleton className="w-full mb-2" />
+                  <Skeleton className="w-full mb-2" />
+                </>
+                :
+                description
+            }
+          </p>
+          : <></>
+      }
     </Dialog>
   )
 })

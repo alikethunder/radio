@@ -32,6 +32,7 @@ import { Editor } from 'primereact/editor'
 import { Chips } from 'primereact/chips'
 
 import './index.sass'
+import { tag_text_class } from '@/constants/classes'
 
 import {
   actions,
@@ -66,6 +67,9 @@ import { setForm } from "@/functions/setForm"
 
 import {
   AddStationToFavorites,
+  StationCountryTag,
+  StationGenreTag,
+  StationLanguageTag,
   StationTag,
 } from '@/components'
 
@@ -349,6 +353,9 @@ export const Station = () => {
     'pause',
     'sitename',
     'add_to_favorites',
+    'tags',
+    'genre',
+    "language",
   ], true)
 
   const translations_skl = useTranslationsSkeleton({
@@ -433,123 +440,6 @@ export const Station = () => {
 
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-3 align-self-start max-w-full" ref={setForm}>
 
-          <Controller
-            name="name"
-            control={control}
-            rules={{
-              required: {
-                value: true,
-                message: translations_skl.error_radiostation_name_empty,
-              }
-            }}
-            render={({ field, fieldState }) => (
-              <>
-                <label
-                  htmlFor={field.name}
-                  className={classNames(
-                    {
-                      'p-error': errors[field.name]
-                    },
-                    'text-600',
-                    "select-none",
-                    'flex',
-                    'align-items-center'
-                  )}
-                >
-                  <small>{translations_skl.radiostation}</small>
-
-                  {
-                    edit_mode ?
-                      <Controller
-                        name="broadcasting"
-                        control={control}
-                        render={({ field: switch_field, }) => (
-                          <>
-                            <InputSwitch
-                              inputId={switch_field.name}
-                              checked={switch_field.value}
-                              inputRef={switch_field.ref}
-                              className="origin-center"
-                              onChange={switch_field.onChange}
-                              disabled={!external}
-                              pt={{
-                                root: {
-                                  style: {
-                                    transform: 'scale(0.6)'
-                                  },
-                                  className: classNames({
-
-                                  })
-                                }
-                              }}
-                            />
-
-                            <label htmlFor={switch_field.name} className="cursor-pointer ml-0">
-                              <Tag
-                                value={switch_field.value ? 'on' : 'off'}
-                                severity={switch_field.value ? 'success' : null}
-                                pt={{
-                                  root: {
-                                    className: classNames({
-                                      'surface-300': !switch_field.value
-                                    },
-                                      'py-05',
-                                      'shadow-2',
-                                    ),
-                                  },
-                                  value: {
-                                    style: {
-                                      lineHeight: 1.25,
-                                    }
-                                  }
-                                }}
-                              />
-                            </label>
-                          </>
-                        )}
-                      />
-                      : <></>
-                  }
-                </label>
-
-                <InputText
-                  id={field.name}
-                  value={field.value}
-                  className={classNames(
-                    {
-                      'p-invalid': fieldState.error,
-                    },
-                    'max-w-full',
-                    'align-self-start',
-                    'shadow-2',
-                    'w-20rem',
-                    'action_text_font',
-                    'text-xl',
-                  )}
-                  onChange={(e) => {
-                    field.onChange(e.target.value)
-                  }}
-                  onBlur={field.onBlur}
-                  disabled={!edit_mode}
-                  pt={{
-                    root: {
-                      onInput: (e) => {
-                        //@ts-ignore
-                        e.target.size = Math.min(Math.max(e.target.value.length - 7, 20), 70)
-                      }
-                    }
-                  }}
-                />
-
-                {
-                  edit_mode ?
-                    <small className="p-error">{errors[field.name]?.message ?? ' '}</small>
-                    : <></>
-                }
-              </>
-            )}
-          />
-
           <div className="flex flex-row gap-3">
 
             <div
@@ -570,7 +460,7 @@ export const Station = () => {
                 onLoad={(e) => {
                   set_image_loading(false)
                 }}
-                
+
                 loading="lazy"
               />
 
@@ -616,6 +506,130 @@ export const Station = () => {
 
             </div>
 
+            <div className="flex flex-column gap-2">
+              <Controller
+                name="name"
+                control={control}
+                rules={{
+                  required: {
+                    value: true,
+                    message: translations_skl.error_radiostation_name_empty,
+                  }
+                }}
+                render={({ field, fieldState }) => (
+                  edit_mode ?
+                    <>
+                      <label
+                        htmlFor={field.name}
+                        className={classNames(
+                          {
+                            'p-error': errors[field.name]
+                          },
+                          'text-600',
+                          "select-none",
+                          'flex',
+                          'align-items-center'
+                        )}
+                      >
+                        <small>{translations_skl.radiostation}</small>
+
+                        <Controller
+                          name="broadcasting"
+                          control={control}
+                          render={({ field: switch_field, }) => (
+                            <>
+                              <InputSwitch
+                                inputId={switch_field.name}
+                                checked={switch_field.value}
+                                inputRef={switch_field.ref}
+                                className="origin-center"
+                                onChange={switch_field.onChange}
+                                disabled={!external}
+                                pt={{
+                                  root: {
+                                    style: {
+                                      transform: 'scale(0.6)'
+                                    },
+                                    className: classNames({
+
+                                    })
+                                  }
+                                }}
+                              />
+
+                              <label htmlFor={switch_field.name} className="cursor-pointer ml-0">
+                                <Tag
+                                  value={switch_field.value ? 'on' : 'off'}
+                                  severity={switch_field.value ? 'success' : null}
+                                  pt={{
+                                    root: {
+                                      className: classNames({
+                                        'surface-300': !switch_field.value
+                                      },
+                                        'py-05',
+                                        'shadow-2',
+                                      ),
+                                    },
+                                    value: {
+                                      style: {
+                                        lineHeight: 1.25,
+                                      }
+                                    }
+                                  }}
+                                />
+                              </label>
+                            </>
+                          )}
+                        />
+                      </label>
+
+                      <InputText
+                        id={field.name}
+                        value={field.value}
+                        className={classNames(
+                          {
+                            'p-invalid': fieldState.error,
+                          },
+                          'max-w-full',
+                          'align-self-start',
+                          'shadow-2',
+                          'w-20rem',
+                          'action_text_font',
+                          'text-xl',
+                        )}
+                        onChange={(e) => {
+                          field.onChange(e.target.value)
+                        }}
+                        onBlur={field.onBlur}
+                        disabled={!edit_mode}
+                        pt={{
+                          root: {
+                            onInput: (e) => {
+                              //@ts-ignore
+                              e.target.size = Math.min(Math.max(e.target.value.length - 7, 20), 70)
+                            }
+                          }
+                        }}
+                      />
+
+                      <small className="p-error">{errors[field.name]?.message ?? ' '}</small>
+                    </>
+                    :
+                    <span className="font-bold text-base sm:text-xl select-none">
+                      {
+                        station?.name
+                      }
+                    </span>
+                )}
+              />
+
+              <StationCountryTag en={station?.country} />
+
+            </div>
+
+          </div>
+
+          <div className="flex flex-row gap-3">
             <Button
               className="shadow_on_hover p-0 flex-shrink-0 w-4rem md:w-5rem h-4rem md:h-5rem"
 
@@ -649,8 +663,40 @@ export const Station = () => {
               }}
             />
 
-            <div className="flex flex-column">
+            <div className="flex flex-column justify-content-between">
               <AddStationToFavorites station={station} />
+            </div>
+          </div>
+
+          <div className="flex flex-row gap-2">
+            <span className={`font-semibold select-none ${tag_text_class}`}>
+              {translations.language}:
+            </span>
+            <div className="flex flex-row flex-wrap gap-1">
+              {
+                station?.languages?.map((language, i, arr) =>
+                  <>
+                    <StationLanguageTag language_en={language} />
+                    {
+                      i < arr.length - 1 &&
+                      <span className="text-base">
+                        ,
+                      </span>
+                    }
+                  </>
+                )
+              }
+            </div>
+          </div>
+
+          <div className="flex flex-row gap-2">
+            <span className={`font-semibold select-none ${tag_text_class}`}>
+              {translations.genre}:
+            </span>
+            <div className="flex flex-row flex-wrap gap-1">
+              {
+                station?.genres?.map(genre => <StationGenreTag genre_en={genre} />)
+              }
             </div>
           </div>
 
@@ -708,10 +754,15 @@ export const Station = () => {
                   </>
                 )} />
               :
-              <div className="flex flex-row flex-wrap gap-2">
-                {
-                  station?.tags?.map(tag => <StationTag tag={tag} />)
-                }
+              <div className="flex flex-row gap-2">
+                <span className={`font-semibold select-none ${tag_text_class}`}>
+                  {translations.tags}:
+                </span>
+                <div className="flex flex-row flex-wrap gap-1">
+                  {
+                    station?.tags?.map(tag => <StationTag tag={tag} />)
+                  }
+                </div>
               </div>
           }
 
@@ -730,9 +781,10 @@ export const Station = () => {
                 className: classNames({},
                   'mt-2',
                   'shadow-2',
+                  'surface-border',
+                  tag_text_class,
                 ),
                 style: {
-                  maxHeight: '240px',
                   height: 'fit-content',
                   border: '1px solid #dfe7ef',
                   overflowY: 'auto',
