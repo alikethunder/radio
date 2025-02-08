@@ -12,6 +12,7 @@ import { StationTag } from "../StationTag"
 import { useTranslations } from "@/hooks"
 import { StationGenreTag } from "../StationGenreTag"
 import { StationLanguageTag } from "../StationLanguageTag"
+import { StationCountryTag } from "../StationCountryTag"
 
 export const StationInfoDialog: FC = memo(() => {
 
@@ -44,14 +45,7 @@ export const StationInfoDialog: FC = memo(() => {
             }
           </span>
 
-          <span className="inline text-base font-semibold">
-            <span className="text-xl line-height-1 mr-1">
-              {country?.flag}
-            </span>
-
-            {country?.[language ?? 'en']}
-          </span>
-
+          <StationCountryTag en={station?.country} />
 
         </div>
       </div>

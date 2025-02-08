@@ -72,4 +72,12 @@ export const persistedAppStore = createStore('app')(initial_state,
         set.search_selected_languages([...cur_languages, language])
       }
     },
+    toggle_country_search(country: StationCountry) {
+      const cur_countries = get.search_selected_countries()
+      if (cur_countries.find(g => g.en === country.en)) {
+        set.search_selected_countries(cur_countries.filter(g => g.en !== country.en))
+      } else {
+        set.search_selected_countries([...cur_countries, country])
+      }
+    },
   }))
