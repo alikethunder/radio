@@ -50,7 +50,7 @@ export const StationInfoDialog: FC = memo(() => {
           className="w-6rem h-6rem shadow-2 flex-shrink-0 border-round-xl"
         />
 
-        <div className="flex flex-column gap-2">
+        <div className="flex flex-column gap-2 select-none">
 
           <span className="font-bold text-base sm:text-xl">
             {
@@ -93,7 +93,7 @@ export const StationInfoDialog: FC = memo(() => {
     >
 
       <div className="flex flex-row gap-2">
-        <span className={`font-semibold ${tag_text_class}`}>
+        <span className={`font-semibold select-none ${tag_text_class}`}>
           {translations.language}:
         </span>
         <div className="flex flex-row flex-wrap gap-1">
@@ -114,7 +114,7 @@ export const StationInfoDialog: FC = memo(() => {
       </div>
 
       <div className="flex flex-row gap-2">
-        <span className={`font-semibold ${tag_text_class}`}>
+        <span className={`font-semibold select-none ${tag_text_class}`}>
           {translations.genre}:
         </span>
         <div className="flex flex-row flex-wrap gap-1">
@@ -125,7 +125,7 @@ export const StationInfoDialog: FC = memo(() => {
       </div>
 
       <div className="flex flex-row gap-2">
-        <span className={`font-semibold ${tag_text_class}`}>
+        <span className={`font-semibold select-none ${tag_text_class}`}>
           {translations.tags}:
         </span>
         <div className="flex flex-row flex-wrap gap-1">
@@ -135,7 +135,7 @@ export const StationInfoDialog: FC = memo(() => {
         </div>
       </div>
 
-      <p className={`m-0 ${tag_text_class}`}>
+      <p className={`m-0 select-none ${tag_text_class}`}>
         {
           desc_loading ?
             <>
