@@ -630,7 +630,7 @@ export const Station = () => {
 
           </div>
 
-          <div className="flex flex-row gap-3">
+          <div className="flex flex-row gap-3 align-items-center">
             <Button
               className="shadow_on_hover p-0 flex-shrink-0 w-4rem md:w-5rem h-4rem md:h-5rem"
 
@@ -664,7 +664,7 @@ export const Station = () => {
               }}
             />
 
-            <div className="flex flex-column justify-content-between">
+            <div className="flex flex-column justify-content-between gap-2">
               <AddStationToFavorites station={station} />
 
               <StationShareButton station={station} />

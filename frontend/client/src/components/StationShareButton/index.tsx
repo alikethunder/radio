@@ -2,14 +2,9 @@ import { FC, memo, useCallback, useState, } from "react"
 
 import { Button } from 'primereact/button'
 
-import {
-  store,
-} from "@/store"
-
 import { useTooltip, useTranslations } from "@/hooks"
 import { Station } from "@/types"
 import { FaRegShareFromSquare } from "react-icons/fa6"
-import { get_station_description } from "@/API/station/get_station_description"
 
 type Props = {
   station: Station;
@@ -28,13 +23,8 @@ export const StationShareButton: FC<Props> = memo(({ station, className, ...rest
     if (station) {
       set_loading(true)
 
-      const language = store.translations.language() ?? 'en'
-
-      const text = await get_station_description(station.id, language)
-
       const shareData = {
         title: station.name,
-        text,
         url: `https://radio.best/station/${station.id}`,
       }
 
