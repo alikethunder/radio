@@ -71,6 +71,7 @@ import {
   StationGenreTag,
   StationLanguageTag,
   StationTag,
+  StationShareButton,
 } from '@/components'
 
 import { random_station_tag_color } from "@/functions/random_station_tag_color"
@@ -665,6 +666,8 @@ export const Station = () => {
 
             <div className="flex flex-column justify-content-between">
               <AddStationToFavorites station={station} />
+
+              <StationShareButton station={station} />
             </div>
           </div>
 

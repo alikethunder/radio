@@ -5,14 +5,13 @@ import {
   QueryLink,
   StationAvatar,
   StationInfoButton,
+  StationShareButton,
   StationTag,
 } from '@/components'
 
 import {
   app_routes,
 } from '@/constants/router'
-
-import { FaRegShareFromSquare } from "react-icons/fa6"
 
 import {
   actions,
@@ -29,8 +28,7 @@ import { Station } from "@/types"
 import { Ripple } from "primereact/ripple"
 
 import './index.sass'
-import { Button } from "primereact/button"
-import { useTooltip, useTranslations } from "@/hooks"
+import { useTranslations } from "@/hooks"
 
 type Props = {
   station: Station;
@@ -59,10 +57,8 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
 
   const [translations] = useTranslations([
     'open_search_stations_panel',
-    'share',
   ], true)
 
-  const share_tooltip = useTooltip(translations.share)
 
   return (
     station ?
@@ -140,30 +136,10 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
             </div>
 
             <div className="flex flex-row justify-content-around align-items-center pb-1">
-              {/* {
-                station.tags.map(tag => <StationTag tag={tag} key={tag} />)
-              } */}
-
-              {/* {
-                station.genres?.map(genre => <StationGenreTag genre_en={genre} key={genre} />)
-              } */}
 
               <AddStationToFavorites station={station} />
 
-              <Button
-                rounded
-                outlined
-                raised
-                className={`p-0 w-2rem h-2rem shadow_on_hover align-self-center flex flex-shrink-0 justify-content-center align-items-center opacity-0`}
-                severity={`info`}
-
-                //onClick={click_search}
-                disabled
-                {...share_tooltip}
-
-              >
-                <FaRegShareFromSquare />
-              </Button>
+              <StationShareButton station={station} />
 
               <StationInfoButton station={station} />
 

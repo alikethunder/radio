@@ -25,6 +25,7 @@ import {
   AddStationToFavorites,
   StationAvatar,
   StationInfoButton,
+  StationShareButton,
 } from '@/components'
 
 import { Slider } from "primereact/slider"
@@ -193,11 +194,12 @@ export const Player: FC = memo(() => {
         }
 
         <div className="buttons flex flex-row gap-2">
-          {/* <span className="text-gray-500 favorited">125</span> */}
           {
             current_station ?
               <>
                 <AddStationToFavorites station={current_station} />
+
+                <StationShareButton station={current_station} />
 
                 <StationInfoButton station={current_station} />
               </>

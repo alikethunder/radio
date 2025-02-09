@@ -6,16 +6,22 @@ import {
 } from "@/store"
 
 import { Dialog } from "primereact/dialog"
-import { StationAvatar } from "../StationAvatar"
-import { StationTag } from "../StationTag"
+import {
+  StationAvatar,
+  StationTag,
+  StationGenreTag,
+  StationLanguageTag,
+  StationCountryTag,
+  AddStationToFavorites,
+  StationShareButton,
+} from "@/components"
+
 import { useTranslations } from "@/hooks"
-import { StationGenreTag } from "../StationGenreTag"
-import { StationLanguageTag } from "../StationLanguageTag"
-import { StationCountryTag } from "../StationCountryTag"
 import { useAsyncMemo } from "use-async-memo"
 import { Skeleton } from "primereact/skeleton"
 
 import { tag_text_class } from '@/constants/classes'
+import { get_station_description } from "@/API/station/get_station_description"
 
 export const StationInfoDialog: FC = memo(() => {
 
@@ -28,8 +34,7 @@ export const StationInfoDialog: FC = memo(() => {
   const description = useAsyncMemo(async () => {
     if (station?.id && language) {
       set_desc_loading(true)
-      const res = await fetch(`/api/v1/radio/description/${station.id}/${language}`)
-      const text = await res.text()
+      const text = await get_station_description(station.id, language)
       set_desc_loading(false)
       return text
     }
@@ -92,6 +97,19 @@ export const StationInfoDialog: FC = memo(() => {
       }}
     >
 
+      <div className="buttons flex flex-row gap-2">
+        {
+          station ?
+            <>
+              <AddStationToFavorites station={station} />
+
+              <StationShareButton station={station} />
+
+            </>
+            : <></>
+        }
+      </div>
+
       <div className="flex flex-row gap-2">
         <span className={`font-semibold select-none ${tag_text_class}`}>
           {translations.language}:
@@ -117,7 +135,7 @@ export const StationInfoDialog: FC = memo(() => {
         <span className={`font-semibold select-none ${tag_text_class}`}>
           {translations.genre}:
         </span>
-        <div className="flex flex-row flex-wrap gap-1">
+        <div className="flex flex-row flex-wrap gap-1 overflow-hidden">
           {
             station?.genres?.map(genre => <StationGenreTag genre_en={genre} />)
           }
