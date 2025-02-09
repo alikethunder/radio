@@ -1,10 +1,10 @@
-import { FC, memo, useCallback, useEffect, useState, } from "react"
+import { FC, memo, } from "react"
 
 import {
   AddStationToFavorites,
   QueryLink,
   StationAvatar,
-  StationGenreTag,
+  StationInfoButton,
   StationTag,
 } from '@/components'
 
@@ -13,7 +13,6 @@ import {
 } from '@/constants/router'
 
 import { FaRegShareFromSquare } from "react-icons/fa6"
-import { RiInfoCardLine } from "react-icons/ri"
 
 import {
   actions,
@@ -61,16 +60,9 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
   const [translations] = useTranslations([
     'open_search_stations_panel',
     'share',
-    'about_station',
   ], true)
 
   const share_tooltip = useTooltip(translations.share)
-
-  const about_station_tooltip = useTooltip(translations.about_station)
-
-  const open_station_info = useCallback(() => {
-    actions.app.station_info_dialog(station)
-  }, [station.id])
 
   return (
     station ?
@@ -142,7 +134,7 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
 
             <div className="flex flex-column justify-content-center flex-grow-1">
 
-              <QueryLink to={generatePath(app_routes["station$id"], { id: station.id })} className="font-bold text-primary text-center station_name mb-1  text_hidden_overflow line-clamp-3 action_text_font text-lg">
+              <QueryLink to={generatePath(app_routes["station$id"], { id: station.id })} className="font-bold text-primary text-center station_name mb-1  text_hidden_overflow line-clamp-3 action_text_font text-xl">
                 {station.name}
               </QueryLink>
             </div>
@@ -173,19 +165,7 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
                 <FaRegShareFromSquare />
               </Button>
 
-              <Button
-                rounded
-                outlined
-                raised
-                className={`p-0 w-2rem h-2rem shadow_on_hover align-self-center flex flex-shrink-0 justify-content-center align-items-center text-600`}
-                severity={`info`}
-
-                onClick={open_station_info}
-
-                {...about_station_tooltip}
-              >
-                <RiInfoCardLine />
-              </Button>
+              <StationInfoButton station={station} />
 
             </div>
           </div>

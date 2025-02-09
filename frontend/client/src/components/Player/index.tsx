@@ -24,6 +24,7 @@ import {
   QueryLink,
   AddStationToFavorites,
   StationAvatar,
+  StationInfoButton,
 } from '@/components'
 
 import { Slider } from "primereact/slider"
@@ -131,7 +132,7 @@ export const Player: FC = memo(() => {
   }, [])
 
   return (
-    <div id="player" className={`flex flex-row flex-shrink-0 shadow-3 h-9rem justify-content-center surface-card p-2 sm:p-2 gap-3 mt-auto ${current_station ? 'opened' : ''}`}>
+    <div id="player" className={`flex flex-row flex-shrink-0 shadow-3 h-9rem surface-card p-2 md:pl-6 gap-3 mt-auto ${current_station ? 'opened' : ''}`}>
 
       <audio
         src=""
@@ -141,27 +142,12 @@ export const Player: FC = memo(() => {
         ref={set_audio_ref}
       />
 
-      <div className="flex flex-row flex-wrap-reverse gap-2 align-items-end justify-content-center">
-
-        <div className="flex flex-column social_info">
-          <div className="flex gap-1 flex-column">
-            {/* <span className="text-gray-500 favorited">125</span> */}
-            {
-              current_station ?
-                <AddStationToFavorites station={current_station} />
-                : <></>
-            }
-          </div>
-        </div>
+      <div className="flex flex-column gap-2 align-items-center">
 
         <StationAvatar
           id={current_station?.id}
-          className="w-4rem h-4rem sm:w-6rem sm:h-6rem shadow-2 flex-shrink-0 border-round-xl"
+          className="w-4rem h-4rem shadow-2 flex-shrink-0 border-round-xl"
         />
-
-      </div>
-
-      <div className="flex flex-column justify-content-between -ml-2 sm:ml-0">
 
         <Button
           className={`shadow_on_hover active_element p-0 flex-shrink-0 hover:text-primary hover:border-primary player_play_button justify-content-center ${playing ? '' : 'paused'}`}
@@ -193,97 +179,87 @@ export const Player: FC = memo(() => {
           }
         </Button>
 
-        <div className="flex flex-column justify-content-between align-items-center text-gray-500 gap-1">
-
-          {volume}
-
-          {/* volume icon */}
-          <Button
-            icon={`pi pi-${volume ? 'volume-up' : 'volume-off text-sm mr-1'}`}
-            rounded
-            outlined
-            raised
-            aria-label={volume ? translations.mute : translations.unmute}
-            className={`p-0 w-2rem h-2rem shadow_on_hover ${volume ? '' : 'pr-1'}`}
-            severity={`warning`}
-
-            onClick={click_volume_icon}
-          />
-        </div>
-
       </div>
 
-      <Slider
-        value={volume}
+      <div className="flex flex-column flex-grow-1 max-w-20rem justify-content-between">
 
-        aria-label={translations.volume}
+        {/* current station name */}
+        {
+          current_station ?
+            <QueryLink to={generatePath(app_routes["station$id"], { id: current_station?.id })} className="font-bold text-primary text_hidden_overflow line-clamp-2 h-3rem text-lg">
+              {current_station?.name}
+            </QueryLink>
+            : <></>
+        }
 
-        onChange={(e) => {
-          actions.player.volume(e.value as NumRange<101>)
-        }}
-        orientation="vertical"
-        className="h-5rem align-self-center mx-1"
-        pt={{
-          range: {
-            className: classNames({},
-              'bg-secondary',
-              'shadow_glow',
-            ),
-            style: {
-              color: 'var(--secondary-color)',
-            }
-          },
-          handle: {
-            className: classNames({},
-              'hover:bg-cyan-500',
-              'border-secondary',
-              'text-cyan-500',
-              'shadow_on_hover',
-            ),
-          }
-        }}
-      />
-
-      <div className="flex flex-column w-15rem justify-content-between">
-
-        <div className="player_station">
-          {/* current station name */}
+        <div className="buttons flex flex-row gap-2">
+          {/* <span className="text-gray-500 favorited">125</span> */}
           {
             current_station ?
-              <QueryLink to={generatePath(app_routes["station$id"], { id: current_station?.id })} className="radio_card_header align-self-center font-bold text-primary text_hidden_overflow line-clamp-2 text-center">
-                {current_station?.name}
-              </QueryLink>
+              <>
+                <AddStationToFavorites station={current_station} />
+
+                <StationInfoButton station={current_station} />
+              </>
               : <></>
           }
-          {/*  likes*/}
-
-          {/* listeners */}
         </div>
 
-        <div className="player_track">
-          {/* current artist - track name */}
 
-          {/* likes */}
+        <div className="volume_controls flex flex-row gap-3">
 
-          {/* downloads  if downloadable */}
+          <Slider
+            value={volume}
+
+            aria-label={translations.volume}
+
+            onChange={(e) => {
+              actions.player.volume(e.value as NumRange<101>)
+            }}
+            className="w-8rem align-self-center mx-1"
+            orientation="horizontal"
+            pt={{
+              range: {
+                className: classNames({},
+                  'bg-secondary',
+                  'shadow_glow',
+                ),
+                style: {
+                  color: 'var(--secondary-color)',
+                }
+              },
+              handle: {
+                className: classNames({},
+                  'hover:bg-cyan-500',
+                  'border-secondary',
+                  'text-cyan-500',
+                  'shadow_on_hover',
+                ),
+              }
+            }}
+          />
+
+          <div className="flex flex-row align-items-center text-gray-500 gap-1">
+
+            <span className="w-2rem">
+              {volume}
+            </span>
+
+            {/* volume icon */}
+            <Button
+              icon={`pi pi-${volume ? 'volume-up' : 'volume-off text-sm mr-1'}`}
+              rounded
+              outlined
+              raised
+              aria-label={volume ? translations.mute : translations.unmute}
+              className={`p-0 w-2rem h-2rem shadow_on_hover ${volume ? '' : 'pr-1'}`}
+              severity={`warning`}
+
+              onClick={click_volume_icon}
+            />
+          </div>
         </div>
 
-        <div className="station_tags_container text_hidden_overflow line-clamp-2 max-w-15rem text-center">
-          {/* current station tags (clickable, opens the main page with search with clicked tag)  */}
-          {
-            current_station?.tags?.map(tag => <StationTag tag={tag} key={tag} />)
-          }
-
-        </div>
-
-      </div>
-
-      <div className="flex flex-column">
-        {/* history button */}
-
-        {/* random station */}
-
-        {/* random with similar tag */}
       </div>
 
     </div>
