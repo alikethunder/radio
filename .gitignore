@@ -5,6 +5,7 @@ served/static/sitemaps
 certs
 served/static/favicon.ico.fiber.gz
 served/static/robots.txt.fiber.gz
+served/static/*.fiber.gz
 
 # Logs
 logs

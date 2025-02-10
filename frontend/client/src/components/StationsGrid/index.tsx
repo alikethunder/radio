@@ -12,7 +12,7 @@ import { Size } from '@/types/size'
 
 import { useDebounceCallback, useMediaQuery, useResizeObserver } from "usehooks-ts"
 import { Station } from "@/types"
-import { useLog, useStationsSearch, useTranslations } from "@/hooks"
+import { useLog, useMobile, useStationsSearch, useTranslations } from "@/hooks"
 
 type Props = {
   stations: Station[];
@@ -53,7 +53,7 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
     onResize,
   })
 
-  const mobile = useMediaQuery('(max-width: 768px)')
+  const mobile = useMobile()
 
   //padding y
   const py = useMemo(() => mobile ? 16 : 32, [mobile])
@@ -127,6 +127,6 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
   )
 }, (o, n) => {
   return o.stations.length === n.stations.length
-  && o.place === n.place
-  && o.loading === n.loading
+    && o.place === n.place
+    && o.loading === n.loading
 })

@@ -32,7 +32,7 @@ import { Slider } from "primereact/slider"
 
 import { classNames } from "primereact/utils"
 import { NumRange } from "@/types/generics/range"
-import { useTranslations, useTranslationsSkeleton } from "@/hooks"
+import { useMobile, useTranslations, useTranslationsSkeleton } from "@/hooks"
 import { useDebounceCallback } from "usehooks-ts"
 
 import './index.sass'
@@ -42,6 +42,8 @@ export const Player: FC = memo(() => {
   const [audio_ref, set_audio_ref] = useState<HTMLAudioElement | null>(null)
 
   const playing = useStore().player.playing()
+
+  const mobile = useMobile()
 
   const volume = useStore().player.volume()
 
@@ -132,6 +134,22 @@ export const Player: FC = memo(() => {
     }
   }, [])
 
+  useEffect(() => {
+    if (!mobile) {
+      window.yaContextCb.push(() => {
+        window.Ya.Context.AdvManager.render({
+          "blockId": "R-A-14083703-1",
+          "renderTo": "yandex_rtb_R-A-14083703-1",
+          "async": true,
+          darkTheme: theme === 'dark',
+        })
+      })
+    }
+  }, [
+    theme,
+    mobile,
+  ])
+
   return (
     <div id="player" className={`flex flex-row flex-shrink-0 shadow-3 h-9rem surface-card p-2 md:pl-6 gap-3 mt-auto ${current_station ? 'opened' : ''}`}>
 
@@ -143,7 +161,7 @@ export const Player: FC = memo(() => {
         ref={set_audio_ref}
       />
 
-      <div className="flex flex-column gap-2 align-items-center">
+      <div className="flex flex-column gap-2 align-items-center flex-shrink-0">
 
         <StationAvatar
           id={current_station?.id}
@@ -182,7 +200,7 @@ export const Player: FC = memo(() => {
 
       </div>
 
-      <div className="flex flex-column flex-grow-1 max-w-20rem justify-content-between">
+      <div className="flex flex-column flex-shrink-0 flex-grow-1 max-w-20rem justify-content-between">
 
         {/* current station name */}
         {
@@ -263,6 +281,8 @@ export const Player: FC = memo(() => {
         </div>
 
       </div>
+
+      <div id="yandex_rtb_R-A-14083703-1" className="flex-grow-1"></div>
 
     </div>
   )
