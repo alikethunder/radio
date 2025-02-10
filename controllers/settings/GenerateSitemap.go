@@ -31,7 +31,7 @@ func GenerateSitemap(ctx *fiber.Ctx) error {
 		sm := smi.NewSitemap()
 		sm.SetName("radiobest")
 		sm.SetLastMod(&now)
-		sm.SetMaxURLsCount(10000)
+		sm.SetMaxURLsCount(5000)
 
 		languages := translations.Languages()
 

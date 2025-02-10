@@ -16,7 +16,7 @@ require (
 )
 
 require (
-	github.com/alikethunder/sitemap-generator v1.3.1 // indirect
+	github.com/alikethunder/sitemap-generator v1.3.2
 	github.com/andybalholm/brotli v1.1.0 // indirect
 	github.com/fasthttp/websocket v1.5.8 // indirect
 	github.com/gofiber/template v1.8.3 // indirect
