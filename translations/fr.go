@@ -97,4 +97,6 @@ var Fr = map[string]string{
 	"share":                                         "partager",
 	"about_station":                                 "à propos de la station",
 	"remove_from_favorites":                         "retirer des favoris",
+	"minimize_player":                               "minimiser le lecteur",
+	"maximize_player":                               "maximiser le lecteur",
 }

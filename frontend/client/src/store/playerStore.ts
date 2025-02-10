@@ -6,18 +6,20 @@ import {
 
 import { Station } from '@/types'
 
-const initialState = {
-  volume: 100,
-  prev_volume: 100,
-  current_station: null,
-  playing: false,
-}
-
 type Player = {
   volume: NumRange<101>,
   prev_volume: NumRange<101>,
   current_station: Station | null,
   playing: boolean,
+  minimized: boolean,
+}
+
+const initialState = {
+  volume: 100,
+  prev_volume: 100,
+  current_station: null,
+  playing: false,
+  minimized: false,
 }
 
 export const playerStore = createStore('app')(initialState as Player,
@@ -41,4 +43,7 @@ export const playerStore = createStore('app')(initialState as Player,
       const playing = get.playing()
       set.playing(!playing)
     },
+    toggle_player_size() {
+      set.minimized(!get.minimized())
+    }
   }))

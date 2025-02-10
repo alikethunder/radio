@@ -96,4 +96,6 @@ var Ru = map[string]string{
 	"share":                                         "поделиться",
 	"about_station":                                 "о станции",
 	"remove_from_favorites":                         "Убрать из избранного",
+	"minimize_player":                               "свернуть плеер",
+	"maximize_player":                               "развернуть плеер",
 }

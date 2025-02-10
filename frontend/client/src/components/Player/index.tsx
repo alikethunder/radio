@@ -20,7 +20,6 @@ import {
 } from '@/constants/router'
 
 import {
-  StationTag,
   QueryLink,
   AddStationToFavorites,
   StationAvatar,
@@ -32,7 +31,7 @@ import { Slider } from "primereact/slider"
 
 import { classNames } from "primereact/utils"
 import { NumRange } from "@/types/generics/range"
-import { useMobile, useTranslations, useTranslationsSkeleton } from "@/hooks"
+import { useMobile, useTooltip, useTranslations, useTranslationsSkeleton } from "@/hooks"
 import { useDebounceCallback } from "usehooks-ts"
 
 import './index.sass'
@@ -99,6 +98,8 @@ export const Player: FC = memo(() => {
     'volume',
     'play',
     'pause',
+    'minimize_player',
+    'maximize_player',
   ], true)
 
   const switch_playing = useDebounceCallback(() => actions.player.switch_playing(), 50)
@@ -150,8 +151,16 @@ export const Player: FC = memo(() => {
     mobile,
   ])
 
+  const minimized = useStore().player.minimized()
+
+  const tooltip = useTooltip(minimized ? translations.maximize_player : translations.minimize_player)
+
+  const toggle_player = useCallback(useDebounceCallback(() => {
+    actions.player.toggle_player_size()
+  }, 50), [])
+
   return (
-    <div id="player" className={`flex flex-row flex-shrink-0 shadow-3 h-9rem surface-card p-2 md:pl-6 gap-3 mt-auto ${current_station ? 'opened' : ''}`}>
+    <div id="player" className={`flex flex-row flex-shrink-0 shadow-3 h-9rem surface-card p-2 md:pl-6 gap-2 md:gap-3 mt-auto ${current_station ? 'opened' : ''}`}>
 
       <audio
         src=""
@@ -161,7 +170,36 @@ export const Player: FC = memo(() => {
         ref={set_audio_ref}
       />
 
-      <div className="flex flex-column gap-2 align-items-center flex-shrink-0">
+      <div className="flex flex-column justify-content-between pb-2">
+
+        <Button
+          icon={`pi pi-angle-${minimized ? 'up' : 'down'}`}
+          rounded
+          outlined
+          raised
+          className={`p-0 w-2rem h-2rem shadow_on_hover align-self-center flex flex-shrink-0 justify-content-center align-items-center text-600`}
+          severity={`help`}
+
+          onClick={toggle_player}
+
+          {...tooltip}
+        />
+
+        {
+          current_station ?
+            <>
+
+              <StationShareButton station={current_station} />
+
+              <AddStationToFavorites station={current_station} />
+
+            </>
+            : <></>
+        }
+
+      </div>
+
+      <div className="flex flex-column gap-2 align-items-center flex-shrink-0 mr-2 md:mr-0">
 
         <StationAvatar
           id={current_station?.id}
@@ -215,10 +253,6 @@ export const Player: FC = memo(() => {
           {
             current_station ?
               <>
-                <AddStationToFavorites station={current_station} />
-
-                <StationShareButton station={current_station} />
-
                 <StationInfoButton station={current_station} />
               </>
               : <></>

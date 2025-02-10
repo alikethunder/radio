@@ -97,4 +97,6 @@ var En = map[string]string{
 	"share":                                         "share",
 	"about_station":                                 "about the station",
 	"remove_from_favorites":                         "remove from favorites",
+	"minimize_player":                               "minimize player",
+	"maximize_player":                               "maximize player",
 }

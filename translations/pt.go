@@ -97,4 +97,6 @@ var Pt = map[string]string{
 	"share":                                         "compartilhar",
 	"about_station":                                 "sobre a estação",
 	"remove_from_favorites":                         "remover dos favoritos",
+	"minimize_player":                               "minimizar player",
+	"maximize_player":                               "maximizar player",
 }

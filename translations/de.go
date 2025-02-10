@@ -97,4 +97,6 @@ var De = map[string]string{
 	"share":                                         "teilen",
 	"about_station":                                 "über die Station",
 	"remove_from_favorites":                         "aus Favoriten entfernen",
+	"minimize_player":                               "Player minimieren",
+	"maximize_player":                               "Player maximieren",
 }

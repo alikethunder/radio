@@ -98,4 +98,6 @@ var Sp = map[string]string{
 	"share":                                         "compartir",
 	"about_station":                                 "sobre la estación",
 	"remove_from_favorites":                         "eliminar de favoritos",
+	"minimize_player":                               "minimizar reproductor",
+	"maximize_player":                               "maximizar reproductor",
 }
