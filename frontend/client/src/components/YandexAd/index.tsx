@@ -8,11 +8,12 @@ type Props = {
   id: string;
   className?: string;
   interval?: number;
+  onlyDesktop?: boolean;
 }
 
 import { useMobile, } from "@/hooks"
 
-export const YandexAd: FC<Props> = memo(({ className, id, interval, ...rest }) => {
+export const YandexAd: FC<Props> = memo(({ onlyDesktop, className, id, interval, ...rest }) => {
 
   const mobile = useMobile()
 
@@ -29,7 +30,7 @@ export const YandexAd: FC<Props> = memo(({ className, id, interval, ...rest }) =
   }, [])
 
   useEffect(() => {
-    if (!mobile) {
+    if (onlyDesktop ? !mobile : true) {
       window.yaContextCb.push(() => {
         window.Ya.Context.AdvManager.render({
           "blockId": id,
@@ -42,12 +43,15 @@ export const YandexAd: FC<Props> = memo(({ className, id, interval, ...rest }) =
           },
         })
       })
+    } else {
+      set_hide(true)
     }
   }, [
     theme,
     mobile,
     id,
     counter,
+    onlyDesktop,
   ])
 
   return (
