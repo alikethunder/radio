@@ -19,7 +19,7 @@ export const YandexAd: FC<Props> = memo(({ onlyDesktop, className, id, interval,
 
   const theme = useStore().persistedApp.theme()
 
-  const [counter, set_counter] = useState(0)
+  const [counter, set_counter] = useState(1)
 
   const [hide, set_hide] = useState(false)
 
@@ -34,7 +34,7 @@ export const YandexAd: FC<Props> = memo(({ onlyDesktop, className, id, interval,
       window.yaContextCb.push(() => {
         window.Ya.Context.AdvManager.render({
           "blockId": id,
-          "renderTo": `yandex_rtb_${id}`,
+          "renderTo": `yandex_rtb_${id}-${counter}`,
           "async": true,
           darkTheme: theme === 'dark',
           onError: (data: any) => {
@@ -56,6 +56,6 @@ export const YandexAd: FC<Props> = memo(({ onlyDesktop, className, id, interval,
 
   return (
     hide ? <></> :
-      <div id={`yandex_rtb_${id}`} className={`${className ?? ''} `}></div>
+      <div id={`yandex_rtb_${id}-${counter}`} className={`${className ?? ''} `}></div>
   )
 })
