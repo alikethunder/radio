@@ -29,7 +29,7 @@ export const YandexAd: FC<Props> = memo(({ hideOpacity, onlyDesktop, className, 
   useEffect(() => {
     setInterval(() => {
       set_counter(counter => counter + 1)
-    }, interval ?? 20000)
+    }, interval ?? 30000)
   }, [])
 
   useEffect(() => {

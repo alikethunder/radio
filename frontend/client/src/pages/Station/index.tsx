@@ -674,7 +674,6 @@ export const Station = () => {
                 <StationShareButton station={station} />
               </div>
 
-              <YandexAd id="R-A-14083703-4" className="flex-grow-1 align-self-stretch" hideOpacity />
             </div>
 
             <div className="flex flex-row gap-2">
@@ -971,7 +970,7 @@ export const Station = () => {
 
           </form>
 
-          <YandexAd id="R-A-14083703-5" className="flex-grow-1 align-self-stretch" onlyDesktop hideOpacity />
+          <YandexAd id="R-A-14083703-4" className="flex-grow-1 align-self-stretch" onlyDesktop hideOpacity interval={60} />
         </div>
 
         {
