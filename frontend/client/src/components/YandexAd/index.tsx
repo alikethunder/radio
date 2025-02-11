@@ -10,11 +10,12 @@ type Props = {
   interval?: number;  //interval in ms to change ads
   onlyDesktop?: boolean; //ad will be shown only on desktop
   hideOpacity?: boolean; // hide container with opacity 0
+  style?: React.CSSProperties;
 }
 
 import { useMobile, } from "@/hooks"
 
-export const YandexAd: FC<Props> = memo(({ hideOpacity, onlyDesktop, className, id, interval, ...rest }) => {
+export const YandexAd: FC<Props> = memo(({ hideOpacity, onlyDesktop, className, id, interval, style, ...rest }) => {
 
   const mobile = useMobile()
 
@@ -29,7 +30,7 @@ export const YandexAd: FC<Props> = memo(({ hideOpacity, onlyDesktop, className, 
   useEffect(() => {
     setInterval(() => {
       set_counter(counter => counter + 1)
-    }, interval ?? 30000)
+    }, interval ?? 35000)
   }, [])
 
   useEffect(() => {
@@ -73,7 +74,7 @@ export const YandexAd: FC<Props> = memo(({ hideOpacity, onlyDesktop, className, 
   ])
 
   return (
-    <div className={`flex align-items-stretch ${className ?? ''} ${hide ? (hideOpacity ? 'opacity-0' : 'max-h-0 overflow-hidden') : ''}`} ref={container}>
+    <div className={`flex align-items-stretch ${className ?? ''} ${hide ? (hideOpacity ? 'opacity-0' : 'max-h-0 overflow-hidden') : ''}`} ref={container} {...style ? {style} : {}}>
       <div id={`yandex_rtb_${id}-1`} className={`w-full h-full ${className ?? ''}`} />
     </div>
   )
