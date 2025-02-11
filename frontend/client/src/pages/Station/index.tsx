@@ -72,6 +72,7 @@ import {
   StationLanguageTag,
   StationTag,
   StationShareButton,
+  YandexAd,
 } from '@/components'
 
 import { random_station_tag_color } from "@/functions/random_station_tag_color"
@@ -433,6 +434,8 @@ export const Station = () => {
           url: `${window.location.origin}${generatePath(app_routes["station$id"], { id: station?.id })}?language=${language}`,
         })}
       </script>
+
+      <YandexAd id="R-A-14083703-3" className="h-6rem md:h-8rem flex-shrink-0" />
 
       <div
         className=" w-full overflow-y-auto page station_page flex-grow-1 flex flex-column text-800 md:p-4 md:px-5 p-3"

@@ -20,19 +20,19 @@ import {
 } from '@/constants/router'
 
 import {
-  StationTag,
   QueryLink,
   AddStationToFavorites,
   StationAvatar,
   StationInfoButton,
   StationShareButton,
+  YandexAd,
 } from '@/components'
 
 import { Slider } from "primereact/slider"
 
 import { classNames } from "primereact/utils"
 import { NumRange } from "@/types/generics/range"
-import { useMobile, useTranslations, useTranslationsSkeleton } from "@/hooks"
+import { useTranslations, } from "@/hooks"
 import { useDebounceCallback } from "usehooks-ts"
 
 import './index.sass'
@@ -42,8 +42,6 @@ export const Player: FC = memo(() => {
   const [audio_ref, set_audio_ref] = useState<HTMLAudioElement | null>(null)
 
   const playing = useStore().player.playing()
-
-  const mobile = useMobile()
 
   const volume = useStore().player.volume()
 
@@ -133,22 +131,6 @@ export const Player: FC = memo(() => {
       window.removeEventListener('online', ononline)
     }
   }, [])
-
-  useEffect(() => {
-    if (!mobile) {
-      window.yaContextCb.push(() => {
-        window.Ya.Context.AdvManager.render({
-          "blockId": "R-A-14083703-1",
-          "renderTo": "yandex_rtb_R-A-14083703-1",
-          "async": true,
-          darkTheme: theme === 'dark',
-        })
-      })
-    }
-  }, [
-    theme,
-    mobile,
-  ])
 
   return (
     <div id="player" className={`flex flex-row flex-shrink-0 shadow-3 h-9rem surface-card p-2 md:pl-6 gap-3 mt-auto ${current_station ? 'opened' : ''}`}>
@@ -282,7 +264,7 @@ export const Player: FC = memo(() => {
 
       </div>
 
-      <div id="yandex_rtb_R-A-14083703-1" className="flex-grow-1"></div>
+      <YandexAd id="R-A-14083703-1" className="flex-grow-1" />
 
     </div>
   )
