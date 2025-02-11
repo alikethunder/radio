@@ -102,31 +102,33 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
   ])
 
   return (
-    <div className="w-full h-full overflow-y-auto page flex-grow-1 flex flex-column" ref={ref}>
+    <>
+      <YandexAd id="R-A-14083703-2" className="h-5rem flex-shrink-0" />
 
-      <YandexAd id="R-A-14083703-2" className="h-5rem" />
+      <div className="w-full h-full overflow-y-auto page flex-grow-1 flex flex-column" ref={ref}>
 
-      {
-        searched_stations?.length || loading ?
-          <Stations_grid
-            stations={searched_stations}
-            columns={columns}
-            rows={rows}
-            py={py}
-            px={px}
-            gapx={gapx}
-            mobile={mobile}
-            search_stations_text={search_stations_text}
-            card_size={card_size}
-            loading={loading}
-            place={place}
-          />
-          :
-          <div className="font-semibold text-2xl text-center">
-            {translations.no_stations_with_parameters}
-          </div>
-      }
-    </div >
+        {
+          searched_stations?.length || loading ?
+            <Stations_grid
+              stations={searched_stations}
+              columns={columns}
+              rows={rows}
+              py={py}
+              px={px}
+              gapx={gapx}
+              mobile={mobile}
+              search_stations_text={search_stations_text}
+              card_size={card_size}
+              loading={loading}
+              place={place}
+            />
+            :
+            <div className="font-semibold text-2xl text-center">
+              {translations.no_stations_with_parameters}
+            </div>
+        }
+      </div >
+    </>
   )
 }, (o, n) => {
   return o.stations.length === n.stations.length

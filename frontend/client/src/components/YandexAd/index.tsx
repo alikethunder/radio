@@ -38,7 +38,7 @@ export const YandexAd: FC<Props> = memo(({ className, id, interval, ...rest }) =
           darkTheme: theme === 'dark',
           onError: (data: any) => {
             console.log('[YandexAd] error: ', data)
-            //set_hide(true)
+            set_hide(true)
           },
         })
       })
