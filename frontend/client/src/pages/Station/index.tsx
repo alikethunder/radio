@@ -970,7 +970,7 @@ export const Station = () => {
 
           </form>
 
-          <YandexAd id="R-A-14083703-4" className="flex-grow-1 align-self-stretch" onlyDesktop hideOpacity interval={60} />
+          <YandexAd id="R-A-14083703-4" className="flex-grow-1 align-self-stretch" onlyDesktop hideOpacity interval={60000} />
         </div>
 
         {
