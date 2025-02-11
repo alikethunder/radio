@@ -133,6 +133,10 @@ export const Station = () => {
 
   const [station_avatar, set_station_avatar] = useState<string>(`/api/v1/files/stations/${station?.id}/avatar`)
 
+  useEffect(()=>{
+    set_station_avatar(`/api/v1/files/stations/${station?.id}/avatar`)
+  },[station?.id])
+
   const station_admin = useMemo(() => Boolean(
     signedin
     && current_user_id
