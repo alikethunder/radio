@@ -264,7 +264,7 @@ export const Player: FC = memo(() => {
 
       </div>
 
-      <YandexAd id="R-A-14083703-1" className="flex-grow-1" onlyDesktop hideOpacity />
+      <YandexAd id="R-A-14083703-1" className="flex-grow-1 align-self-stretch" onlyDesktop hideOpacity />
 
     </div>
   )
