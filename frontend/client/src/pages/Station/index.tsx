@@ -72,6 +72,7 @@ import {
   StationLanguageTag,
   StationTag,
   StationShareButton,
+  YandexAd,
 } from '@/components'
 
 import { random_station_tag_color } from "@/functions/random_station_tag_color"
@@ -131,6 +132,10 @@ export const Station = () => {
   const [image_loading, set_image_loading] = useState(true)
 
   const [station_avatar, set_station_avatar] = useState<string>(`/api/v1/files/stations/${station?.id}/avatar`)
+
+  useEffect(()=>{
+    set_station_avatar(`/api/v1/files/stations/${station?.id}/avatar`)
+  },[station?.id])
 
   const station_admin = useMemo(() => Boolean(
     signedin
@@ -434,92 +439,288 @@ export const Station = () => {
         })}
       </script>
 
+      <YandexAd id="R-A-14083703-3" className="h-6rem md:h-8rem flex-shrink-0" />
+
       <div
-        className=" w-full overflow-y-auto page station_page flex-grow-1 flex flex-column text-800 md:p-4 md:px-5 p-3"
+        className=" w-full overflow-y-auto page station_page flex-grow-1 flex flex-column text-800 md:p-4 md:pl-5 p-3 md:pr-0"
       >
         {/* background here? */}
 
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-3 align-self-start max-w-full" ref={setForm}>
+        <div className="flex flex-row gap-2 flex-grow-1">
+          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-3 align-self-start max-w-full flex-shrink-0" ref={setForm}>
 
-          <div className="flex flex-row gap-3">
+            <div className="flex flex-row gap-3">
 
-            <div
-              style={{ backgroundImage: `url(${avatar_data_url || station_avatar})` }}
+              <div
+                style={{ backgroundImage: `url(${avatar_data_url || station_avatar})` }}
 
-              className={`element_with_overlay shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-round-xl flex flex-shrink-0 align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode ? 'cursor-pointer' : ''}`}
-            >
-              <img
-                style={{ display: 'none' }}
-                src={station_avatar}
+                className={`element_with_overlay shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-round-xl flex flex-shrink-0 align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode ? 'cursor-pointer' : ''}`}
+              >
+                <img
+                  style={{ display: 'none' }}
+                  src={station_avatar}
 
-                onError={({ currentTarget }) => {
-                  currentTarget.onerror = null
-                  set_profile_photo_exists(false)
-                  set_station_avatar('/radio.png')
-                }}
+                  onError={({ currentTarget }) => {
+                    currentTarget.onerror = null
+                    set_profile_photo_exists(false)
+                    set_station_avatar('/radio.png')
+                  }}
 
-                onLoad={(e) => {
-                  set_image_loading(false)
-                }}
+                  onLoad={(e) => {
+                    set_image_loading(false)
+                  }}
 
-                loading="lazy"
-              />
+                  loading="lazy"
+                />
 
-              {
-                image_loading ?
-                  <i className="pi pi-spin pi-spinner text-400" style={{ fontSize: '2rem' }}></i>
-                  : <></>
-              }
+                {
+                  image_loading ?
+                    <i className="pi pi-spin pi-spinner text-400" style={{ fontSize: '2rem' }}></i>
+                    : <></>
+                }
 
-              {
-                edit_mode ?
-                  <>
+                {
+                  edit_mode ?
+                    <>
 
-                    <label htmlFor="fileElem" className="overlay absolute top-0 bottom-0 right-0 left-0 m-0 flex align-items-center justify-content-center text-center">
+                      <label htmlFor="fileElem" className="overlay absolute top-0 bottom-0 right-0 left-0 m-0 flex align-items-center justify-content-center text-center">
 
-                      <div className="overlay_background surface-900 absolute top-0 bottom-0 right-0 left-0"></div>
+                        <div className="overlay_background surface-900 absolute top-0 bottom-0 right-0 left-0"></div>
 
-                      <div className="overlay_text text-white font-semibold z-1">
-                        {translations_skl.choose_image}
-                      </div>
+                        <div className="overlay_text text-white font-semibold z-1">
+                          {translations_skl.choose_image}
+                        </div>
 
-                    </label>
+                      </label>
 
-                    <Ripple />
+                      <Ripple />
 
-                  </>
-                  : <></>
-              }
+                    </>
+                    : <></>
+                }
 
-              <input
-                type="file"
-                id="fileElem"
-                accept="image/*"
-                className="hidden"
-                onChange={async (e) => {
-                  if (e.target.files?.[0]) {
-                    const [blob, data_url] = await resize_image(e.target.files?.[0])
-                    set_avatar_blob(blob)
-                    set_avatar_data_url(data_url)
-                  }
-                }}
-              />
+                <input
+                  type="file"
+                  id="fileElem"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={async (e) => {
+                    if (e.target.files?.[0]) {
+                      const [blob, data_url] = await resize_image(e.target.files?.[0])
+                      set_avatar_blob(blob)
+                      set_avatar_data_url(data_url)
+                    }
+                  }}
+                />
+
+              </div>
+
+              <div className="flex flex-column gap-2">
+                <Controller
+                  name="name"
+                  control={control}
+                  rules={{
+                    required: {
+                      value: true,
+                      message: translations_skl.error_radiostation_name_empty,
+                    }
+                  }}
+                  render={({ field, fieldState }) => (
+                    edit_mode ?
+                      <>
+                        <label
+                          htmlFor={field.name}
+                          className={classNames(
+                            {
+                              'p-error': errors[field.name]
+                            },
+                            'text-600',
+                            "select-none",
+                            'flex',
+                            'align-items-center'
+                          )}
+                        >
+                          <small>{translations_skl.radiostation}</small>
+
+                          <Controller
+                            name="broadcasting"
+                            control={control}
+                            render={({ field: switch_field, }) => (
+                              <>
+                                <InputSwitch
+                                  inputId={switch_field.name}
+                                  checked={switch_field.value}
+                                  inputRef={switch_field.ref}
+                                  className="origin-center"
+                                  onChange={switch_field.onChange}
+                                  disabled={!external}
+                                  pt={{
+                                    root: {
+                                      style: {
+                                        transform: 'scale(0.6)'
+                                      },
+                                      className: classNames({
+
+                                      })
+                                    }
+                                  }}
+                                />
+
+                                <label htmlFor={switch_field.name} className="cursor-pointer ml-0">
+                                  <Tag
+                                    value={switch_field.value ? 'on' : 'off'}
+                                    severity={switch_field.value ? 'success' : null}
+                                    pt={{
+                                      root: {
+                                        className: classNames({
+                                          'surface-300': !switch_field.value
+                                        },
+                                          'py-05',
+                                          'shadow-2',
+                                        ),
+                                      },
+                                      value: {
+                                        style: {
+                                          lineHeight: 1.25,
+                                        }
+                                      }
+                                    }}
+                                  />
+                                </label>
+                              </>
+                            )}
+                          />
+                        </label>
+
+                        <InputText
+                          id={field.name}
+                          value={field.value}
+                          className={classNames(
+                            {
+                              'p-invalid': fieldState.error,
+                            },
+                            'max-w-full',
+                            'align-self-start',
+                            'shadow-2',
+                            'w-20rem',
+                            'action_text_font',
+                            'text-xl',
+                          )}
+                          onChange={(e) => {
+                            field.onChange(e.target.value)
+                          }}
+                          onBlur={field.onBlur}
+                          disabled={!edit_mode}
+                          pt={{
+                            root: {
+                              onInput: (e) => {
+                                //@ts-ignore
+                                e.target.size = Math.min(Math.max(e.target.value.length - 7, 20), 70)
+                              }
+                            }
+                          }}
+                        />
+
+                        <small className="p-error">{errors[field.name]?.message ?? ' '}</small>
+                      </>
+                      :
+                      <span className="font-bold text-base sm:text-xl select-none">
+                        {
+                          station?.name
+                        }
+                      </span>
+                  )}
+                />
+
+                <StationCountryTag en={station?.country} />
+
+              </div>
 
             </div>
 
-            <div className="flex flex-column gap-2">
-              <Controller
-                name="name"
-                control={control}
-                rules={{
-                  required: {
-                    value: true,
-                    message: translations_skl.error_radiostation_name_empty,
+            <div className="flex flex-row gap-3 align-items-center">
+              <Button
+                className="shadow_on_hover p-0 flex-shrink-0 w-4rem md:w-5rem h-4rem md:h-5rem"
+
+                rounded
+                outlined
+                raised
+                aria-label={`${playing && current_station?.id == station.id ? translations.pause : translations.play}`}
+                severity="info"
+                icon={`pi text-4xl ${playing && current_station?.id == station.id ? 'pi-pause' : 'pi-play'}`}
+
+                pt={{
+                  root: {
+                    style: {
+                      backgroundColor: 'var(--maskbg)',
+                      borderColor: '#fff',
+                      color: theme == 'light' ? 'var(--maskbg)' : '#fff',
+                    }
+                  },
+                  icon: {
+                    style: {
+                      paddingLeft: playing && current_station?.id == station.id ? '0' : '4px',
+                      color: '#fff',
+                      fontWeight: 600,
+                    }
                   }
                 }}
-                render={({ field, fieldState }) => (
-                  edit_mode ?
+
+                onClick={(e) => {
+                  e.preventDefault()
+                  click_play()
+                }}
+              />
+
+              <div className="flex flex-column justify-content-between gap-2 flex-shrink-0">
+                <AddStationToFavorites station={station} />
+
+                <StationShareButton station={station} />
+              </div>
+
+              <YandexAd id="R-A-14083703-5" className="flex-grow-1 align-self-stretch max-h-5rem" onlyDesktop hideOpacity />
+            </div>
+
+            <div className="flex flex-row gap-2">
+              <span className={`font-semibold select-none ${tag_text_class}`}>
+                {translations.language}:
+              </span>
+              <div className="flex flex-row flex-wrap gap-1">
+                {
+                  station?.languages?.map((language, i, arr) =>
                     <>
+                      <StationLanguageTag language_en={language} />
+                      {
+                        i < arr.length - 1 &&
+                        <span className="text-base">
+                          ,
+                        </span>
+                      }
+                    </>
+                  )
+                }
+              </div>
+            </div>
+
+            <div className="flex flex-row gap-2">
+              <span className={`font-semibold select-none ${tag_text_class}`}>
+                {translations.genre}:
+              </span>
+              <div className="flex flex-row flex-wrap gap-1">
+                {
+                  station?.genres?.map(genre => <StationGenreTag genre_en={genre} />)
+                }
+              </div>
+            </div>
+
+            {
+              edit_mode ?
+                <Controller
+                  name="tags"
+                  control={control}
+                  render={({ field, }) => (
+                    <>
+
                       <label
                         htmlFor={field.name}
                         className={classNames(
@@ -532,438 +733,250 @@ export const Station = () => {
                           'align-items-center'
                         )}
                       >
-                        <small>{translations_skl.radiostation}</small>
-
-                        <Controller
-                          name="broadcasting"
-                          control={control}
-                          render={({ field: switch_field, }) => (
-                            <>
-                              <InputSwitch
-                                inputId={switch_field.name}
-                                checked={switch_field.value}
-                                inputRef={switch_field.ref}
-                                className="origin-center"
-                                onChange={switch_field.onChange}
-                                disabled={!external}
-                                pt={{
-                                  root: {
-                                    style: {
-                                      transform: 'scale(0.6)'
-                                    },
-                                    className: classNames({
-
-                                    })
-                                  }
-                                }}
-                              />
-
-                              <label htmlFor={switch_field.name} className="cursor-pointer ml-0">
-                                <Tag
-                                  value={switch_field.value ? 'on' : 'off'}
-                                  severity={switch_field.value ? 'success' : null}
-                                  pt={{
-                                    root: {
-                                      className: classNames({
-                                        'surface-300': !switch_field.value
-                                      },
-                                        'py-05',
-                                        'shadow-2',
-                                      ),
-                                    },
-                                    value: {
-                                      style: {
-                                        lineHeight: 1.25,
-                                      }
-                                    }
-                                  }}
-                                />
-                              </label>
-                            </>
-                          )}
-                        />
+                        <small>Tags</small>
                       </label>
 
-                      <InputText
-                        id={field.name}
+                      <Chips
                         value={field.value}
-                        className={classNames(
-                          {
-                            'p-invalid': fieldState.error,
-                          },
-                          'max-w-full',
-                          'align-self-start',
-                          'shadow-2',
-                          'w-20rem',
-                          'action_text_font',
-                          'text-xl',
-                        )}
-                        onChange={(e) => {
-                          field.onChange(e.target.value)
+                        onChange={e => {
+                          //console.log('chips change : ', e)
+                          change_station_tags(e, field)
                         }}
-                        onBlur={field.onBlur}
-                        disabled={!edit_mode}
+                        allowDuplicate={false}
+                        removable
+
+                        removeIcon={<StationTagRemoveTokenIcon onClick={e => click_tag_remove_token_icon(e, field)} />}
+
+                        separator=","
+
                         pt={{
-                          root: {
-                            onInput: (e) => {
-                              //@ts-ignore
-                              e.target.size = Math.min(Math.max(e.target.value.length - 7, 20), 70)
-                            }
-                          }
+                          token: {
+                            className: classNames({
+
+                            },
+                              'p-0',
+                              'ml-1',
+                              'bg-red-600',
+                              'border-round',
+                            ),
+                          },
                         }}
+
+                        itemTemplate={tag => <StationTag tag={tag} disable_link />}
                       />
-
-                      <small className="p-error">{errors[field.name]?.message ?? ' '}</small>
                     </>
-                    :
-                    <span className="font-bold text-base sm:text-xl select-none">
-                      {
-                        station?.name
-                      }
-                    </span>
-                )}
-              />
+                  )} />
+                :
+                <div className="flex flex-row gap-2">
+                  <span className={`font-semibold select-none ${tag_text_class}`}>
+                    {translations.tags}:
+                  </span>
+                  <div className="flex flex-row flex-wrap gap-1">
+                    {
+                      station?.tags?.map(tag => <StationTag tag={tag} />)
+                    }
+                  </div>
+                </div>
+            }
 
-              <StationCountryTag en={station?.country} />
-
-            </div>
-
-          </div>
-
-          <div className="flex flex-row gap-3 align-items-center">
-            <Button
-              className="shadow_on_hover p-0 flex-shrink-0 w-4rem md:w-5rem h-4rem md:h-5rem"
-
-              rounded
-              outlined
-              raised
-              aria-label={`${playing && current_station?.id == station.id ? translations.pause : translations.play}`}
-              severity="info"
-              icon={`pi text-4xl ${playing && current_station?.id == station.id ? 'pi-pause' : 'pi-play'}`}
-
+            {/* Read only editor */}
+            <Editor
+              value={station[`description_${language}`]}
+              readOnly
+              headerTemplate={<></>}
               pt={{
-                root: {
+                toolbar: {
                   style: {
-                    backgroundColor: 'var(--maskbg)',
-                    borderColor: '#fff',
-                    color: theme == 'light' ? 'var(--maskbg)' : '#fff',
+                    display: 'none'
                   }
                 },
-                icon: {
+                content: {
+                  className: classNames({},
+                    'mt-2',
+                    'shadow-2',
+                    'surface-border',
+                    tag_text_class,
+                  ),
                   style: {
-                    paddingLeft: playing && current_station?.id == station.id ? '0' : '4px',
-                    color: '#fff',
-                    fontWeight: 600,
-                  }
+                    height: 'fit-content',
+                    border: '1px solid #dfe7ef',
+                    overflowY: 'auto',
+                    borderRadius: '6px',
+                    padding: '1px',
+                    ...edit_mode || !station[`description_${language}`] ? {
+                      display: 'none',
+                    } : {},
+                  },
                 }
-              }}
-
-              onClick={(e) => {
-                e.preventDefault()
-                click_play()
               }}
             />
 
-            <div className="flex flex-column justify-content-between gap-2">
-              <AddStationToFavorites station={station} />
+            {/* Edit only editor */}
+            {
+              languages.map(language =>
+                <>
+                  <Editor
+                    value={station[`description_${language}`]}
+                    style={{
+                      maxHeight: '240px',
+                      overflowY: 'auto',
+                      height: 'fit-content',
+                    }}
 
-              <StationShareButton station={station} />
-            </div>
-          </div>
+                    formats={['bold', 'font', 'italic', 'link', 'size', 'underline', 'list', '']}
 
-          <div className="flex flex-row gap-2">
-            <span className={`font-semibold select-none ${tag_text_class}`}>
-              {translations.language}:
-            </span>
-            <div className="flex flex-row flex-wrap gap-1">
-              {
-                station?.languages?.map((language, i, arr) =>
-                  <>
-                    <StationLanguageTag language_en={language} />
-                    {
-                      i < arr.length - 1 &&
-                      <span className="text-base">
-                        ,
-                      </span>
+                    headerTemplate={
+                      <>
+                        <span className="bg-primary select-none p-2">
+                          {language}
+                        </span>
+
+                        <span className={`ql-formats`} >
+
+                          <select className="ql-size">
+
+                            <option selected></option>
+                            <option value="large"></option>
+                            <option value="huge"></option>
+                          </select>
+
+                        </span>
+
+                        <span className={`ql-formats`} >
+
+                          <button className="ql-bold" aria-label="Bold"></button>
+
+                          <button className="ql-italic" aria-label="Italic"></button>
+
+                          <button className="ql-underline" aria-label="Underline"></button>
+
+                        </span>
+
+                        <span className={`ql-formats`} >
+
+                          <button className="ql-list" value={'ordered'} aria-label="Ordered List"></button>
+
+                          <button className="ql-list" value={'bullet'} aria-label="Unordered List"></button>
+
+                        </span>
+
+                        <span className={`ql-formats`} >
+
+                          <button className="ql-link" aria-label="Link"></button>
+
+                        </span>
+                      </>
                     }
-                  </>
-                )
-              }
-            </div>
-          </div>
 
-          <div className="flex flex-row gap-2">
-            <span className={`font-semibold select-none ${tag_text_class}`}>
-              {translations.genre}:
-            </span>
-            <div className="flex flex-row flex-wrap gap-1">
-              {
-                station?.genres?.map(genre => <StationGenreTag genre_en={genre} />)
-              }
-            </div>
-          </div>
-
-          {
-            edit_mode ?
-              <Controller
-                name="tags"
-                control={control}
-                render={({ field, }) => (
-                  <>
-
-                    <label
-                      htmlFor={field.name}
-                      className={classNames(
-                        {
-                          'p-error': errors[field.name]
-                        },
-                        'text-600',
-                        "select-none",
-                        'flex',
-                        'align-items-center'
-                      )}
-                    >
-                      <small>Tags</small>
-                    </label>
-
-                    <Chips
-                      value={field.value}
-                      onChange={e => {
-                        //console.log('chips change : ', e)
-                        change_station_tags(e, field)
-                      }}
-                      allowDuplicate={false}
-                      removable
-
-                      removeIcon={<StationTagRemoveTokenIcon onClick={e => click_tag_remove_token_icon(e, field)} />}
-
-                      separator=","
-
-                      pt={{
-                        token: {
-                          className: classNames({
-
+                    pt={{
+                      root: {
+                        className: classNames({},
+                          'shadow-2',
+                          'mt-2',
+                        ),
+                        style: {
+                          ...edit_mode ? {} : {
+                            display: 'none'
                           },
-                            'p-0',
-                            'ml-1',
-                            'bg-red-600',
-                            'border-round',
-                          ),
-                        },
-                      }}
-
-                      itemTemplate={tag => <StationTag tag={tag} disable_link />}
-                    />
-                  </>
-                )} />
-              :
-              <div className="flex flex-row gap-2">
-                <span className={`font-semibold select-none ${tag_text_class}`}>
-                  {translations.tags}:
-                </span>
-                <div className="flex flex-row flex-wrap gap-1">
-                  {
-                    station?.tags?.map(tag => <StationTag tag={tag} />)
-                  }
-                </div>
-              </div>
-          }
-
-          {/* Read only editor */}
-          <Editor
-            value={station[`description_${language}`]}
-            readOnly
-            headerTemplate={<></>}
-            pt={{
-              toolbar: {
-                style: {
-                  display: 'none'
-                }
-              },
-              content: {
-                className: classNames({},
-                  'mt-2',
-                  'shadow-2',
-                  'surface-border',
-                  tag_text_class,
-                ),
-                style: {
-                  height: 'fit-content',
-                  border: '1px solid #dfe7ef',
-                  overflowY: 'auto',
-                  borderRadius: '6px',
-                  padding: '1px',
-                  ...edit_mode || !station[`description_${language}`] ? {
-                    display: 'none',
-                  } : {},
-                },
-              }
-            }}
-          />
-
-          {/* Edit only editor */}
-          {
-            languages.map(language =>
-              <>
-                <Editor
-                  value={station[`description_${language}`]}
-                  style={{
-                    maxHeight: '240px',
-                    overflowY: 'auto',
-                    height: 'fit-content',
-                  }}
-
-                  formats={['bold', 'font', 'italic', 'link', 'size', 'underline', 'list', '']}
-
-                  headerTemplate={
-                    <>
-                      <span className="bg-primary select-none p-2">
-                        {language}
-                      </span>
-
-                      <span className={`ql-formats`} >
-
-                        <select className="ql-size">
-
-                          <option selected></option>
-                          <option value="large"></option>
-                          <option value="huge"></option>
-                        </select>
-
-                      </span>
-
-                      <span className={`ql-formats`} >
-
-                        <button className="ql-bold" aria-label="Bold"></button>
-
-                        <button className="ql-italic" aria-label="Italic"></button>
-
-                        <button className="ql-underline" aria-label="Underline"></button>
-
-                      </span>
-
-                      <span className={`ql-formats`} >
-
-                        <button className="ql-list" value={'ordered'} aria-label="Ordered List"></button>
-
-                        <button className="ql-list" value={'bullet'} aria-label="Unordered List"></button>
-
-                      </span>
-
-                      <span className={`ql-formats`} >
-
-                        <button className="ql-link" aria-label="Link"></button>
-
-                      </span>
-                    </>
-                  }
-
-                  pt={{
-                    root: {
-                      className: classNames({},
-                        'shadow-2',
-                        'mt-2',
-                      ),
-                      style: {
-                        ...edit_mode ? {} : {
-                          display: 'none'
-                        },
+                        }
                       }
-                    }
-                  }}
+                    }}
 
-                  onTextChange={e => {
-                    //console.log('description ', language, ' : ', e.htmlValue)
-                    //@ts-ignore
-                    setValue(`description_${language}`, e.htmlValue ?? '')
-                  }}
-                />
-              </>
-            )
-          }
+                    onTextChange={e => {
+                      //console.log('description ', language, ' : ', e.htmlValue)
+                      //@ts-ignore
+                      setValue(`description_${language}`, e.htmlValue ?? '')
+                    }}
+                  />
+                </>
+              )
+            }
 
-          {
-            edit_mode ?
-              <div className="flex flex-column gap-1">
-                <Controller
-                  name="external"
-                  control={control}
-                  render={({ field, fieldState }) => (
-                    <>
-                      <label
-                        htmlFor={field.name}
-                        className='text-600 select-none flex align-items-center'
-                      >
-                        <small>External</small>
+            {
+              edit_mode ?
+                <div className="flex flex-column gap-1">
+                  <Controller
+                    name="external"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                      <>
+                        <label
+                          htmlFor={field.name}
+                          className='text-600 select-none flex align-items-center'
+                        >
+                          <small>External</small>
 
-                        <Controller
-                          name="external_enable"
-                          control={control}
-                          render={({ field: switch_field, }) => (
-                            <>
-                              <InputSwitch
-                                inputId={switch_field.name}
-                                checked={switch_field.value}
-                                inputRef={switch_field.ref}
-                                className="origin-center"
-                                onChange={switch_field.onChange}
-                                disabled={!external}
-                                pt={{
-                                  root: {
-                                    style: {
-                                      transform: 'scale(0.6)'
-                                    },
-                                    className: classNames({
-
-                                    })
-                                  }
-                                }}
-                              />
-
-                              <label htmlFor={switch_field.name} className="cursor-pointer ml-0">
-                                <Tag
-                                  value={switch_field.value ? 'on' : 'off'}
-                                  severity={switch_field.value ? 'success' : null}
+                          <Controller
+                            name="external_enable"
+                            control={control}
+                            render={({ field: switch_field, }) => (
+                              <>
+                                <InputSwitch
+                                  inputId={switch_field.name}
+                                  checked={switch_field.value}
+                                  inputRef={switch_field.ref}
+                                  className="origin-center"
+                                  onChange={switch_field.onChange}
+                                  disabled={!external}
                                   pt={{
                                     root: {
-                                      className: classNames({
-                                        'surface-300': !switch_field.value
-                                      },
-                                        'py-05',
-                                      ),
-                                    },
-                                    value: {
                                       style: {
-                                        lineHeight: 1.25,
-                                      }
+                                        transform: 'scale(0.6)'
+                                      },
+                                      className: classNames({
+
+                                      })
                                     }
                                   }}
                                 />
-                              </label>
-                            </>
+
+                                <label htmlFor={switch_field.name} className="cursor-pointer ml-0">
+                                  <Tag
+                                    value={switch_field.value ? 'on' : 'off'}
+                                    severity={switch_field.value ? 'success' : null}
+                                    pt={{
+                                      root: {
+                                        className: classNames({
+                                          'surface-300': !switch_field.value
+                                        },
+                                          'py-05',
+                                        ),
+                                      },
+                                      value: {
+                                        style: {
+                                          lineHeight: 1.25,
+                                        }
+                                      }
+                                    }}
+                                  />
+                                </label>
+                              </>
+                            )}
+                          />
+
+                        </label>
+
+                        <InputText
+                          id={field.name}
+                          value={field.value}
+                          className={classNames(
+                            {
+                            },
                           )}
+                          onChange={field.onChange}
+                          onBlur={field.onBlur}
                         />
+                      </>
+                    )}
+                  />
+                </div>
+                : <></>
+            }
 
-                      </label>
+          </form>
 
-                      <InputText
-                        id={field.name}
-                        value={field.value}
-                        className={classNames(
-                          {
-                          },
-                        )}
-                        onChange={field.onChange}
-                        onBlur={field.onBlur}
-                      />
-                    </>
-                  )}
-                />
-              </div>
-              : <></>
-          }
-
-        </form>
+          <YandexAd id="R-A-14083703-4" className="flex-grow-1 align-self-stretch" onlyDesktop hideOpacity interval={60000} />
+        </div>
 
         {
           edit_mode && false ?

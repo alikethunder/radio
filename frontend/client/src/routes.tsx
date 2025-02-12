@@ -1,5 +1,5 @@
 import React, { Profiler } from "react"
-import { redirect, } from "react-router-dom"
+import { redirect, ShouldRevalidateFunctionArgs, } from "react-router-dom"
 import App from "@/App"
 
 import {
@@ -157,7 +157,7 @@ export const routes = [
           }
 
         },
-        shouldRevalidate: () => false,
+        shouldRevalidate: ({ currentUrl, nextUrl }: ShouldRevalidateFunctionArgs) => currentUrl.pathname !== nextUrl.pathname,
       },
 
       {

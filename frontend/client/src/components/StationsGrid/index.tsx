@@ -13,6 +13,7 @@ import { Size } from '@/types/size'
 import { useDebounceCallback, useMediaQuery, useResizeObserver } from "usehooks-ts"
 import { Station } from "@/types"
 import { useLog, useMobile, useStationsSearch, useTranslations } from "@/hooks"
+import { YandexAd } from "../YandexAd"
 
 type Props = {
   stations: Station[];
@@ -56,7 +57,7 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
   const mobile = useMobile()
 
   //padding y
-  const py = useMemo(() => mobile ? 16 : 32, [mobile])
+  const py = useMemo(() => 16, [])
 
   //padding x
   const px = useMemo(() => mobile ? 0 : 48, [mobile])
@@ -101,29 +102,33 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
   ])
 
   return (
-    <div className="w-full h-full overflow-y-auto page home_page flex-grow-1 flex flex-column" ref={ref}>
+    <>
+      <YandexAd id="R-A-14083703-2" className="h-5rem flex-shrink-0" />
 
-      {
-        searched_stations?.length || loading ?
-          <Stations_grid
-            stations={searched_stations}
-            columns={columns}
-            rows={rows}
-            py={py}
-            px={px}
-            gapx={gapx}
-            mobile={mobile}
-            search_stations_text={search_stations_text}
-            card_size={card_size}
-            loading={loading}
-            place={place}
-          />
-          :
-          <div className="font-semibold text-2xl text-center">
-            {translations.no_stations_with_parameters}
-          </div>
-      }
-    </div >
+      <div className="w-full h-full overflow-y-auto page flex-grow-1 flex flex-column" ref={ref}>
+
+        {
+          searched_stations?.length || loading ?
+            <Stations_grid
+              stations={searched_stations}
+              columns={columns}
+              rows={rows}
+              py={py}
+              px={px}
+              gapx={gapx}
+              mobile={mobile}
+              search_stations_text={search_stations_text}
+              card_size={card_size}
+              loading={loading}
+              place={place}
+            />
+            :
+            <div className="font-semibold text-2xl text-center">
+              {translations.no_stations_with_parameters}
+            </div>
+        }
+      </div >
+    </>
   )
 }, (o, n) => {
   return o.stations.length === n.stations.length
