@@ -11,11 +11,12 @@ type Props = {
   onlyDesktop?: boolean; //ad will be shown only on desktop
   hideOpacity?: boolean; // hide container with opacity 0
   style?: React.CSSProperties;
+  update_dependency?: any;
 }
 
 import { useMobile, } from "@/hooks"
 
-export const YandexAd: FC<Props> = memo(({ hideOpacity, onlyDesktop, className, id, interval, style, ...rest }) => {
+export const YandexAd: FC<Props> = memo(({ update_dependency, hideOpacity, onlyDesktop, className, id, interval, style, ...rest }) => {
 
   const mobile = useMobile()
 
@@ -71,10 +72,11 @@ export const YandexAd: FC<Props> = memo(({ hideOpacity, onlyDesktop, className, 
     id,
     counter,
     onlyDesktop,
+    update_dependency,
   ])
 
   return (
-    <div className={`flex align-items-stretch ${className ?? ''} ${hide ? (hideOpacity ? 'opacity-0' : 'max-h-0 overflow-hidden') : ''}`} ref={container} {...style ? {style} : {}}>
+    <div className={`flex align-items-stretch ${className ?? ''} ${hide ? (hideOpacity ? 'opacity-0' : 'max-h-0 overflow-hidden') : ''}`} ref={container} {...style ? { style } : {}}>
       <div id={`yandex_rtb_${id}-1`} className={`w-full h-full ${className ?? ''}`} />
     </div>
   )

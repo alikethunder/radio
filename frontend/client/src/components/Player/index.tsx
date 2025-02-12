@@ -143,7 +143,7 @@ export const Player: FC = memo(() => {
   }, 50), [])
 
   return (
-    <div id="player" className={`flex flex-row flex-shrink-0 shadow-3 h-9rem surface-card p-2 md:pl-6 gap-2 md:gap-3 mt-auto ${current_station ? 'opened' : ''}`}>
+    <div id="player" className={`flex flex-row flex-shrink-0 shadow-3 surface-card p-2 md:pl-3 gap-2 md:gap-3 mt-auto transition-all transition-duration-300 transition-linear ${current_station ? 'opened' : ''} ${minimized ? 'h-5rem' : 'h-9rem'}`}>
 
       <audio
         src=""
@@ -153,7 +153,7 @@ export const Player: FC = memo(() => {
         ref={set_audio_ref}
       />
 
-      <div className="flex flex-column justify-content-between pb-2">
+      <div className={`flex flex-column justify-content-between ${minimized ? '' : 'pb-2'}`}>
 
         <Button
           icon={`pi pi-angle-${minimized ? 'up' : 'down'}`}
@@ -169,7 +169,7 @@ export const Player: FC = memo(() => {
         />
 
         {
-          current_station ?
+          current_station && !minimized ?
             <>
 
               <StationShareButton station={current_station} />
@@ -182,15 +182,19 @@ export const Player: FC = memo(() => {
 
       </div>
 
-      <div className="flex flex-column gap-2 align-items-center flex-shrink-0 mr-2 md:mr-0">
+      <div className="flex flex-column gap-2 align-items-center flex-shrink-0 mr-2 md:mr-0 relative">
 
         <StationAvatar
           id={current_station?.id}
           className="w-4rem h-4rem shadow-2 flex-shrink-0 border-round-xl"
         />
 
+
+        <div className={`overlay absolute top-0 left-0 right-0 bottom-0 p-component-overlay transition-all transition-duration-300 transition-linear ${minimized ? 'opacity-80' : 'opacity-0'}`} />
+
+
         <Button
-          className={`shadow_on_hover active_element p-0 flex-shrink-0 hover:text-primary hover:border-primary player_play_button justify-content-center ${playing ? '' : 'paused'}`}
+          className={`shadow_on_hover active_element p-0 flex-shrink-0 hover:text-primary hover:border-primary player_play_button justify-content-center ${playing ? '' : 'paused'} ${minimized ? 'absolute top-0 bottom-0 my-auto' : ''}`}
 
           rounded
           outlined
@@ -226,22 +230,24 @@ export const Player: FC = memo(() => {
         {/* current station name */}
         {
           current_station ?
-            <QueryLink to={generatePath(app_routes["station$id"], { id: current_station?.id })} className="font-bold text-primary text_hidden_overflow line-clamp-2 h-3rem text-lg">
+            <QueryLink to={generatePath(app_routes["station$id"], { id: current_station?.id })} className={`font-bold text-primary text_hidden_overflow text-lg ${minimized ? 'line-clamp-1' : 'line-clamp-2 h-3rem'}`}>
               {current_station?.name}
             </QueryLink>
             : <></>
         }
 
-        <div className="buttons flex flex-row gap-2">
-          {
-            current_station ?
-              <>
-                <StationInfoButton station={current_station} />
-              </>
-              : <></>
-          }
-        </div>
-
+        {
+          minimized ? <></> :
+            <div className="buttons flex flex-row gap-2">
+              {
+                current_station ?
+                  <>
+                    <StationInfoButton station={current_station} />
+                  </>
+                  : <></>
+              }
+            </div>
+        }
 
         <div className="volume_controls flex flex-row gap-3">
 
@@ -299,7 +305,7 @@ export const Player: FC = memo(() => {
 
       </div>
 
-      <YandexAd id="R-A-14083703-1" className="flex-grow-1 align-self-stretch" onlyDesktop hideOpacity />
+      <YandexAd id="R-A-14083703-1" className="flex-grow-1 align-self-stretch" onlyDesktop hideOpacity update_dependency={minimized} />
 
     </div>
   )
