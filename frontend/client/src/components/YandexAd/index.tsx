@@ -22,7 +22,7 @@ export const YandexAd: FC<Props> = memo(({ update_dependency, hideOpacity, onlyD
 
   const theme = useStore().persistedApp.theme()
 
-  const [counter, set_counter] = useState(0)
+  const [counter, set_counter] = useState(1)
 
   const [hide, set_hide] = useState(false)
 
