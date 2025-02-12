@@ -99,4 +99,5 @@ var En = map[string]string{
 	"remove_from_favorites":                         "remove from favorites",
 	"minimize_player":                               "minimize player",
 	"maximize_player":                               "maximize player",
+	"privacy_policy":                                "Privacy policy",
 }

@@ -125,32 +125,33 @@ export const RightSidebar: FC = memo(() => {
       , 50)
     , [])
 
-    const update_jsons = useCallback(
-      useDebounceCallback(
-        //json array with stations ids
-        async (e) => {
-          if (e.target.files?.length) {
-            console.log(e.target.files)
-  
-            const body = new FormData()
-  
-            for (const file of e.target.files) {
-              body.append('json', file)
-            }
-  
-            fetch('/api/v1/radio/update-json', {
-              method: "POST",
-              body,
-            })
+  const update_jsons = useCallback(
+    useDebounceCallback(
+      //json array with stations ids
+      async (e) => {
+        if (e.target.files?.length) {
+          console.log(e.target.files)
+
+          const body = new FormData()
+
+          for (const file of e.target.files) {
+            body.append('json', file)
           }
+
+          fetch('/api/v1/radio/update-json', {
+            method: "POST",
+            body,
+          })
         }
-        , 50)
-      , [])
+      }
+      , 50)
+    , [])
 
   const [translations] = useTranslations([
     'logout',
     'feedback',
     'my_stations',
+    'privacy_policy',
   ], true)
 
   const index_now = useDebounceCallback(async () => {
@@ -302,7 +303,7 @@ export const RightSidebar: FC = memo(() => {
             />
             : <></>
         }
-{/* 
+        {/* 
         {
           root_admin ?
             <Button
@@ -341,7 +342,7 @@ export const RightSidebar: FC = memo(() => {
             : <></>
         }
  */}
- {/* 
+        {/* 
         {
           root_admin ?
 
@@ -492,6 +493,16 @@ export const RightSidebar: FC = memo(() => {
       </div>
 
       <div className="bottom flex flex-column flex-shrink-0">
+
+        <a href={`/privacy_policy.txt`} target="_blank" className="w-full">
+          <Button
+            label={translations.privacy_policy}
+            text
+            raised
+            icon={`${icon_classes} pi-file`}
+            className="border-noround action_text_font px-2 text-xl shadow_on_hover w-full"
+          />
+        </a>
 
         <a href={`https://t.me/radio${language}best`} target="_blank" className="w-full">
           <Button

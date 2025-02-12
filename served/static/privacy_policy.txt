@@ -1,0 +1,67 @@
+Privacy Policy for Radio.Best
+
+Effective Date: 12.02.2025
+
+Welcome to Radio.Best! This Privacy Policy outlines how we collect, use, protect, and handle your personal information when you visit our website at https://radio.best (the "Website") or mobile application "Radio Best" (the "Application"). By using our Website or our Application, you agree to the terms of this Privacy Policy.
+
+1. Information We Collect
+We may collect the following types of information:
+
+Personal Information: When you create an account on Radio.Best, we may collect personal information such as your email address, username, and password. Account creation is optional, and you can use all features of the Website without creating an account.
+
+Creating the account will allow to access stations that were added to favorites on different devices.
+
+Usage Data: We may collect non-personal information about your interaction with the Website, such as your IP address, browser type, device information, pages visited, and time spent on the Website.
+
+Cookies and Tracking Technologies: We use cookies and similar technologies to enhance your experience, analyze usage patterns, and improve our services. You can manage your cookie preferences through your browser settings.
+
+2. How We Use Your Information
+We use the information we collect for the following purposes:
+
+To provide, maintain, and improve our Website and services.
+
+To authenticate users and manage accounts (if you choose to create one).
+
+To communicate with you, including responding to your inquiries and sending service-related notifications.
+
+To analyze usage trends and optimize the user experience.
+
+To ensure the security of our Website and protect against unauthorized access or misuse.
+
+3. Data Storage and Encryption
+Your personal information is securely stored on our backend servers. We use industry-standard encryption technologies to protect your data during transmission and storage. However, no method of transmission over the internet or electronic storage is 100% secure, and we cannot guarantee absolute security.
+
+4. Sharing Your Information
+We do not sell, trade, or otherwise transfer your personal information to third parties without your consent, except in the following circumstances:
+
+Service Providers: We may share your information with trusted third-party service providers who assist us in operating our Website, conducting our business, or servicing you, as long as they agree to keep this information confidential.
+
+Legal Requirements: We may disclose your information if required to do so by law or in response to valid requests by public authorities (e.g., a court or government agency).
+
+5. Your Rights and Choices
+You have the following rights regarding your personal information:
+
+Access and Correction: You can access and update your account information at any time by logging into your account.
+
+Deletion: You may request the deletion of your account and personal information by contacting us at aleksandr.popugaiev@gmail.com.
+
+Opt-Out: You can opt out of receiving promotional communications from us by following the unsubscribe instructions included in those communications.
+
+6. Third-Party Links
+Our Website may contain links to third-party websites. We are not responsible for the privacy practices or content of these external sites. We encourage you to review the privacy policies of any third-party sites you visit.
+
+7. Children's Privacy
+Radio.Best is not intended for use by individuals under the age of 13. We do not knowingly collect personal information from children under 13. If we become aware that we have collected such information, we will take steps to delete it promptly.
+
+8. Changes to This Privacy Policy
+We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated effective date. We encourage you to review this Privacy Policy periodically to stay informed about how we are protecting your information.
+
+9. Contact Us
+If you have any questions or concerns about this Privacy Policy or our data practices, please contact us at:
+
+Email: aleksandr.popugaiev@gmail.com
+
+Thank you for trusting Radio.Best with your information. We are committed to protecting your privacy and providing a safe and enjoyable experience on our Website.
+
+[End of Privacy Policy]
+

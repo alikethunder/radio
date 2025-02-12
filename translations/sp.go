@@ -100,4 +100,5 @@ var Sp = map[string]string{
 	"remove_from_favorites":                         "eliminar de favoritos",
 	"minimize_player":                               "minimizar reproductor",
 	"maximize_player":                               "maximizar reproductor",
+	"privacy_policy":                                "política de privacidad",
 }

@@ -99,4 +99,5 @@ var De = map[string]string{
 	"remove_from_favorites":                         "aus Favoriten entfernen",
 	"minimize_player":                               "Player minimieren",
 	"maximize_player":                               "Player maximieren",
+	"privacy_policy":                                "Datenschutzrichtlinie",
 }

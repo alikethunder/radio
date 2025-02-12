@@ -98,4 +98,5 @@ var Ru = map[string]string{
 	"remove_from_favorites":                         "Убрать из избранного",
 	"minimize_player":                               "свернуть плеер",
 	"maximize_player":                               "развернуть плеер",
+	"privacy_policy":                                "Политика конфиденциальности",
 }

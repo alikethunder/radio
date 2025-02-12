@@ -99,4 +99,5 @@ var Pt = map[string]string{
 	"remove_from_favorites":                         "remover dos favoritos",
 	"minimize_player":                               "minimizar player",
 	"maximize_player":                               "maximizar player",
+	"privacy_policy":                                "política de privacidade",
 }
