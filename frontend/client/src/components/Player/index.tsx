@@ -190,7 +190,7 @@ export const Player: FC = memo(() => {
         />
 
 
-        <div className={`overlay absolute top-0 left-0 right-0 bottom-0 p-component-overlay transition-all transition-duration-300 transition-linear ${minimized ? 'opacity-80' : 'opacity-0'}`} />
+        <div className={`overlay absolute top-0 left-0 right-0 bottom-0 p-component-overlay border-round-xl transition-all transition-duration-300 transition-linear ${minimized ? 'opacity-80' : 'opacity-0'}`} />
 
 
         <Button
