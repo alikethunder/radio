@@ -22,7 +22,7 @@ export const YandexAd: FC<Props> = memo(({ update_dependency, hideOpacity, onlyD
 
   const theme = useStore().persistedApp.theme()
 
-  const [counter, set_counter] = useState(1)
+  const [counter, set_counter] = useState(0)
 
   const [hide, set_hide] = useState(false)
 
@@ -33,6 +33,10 @@ export const YandexAd: FC<Props> = memo(({ update_dependency, hideOpacity, onlyD
       set_counter(counter => counter + 1)
     }, interval ?? 35000)
   }, [])
+
+  useEffect(() => {
+    set_counter(c => c + 1)
+  }, [update_dependency])
 
   useEffect(() => {
     if (onlyDesktop ? !mobile : true) {
@@ -72,7 +76,6 @@ export const YandexAd: FC<Props> = memo(({ update_dependency, hideOpacity, onlyD
     id,
     counter,
     onlyDesktop,
-    update_dependency,
   ])
 
   return (
