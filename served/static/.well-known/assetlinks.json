@@ -3,6 +3,6 @@
       "target": {
         "namespace": "android_app",
         "package_name": "best.radio.twa",
-        "sha256_cert_fingerprints": ["09:7F:2B:0A:73:BB:44:67:CC:EF:C2:83:18:12:03:A3:F8:E0:E5:8E:21:39:48:4F:1B:07:D8:B2:A7:27:31:45"]
+        "sha256_cert_fingerprints": ["EB:E2:B5:CA:FB:53:E9:E9:82:CC:B0:AA:9B:72:65:92:54:3A:38:FC:DB:11:EF:D7:29:81:92:1A:B4:41:E9:66"]
       }
     }]

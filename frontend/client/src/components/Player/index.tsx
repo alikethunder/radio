@@ -189,9 +189,7 @@ export const Player: FC = memo(() => {
           className="w-4rem h-4rem shadow-2 flex-shrink-0 border-round-xl"
         />
 
-
         <div className={`overlay absolute top-0 left-0 right-0 bottom-0 p-component-overlay border-round-xl transition-all transition-duration-300 transition-linear ${minimized ? 'opacity-80' : 'opacity-0'}`} />
-
 
         <Button
           className={`shadow_on_hover active_element p-0 flex-shrink-0 hover:text-primary hover:border-primary player_play_button justify-content-center ${playing ? '' : 'paused'} ${minimized ? 'absolute top-0 bottom-0 my-auto' : ''}`}
