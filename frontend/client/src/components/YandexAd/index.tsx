@@ -16,7 +16,11 @@ type Props = {
 
 import { useMobile, } from "@/hooks"
 
+const ads_enabled = false
+
 export const YandexAd: FC<Props> = memo(({ update_dependency, hideOpacity, onlyDesktop, className, id, interval, style, ...rest }) => {
+
+  if (!ads_enabled) return <></>
 
   const mobile = useMobile()
 
@@ -39,7 +43,7 @@ export const YandexAd: FC<Props> = memo(({ update_dependency, hideOpacity, onlyD
   }, [update_dependency])
 
   useEffect(() => {
-    if (onlyDesktop ? !mobile : true) {
+    if (ads_enabled && (onlyDesktop ? !mobile : true)) {
 
       if (counter > 1) {
         const ya = document.getElementById(`yandex_rtb_${id}-${counter - 1}`)
@@ -79,8 +83,8 @@ export const YandexAd: FC<Props> = memo(({ update_dependency, hideOpacity, onlyD
   ])
 
   return (
-    <div className={`flex align-items-stretch ${className ?? ''} ${hide ? (hideOpacity ? 'opacity-0' : 'max-h-0 overflow-hidden') : ''}`} ref={container} {...style ? { style } : {}}>
+    <div className={`flex align-items-stretch ${className ?? ''} ${hide ? (hideOpacity ? 'opacity-0' : 'max-h-0 overflow-hidden') : ''}`} ref={container} {...style ? { style } : {}} >
       <div id={`yandex_rtb_${id}-1`} className={`w-full h-full ${className ?? ''}`} />
-    </div>
+    </div >
   )
 })
