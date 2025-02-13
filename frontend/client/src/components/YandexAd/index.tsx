@@ -16,7 +16,7 @@ type Props = {
 
 import { useMobile, } from "@/hooks"
 
-const ads_enabled = false
+const ads_enabled = true
 
 export const YandexAd: FC<Props> = memo(({ update_dependency, hideOpacity, onlyDesktop, className, id, interval, style, ...rest }) => {
 
