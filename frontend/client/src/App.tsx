@@ -283,7 +283,7 @@ export default memo(function App() {
             //navigator language is not supported
             //find supported in navigator languages
 
-            const supported_navigator_languages = navigator.languages.find(l => languages.includes(l))
+            const supported_navigator_languages = navigator.languages.find(l => languages.includes(l.substring(0, 2)))
 
             actions.translations.language(supported_navigator_languages ?? languages[0])
 
