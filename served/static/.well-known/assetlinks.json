@@ -1,8 +1,26 @@
-[{
-      "relation": ["delegate_permission/common.handle_all_urls"],
-      "target": {
-        "namespace": "android_app",
-        "package_name": "best.radio.twa",
-        "sha256_cert_fingerprints": ["18:0C:81:12:21:DA:F2:54:0E:5A:3D:33:8F:25:69:70:A6:0D:34:87:BD:3C:2A:C0:E7:1B:5D:55:92:1C:1B:06"]
-      }
-    }]
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "best.radio.twa",
+      "sha256_cert_fingerprints": [
+        "18:0C:81:12:21:DA:F2:54:0E:5A:3D:33:8F:25:69:70:A6:0D:34:87:BD:3C:2A:C0:E7:1B:5D:55:92:1C:1B:06"
+      ]
+    }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "best.radio.twa",
+      "sha256_cert_fingerprints": [
+        "EB:E2:B5:CA:FB:53:E9:E9:82:CC:B0:AA:9B:72:65:92:54:3A:38:FC:DB:11:EF:D7:29:81:92:1A:B4:41:E9:66"
+      ]
+    }
+  }
+]
