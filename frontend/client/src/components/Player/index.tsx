@@ -240,7 +240,7 @@ export const Player: FC = memo(() => {
         {/* current station name */}
         {
           current_station ?
-            <QueryLink to={generatePath(app_routes["station$id"], { id: current_station?.id })} className={`font-bold text-primary text_hidden_overflow text-lg ${minimized ? 'line-clamp-1' : 'line-clamp-2 h-3rem'}`}>
+            <QueryLink to={generatePath(app_routes["station$id"], { id: current_station?.id })} className={`font-bold text-primary text_hidden_overflow text-lg align-self-start ${minimized ? 'line-clamp-1' : 'line-clamp-2 h-3rem'}`}>
               {current_station?.name}
             </QueryLink>
             : <></>
