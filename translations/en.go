@@ -102,4 +102,5 @@ var En = map[string]string{
 	"privacy_policy":                                "Privacy policy",
 	"number_of_stations_found":                      "Number of stations found",
 	"random_station":                                "random station",
+	"random_station_from_found":                     "random station from found",
 }

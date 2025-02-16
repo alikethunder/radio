@@ -102,4 +102,5 @@ var Pt = map[string]string{
 	"privacy_policy":                                "política de privacidade",
 	"number_of_stations_found":                      "Número de estações encontradas",
 	"random_station":                                "Estação aleatória",
+	"random_station_from_found":                     "estação aleatória encontrada",
 }

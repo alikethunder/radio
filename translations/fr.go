@@ -102,4 +102,5 @@ var Fr = map[string]string{
 	"privacy_policy":                                "politique de confidentialité",
 	"number_of_stations_found":                      "Nombre de stations trouvées",
 	"random_station":                                "Station aléatoire",
+	"random_station_from_found":                     "station aléatoire trouvée",
 }

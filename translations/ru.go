@@ -101,4 +101,5 @@ var Ru = map[string]string{
 	"privacy_policy":                                "Политика конфиденциальности",
 	"number_of_stations_found":                      "Найдено радиостанций",
 	"random_station":                                "случайная радиостанция",
+	"random_station_from_found":                     "случайная радиостанция из найденных",
 }

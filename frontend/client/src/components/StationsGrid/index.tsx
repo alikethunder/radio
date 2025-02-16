@@ -1,20 +1,27 @@
-import { FC, memo, useMemo, useRef, useState, } from "react"
+import { FC, memo, useCallback, useMemo, useRef, useState, } from "react"
 
 import { Stations_grid } from './Stations_grid'
 
 import { gap } from './constants'
 
 import {
+  actions,
+  store,
   useStore,
 } from "@/store"
 
 import { Size } from '@/types/size'
+import { BsFillInfoSquareFill } from "react-icons/bs"
 
 import { useDebounceCallback, useResizeObserver } from "usehooks-ts"
 import { Station } from "@/types"
-import { useLog, useMobile, useStationsSearch, useTranslations } from "@/hooks"
+import { useLog, useMobile, useStationsSearch, useTooltip, useTranslations } from "@/hooks"
 import { YandexAd } from "@/components/YandexAd"
 import { Message } from 'primereact/message'
+import { Button } from "primereact/button"
+import { IoDiceSharp } from "react-icons/io5"
+import { random_number_from_length } from "@/functions/random_number_from_length"
+import { switch_to_random_station } from "@/functions"
 
 type Props = {
   stations: Station[];
@@ -40,6 +47,7 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
   const [translations] = useTranslations([
     'no_stations_with_parameters',
     'number_of_stations_found',
+    'random_station_from_found',
   ], true)
 
   const ref = useRef<HTMLDivElement>(null)
@@ -103,13 +111,61 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
     loading,
   ])
 
+  const random_tooltip = useTooltip(translations.random_station_from_found)
+
+  const play_random_station = useCallback(useDebounceCallback(() => {
+
+    switch_to_random_station(searched_stations)
+
+  }, 50), [searched_stations])
+
+  const count_message = useMemo(() =>
+    <>
+      <BsFillInfoSquareFill
+        className="flex-shrink-0 md:align-self-center align-self-start"
+        style={{
+          width: '1.3rem',
+          height: '1.3rem',
+        }}
+      />
+
+      <span>
+        {translations.number_of_stations_found}: {searched_stations.length} {loading ? <span className="pi pi-spinner pi-spin"></span> : <span className="w-1rem inline-block"></span>}
+      </span>
+
+      <Button
+        rounded
+        outlined
+        raised
+        className={`p-0 w-2rem h-2rem shadow_on_hover align-self-center flex flex-shrink-0 justify-content-center align-items-center inline-flex`}
+        severity={`secondary`}
+
+        onClick={play_random_station}
+
+        {...random_tooltip}
+      >
+        <IoDiceSharp style={{
+          width: '1.5rem',
+          height: '1.5rem',
+        }} />
+      </Button>
+    </>
+    , [
+      translations.number_of_stations_found,
+      searched_stations.length,
+      loading,
+    ])
+
   return (
     <>
       <YandexAd id="R-A-14083703-2" className="h-5rem flex-shrink-0" />
 
       {
         searched_stations.length ?
-          <Message severity="info" className="my-2 font-medium md:ml-6 select-none align-self-start py-1 px-2 border-none"
+          <Message
+            severity="info"
+            className="font-medium select-none align-self-start py-1 px-2 border-none md:ml-6 my-2 inline-flex align-items-center gap-2"
+
             style={{
               ...mobile ? {
                 marginLeft: `${gapx}px`,
@@ -117,7 +173,7 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
               } : {}
             }}
 
-            text={`${translations.number_of_stations_found} : ${searched_stations.length}`}
+            content={count_message}
           />
           : <></>
       }

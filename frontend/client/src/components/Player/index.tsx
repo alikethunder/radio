@@ -38,6 +38,7 @@ import { useDebounceCallback } from "usehooks-ts"
 
 import './index.sass'
 import { random_number_from_length } from "@/functions/random_number_from_length"
+import { switch_to_random_station } from "@/functions"
 
 export const Player: FC = memo(() => {
 
@@ -148,10 +149,10 @@ export const Player: FC = memo(() => {
   }, 50), [])
 
   const play_random_station = useCallback(useDebounceCallback(() => {
+
     const stations = store.app.stations_home()
-    const random_station = stations[random_number_from_length(stations.length - 1)]
-    actions.player.current_station(random_station)
-    actions.player.playing(true)
+
+    switch_to_random_station(stations)
   }, 50), [])
 
   return (
@@ -262,7 +263,9 @@ export const Player: FC = memo(() => {
                 outlined
                 raised
                 className={`p-0 w-2rem h-2rem shadow_on_hover align-self-center flex flex-shrink-0 justify-content-center align-items-center`}
-                severity={`secondary`}
+                style={{
+                  color: '#696cff'
+                }}
 
                 onClick={play_random_station}
 
@@ -271,7 +274,7 @@ export const Player: FC = memo(() => {
                 <IoDiceSharp style={{
                   width: '1.5rem',
                   height: '1.5rem',
-                }}/>
+                }} />
               </Button>
             </div>
         }

@@ -103,4 +103,5 @@ var Sp = map[string]string{
 	"privacy_policy":                                "política de privacidad",
 	"number_of_stations_found":                      "Número de estaciones encontradas",
 	"random_station":                                "Estación aleatoria",
+	"random_station_from_found":                     "Estación aleatoria de encontradas",
 }
