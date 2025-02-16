@@ -129,7 +129,7 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
         }}
       />
 
-      <span>
+      <span className="align-self-start md:align-self-center">
         {translations.number_of_stations_found}: {searched_stations.length} {loading ? <span className="pi pi-spinner pi-spin"></span> : <span className="w-1rem inline-block"></span>}
       </span>
 
