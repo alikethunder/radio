@@ -101,4 +101,5 @@ var Fr = map[string]string{
 	"maximize_player":                               "maximiser le lecteur",
 	"privacy_policy":                                "politique de confidentialité",
 	"number_of_stations_found":                      "Nombre de stations trouvées",
+	"random_station":                                "Station aléatoire",
 }

@@ -8,6 +8,7 @@ import {
 import { Button } from 'primereact/button'
 
 import { MdSignalWifiConnectedNoInternet0 } from "react-icons/md"
+import { IoDiceSharp } from "react-icons/io5"
 
 import {
   actions,
@@ -36,6 +37,7 @@ import { useMobile, useTooltip, useTranslations, useTranslationsSkeleton } from 
 import { useDebounceCallback } from "usehooks-ts"
 
 import './index.sass'
+import { random_number_from_length } from "@/functions/random_number_from_length"
 
 export const Player: FC = memo(() => {
 
@@ -99,6 +101,7 @@ export const Player: FC = memo(() => {
     'pause',
     'minimize_player',
     'maximize_player',
+    'random_station',
   ], true)
 
   const switch_playing = useDebounceCallback(() => actions.player.switch_playing(), 50)
@@ -136,10 +139,19 @@ export const Player: FC = memo(() => {
 
   const minimized = useStore().player.minimized()
 
-  const tooltip = useTooltip(minimized ? translations.maximize_player : translations.minimize_player)
+  const maximize_tooltip = useTooltip(minimized ? translations.maximize_player : translations.minimize_player)
+
+  const random_tooltip = useTooltip(translations.random_station)
 
   const toggle_player = useCallback(useDebounceCallback(() => {
     actions.player.toggle_player_size()
+  }, 50), [])
+
+  const play_random_station = useCallback(useDebounceCallback(() => {
+    const stations = store.app.stations_home()
+    const random_station = stations[random_number_from_length(stations.length - 1)]
+    actions.player.current_station(random_station)
+    actions.player.playing(true)
   }, 50), [])
 
   return (
@@ -165,7 +177,7 @@ export const Player: FC = memo(() => {
 
           onClick={toggle_player}
 
-          {...tooltip}
+          {...maximize_tooltip}
         />
 
         {
@@ -244,6 +256,23 @@ export const Player: FC = memo(() => {
                   </>
                   : <></>
               }
+
+              <Button
+                rounded
+                outlined
+                raised
+                className={`p-0 w-2rem h-2rem shadow_on_hover align-self-center flex flex-shrink-0 justify-content-center align-items-center`}
+                severity={`secondary`}
+
+                onClick={play_random_station}
+
+                {...random_tooltip}
+              >
+                <IoDiceSharp style={{
+                  width: '1.5rem',
+                  height: '1.5rem',
+                }}/>
+              </Button>
             </div>
         }
 

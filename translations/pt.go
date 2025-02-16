@@ -101,4 +101,5 @@ var Pt = map[string]string{
 	"maximize_player":                               "maximizar player",
 	"privacy_policy":                                "política de privacidade",
 	"number_of_stations_found":                      "Número de estações encontradas",
+	"random_station":                                "Estação aleatória",
 }

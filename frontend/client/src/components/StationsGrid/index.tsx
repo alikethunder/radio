@@ -109,7 +109,7 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
 
       {
         searched_stations.length ?
-          <Message severity="info" className="mt-3 font-medium md:ml-6 select-none align-self-start py-1 px-2 border-none"
+          <Message severity="info" className="my-2 font-medium md:ml-6 select-none align-self-start py-1 px-2 border-none"
             style={{
               ...mobile ? {
                 marginLeft: `${gapx}px`,

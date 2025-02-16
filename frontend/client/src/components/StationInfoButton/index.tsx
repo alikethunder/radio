@@ -39,7 +39,10 @@ export const StationInfoButton: FC<Props> = memo(({ station, className, ...rest 
 
       {...tooltip}
     >
-      <RiInfoCardLine />
+      <RiInfoCardLine style={{
+        width: '1.2rem',
+        height: '1.2rem',
+      }}/>
     </Button>
   )
 }, (o, n) => {
