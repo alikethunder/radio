@@ -100,4 +100,5 @@ var De = map[string]string{
 	"minimize_player":                               "Player minimieren",
 	"maximize_player":                               "Player maximieren",
 	"privacy_policy":                                "Datenschutzrichtlinie",
+	"number_of_stations_found":                      "Anzahl der gefundenen Stationen",
 }

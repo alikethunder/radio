@@ -10,10 +10,11 @@ import {
 
 import { Size } from '@/types/size'
 
-import { useDebounceCallback, useMediaQuery, useResizeObserver } from "usehooks-ts"
+import { useDebounceCallback, useResizeObserver } from "usehooks-ts"
 import { Station } from "@/types"
 import { useLog, useMobile, useStationsSearch, useTranslations } from "@/hooks"
-import { YandexAd } from "../YandexAd"
+import { YandexAd } from "@/components/YandexAd"
+import { Message } from 'primereact/message'
 
 type Props = {
   stations: Station[];
@@ -38,6 +39,7 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
 
   const [translations] = useTranslations([
     'no_stations_with_parameters',
+    'number_of_stations_found',
   ], true)
 
   const ref = useRef<HTMLDivElement>(null)
@@ -104,6 +106,20 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
   return (
     <>
       <YandexAd id="R-A-14083703-2" className="h-5rem flex-shrink-0" />
+
+      {
+        searched_stations.length ?
+          <Message severity="info" className="mt-3 font-medium md:ml-6 select-none align-self-start py-1 px-2 border-none"
+            style={{
+              ...mobile ? {
+                marginLeft: `${gapx}px`
+              } : {}
+            }}
+
+            text={`${translations.number_of_stations_found} : ${searched_stations.length}`}
+          />
+          : <></>
+      }
 
       <div className="w-full h-full overflow-y-auto page flex-grow-1 flex flex-column" ref={ref}>
 

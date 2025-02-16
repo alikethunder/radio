@@ -100,4 +100,5 @@ var En = map[string]string{
 	"minimize_player":                               "minimize player",
 	"maximize_player":                               "maximize player",
 	"privacy_policy":                                "Privacy policy",
+	"number_of_stations_found":                      "Number of stations found",
 }

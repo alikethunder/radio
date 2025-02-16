@@ -101,4 +101,5 @@ var Sp = map[string]string{
 	"minimize_player":                               "minimizar reproductor",
 	"maximize_player":                               "maximizar reproductor",
 	"privacy_policy":                                "política de privacidad",
+	"number_of_stations_found":                      "Número de estaciones encontradas",
 }
