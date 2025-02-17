@@ -1,4 +1,4 @@
-import { FC, memo, useCallback, useMemo, } from "react"
+import { FC, memo, useCallback, useEffect, useMemo, useState, } from "react"
 
 import { Button } from 'primereact/button'
 
@@ -13,17 +13,32 @@ import { useDebounceCallback } from "usehooks-ts"
 import { update_json } from "@/API/profile/update_json"
 import { v7 } from "uuid"
 import { Station } from "@/types"
+import { useAsyncMemo } from "use-async-memo"
 
 type Props = {
   station: Station;
   className?: string;
+  show_likes?: boolean;
 }
 
-export const AddStationToFavorites: FC<Props> = memo(({ station, className, ...rest }) => {
+export const AddStationToFavorites: FC<Props> = memo(({ station, className, show_likes, ...rest }) => {
 
   const { id } = station
 
+  const [likes, set_likes] = useState<number | null>(null)
+
   const signedin = useStore().auth.signedin()
+
+  useEffect(() => {
+    if (show_likes && id) {
+      (async () => {
+        const resp = await fetch(`/api/v1/radio/likes/${id}`)
+        const text = await resp.text()
+        //console.log('[AddStationToFavorites] likes : ', text)
+        set_likes(Number(text))
+      })()
+    }
+  }, [id])
 
   const click_add_to_favorites = useCallback(useDebounceCallback(async (id) => {
 
@@ -50,6 +65,9 @@ export const AddStationToFavorites: FC<Props> = memo(({ station, className, ...r
         uuid: signedin ? store.user.id() : store.persistedApp.user_uuid(),
       })
     })
+    const text = await resp.text()
+    //console.log('[AddStationToFavorites] likes : ', text)
+    set_likes(Number(text))
 
     if (signedin) {
       update_json({ favorite_stations: store.user.favorite_stations() })

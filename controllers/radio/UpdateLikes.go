@@ -3,6 +3,7 @@ package RadioEndpoints
 import (
 	"fmt"
 	"slices"
+	"strconv"
 
 	"github.com/goccy/go-json"
 
@@ -65,6 +66,13 @@ func UpdateLikes(ctx *fiber.Ctx) error {
 					},
 					//true,
 				)
+
+				station, err := db.SelectRow("station_counters", fiber.Map{"id": id}, "likes")
+
+				if err == nil {
+					likes := station["likes"].(int64)
+					return ctx.Status(fiber.StatusOK).Send([]byte(strconv.FormatInt(likes, 10)))
+				}
 
 				return ctx.SendStatus(fiber.StatusOK)
 			}

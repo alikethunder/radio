@@ -194,7 +194,7 @@ export const Player: FC = memo(() => {
 
               <StationShareButton station={current_station} />
 
-              <AddStationToFavorites station={current_station} />
+              <AddStationToFavorites station={current_station} show_likes />
 
             </>
             : <></>

@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	"crypto/tls"
@@ -163,7 +164,11 @@ func main() {
 	files_endpoints.Post("/:table/:row_id/:field", FilesEndpoints.Upload)
 
 	radio_endpoints := v1.Group("/radio", compress_get, etag.New(), cache.New(cache.Config{
-		Next:       notGet,
+		Next: func(ctx *fiber.Ctx) bool {
+			//don't cache likes
+			return ctx.Method() != fiber.MethodGet ||
+				strings.Contains(ctx.Path(), "/api/v1/radio/likes/")
+		},
 		Expiration: 4 * time.Hour,
 		KeyGenerator: func(ctx *fiber.Ctx) string {
 			return utils.CopyString(ctx.Path() + ctx.Query("from") + ctx.Query("limit") + ctx.Query("admin"))
@@ -192,17 +197,19 @@ func main() {
 
 	//radio_endpoints.Get("/broadcast/:id", RadioEndpoints.Broadcast)
 
+	radio_endpoints.Get("/list", RadioEndpoints.ListStations).Name("list")
+
+	radio_endpoints.Get("/likes/:id", RadioEndpoints.GetLikes).Name("get_likes")
+
+	radio_endpoints.Get("/description/:id/:language", RadioEndpoints.GetStationDescription).Name("get_description")
+
+	radio_endpoints.Get("/:id", RadioEndpoints.GetStation).Name("get_station")
+
 	radio_endpoints.Post("/update-likes/:id", RadioEndpoints.UpdateLikes)
 
 	radio_endpoints.Post("/update/:id", RadioEndpoints.Update)
 
-	radio_endpoints.Get("/list", RadioEndpoints.ListStations)
-
 	radio_endpoints.Post("/stations-by-id", RadioEndpoints.ListStationsById)
-
-	radio_endpoints.Get("/description/:id/:language", RadioEndpoints.GetStationDescription)
-
-	radio_endpoints.Get("/:id", RadioEndpoints.GetStation)
 
 	radio_endpoints.Post("/upload-jsons", RadioEndpoints.UploadJsons)
 
