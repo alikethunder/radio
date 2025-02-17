@@ -51,19 +51,19 @@ export const YandexAd: FC<Props> = memo(({ update_dependency, onlyDesktop, class
         container.current?.insertBefore(new_ya, ya)
 
         ya?.remove()
-      }
 
-      window.yaContextCb.push(() => {
-        window.Ya.Context.AdvManager.render({
-          "blockId": id,
-          "renderTo": `yandex_rtb_${id}-${counter}`,
-          "async": true,
-          darkTheme: theme === 'dark',
-          onError: (data: any) => {
-            console.log('[YandexAd] error: ', data)
-          },
+        window.yaContextCb.push(() => {
+          window.Ya.Context.AdvManager.render({
+            "blockId": id,
+            "renderTo": `yandex_rtb_${id}-${counter}`,
+            "async": true,
+            darkTheme: theme === 'dark',
+            onError: (data: any) => {
+              console.log('[YandexAd] error: ', data)
+            },
+          })
         })
-      })
+      }
     }
   }, [
     theme,
