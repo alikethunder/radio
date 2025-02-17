@@ -9,7 +9,6 @@ type Props = {
   className?: string;
   interval?: number;  //interval in ms to change ads
   onlyDesktop?: boolean; //ad will be shown only on desktop
-  hideOpacity?: boolean; // hide container with opacity 0
   style?: React.CSSProperties;
   update_dependency?: any;
 }
@@ -18,7 +17,7 @@ import { useMobile, } from "@/hooks"
 
 const ads_enabled = true
 
-export const YandexAd: FC<Props> = memo(({ update_dependency, hideOpacity, onlyDesktop, className, id, interval, style, ...rest }) => {
+export const YandexAd: FC<Props> = memo(({ update_dependency, onlyDesktop, className, id, interval, style, ...rest }) => {
 
   if (!ads_enabled) return <></>
 
@@ -27,8 +26,6 @@ export const YandexAd: FC<Props> = memo(({ update_dependency, hideOpacity, onlyD
   const theme = useStore().persistedApp.theme()
 
   const [counter, set_counter] = useState(1)
-
-  const [hide, set_hide] = useState(false)
 
   const container = useRef<HTMLDivElement>(null)
 
@@ -64,15 +61,9 @@ export const YandexAd: FC<Props> = memo(({ update_dependency, hideOpacity, onlyD
           darkTheme: theme === 'dark',
           onError: (data: any) => {
             console.log('[YandexAd] error: ', data)
-            set_hide(true)
           },
-          onRender: (data: any) => {
-            set_hide(false)
-          }
         })
       })
-    } else {
-      set_hide(true)
     }
   }, [
     theme,
@@ -83,7 +74,7 @@ export const YandexAd: FC<Props> = memo(({ update_dependency, hideOpacity, onlyD
   ])
 
   return (
-    <div className={`flex align-items-stretch ${className ?? ''} ${hide ? (hideOpacity ? 'opacity-0' : 'max-h-0 overflow-hidden') : ''}`} ref={container} {...style ? { style } : {}} >
+    <div className={`flex align-items-stretch ${className ?? ''} `} ref={container} {...style ? { style } : {}} >
       <div id={`yandex_rtb_${id}-1`} className={`w-full h-full ${className ?? ''}`} />
     </div >
   )

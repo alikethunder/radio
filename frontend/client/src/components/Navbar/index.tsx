@@ -23,6 +23,7 @@ import {
   FormActionsState,
   QueryLink,
   ThemeSwitcher,
+  YandexAd,
 } from '@/components'
 
 import { useDebounceCallback } from "usehooks-ts"
@@ -67,12 +68,12 @@ export const Navbar: FC = memo(() => {
 
   return (
     <>
-      <div className={`flex flex-shrink-0 h-3rem sm:h-4rem justify-content-between surface-card z-2 ${search_panel_closed ? 'shadow-2' : ''}`}
+      <div className={`flex flex-row flex-shrink-0 h-3rem sm:h-4rem justify-content-between surface-card z-2 ${search_panel_closed ? 'shadow-2' : ''}`}
         style={{
           borderBottom: '1px solid var(--surface-border)',
         }}>
 
-        <div className="left h-full flex gap-1 sm:gap-2">
+        <div className="left h-full flex gap-1 sm:gap-2 flex-shrink-0">
 
           <QueryLink to={app_routes.root}
             onClick={click_root}
@@ -149,7 +150,9 @@ export const Navbar: FC = memo(() => {
 
         </div>
 
-        <div className="right h-full mr-0 md:mr-2">
+        <YandexAd id="R-A-14083703-6" className="flex-grow-1 align-self-stretch ml-1" onlyDesktop />
+
+        <div className="right h-full mr-0 md:mr-2 flex-shrink-0">
           <Button
             className="h-full shadow-none"
             severity="info"

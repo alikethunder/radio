@@ -133,9 +133,9 @@ export const Station = () => {
 
   const [station_avatar, set_station_avatar] = useState<string>(`/api/v1/files/stations/${station?.id}/avatar`)
 
-  useEffect(()=>{
+  useEffect(() => {
     set_station_avatar(`/api/v1/files/stations/${station?.id}/avatar`)
-  },[station?.id])
+  }, [station?.id])
 
   const station_admin = useMemo(() => Boolean(
     signedin
@@ -439,8 +439,6 @@ export const Station = () => {
         })}
       </script>
 
-      <YandexAd id="R-A-14083703-3" className="h-6rem md:h-8rem flex-shrink-0" />
-
       <div
         className=" w-full overflow-y-auto page station_page flex-grow-1 flex flex-column text-800 md:p-4 md:pl-5 p-3 md:pr-0"
       >
@@ -678,7 +676,7 @@ export const Station = () => {
                 <StationShareButton station={station} />
               </div>
 
-              <YandexAd id="R-A-14083703-5" className="flex-grow-1 align-self-stretch max-h-5rem" onlyDesktop hideOpacity />
+              <YandexAd id="R-A-14083703-5" className="flex-grow-1 align-self-stretch max-h-5rem" onlyDesktop />
             </div>
 
             <div className="flex flex-row gap-2">
@@ -975,7 +973,7 @@ export const Station = () => {
 
           </form>
 
-          <YandexAd id="R-A-14083703-4" className="flex-grow-1 align-self-stretch" onlyDesktop hideOpacity interval={60000} />
+          <YandexAd id="R-A-14083703-4" className="flex-grow-1 align-self-stretch" onlyDesktop interval={60000} />
         </div>
 
         {

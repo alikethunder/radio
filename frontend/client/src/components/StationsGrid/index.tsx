@@ -158,8 +158,6 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
 
   return (
     <>
-      <YandexAd id="R-A-14083703-2" className="h-5rem flex-shrink-0" />
-
       {
         searched_stations.length ?
           <Message
