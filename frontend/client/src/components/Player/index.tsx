@@ -2,6 +2,7 @@ import { FC, memo, useCallback, useEffect, useState } from "react"
 
 import {
   generatePath,
+  useNavigate,
 } from "react-router-dom"
 
 //import { TabMenu } from 'primereact/tabmenu'
@@ -41,6 +42,8 @@ import { random_number_from_length } from "@/functions/random_number_from_length
 import { switch_to_random_station } from "@/functions"
 
 export const Player: FC = memo(() => {
+
+  const navigate = useNavigate()
 
   const [audio_ref, set_audio_ref] = useState<HTMLAudioElement | null>(null)
 
@@ -151,6 +154,10 @@ export const Player: FC = memo(() => {
   const play_random_station = useCallback(useDebounceCallback(() => {
 
     const stations = store.app.stations_home()
+
+    if (!stations.length){
+      navigate('/')
+    }
 
     switch_to_random_station(stations)
   }, 50), [])

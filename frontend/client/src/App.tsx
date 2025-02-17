@@ -30,6 +30,7 @@ import {
   DynamicTooltip,
   StationInfoDialog,
 } from '@/components'
+import { list } from "@/API/station/list"
 
 import { useLog, usePageInList, useTranslations } from '@/hooks'
 
@@ -152,6 +153,31 @@ export default memo(function App() {
       (async () => {
         const station = await get_station(current_station.id)
         actions.player.current_station(station)
+      })()
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!store.app.stations_home_loaded()) {
+      (async () => {
+        const limit = 400
+        while (true) {
+          const from = store.app.stations_home_last_id()
+
+          const res = await list({ limit, admin: store.user.admin(), ...from ? { from } : {} })
+
+          //console.log(`[stations] list result : `, res)
+          actions.app.add_stations_home(res)
+          actions.app.stations_home_last_id(res[res.length - 1].id)
+
+          if (!res.length || res.length < limit) {
+            //console.log('set loading false ')
+            //console.log('[Home] stations : ', store.app.stations_home())
+            actions.app.stations_home_loaded(true)
+            break
+          }
+
+        }
       })()
     }
   }, [])
