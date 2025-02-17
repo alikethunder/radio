@@ -1,13 +1,15 @@
 [
   {
     "relation": [
-      "delegate_permission/common.handle_all_urls"
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
     ],
     "target": {
       "namespace": "android_app",
       "package_name": "best.radio.twa",
       "sha256_cert_fingerprints": [
-        "18:0C:81:12:21:DA:F2:54:0E:5A:3D:33:8F:25:69:70:A6:0D:34:87:BD:3C:2A:C0:E7:1B:5D:55:92:1C:1B:06"
+        "18:0C:81:12:21:DA:F2:54:0E:5A:3D:33:8F:25:69:70:A6:0D:34:87:BD:3C:2A:C0:E7:1B:5D:55:92:1C:1B:06",
+        "89:66:A7:88:16:0C:B9:F3:5D:D4:41:23:B0:C2:4A:A6:CC:C9:1E:25:E2:08:C7:F2:E3:F5:4D:F0:07:EC:55:BA"
       ]
     }
   },
