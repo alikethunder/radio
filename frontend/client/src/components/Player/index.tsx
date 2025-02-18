@@ -296,7 +296,7 @@ export const Player: FC = memo(() => {
             onChange={(e) => {
               actions.player.volume(e.value as NumRange<101>)
             }}
-            className="md:w-8rem align-self-center mx-1 flex-grow-1"
+            className="md:w-8rem align-self-center mr-2 flex-grow-1"
             orientation="horizontal"
             pt={{
               range: {
