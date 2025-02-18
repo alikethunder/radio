@@ -15,12 +15,11 @@ import { BsFillInfoSquareFill } from "react-icons/bs"
 
 import { useDebounceCallback, useResizeObserver } from "usehooks-ts"
 import { Station } from "@/types"
-import { useLog, useMobile, useStationsSearch, useTooltip, useTranslations } from "@/hooks"
+import { useLog, useMobile, useStationsSearch, useTranslations } from "@/hooks"
 import { YandexAd } from "@/components/YandexAd"
 import { Message } from 'primereact/message'
 import { Button } from "primereact/button"
 import { IoDiceSharp } from "react-icons/io5"
-import { random_number_from_length } from "@/functions/random_number_from_length"
 import { switch_to_random_station } from "@/functions"
 
 type Props = {
@@ -111,8 +110,6 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
     loading,
   ])
 
-  const random_tooltip = useTooltip(translations.random_station_from_found)
-
   const play_random_station = useCallback(useDebounceCallback(() => {
 
     switch_to_random_station(searched_stations)
@@ -142,7 +139,10 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
 
         onClick={play_random_station}
 
-        {...random_tooltip}
+        tooltip={translations.random_station_from_found}
+        tooltipOptions={{
+          position: 'bottom',
+        }}
       >
         <IoDiceSharp style={{
           width: '1.5rem',
