@@ -99,7 +99,6 @@ export const routes = [
               id: params.id,
               name: store.user.name(),
               email: store.user.email(),
-              own_profile: true,
             }
           } else {
             //todo: load public user data from db

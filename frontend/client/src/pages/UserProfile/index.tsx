@@ -1,4 +1,4 @@
-import { FC, useCallback, useRef, useState, } from "react"
+import { FC, useCallback, useMemo, useRef, useState, } from "react"
 
 import {
   useLoaderData,
@@ -60,11 +60,15 @@ export const UserProfile = () => {
 
   const [photo_blob, set_photo_blob] = useState<Blob | null>(null)
 
-  const user_data = useLoaderData() as FrontUser & { own_profile?: boolean }
+  const user_data = useLoaderData() as FrontUser
 
   //console.log('user_data : ', user_data)
 
   const edit_mode = useStore().app.FormActionsState_edit_mode()
+
+  const own_user_id = useStore().user.id()
+
+  const own_profile = useMemo(() => own_user_id === user_data?.id, [own_user_id, user_data?.id])
 
   const {
     control,
@@ -187,7 +191,7 @@ export const UserProfile = () => {
       set_photo_blob(null)
       reset()
     },
-  }, formState, user_data?.own_profile)
+  }, formState, own_profile)
 
   return (
     <>
@@ -319,7 +323,7 @@ export const UserProfile = () => {
               )}
             />
             {
-              user_data?.own_profile ?
+              own_profile ?
                 <Controller
                   name="email"
                   control={control}
