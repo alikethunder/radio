@@ -77,7 +77,7 @@ export const StationInfoDialog: FC = memo(() => {
       header={headerElement}
       style={{
         width: '50rem',
-        maxWidth: '90vw',
+        maxWidth: '95vw',
       }}
       onHide={() => actions.app.station_info_dialog(null)}
       resizable={false}

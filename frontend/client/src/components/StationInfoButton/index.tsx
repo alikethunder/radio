@@ -33,7 +33,6 @@ export const StationInfoButton: FC<Props> = memo(({ station, className, ...rest 
       outlined
       raised
       className={`p-0 w-2rem h-2rem shadow_on_hover align-self-center flex flex-shrink-0 justify-content-center align-items-center text-600 ${className ?? ''}`}
-      severity={`info`}
 
       onClick={open_station_info}
 

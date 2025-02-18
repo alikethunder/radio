@@ -1,4 +1,4 @@
-import { FC, memo, useCallback, useMemo } from "react"
+import { CSSProperties, FC, memo, useCallback, useMemo } from "react"
 
 import { classNames } from 'primereact/utils'
 
@@ -15,9 +15,11 @@ type Props = {
   onClick?: () => void;
   disable_link?: boolean;
   className?: string;
+  only_flag?: boolean;
+  style?: CSSProperties;
 }
 
-export const StationCountryTag: FC<Props> = memo(({ en, onClick, disable_link, className }) => {
+export const StationCountryTag: FC<Props> = memo(({ en, style, only_flag, onClick, disable_link, className }) => {
 
   const station_country = useStore().session.get_country(en)
 
@@ -43,26 +45,31 @@ export const StationCountryTag: FC<Props> = memo(({ en, onClick, disable_link, c
   }, 100), [station_country, tag_is_in_search])
 
   return (
-    <span
-      onClick={click}
-
-      className={classNames({
-        'cursor-pointer': !tag_is_in_search && !disable_link,
-        'opacity-70': tag_is_in_search && !disable_link,
-      },
-        `inline font-semibold select-none inline-block max-w-full overflow-hidden text-overflow-ellipsis white-space-nowrap text-primary ${tag_text_class} ${className ?? ''}`,
-      )}
-      style={{
-        fontSize: '1rem',
-      }}
-      >
-      <span className="line-height-1 mr-1" style={{
-        fontSize: '1.25rem',
-      }}>
+    only_flag ?
+      <span className={`select-none ${className ?? ''}`} onClick={click} {...style ? { style } : {}}>
         {station_country?.flag}
       </span>
+      :
+      <span
+        onClick={click}
 
-      {station_country?.[language ?? 'en']}
-    </span>
+        className={classNames({
+          'cursor-pointer': !tag_is_in_search && !disable_link,
+          'opacity-70': tag_is_in_search && !disable_link,
+        },
+          `inline font-semibold select-none inline-block max-w-full overflow-hidden text-overflow-ellipsis white-space-nowrap text-primary ${tag_text_class} ${className ?? ''}`,
+        )}
+        style={{
+          fontSize: '1rem',
+        }}
+      >
+        <span className="line-height-1 mr-1" style={{
+          fontSize: '1.25rem',
+        }}>
+          {station_country?.flag}
+        </span>
+
+        {station_country?.[language ?? 'en']}
+      </span>
   )
 })
