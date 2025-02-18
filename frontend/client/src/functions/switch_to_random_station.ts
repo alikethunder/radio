@@ -13,11 +13,13 @@ export const switch_to_random_station = (stations: Station[]) => {
   }
 
   if (cur_station && random_station) {
-    while (random_station.id === cur_station.id) {
+    while (!random_station || random_station.id === cur_station.id) {
       get_random_station()
     }
   } else {
-    get_random_station()
+    while (!random_station) {
+      get_random_station()
+    }
   }
 
   actions.player.current_station(random_station)
