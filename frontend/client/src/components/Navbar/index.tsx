@@ -73,7 +73,7 @@ export const Navbar: FC = memo(() => {
           borderBottom: '1px solid var(--surface-border)',
         }}>
 
-        <div className="left h-full flex gap-1 sm:gap-2 flex-shrink-0">
+        <div className="left h-full flex gap-1 sm:gap-2 md:flex-shrink-0">
 
           <QueryLink to={app_routes.root}
             onClick={click_root}
@@ -152,7 +152,7 @@ export const Navbar: FC = memo(() => {
 
         <YandexAd id="R-A-14083703-6" className="flex-grow-1 align-self-stretch ml-1" onlyDesktop />
 
-        <div className="right h-full mr-0 md:mr-2 flex-shrink-0">
+        <div className="right h-full mr-0 md:mr-2 md:flex-shrink-0">
           <Button
             className="h-full shadow-none"
             severity="info"

@@ -155,7 +155,7 @@ export const Player: FC = memo(() => {
 
     const stations = store.app.stations_home()
 
-    if (!stations.length){
+    if (!stations.length) {
       navigate('/')
     }
 
@@ -173,7 +173,7 @@ export const Player: FC = memo(() => {
         ref={set_audio_ref}
       />
 
-      <div className={`flex flex-column justify-content-between ${minimized ? '' : 'pb-2'}`}>
+      <div className={`flex flex-column justify-content-between flex-shrink-0 ${minimized ? '' : 'pb-2'}`}>
 
         <Button
           icon={`pi pi-angle-${minimized ? 'up' : 'down'}`}
@@ -202,7 +202,7 @@ export const Player: FC = memo(() => {
 
       </div>
 
-      <div className="flex flex-column gap-2 align-items-center flex-shrink-0 mr-2 md:mr-0 relative">
+      <div className="flex flex-column gap-2 align-items-center flex-shrink-0  relative">
 
         <StationAvatar
           id={current_station?.id}
@@ -243,7 +243,7 @@ export const Player: FC = memo(() => {
 
       </div>
 
-      <div className="flex flex-column flex-shrink-0 flex-grow-1 max-w-20rem justify-content-between">
+      <div className="flex flex-column md:flex-shrink-0 flex-grow-1 max-w-20rem justify-content-between">
 
         {/* current station name */}
         {
@@ -286,7 +286,7 @@ export const Player: FC = memo(() => {
             </div>
         }
 
-        <div className="volume_controls flex flex-row gap-3">
+        <div className="volume_controls flex flex-row gap-1 md:gap-3">
 
           <Slider
             value={volume}
@@ -296,7 +296,7 @@ export const Player: FC = memo(() => {
             onChange={(e) => {
               actions.player.volume(e.value as NumRange<101>)
             }}
-            className="w-8rem align-self-center mx-1"
+            className="md:w-8rem align-self-center mx-1 flex-grow-1"
             orientation="horizontal"
             pt={{
               range: {
@@ -319,7 +319,7 @@ export const Player: FC = memo(() => {
             }}
           />
 
-          <div className="flex flex-row align-items-center text-gray-500 gap-1">
+          <div className="flex flex-row align-items-center text-gray-500 gap-1 flex-shrink-0">
 
             <span className="w-2rem">
               {volume}
