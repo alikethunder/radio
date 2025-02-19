@@ -91,7 +91,7 @@ var De = map[string]string{
 	"main_page_with_player":                         "Hauptseite mit Player",
 	"feedback":                                      "Rückmeldung",
 	"filter_by_countries":                           "Nach Ländern filtern",
-	"country":                                       "Land",
+	"country":                                       "Land/Region",
 	"genre":                                         "Genre",
 	"switch_theme":                                  "Thema wechseln",
 	"share":                                         "teilen",

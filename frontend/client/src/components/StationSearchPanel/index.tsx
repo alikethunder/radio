@@ -10,6 +10,8 @@ import {
   useShowSearchPanel,
 } from '@/hooks'
 
+const transition_classes = 'transition-all transition-duration-200 transition-linear'
+
 export const StationSearchPanel: FC = memo(() => {
 
   const search_panel_closed = useStore().persistedApp.search_panel_closed()
@@ -19,9 +21,9 @@ export const StationSearchPanel: FC = memo(() => {
   const search_panel_opened = useMemo(() => !search_panel_closed && show_stations_search, [search_panel_closed, show_stations_search])
 
   return (
-    <div className={`transition-all transition-duration-200 transition-ease-in-out ${search_panel_opened ? 'max-h-full' : 'max-h-0'}`}>
+    <div className={`${transition_classes} ${search_panel_opened ? 'max-h-full' : 'max-h-0'}`}>
       <div
-        className={`search_panel relative z-1 surface-card flex flex-row flex-wrap flex-shrink-0 p-2 gap-3 justify-content-center align-items-center transition-all transition-duration-200 transition-ease-in-out ${search_panel_opened ? 'translate-y-0  shadow-2' : '-translate-y-100 -mb-7'}`}>
+        className={`search_panel relative z-1 surface-card flex flex-row flex-wrap flex-shrink-0 p-2 gap-3 justify-content-center align-items-center ${transition_classes} ${search_panel_opened ? 'translate-y-0  shadow-2' : '-translate-y-100 -mb-7'}`}>
         <StationSearchPanelContent />
       </div>
     </div>

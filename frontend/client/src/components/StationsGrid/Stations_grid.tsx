@@ -79,8 +79,13 @@ export const Stations_grid: FC<Props> = memo(({
 
             onScroll={({
               scrollTop,
+              verticalScrollDirection,
             }) => {
               actions.persistedApp[scroll_prop](scrollTop)
+
+              if (verticalScrollDirection === 'forward') {
+                actions.persistedApp.search_panel_closed(true)
+              }
             }}
 
             height={height}
@@ -108,5 +113,5 @@ export const Stations_grid: FC<Props> = memo(({
     && o.place === n.place
     && o.stations.length === n.stations.length
     && o.stations[0]?.id === n.stations[0]?.id
-    && o.stations[o.stations.length-1]?.id === n.stations[n.stations.length-1]?.id
+    && o.stations[o.stations.length - 1]?.id === n.stations[n.stations.length - 1]?.id
 })

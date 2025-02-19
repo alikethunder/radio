@@ -91,7 +91,7 @@ var Fr = map[string]string{
 	"main_page_with_player":                         "Page principale avec lecteur",
 	"feedback":                                      "Retour d'information",
 	"filter_by_countries":                           "filtrer par pays",
-	"country":                                       "pays",
+	"country":                                       "pays/Région",
 	"genre":                                         "genre",
 	"switch_theme":                                  "Changer de thème",
 	"share":                                         "partager",

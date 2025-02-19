@@ -1,4 +1,4 @@
-import { CSSProperties, FC, memo, useCallback, useMemo } from "react"
+import { CSSProperties, FC, memo, useCallback, useEffect, useMemo, useState } from "react"
 
 import { classNames } from 'primereact/utils'
 
@@ -9,17 +9,18 @@ import {
   actions,
   useStore,
 } from "@/store"
+import { useLog } from "@/hooks"
+import { StationCountryFlag } from "../StationCountryFlag"
 
 type Props = {
   en: string;
   onClick?: () => void;
   disable_link?: boolean;
   className?: string;
-  only_flag?: boolean;
   style?: CSSProperties;
 }
 
-export const StationCountryTag: FC<Props> = memo(({ en, style, only_flag, onClick, disable_link, className }) => {
+export const StationCountryTag: FC<Props> = memo(({ en, style, onClick, disable_link, className }) => {
 
   const station_country = useStore().session.get_country(en)
 
@@ -45,31 +46,26 @@ export const StationCountryTag: FC<Props> = memo(({ en, style, only_flag, onClic
   }, 100), [station_country, tag_is_in_search])
 
   return (
-    only_flag ?
-      <span className={`select-none ${className ?? ''}`} onClick={click} {...style ? { style } : {}}>
-        {station_country?.flag}
-      </span>
-      :
-      <span
-        onClick={click}
+    <span
+      onClick={click}
 
-        className={classNames({
-          'cursor-pointer': !tag_is_in_search && !disable_link,
-          'opacity-70': tag_is_in_search && !disable_link,
-        },
-          `inline font-semibold select-none inline-block max-w-full overflow-hidden text-overflow-ellipsis white-space-nowrap text-primary ${tag_text_class} ${className ?? ''}`,
-        )}
-        style={{
-          fontSize: '1rem',
-        }}
-      >
-        <span className="line-height-1 mr-1" style={{
-          fontSize: '1.25rem',
-        }}>
-          {station_country?.flag}
-        </span>
+      className={classNames({
+        'cursor-pointer': !tag_is_in_search && !disable_link,
+        'opacity-70': tag_is_in_search && !disable_link,
+      },
+        `inline-block align-items-center font-semibold select-none max-w-full overflow-hidden text-overflow-ellipsis white-space-nowrap text-primary ${tag_text_class} ${className ?? ''}`,
+      )}
+      style={{
+        fontSize: '1rem',
+      }}
+    >
+      <StationCountryFlag en={en} className="inline-block mr-1" style={{
+        verticalAlign: 'middle'
+      }} />
 
-        {station_country?.[language ?? 'en']}
-      </span>
+      <span style={{
+        verticalAlign: 'middle'
+      }}>{station_country?.[language ?? 'en']}</span>
+    </span>
   )
 })

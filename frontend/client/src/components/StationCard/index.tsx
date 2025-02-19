@@ -4,7 +4,7 @@ import {
   AddStationToFavorites,
   QueryLink,
   StationAvatar,
-  StationCountryTag,
+  StationCountryFlag,
   StationInfoButton,
   StationShareButton,
   StationTag,
@@ -86,10 +86,7 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
         >
 
           <div className="flex flex-row gap-1 relative">
-            <StationCountryTag only_flag disable_link en={station?.country} className="absolute top-0 left-0 z-1 text-2xl line-height-1 p-05" style={{
-              "-webkit-backface-visibility": 'hidden',
-              transform: 'translate3D(0, 0, 0)',
-            } as CSSProperties} />
+            <StationCountryFlag disable_link en={station?.country} className="absolute top-0 left-0 z-1 m-05 mt-1" />
 
             <div
               className="w-full h-5rem flex align-items-center justify-content-center p-ripple relative surface-100"

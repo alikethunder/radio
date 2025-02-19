@@ -90,7 +90,7 @@ var Ru = map[string]string{
 	"main_page_with_player":                         "Домашняя страница с плеером",
 	"feedback":                                      "Обратная связь",
 	"filter_by_countries":                           "фильтр по странам",
-	"country":                                       "Страна",
+	"country":                                       "Страна/Регион",
 	"genre":                                         "Жанр",
 	"switch_theme":                                  "Сменить тему",
 	"share":                                         "поделиться",

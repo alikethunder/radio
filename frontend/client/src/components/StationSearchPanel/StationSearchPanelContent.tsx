@@ -25,6 +25,7 @@ import { useDebounceCallback } from "usehooks-ts"
 import { app_routes } from "@/constants/router"
 import { StationCountry, StationGenre } from "@/types"
 import { StationGenreTag } from "@/components/StationGenreTag"
+import { StationCountryTag } from "../StationCountryTag"
 
 const multiselect_pt = {
   panel: {
@@ -86,8 +87,9 @@ export const StationSearchPanelContent: FC = memo(() => {
 
   const update_search = useCallback((e: ChangeEvent) => actions.persistedApp.search_stations_text((e.target as HTMLInputElement).value), [])
 
-  const countryItemTemplate = useCallback((option: StationCountry) => <span className="inline-block max-w-full overflow-hidden text-overflow-ellipsis white-space-nowrap"><span className="text-2xl">{option?.flag}</span> {option?.[language ?? 'en']}</span>
-    , [language])
+  const countryItemTemplate = useCallback((option: StationCountry) =>
+    <StationCountryTag en={option.en} disable_link />
+    , [])
 
   const genreItemTemplate = useCallback((option: StationGenre) => <StationGenreTag genre_en={option.en} />
     , [])
