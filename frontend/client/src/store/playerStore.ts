@@ -4,7 +4,10 @@ import {
   NumRange,
 } from '@/types/generics/range'
 
-import { Station } from '@/types'
+import {
+  Station,
+  HistoryRecord,
+} from '@/types'
 
 type Player = {
   volume: NumRange<101>,
@@ -12,6 +15,7 @@ type Player = {
   current_station: Station | null,
   playing: boolean,
   minimized: boolean,
+  history: HistoryRecord[],
 }
 
 const initialState = {
@@ -20,6 +24,7 @@ const initialState = {
   current_station: null,
   playing: false,
   minimized: false,
+  history: [],
 }
 
 export const playerStore = createStore('app')(initialState as Player,

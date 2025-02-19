@@ -162,6 +162,8 @@ export const Player: FC = memo(() => {
     switch_to_random_station(stations)
   }, 50), [])
 
+  //todo: implement history storing for logged in and not logged in users
+
   return (
     <div id="player" className={`flex flex-row flex-shrink-0 shadow-3 surface-card p-2 md:pl-3 gap-2 md:gap-3 mt-auto transition-all transition-duration-300 transition-linear ${current_station ? 'opened' : ''} ${minimized ? 'h-5rem' : 'h-9rem'}`}>
 

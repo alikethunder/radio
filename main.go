@@ -13,6 +13,7 @@ import (
 	"web_project/db"
 	"web_project/db/Countries"
 	"web_project/db/Genres"
+	"web_project/db/History"
 	"web_project/db/Languages"
 	DBPlans "web_project/db/Plans"
 	"web_project/db/StationCounters"
@@ -23,6 +24,7 @@ import (
 	"web_project/controllers"
 	AuthEndpoints "web_project/controllers/auth"
 	FilesEndpoints "web_project/controllers/files"
+	HistoryEndpoints "web_project/controllers/history"
 	ProfileEndpoints "web_project/controllers/profile"
 	RadioEndpoints "web_project/controllers/radio"
 	SettingsEndpoints "web_project/controllers/settings"
@@ -58,6 +60,7 @@ func init() {
 	Genres.Initialize()
 	Languages.Initialize()
 	Countries.Initialize()
+	History.Initialize()
 
 	if os.Getenv("ENV") == "prod" {
 		// To initialize Sentry's handler, you need to initialize Sentry itself beforehand
@@ -162,6 +165,16 @@ func main() {
 	files_endpoints.Get("/:table/:row_id/:field", FilesEndpoints.GetFile)
 
 	files_endpoints.Post("/:table/:row_id/:field", FilesEndpoints.Upload)
+
+	history_endpoints := v1.Group("/history", compress_get, etag.New())
+
+	history_endpoints.Get("/", HistoryEndpoints.Get)
+
+	history_endpoints.Post("/:id", HistoryEndpoints.Add)
+
+	/* history_endpoints.Delete("/:id", HistoryEndpoints.DeleteRecord)
+
+	history_endpoints.Delete("/all", HistoryEndpoints.DeleteAll) */
 
 	radio_endpoints := v1.Group("/radio", compress_get, etag.New(), cache.New(cache.Config{
 		Next: func(ctx *fiber.Ctx) bool {
