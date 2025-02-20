@@ -79,13 +79,8 @@ export const Stations_grid: FC<Props> = memo(({
 
             onScroll={({
               scrollTop,
-              verticalScrollDirection,
             }) => {
               actions.persistedApp[scroll_prop](scrollTop)
-
-              if (verticalScrollDirection === 'forward') {
-                actions.persistedApp.search_panel_closed(true)
-              }
             }}
 
             height={height}
