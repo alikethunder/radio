@@ -18,55 +18,61 @@ import {
 import { Station } from "@/types"
 
 import { Helmet } from "react-helmet"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useTransition } from "react"
+import { useNavigate } from "react-router-dom"
 
 export const FavoriteStations = () => {
 
   //const stations = useLoaderData() as Station[]
-  const stations = useStore().app.stations_favorite()
+  const [stations, set_stations] = useState<Station[]>([])
   const loading = !useStore().app.stations_favorite_loaded()
 
+  const navigate = useNavigate()
+
+  const home_stations = useStore().app.stations_home()
+
+  const home_stations_loaded = useStore().app.stations_home_loaded()
+
+  const auth_checked = useStore().auth.checked()
+
+  const [isPending, startTransition] = useTransition()
+
   const favorite_stations = useFavoriteStations()
+  //useLog(true, '[FavoriteStations] favorite_stations : ', favorite_stations)
 
   useEffect(() => {
-    if (
-      favorite_stations.length
-      && !store.app.stations_favorite_loaded()
-    ) {
-      console.log(`[FavoriteStations] favorite_stations : `, favorite_stations);
-      const loaded_stations = store.app.stations_favorite().map(s => s.id);
-      console.log(`[FavoriteStations] loaded_stations : `, loaded_stations);
+    if (auth_checked) {
+      if (
+        favorite_stations.length
+      ) {
 
-      const stations_to_load = favorite_stations.filter(id => !loaded_stations.includes(id));
-      console.log(`[FavoriteStations] stations_to_load : `, stations_to_load);
-
-      if (stations_to_load.length) {
-        (async () => {
-
-          const res = await fetch(`/api/v1/radio/stations-by-id`, {
-            method: 'POST',
-            body: JSON.stringify({
-              ids: stations_to_load.join(',')
-            }),
+        if (home_stations_loaded) {
+          startTransition(() => {
+            set_stations(home_stations.filter(station => favorite_stations.includes(station.id)))
           })
+        } else {
+          actions.app.stations_favorite_loaded(false)
+        }
 
-          const json = await res.json()
-          console.log(`[FavoriteStations] list result : `, json)
-
-          actions.app.add_stations_favorite(json)
-          actions.app.stations_favorite_last_id(json[json.length - 1].id)
-
-          actions.app.stations_favorite_loaded(true)
-
-        })()
       } else {
-        actions.app.stations_favorite_loaded(true)
+        navigate('/')
       }
     }
-  }, [])
+  }, [
+    favorite_stations,
+    home_stations,
+    home_stations_loaded,
+    auth_checked,
+  ])
 
-  useLog(true, '[FavoriteStations] stations : ', stations)
-  useLog(true, '[FavoriteStations] loading : ', loading)
+  useEffect(() => {
+    if (home_stations_loaded) {
+      actions.app.stations_favorite_loaded(!isPending)
+    }
+  }, [isPending, home_stations_loaded])
+
+  //useLog(true, '[FavoriteStations] stations : ', stations)
+  //useLog(true, '[FavoriteStations] loading : ', loading)
 
   const [translations] = useTranslations([
     "my_stations",

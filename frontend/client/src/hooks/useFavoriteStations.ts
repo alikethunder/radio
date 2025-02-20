@@ -1,5 +1,7 @@
 import { store, useStore, } from "@/store"
 
+// returns favorite stations ids
+
 export const useFavoriteStations = (not_hook?: boolean): string[] => {
 
   const not_logged_favorite_stations = (not_hook ? store : useStore()).persistedApp.favorite_stations()

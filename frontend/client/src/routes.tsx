@@ -168,11 +168,6 @@ export const routes = [
             request,
           }: Loader_params
         ) => {
-          const favorite_stations = useFavoriteStations(true)
-
-          if (!favorite_stations.length) {
-            return redirect(app_routes.root)
-          }
           return null
         },
         shouldRevalidate: () => false,

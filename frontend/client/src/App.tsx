@@ -248,6 +248,8 @@ export default memo(function App() {
     } catch (e) {
       console.log(e)
       onLogout()
+    } finally {
+      actions.auth.checked(true)
     }
   }, [])
 
