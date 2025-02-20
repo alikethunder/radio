@@ -401,15 +401,15 @@ export default memo(function App() {
   useEffect(() => {
     let touch_start: number | null
 
-    document.body.ontouchstart = e => {
+    document.addEventListener('touchstart', e => {
       touch_start = e.changedTouches[0].clientY
-    }
+    })
 
-    document.body.ontouchmove = e => {
-      if (touch_start && e.changedTouches[0].clientY < touch_start){
+    document.addEventListener('touchmove', e => {
+      if (touch_start && e.changedTouches[0].clientY < touch_start) {
         actions.persistedApp.search_panel_closed(true)
       }
-    }
+    })
   }, [])
 
   return (
