@@ -19,7 +19,7 @@ const ads_enabled = true
 
 export const YandexAd: FC<Props> = memo(({ update_dependency, onlyDesktop, className, id, interval, style, ...rest }) => {
 
-  if (!ads_enabled) return <></>
+  if (!ads_enabled || window.location.port == '3000') return <></>
 
   const mobile = useMobile()
 

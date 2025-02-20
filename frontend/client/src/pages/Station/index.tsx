@@ -372,7 +372,7 @@ export const Station = () => {
 
   const click_station_tag_remove = useDebounceCallback((e, field) => {
     if (e) {
-      setValue(field.name, field.value.filter((v: string) => v != (e.target as HTMLElement).closest('.p-chips-token')?.querySelector('.p-tag-value')?.textContent))
+      setValue(field.name, field.value.filter((v: string) => v != (e.target as HTMLElement).closest('.p-chips-token')?.querySelector('.value')?.textContent))
     }
   }, 50)
 
@@ -384,8 +384,6 @@ export const Station = () => {
       actions.player.current_station(station)
     }
   }, 50)
-
-  const click_tag_remove_token_icon = useDebounceCallback((e, field) => click_station_tag_remove(e, field), 50)
 
   return (
     <>
@@ -743,7 +741,7 @@ export const Station = () => {
                         allowDuplicate={false}
                         removable
 
-                        removeIcon={<StationTagRemoveTokenIcon onClick={e => click_tag_remove_token_icon(e, field)} />}
+                        removeIcon={<StationTagRemoveTokenIcon onClick={e => click_station_tag_remove(e, field)} />}
 
                         separator=","
 

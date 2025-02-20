@@ -234,13 +234,13 @@ export default memo(function App() {
 
       const user = JSON.parse(decodeURIComponent(user_cookie))
 
-      console.log('[App.tsx] user : ', user)
+      //console.log('[App.tsx] user : ', user)
 
       actions.auth.signedin(true)
 
       actions.user.update_user_data(user)
 
-      console.log('[App] user.favorite_stations : ', user.favorite_stations)
+      //console.log('[App] user.favorite_stations : ', user.favorite_stations)
 
       if (user?.favorite_stations.length) {
         actions.persistedApp.favorite_stations(user.favorite_stations)
