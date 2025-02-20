@@ -400,7 +400,7 @@ export const Station = () => {
           language ? <meta property="og:locale" content={language} /> : <></>
         }
 
-        <meta property="og:locale:alternate" content={languages.join(',').replaceAll(`${language},`, '').replaceAll(language ?? '', '')} />
+        <meta property="og:locale:alternate" content={languages.join(',').replace(`${language},`, '').replace(language ?? '', '')} />
 
         <meta property="og:site_name" content={translations.sitename} />
 

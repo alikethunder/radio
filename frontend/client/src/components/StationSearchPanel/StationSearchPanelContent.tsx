@@ -67,7 +67,7 @@ export const StationSearchPanelContent: FC = memo(() => {
   useEffect(() => {
     debounce(() => {
 
-      const escaped = search_stations_text.replace(/\,/g, ' ').replace(/\-/g, ' ').replaceAll(/\_/g, ' ').toLowerCase().split(' ').filter(w => !!w)
+      const escaped = search_stations_text.replace(/\,/g, ' ').replace(/\-/g, ' ').replace(/\_/g, ' ').toLowerCase().split(' ').filter(w => !!w)
 
       actions.persistedApp.search_stations_text_array(escaped)
     }, 100)()
