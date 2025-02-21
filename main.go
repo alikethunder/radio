@@ -219,7 +219,7 @@ func main() {
 
 	settings_endpoints := v1.Group("/settings", compress_get, etag.New(), cache.New(cache.Config{
 		Next:       notGet,
-		Expiration: 24 * 7 * time.Hour,
+		Expiration: 24 * time.Hour,
 	}))
 
 	settings_endpoints.Get("/sitemap", SettingsEndpoints.GenerateSitemap)
