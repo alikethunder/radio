@@ -60,6 +60,7 @@ import {
 } from '@/hooks'
 
 import {
+  StationGenre,
   Station as StationType
 } from "@/types"
 
@@ -77,10 +78,13 @@ import {
 
 import { random_station_tag_color } from "@/functions/random_station_tag_color"
 
-import { StationTagRemoveTokenIcon } from "@/layout parts"
+import { GenreItemTemplate, StationTagRemoveTokenIcon } from "@/layout parts"
 
 import { Helmet } from "react-helmet"
 import { update } from "@/API/station/update_json"
+import { MultiSelect } from "primereact/multiselect"
+
+import { multiselect_pt } from "@/constants/multiselect"
 
 export const Station = () => {
 
@@ -129,6 +133,8 @@ export const Station = () => {
 
   const language = useStore().translations.language()
 
+  const station_genres = useStore().session.station_genres()
+
   const [image_loading, set_image_loading] = useState(true)
 
   const [station_avatar, set_station_avatar] = useState<string>(`/api/v1/files/stations/${station?.id}/avatar`)
@@ -147,8 +153,6 @@ export const Station = () => {
     current_user_id
   ])
 
-  //console.log('[Station] is_admin : ', is_admin)
-
   const {
     control,
     formState,
@@ -165,6 +169,7 @@ export const Station = () => {
       external_enable: station?.external_enable ?? false,
       external: station?.external ?? '',
       broadcasting: station?.broadcasting ?? false,
+      genres: station_genres.filter(g => (station?.genres ?? []).includes(g.en)),
       tags: station?.tags ?? [],
       ...Object.fromEntries(languages.map(language => ([`description_${language}`, station[`description_${language}`] ?? '']))),
     }
@@ -177,6 +182,8 @@ export const Station = () => {
   const onSubmit = useCallback(useDebounceCallback(async (data: any) => {
     console.log('submit : ', data)
 
+    data.genres = data.genres.map((g: StationGenre) => g.en)
+    
     const { id } = station
 
     const resp = await update(id, data)
@@ -352,6 +359,11 @@ export const Station = () => {
 
       actions.session.update_tags(json)
     }
+  }, 50)
+
+  const change_genres = useDebounceCallback(async (e, field) => {
+    //e.target.value = e.value = e.value?.map((tag: string) => tag?.trim())
+    field.onChange(e)
   }, 50)
 
   const [translations] = useTranslations([
@@ -702,12 +714,42 @@ export const Station = () => {
               <span className={`font-semibold select-none ${tag_text_class}`}>
                 {translations.genre}:
               </span>
-              <div className="flex flex-row flex-wrap gap-1">
-                {
-                  station?.genres?.map(genre => <StationGenreTag genre_en={genre} />)
-                }
-              </div>
+              {
+                edit_mode ?
+                  <Controller
+                    name="genres"
+                    control={control}
+                    render={({ field, }) => {
+                      console.log(field.value)
+                      return (
+                        <>
+                          {/* Genres */}
+                          <MultiSelect
+                            value={field.value}
+                            onChange={e => {
+                              change_genres(e, field)
+                            }}
+                            options={station_genres}
+                            optionLabel={language ?? 'en'}
+                            itemTemplate={GenreItemTemplate}
+                            display="chip"
+                            filter
+                            placeholder={translations.genre}
+                            className="w-20rem max-w-full relative"
+                            pt={multiselect_pt}
+                          />
+                        </>
+                      )
+                    }} />
+                  :
+                  <div className="flex flex-row flex-wrap gap-1">
+                    {
+                      station?.genres?.map(genre => <StationGenreTag genre_en={genre} />)
+                    }
+                  </div>
+              }
             </div>
+
 
             {
               edit_mode ?
