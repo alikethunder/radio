@@ -103,4 +103,5 @@ var Pt = map[string]string{
 	"number_of_stations_found":                      "Número de estações encontradas",
 	"random_station":                                "Estação aleatória",
 	"random_station_from_found":                     "estação aleatória encontrada",
+	"share_list":                                    "Compartilhar lista",
 }

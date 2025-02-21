@@ -29,6 +29,7 @@ import {
   StationSearchPanel,
   DynamicTooltip,
   StationInfoDialog,
+  ShareListPopup,
 } from '@/components'
 import { list } from "@/API/station/list"
 
@@ -440,6 +441,8 @@ export default memo(function App() {
       <DynamicTooltip />
 
       <StationInfoDialog />
+
+      <ShareListPopup />
 
     </PrimeReactProvider>
   )

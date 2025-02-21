@@ -21,6 +21,7 @@ import { Message } from 'primereact/message'
 import { Button } from "primereact/button"
 import { IoDiceSharp } from "react-icons/io5"
 import { switch_to_random_station } from "@/functions"
+import { ShareListIcon } from "../ShareListIcon"
 
 type Props = {
   stations: Station[];
@@ -47,6 +48,7 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
     'no_stations_with_parameters',
     'number_of_stations_found',
     'random_station_from_found',
+    'share_list',
   ], true)
 
   const ref = useRef<HTMLDivElement>(null)
@@ -90,7 +92,6 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
       const r = Number((
         (width - 2 * px - columns * card_size.width) / (columns + (mobile ? 1 : -1))
       ).toFixed(2))
-      //console.log('gapx : ', width, columns, r)
       return r
     }
   }, [
@@ -116,20 +117,14 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
 
   }, 50), [searched_stations])
 
-  const count_message = useMemo(() =>
-    <>
-      <BsFillInfoSquareFill
-        className="flex-shrink-0 md:align-self-center align-self-start"
-        style={{
-          width: '1.3rem',
-          height: '1.3rem',
-        }}
-      />
+  const share_list = useCallback(useDebounceCallback(() => {
 
-      <span className="align-self-start md:align-self-center">
-        {translations.number_of_stations_found}: {searched_stations.length} {loading ? <span className="pi pi-spinner pi-spin"></span> : <span className="w-1rem inline-block"></span>}
-      </span>
+    actions.app.share_stations_list(searched_stations)
 
+  }, 50), [searched_stations])
+
+  const random_station_button = useMemo(() =>
+    searched_stations.length ?
       <Button
         rounded
         outlined
@@ -149,11 +144,66 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
           height: '1.5rem',
         }} />
       </Button>
+      : <></>
+    , [
+      play_random_station,
+      translations.random_station_from_found,
+      searched_stations.length,
+    ])
+
+  const share_list_button = useMemo(() =>
+    searched_stations.length ?
+      <Button
+        rounded
+        outlined
+        raised
+        className={`p-0 w-2rem h-2rem shadow_on_hover align-self-center flex flex-shrink-0 justify-content-center align-items-center inline-flex`}
+        severity={`info`}
+
+        onClick={share_list}
+
+        tooltip={translations.share_list}
+        tooltipOptions={{
+          position: 'bottom',
+        }}
+      >
+        <ShareListIcon />
+      </Button>
+      : <></>
+    , [
+      translations.share_list,
+      searched_stations.length,
+      share_list,
+    ])
+
+  const count_message = useMemo(() =>
+    <>
+      <BsFillInfoSquareFill
+        className="flex-shrink-0 md:align-self-center align-self-start"
+        style={{
+          width: '1.3rem',
+          height: '1.3rem',
+        }}
+      />
+
+      <span className="align-self-start md:align-self-center">
+        {translations.number_of_stations_found}: {searched_stations.length} {loading ? <span className="pi pi-spinner pi-spin"></span> : <span className="w-1rem inline-block"></span>}
+      </span>
+
+      <div className="flex flex-column md:flex-row gap-2">
+
+        {random_station_button}
+
+        {share_list_button}
+
+      </div>
     </>
     , [
       translations.number_of_stations_found,
       searched_stations.length,
       loading,
+      random_station_button,
+      share_list_button,
     ])
 
   return (
