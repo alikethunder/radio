@@ -135,6 +135,8 @@ export const Station = () => {
 
   const station_genres = useStore().session.station_genres()
 
+  const station_languages = useStore().session.station_languages()
+
   const [image_loading, set_image_loading] = useState(true)
 
   const [station_avatar, set_station_avatar] = useState<string>(`/api/v1/files/stations/${station?.id}/avatar`)
@@ -170,6 +172,7 @@ export const Station = () => {
       external: station?.external ?? '',
       broadcasting: station?.broadcasting ?? false,
       genres: station_genres.filter(g => (station?.genres ?? []).includes(g.en)),
+      languages: station_languages.filter(l => (station?.languages ?? []).includes(l.en)),
       tags: station?.tags ?? [],
       ...Object.fromEntries(languages.map(language => ([`description_${language}`, station[`description_${language}`] ?? '']))),
     }
@@ -180,10 +183,12 @@ export const Station = () => {
   //console.log("errors.name : ", errors.name)
 
   const onSubmit = useCallback(useDebounceCallback(async (data: any) => {
-    console.log('submit : ', data)
 
     data.genres = data.genres.map((g: StationGenre) => g.en)
-    
+    data.languages = data.languages.map((l: StationGenre) => l.en)
+
+    console.log('submit : ', data)
+
     const { id } = station
 
     const resp = await update(id, data)
@@ -359,11 +364,6 @@ export const Station = () => {
 
       actions.session.update_tags(json)
     }
-  }, 50)
-
-  const change_genres = useDebounceCallback(async (e, field) => {
-    //e.target.value = e.value = e.value?.map((tag: string) => tag?.trim())
-    field.onChange(e)
   }, 50)
 
   const [translations] = useTranslations([
@@ -693,21 +693,47 @@ export const Station = () => {
               <span className={`font-semibold select-none ${tag_text_class}`}>
                 {translations.language}:
               </span>
-              <div className="flex flex-row flex-wrap gap-1">
-                {
-                  station?.languages?.map((language, i, arr) =>
-                    <>
-                      <StationLanguageTag language_en={language} />
-                      {
-                        i < arr.length - 1 &&
-                        <span className="text-base">
-                          ,
-                        </span>
-                      }
-                    </>
-                  )
-                }
-              </div>
+              {
+                edit_mode ?
+                  <Controller
+                    name="languages"
+                    control={control}
+                    render={({ field, }) => {
+                      console.log(field.value)
+                      return (
+                        <>
+                          {/* Languages */}
+                          <MultiSelect
+                            value={field.value}
+                            onChange={field.onChange}
+                            options={station_languages}
+                            optionLabel={language ?? 'en'}
+                            display="chip"
+                            filter
+                            placeholder={translations.language}
+                            className="w-20rem max-w-full relative"
+                            pt={multiselect_pt}
+                          />
+                        </>
+                      )
+                    }} />
+                  :
+                  <div className="flex flex-row flex-wrap gap-1">
+                    {
+                      station?.languages?.map((language, i, arr) =>
+                        <>
+                          <StationLanguageTag language_en={language} />
+                          {
+                            i < arr.length - 1 &&
+                            <span className="text-base">
+                              ,
+                            </span>
+                          }
+                        </>
+                      )
+                    }
+                  </div>
+              }
             </div>
 
             <div className="flex flex-row gap-2">
@@ -720,15 +746,12 @@ export const Station = () => {
                     name="genres"
                     control={control}
                     render={({ field, }) => {
-                      console.log(field.value)
                       return (
                         <>
                           {/* Genres */}
                           <MultiSelect
                             value={field.value}
-                            onChange={e => {
-                              change_genres(e, field)
-                            }}
+                            onChange={field.onChange}
                             options={station_genres}
                             optionLabel={language ?? 'en'}
                             itemTemplate={GenreItemTemplate}
