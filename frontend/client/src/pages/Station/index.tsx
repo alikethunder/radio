@@ -7,6 +7,8 @@ import {
   useSearchParams,
 } from "react-router-dom"
 
+import { useClickOutside } from 'primereact/hooks'
+
 import {
   Controller,
   useForm,
@@ -94,6 +96,14 @@ export const Station = () => {
 
   const theme = useStore().persistedApp.theme()
 
+  const tags_suggestions_ref = useRef(null)
+
+  const tags_input_ref = useRef<Chips | null>(null)
+
+  useClickOutside(tags_suggestions_ref, () => {
+    set_tags_suggestion_focused(false)
+  })
+
   useEffect(() => {
     if (station.id == 'new') {
       set_search(s => {
@@ -108,6 +118,10 @@ export const Station = () => {
   const navigate = useNavigate()
 
   const tracks_input_ref = useRef<HTMLInputElement>(null)
+
+  const [tags_suggestion_focused, set_tags_suggestion_focused] = useState(false)
+
+  const [tags_suggestion_text, set_tags_suggestion_text] = useState('')
 
   const [profile_photo_exists, set_profile_photo_exists] = useState(true)
 
@@ -136,6 +150,8 @@ export const Station = () => {
   const station_genres = useStore().session.station_genres()
 
   const station_languages = useStore().session.station_languages()
+
+  const stations_tags = useStore().session.station_tags()
 
   const [image_loading, set_image_loading] = useState(true)
 
@@ -339,9 +355,10 @@ export const Station = () => {
   }, [external])
 
   const change_station_tags = useDebounceCallback(async (e, field) => {
+    console.log(field.value)
     e.target.value = e.value = e.value?.map((tag: string) => tag?.trim())
 
-    //console.log('change_station_tags after trim : ', e.value)
+    console.log('change_station_tags after trim : ', e.value)
 
     field.onChange(e)
 
@@ -396,6 +413,21 @@ export const Station = () => {
       actions.player.current_station(station)
     }
   }, 50)
+
+  const filtered_tags_suggestions = useMemo(() =>
+    stations_tags?.filter(tag => tag.name.toLowerCase().includes(tags_suggestion_text.toLowerCase())).map(tag =>
+      <StationTag key={tag.name} tag={tag.name} disable_link onClick={(e) => {
+        e?.preventDefault()
+        set_tags_suggestion_text('')
+        if (tags_input_ref.current) {
+          tags_input_ref.current.getInput().value = ''
+          tags_input_ref.current.focus()
+        }
+        setValue('tags', [...(getValues('tags') ?? []), tag.name])
+      }} />), [
+    stations_tags,
+    tags_suggestion_text,
+  ])
 
   return (
     <>
@@ -699,7 +731,6 @@ export const Station = () => {
                     name="languages"
                     control={control}
                     render={({ field, }) => {
-                      console.log(field.value)
                       return (
                         <>
                           {/* Languages */}
@@ -781,50 +812,82 @@ export const Station = () => {
                   control={control}
                   render={({ field, }) => (
                     <>
-
-                      <label
-                        htmlFor={field.name}
-                        className={classNames(
-                          {
-                            'p-error': errors[field.name]
-                          },
-                          'text-600',
-                          "select-none",
-                          'flex',
-                          'align-items-center'
-                        )}
-                      >
-                        <small>Tags</small>
-                      </label>
-
-                      <Chips
-                        value={field.value}
-                        onChange={e => {
-                          //console.log('chips change : ', e)
-                          change_station_tags(e, field)
-                        }}
-                        allowDuplicate={false}
-                        removable
-
-                        removeIcon={<StationTagRemoveTokenIcon onClick={e => click_station_tag_remove(e, field)} />}
-
-                        separator=","
-
-                        pt={{
-                          token: {
-                            className: classNames({
-
+                      <div className="flex flex-column gap-2 relative">
+                        <label
+                          htmlFor={field.name}
+                          className={classNames(
+                            {
+                              'p-error': errors[field.name]
                             },
-                              'p-0',
-                              'ml-1',
-                              'bg-red-600',
-                              'border-round',
-                            ),
-                          },
-                        }}
+                            'text-600',
+                            "select-none",
+                            'flex',
+                            'align-items-center'
+                          )}
+                        >
+                          <small>Tags</small>
+                        </label>
 
-                        itemTemplate={tag => <StationTag tag={tag} disable_link />}
-                      />
+                        <Chips
+                          value={field.value}
+                          onChange={e => {
+                            //console.log('chips change : ', e)
+                            change_station_tags(e, field)
+                          }}
+
+                          onKeyDown={
+                            (e) => {
+                              setTimeout(() => {
+                                set_tags_suggestion_text((e.target as HTMLInputElement).value)
+                              })
+                            }
+                          }
+
+                          onAdd={
+                            e => {
+                              set_tags_suggestion_text('')
+                            }
+                          }
+
+                          onFocus={() => {
+                            set_tags_suggestion_focused(true)
+                          }}
+
+                          allowDuplicate={false}
+                          removable
+
+                          removeIcon={<StationTagRemoveTokenIcon onClick={e => click_station_tag_remove(e, field)} />}
+
+                          separator=","
+
+                          pt={{
+                            token: {
+                              className: classNames({
+
+                              },
+                                'p-0',
+                                'ml-1',
+                                'bg-red-600',
+                                'border-round',
+                              ),
+                            },
+                          }}
+
+                          itemTemplate={tag => <StationTag tag={tag} disable_link />}
+
+                          ref={tags_input_ref}
+                        />
+
+                        {
+                          tags_suggestion_focused
+                            && tags_suggestion_text ?
+                            <div className="flex flex-row flex-wrap gap-2 absolute top-100 bottom-auto right-0 left-0 h-12rem overflow-y-scroll border-round-2xl surface-border bg-white p-2 z-1 shadow-3 align-items-start justify-content-start" ref={tags_suggestions_ref}>
+                              {filtered_tags_suggestions}
+                            </div>
+                            : <></>
+                        }
+
+                      </div>
                     </>
                   )} />
                 :

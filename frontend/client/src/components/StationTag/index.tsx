@@ -15,7 +15,7 @@ import { tag_text_class } from '@/constants/classes'
 type Props = {
   tag: string;
   color?: string;
-  onClick?: () => void;
+  onClick?: (e?: React.MouseEvent) => void;
   disable_link?: boolean;
 }
 
@@ -50,7 +50,7 @@ export const StationTag: FC<Props> = memo(({ tag, color, onClick, disable_link }
 
       className={classNames({
         'opacity-0': (color ?? 'nullish') != 'nullish' && !color?.length,
-        'cursor-pointer shadow_on_hover shadow-2': !tag_is_in_search && !disable_link,
+        'cursor-pointer shadow_on_hover shadow-2': !tag_is_in_search && (!disable_link || onClick),
         'opacity-70': tag_is_in_search && !disable_link,
       },
         `py-05 select-none ${tag_text_class} font-medium border-round inline-flex 
