@@ -102,5 +102,9 @@ var Ru = map[string]string{
 	"number_of_stations_found":                      "Найдено радиостанций",
 	"random_station":                                "случайная радиостанция",
 	"random_station_from_found":                     "случайная радиостанция из найденных",
-	"share_list":                                    "поделиться списком",
+	"share_stations_list":                           "поделиться списком радиостанций",
+	"share_station":                                 "поделиться радиостанцией",
+	"choose_stations_to_share":                      "Выберите радиостанции чтобы поделиться",
+	"selected":                                      "Выбрано",
+	"number_of_stations":                            "Количество радиостанций",
 }

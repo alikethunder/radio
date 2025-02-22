@@ -41,6 +41,7 @@ type AppStore = {
   hover_tooltip_content: string;
   station_info_dialog: Station | null;
   share_stations_list: Station[];
+  share_list_popup_opened: boolean;
 }
 
 const initial_state = {
@@ -74,6 +75,7 @@ const initial_state = {
   hover_tooltip_content: '',
   station_info_dialog: null,
   share_stations_list: [],
+  share_list_popup_opened: false,
 } as AppStore
 
 export const appStore = createStore('app')(initial_state)

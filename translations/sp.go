@@ -104,5 +104,9 @@ var Sp = map[string]string{
 	"number_of_stations_found":                      "Número de estaciones encontradas",
 	"random_station":                                "Estación aleatoria",
 	"random_station_from_found":                     "Estación aleatoria de encontradas",
-	"share_list":                                    "compartir lista",
+	"share_stations_list":                           "compartir lista de estaciones",
+	"share_station":                                 "compartir estación",
+	"choose_stations_to_share":                      "Elegir estaciones para compartir",
+	"selected":                                      "seleccionado",
+	"number_of_stations":                            "Número de estaciones",
 }

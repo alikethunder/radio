@@ -16,7 +16,7 @@ export const StationShareButton: FC<Props> = memo(({ station, className, ...rest
   const [loading, set_loading] = useState(false)
 
   const [translations] = useTranslations([
-    'share',
+    'share_station',
   ], true)
 
   const share_station = useCallback(async () => {
@@ -37,7 +37,7 @@ export const StationShareButton: FC<Props> = memo(({ station, className, ...rest
     }
   }, [station.id])
 
-  const tooltip = useTooltip(translations.share)
+  const tooltip = useTooltip(translations.share_station)
 
   return (
     <Button
@@ -49,7 +49,6 @@ export const StationShareButton: FC<Props> = memo(({ station, className, ...rest
       disabled={loading}
       onClick={share_station}
       {...tooltip}
-
     >
       {
         loading ?

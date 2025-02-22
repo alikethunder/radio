@@ -5,7 +5,6 @@ import {
   useNavigate,
 } from "react-router-dom"
 
-//import { TabMenu } from 'primereact/tabmenu'
 import { Button } from 'primereact/button'
 
 import { MdSignalWifiConnectedNoInternet0 } from "react-icons/md"
@@ -34,11 +33,10 @@ import { Slider } from "primereact/slider"
 
 import { classNames } from "primereact/utils"
 import { NumRange } from "@/types/generics/range"
-import { useMobile, useTooltip, useTranslations, useTranslationsSkeleton } from "@/hooks"
+import { useTooltip, useTranslations, } from "@/hooks"
 import { useDebounceCallback } from "usehooks-ts"
 
 import './index.sass'
-import { random_number_from_length } from "@/functions/random_number_from_length"
 import { switch_to_random_station } from "@/functions"
 
 export const Player: FC = memo(() => {

@@ -92,9 +92,10 @@ func main() {
 	engine := html.New(os.Getenv("TEMPL_PATH")+"/served", ".html")
 
 	app := fiber.New(fiber.Config{
-		Views:       engine,
-		JSONEncoder: json.Marshal,
-		JSONDecoder: json.Unmarshal,
+		Views:          engine,
+		JSONEncoder:    json.Marshal,
+		JSONDecoder:    json.Unmarshal,
+		ReadBufferSize: 10000,
 	})
 
 	if os.Getenv("ENV") == "prod" {
