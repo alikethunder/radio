@@ -66,6 +66,14 @@ func Manifest(ctx *fiber.Ctx) error {
 				},
 			},
 		},
+		"url_handlers": []fiber.Map{
+			{
+				"origin": ctx.BaseURL(),
+			},
+			{
+				"origin": "https://*." + constants.BaseURL,
+			},
+		},
 		"launch_handler": fiber.Map{
 			"client_mode": "navigate-existing",
 		},

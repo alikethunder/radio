@@ -8,16 +8,16 @@ type Props = {
   id: string; //banner id
   className?: string;
   interval?: number;  //interval in ms to change ads
-  onlyDesktop?: boolean; //ad will be shown only on desktop
   style?: React.CSSProperties;
   update_dependency?: any;
+  additional_render_params?: { [x: string]: any };
 }
 
 import { useMobile, } from "@/hooks"
 
 const ads_enabled = true
 
-export const YandexAd: FC<Props> = memo(({ update_dependency, onlyDesktop, className, id, interval, style, ...rest }) => {
+export const YandexAd: FC<Props> = memo(({ update_dependency, additional_render_params, className, id, interval, style, ...rest }) => {
 
   if (!ads_enabled || window.location.port == '3000') return <></>
 
@@ -40,7 +40,7 @@ export const YandexAd: FC<Props> = memo(({ update_dependency, onlyDesktop, class
   }, [update_dependency])
 
   useEffect(() => {
-    if (ads_enabled && (onlyDesktop ? !mobile : true)) {
+    if (ads_enabled) {
 
       if (counter > 1) {
         const ya = document.getElementById(`yandex_rtb_${id}-${counter - 1}`)
@@ -59,8 +59,9 @@ export const YandexAd: FC<Props> = memo(({ update_dependency, onlyDesktop, class
             "async": true,
             darkTheme: theme === 'dark',
             onError: (data: any) => {
-              console.log('[YandexAd] error: ', data)
+              console.log(`[YandexAd] ${id} error: `, data)
             },
+            ...(additional_render_params ?? {}),
           })
         })
       }
@@ -70,7 +71,6 @@ export const YandexAd: FC<Props> = memo(({ update_dependency, onlyDesktop, class
     mobile,
     id,
     counter,
-    onlyDesktop,
   ])
 
   return (

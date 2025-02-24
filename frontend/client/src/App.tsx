@@ -31,10 +31,11 @@ import {
   DynamicTooltip,
   StationInfoDialog,
   ShareListPopup,
+  YandexAd,
 } from '@/components'
 import { list } from "@/API/station/list"
 
-import { useLog, usePageInList, useTranslations } from '@/hooks'
+import { useLog, useMobile, usePageInList, useTranslations } from '@/hooks'
 
 import {
   WS,
@@ -60,7 +61,7 @@ import {
 import { get_station } from "@/API/station/get_station"
 import { update_json } from "@/API/profile/update_json"
 import { sessionStore } from "@/store/sessionStore"
-import { StationCountry, Language, StationLanguage, StationGenre } from "./types"
+import { StationCountry, Language, StationLanguage, StationGenre } from "@/types"
 
 const get_alphabet_sort = (language: Language | null) => ((a: StationLanguage | StationCountry | StationGenre, b: StationLanguage | StationCountry | StationGenre) => {
   language ??= 'en'
@@ -72,6 +73,10 @@ export default memo(function App() {
   const navigate = useNavigate()
 
   const location = useLocation()
+
+  const theme = useStore().persistedApp.theme()
+
+  const mobile = useMobile()
 
   const { pathname, search } = location
 
@@ -407,20 +412,6 @@ export default memo(function App() {
     }
   }, [pwa_event])
 
-  useEffect(() => {
-    let touch_start: number | null
-
-    document.addEventListener('touchstart', e => {
-      touch_start = e.changedTouches[0].clientY
-    })
-
-    document.addEventListener('touchmove', e => {
-      if (touch_start && e.changedTouches[0].clientY < touch_start) {
-        actions.persistedApp.search_panel_closed(true)
-      }
-    })
-  }, [])
-
   return (
     <PrimeReactProvider value={{
       appendTo: 'self',
@@ -430,15 +421,15 @@ export default memo(function App() {
 
       <Navbar />
 
+      {
+        current_station ? <Player /> : <></>
+      }
+
       <StationSearchPanel />
 
       <RightSidebar />
 
       <Outlet />
-
-      {
-        current_station ? <Player /> : <></>
-      }
 
       <Toasts />
 
@@ -449,6 +440,18 @@ export default memo(function App() {
       <StationInfoDialog />
 
       <ShareListPopup />
+
+      {
+        mobile ?
+          <YandexAd id="R-A-14083703-8" additional_render_params={{
+            type: 'floorAd',
+            platform: 'touch',
+          }} /> :
+          <YandexAd id="R-A-14083703-7" additional_render_params={{
+            type: 'floorAd',
+            platform: 'desktop',
+          }} />
+      }
 
     </PrimeReactProvider>
   )

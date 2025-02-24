@@ -11,6 +11,7 @@ import {
 } from "@/store"
 
 import {
+  useMobile,
   useShowSearchPanel,
   useTranslations,
 } from '@/hooks'
@@ -33,6 +34,8 @@ import './index.sass'
 export const Navbar: FC = memo(() => {
 
   const current_page = useStore().app.current_page()
+
+  const mobile = useMobile()
 
   const search_stations_text = useStore().persistedApp.search_stations_text()
 
@@ -76,10 +79,12 @@ export const Navbar: FC = memo(() => {
 
   return (
     <>
-      <div className={`flex flex-row flex-shrink-0 h-3rem sm:h-4rem justify-content-between surface-card z-2 ${search_panel_closed ? 'shadow-2' : ''}`}
+      <div
+        className={`flex flex-row flex-shrink-0 h-3rem sm:h-4rem justify-content-between surface-card z-2`}
         style={{
           borderBottom: '1px solid var(--surface-border)',
-        }}>
+        }}
+      >
 
         <div className="left h-full flex gap-1 sm:gap-2 md:flex-shrink-0">
 
@@ -158,7 +163,10 @@ export const Navbar: FC = memo(() => {
 
         </div>
 
-        <YandexAd id="R-A-14083703-6" className="flex-grow-1 align-self-stretch ml-1" onlyDesktop />
+        {
+          mobile ? <></> :
+            <YandexAd id="R-A-14083703-6" className="flex-grow-1 align-self-stretch ml-1" />
+        }
 
         <div className="right h-full mr-0 md:mr-2 md:flex-shrink-0">
           <Button
