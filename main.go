@@ -171,7 +171,9 @@ func main() {
 
 	history_endpoints.Get("/", HistoryEndpoints.Get)
 
-	history_endpoints.Post("/:id", HistoryEndpoints.Add)
+	history_endpoints.Get("/date", HistoryEndpoints.GetDate)
+
+	history_endpoints.Post("/:station_id", HistoryEndpoints.Add)
 
 	/* history_endpoints.Delete("/:id", HistoryEndpoints.DeleteRecord)
 

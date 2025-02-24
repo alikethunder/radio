@@ -14,7 +14,7 @@ func Get(ctx *fiber.Ctx) error {
 
 		cookie_user := cookies.ParseCookie(ctx.Cookies(cookies.AuthCookieName))
 
-		records := db.List("history", fiber.Map{"user_id": cookie_user["id"]}, []string{}, "")
+		records := db.List("history", fiber.Map{"user_id": cookie_user["id"]}, []string{}, "", "id", "date", "station_id")
 
 		return ctx.Status(fiber.StatusOK).JSON(records)
 

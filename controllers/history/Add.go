@@ -1,6 +1,7 @@
 package HistoryEndpoints
 
 import (
+	"fmt"
 	"time"
 	"web_project/cookies"
 	"web_project/db"
@@ -9,13 +10,22 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+/*
+success -> returns {
+		id,
+		date
+	}
+*/
+
 func Add(ctx *fiber.Ctx) error {
 	authCookie := ctx.Cookies(cookies.AuthCookieName)
 
 	if authCookie != "" {
 
 		cookie_user := cookies.ParseCookie(ctx.Cookies(cookies.AuthCookieName))
-		station_id := ctx.Params("id")
+		station_id := ctx.Params("station_id")
+
+		fmt.Println("[HistoryEndpoints.Add] :", cookie_user["id"], station_id)
 
 		if station_id != "" && cookie_user["id"] != "" {
 
@@ -29,8 +39,9 @@ func Add(ctx *fiber.Ctx) error {
 
 			err := db.Insert("history", record)
 
-			if err != nil {
+			if err == nil {
 				delete(record, "user_id")
+				delete(record, "station_id")
 				return ctx.Status(fiber.StatusOK).JSON(record)
 			}
 

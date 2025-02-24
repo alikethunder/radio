@@ -38,12 +38,18 @@ import { useDebounceCallback } from "usehooks-ts"
 
 import './index.sass'
 import { switch_to_random_station } from "@/functions"
+import { HistoryRecord } from "@/types"
+import { v7 } from "uuid"
 
 export const Player: FC = memo(() => {
 
   const navigate = useNavigate()
 
   const mobile = useMobile()
+
+  const signedin = useStore().auth.signedin()
+
+  const history_loaded = useStore().player.history_loaded()
 
   const search_panel_closed = useStore().persistedApp.search_panel_closed()
 
@@ -170,8 +176,6 @@ export const Player: FC = memo(() => {
     switch_to_random_station(stations)
   }, 50), [])
 
-  //todo: implement history storing for logged in and not logged in users
-
   useEffect(() => {
     // minimize/maximize player on touch scroll
     if (container_ref) {
@@ -198,6 +202,49 @@ export const Player: FC = memo(() => {
       }
     }
   }, [container_ref])
+
+  useEffect(() => {
+    //stations history update
+    if (history_loaded) {
+
+      if (current_station) {
+        const last_record = store.player.history_get_from_last(0)
+
+        console.log('last record : ', last_record, current_station.id)
+
+        if (last_record?.station_id !== current_station.id) {
+
+          (async () => {
+            let record: HistoryRecord = {
+              date: '',
+              station_id: current_station.id,
+            }
+
+            if (signedin) {
+              const resp = await fetch(`/api/v1/history/${current_station.id}`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+              })
+              record = { ...record, ...await resp.json() }
+              console.log('signedin history : ', record)
+            } else {
+              const resp = await fetch('/api/v1/history/date')
+              record.date = await resp.text()
+              record.id = v7()
+              console.log('non signedin history : ', record)
+            }
+            actions.player.history_add(record)
+          })()
+        }
+      }
+    }
+  }, [
+    current_station,
+    signedin,
+    history_loaded,
+  ])
 
   return (
     <div

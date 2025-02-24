@@ -76,6 +76,8 @@ export default memo(function App() {
 
   const theme = useStore().persistedApp.theme()
 
+  const auth_checked = useStore().auth.checked()
+
   const mobile = useMobile()
 
   const { pathname, search } = location
@@ -383,6 +385,7 @@ export default memo(function App() {
   }, [])
 
   useEffect(() => {
+    //store pwa install event
     document.addEventListener('PWAEvent', (e) => {
       actions.session.pwa_event(window.PWAInstallEvent)
     }, { once: true })
@@ -400,6 +403,7 @@ export default memo(function App() {
   }, [])
 
   useEffect(() => {
+    //trigger pwa install event
     if (store.session.pwa_event()) {
       setTimeout(() => {
         document.addEventListener('mousedown', install_pwa, { once: true })
@@ -411,6 +415,27 @@ export default memo(function App() {
       }, 10000)
     }
   }, [pwa_event])
+
+  useEffect(() => {
+    //load history if user logged in and it was checked
+    if (auth_checked) {
+
+      if (signedin) {
+        (async () => {
+          const resp = await fetch(`/api/v1/history`)
+          const history = await resp.json()
+          console.log('[history] loaded : ', history)
+          actions.player.history(history ?? [])
+          actions.player.history_loaded(true)
+        })()
+      } else {
+        actions.player.history_loaded(true)
+      }
+    }
+  }, [
+    auth_checked,
+    signedin,
+  ])
 
   return (
     <PrimeReactProvider value={{

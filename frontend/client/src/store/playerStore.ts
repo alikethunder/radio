@@ -16,6 +16,7 @@ type Player = {
   playing: boolean,
   minimized: boolean,
   history: HistoryRecord[],
+  history_loaded: boolean,
 }
 
 const initialState = {
@@ -25,6 +26,7 @@ const initialState = {
   playing: false,
   minimized: false,
   history: [],
+  history_loaded: false,
 }
 
 export const playerStore = createStore('app')(initialState as Player,
@@ -34,6 +36,12 @@ export const playerStore = createStore('app')(initialState as Player,
       name: 'playerStore'
     }
   })
+  .extendSelectors((state, get, api) => ({
+    history_get_from_last(n: number) {
+      const last = get.history().length - 1
+      return get.history()[last - n]
+    }
+  }))
   .extendActions((set, get, api) => ({
     reset: () => {
       Object.getOwnPropertyNames(set)
@@ -50,5 +58,11 @@ export const playerStore = createStore('app')(initialState as Player,
     },
     toggle_player_size() {
       set.minimized(!get.minimized())
-    }
+    },
+    history_add(record: HistoryRecord) {
+      set.history([
+        ...get.history(),
+        record,
+      ])
+    },
   }))
