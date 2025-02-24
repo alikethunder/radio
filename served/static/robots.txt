@@ -7,5 +7,7 @@ Disallow: /reset-password
 Disallow: /verification
 Disallow: /user-profile
 Disallow: /purchase-plan
+Disallow: /shared
+Disallow: /shared/*
 Sitemap: https://radio.best/sitemaps/sitemap.xml
 Sitemap: https://radio.best/sitemaps/radiobest.xml

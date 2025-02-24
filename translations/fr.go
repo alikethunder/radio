@@ -103,4 +103,9 @@ var Fr = map[string]string{
 	"number_of_stations_found":                      "Nombre de stations trouvées",
 	"random_station":                                "Station aléatoire",
 	"random_station_from_found":                     "station aléatoire trouvée",
+	"share_stations_list":                           "partager la liste des stations",
+	"share_station":                                 "partager la station",
+	"choose_stations_to_share":                      "Choisissez les stations à partager",
+	"selected":                                      "sélectionné",
+	"number_of_stations":                            "Nombre de stations",
 }

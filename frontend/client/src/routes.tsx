@@ -15,6 +15,7 @@ import {
   UserProfile,
   Station,
   FavoriteStations,
+  Shared,
 } from '@/pages'
 
 import {
@@ -74,6 +75,25 @@ export const routes = [
       {
         path: app_routes.root,
         element: <Home />,
+        shouldRevalidate: () => false,
+      },
+
+      {
+        path: app_routes.shared,
+        element: <Shared />,
+        loader: async (
+          {
+            params,
+          }: Loader_params
+        ) => {
+          const { ids } = params
+          if (ids) {
+            return ids
+          } else {
+            return redirect('/')
+          }
+
+        },
         shouldRevalidate: () => false,
       },
 
@@ -168,11 +188,6 @@ export const routes = [
             request,
           }: Loader_params
         ) => {
-          const favorite_stations = useFavoriteStations(true)
-
-          if (!favorite_stations.length) {
-            return redirect(app_routes.root)
-          }
           return null
         },
         shouldRevalidate: () => false,

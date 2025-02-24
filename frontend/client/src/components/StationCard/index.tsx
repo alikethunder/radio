@@ -66,7 +66,7 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
       <div className="flex flex-column gap-2" style={style}>
 
         <div className={classNames({
-          'current_station active_element': current_station?.id == station.id,
+          'current_station active_element border-primary': current_station?.id == station.id,
         },
           'flex',
           'flex-column',

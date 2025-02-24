@@ -36,12 +36,12 @@ type AppStore = {
   stations_home_last_id: string | null;
   stations_home: Station[];
   stations_home_loaded: boolean;
-  stations_favorite: Station[];
   stations_favorite_loaded: boolean;
-  stations_favorite_last_id: string | null;
   hover_tooltip_targetid: string;
   hover_tooltip_content: string;
   station_info_dialog: Station | null;
+  share_stations_list: Station[];
+  share_list_popup_opened: boolean;
 }
 
 const initial_state = {
@@ -70,12 +70,12 @@ const initial_state = {
   stations_home_last_id: null,
   stations_home: [],
   stations_home_loaded: false,
-  stations_favorite: [],
   stations_favorite_loaded: false,
-  stations_favorite_last_id: null,
   hover_tooltip_targetid: 'null',
   hover_tooltip_content: '',
   station_info_dialog: null,
+  share_stations_list: [],
+  share_list_popup_opened: false,
 } as AppStore
 
 export const appStore = createStore('app')(initial_state)
@@ -86,13 +86,5 @@ export const appStore = createStore('app')(initial_state)
     add_stations_home(stations: Station[]) {
       const stations_home = get.stations_home()
       set.stations_home(stations_home.concat(stations))
-    },
-    add_stations_favorite(stations: Station[]) {
-      const stations_favorite = get.stations_favorite()
-      set.stations_favorite(stations_favorite.concat(stations))
-    },
-    remove_stations_favorite(stations: Station[]) {
-      const stations_favorite = get.stations_favorite()
-      set.stations_favorite(stations_favorite.filter(station => !stations.find(rem_station => station.id === rem_station.id)))
     },
   }))

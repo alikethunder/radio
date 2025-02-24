@@ -1,4 +1,4 @@
-import { FC, memo, useCallback, useMemo, useRef, useState, } from "react"
+import { FC, memo, useCallback, useEffect, useMemo, useRef, useState, } from "react"
 
 import { Stations_grid } from './Stations_grid'
 
@@ -21,6 +21,7 @@ import { Message } from 'primereact/message'
 import { Button } from "primereact/button"
 import { IoDiceSharp } from "react-icons/io5"
 import { switch_to_random_station } from "@/functions"
+import { ShareListIcon } from "../ShareListIcon"
 
 type Props = {
   stations: Station[];
@@ -41,12 +42,25 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
 
   const searched_stations = useStationsSearch(stations)
 
-  //useLog(true, '[StationsGrid] searched_stations : ', searched_stations, loading)
+  const searched_stations_length = useMemo(() => searched_stations.length, [searched_stations.length])
+
+  const show_share_list_button = useMemo(() => searched_stations_length && searched_stations_length < 205, [searched_stations_length])
+
+  const share_list_popup_opened = useStore().app.share_list_popup_opened()
+
+  useEffect(() => {
+    if (show_share_list_button && share_list_popup_opened) {
+      setTimeout(() => {
+        actions.app.share_stations_list(searched_stations)
+      }, 100)
+    }
+  }, [searched_stations, show_share_list_button, share_list_popup_opened])
 
   const [translations] = useTranslations([
     'no_stations_with_parameters',
     'number_of_stations_found',
     'random_station_from_found',
+    'share_stations_list',
   ], true)
 
   const ref = useRef<HTMLDivElement>(null)
@@ -90,7 +104,6 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
       const r = Number((
         (width - 2 * px - columns * card_size.width) / (columns + (mobile ? 1 : -1))
       ).toFixed(2))
-      //console.log('gapx : ', width, columns, r)
       return r
     }
   }, [
@@ -101,13 +114,13 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
   ])
 
   const rows = useMemo(() => {
-    if (columns && searched_stations.length) {
-      return Math.ceil((searched_stations.length + Number(loading)) / columns)
+    if (columns && searched_stations_length) {
+      return Math.ceil((searched_stations_length + Number(loading)) / columns)
     }
   }, [
-    searched_stations,
     columns,
     loading,
+    searched_stations_length,
   ])
 
   const play_random_station = useCallback(useDebounceCallback(() => {
@@ -116,20 +129,12 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
 
   }, 50), [searched_stations])
 
-  const count_message = useMemo(() =>
-    <>
-      <BsFillInfoSquareFill
-        className="flex-shrink-0 md:align-self-center align-self-start"
-        style={{
-          width: '1.3rem',
-          height: '1.3rem',
-        }}
-      />
+  const share_list = useCallback(useDebounceCallback(() => {
+    actions.app.share_list_popup_opened(true)
+  }, 50), [])
 
-      <span className="align-self-start md:align-self-center">
-        {translations.number_of_stations_found}: {searched_stations.length} {loading ? <span className="pi pi-spinner pi-spin"></span> : <span className="w-1rem inline-block"></span>}
-      </span>
-
+  const random_station_button = useMemo(() =>
+    searched_stations_length ?
       <Button
         rounded
         outlined
@@ -149,17 +154,81 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
           height: '1.5rem',
         }} />
       </Button>
+      : <></>
+    , [
+      play_random_station,
+      translations.random_station_from_found,
+      searched_stations_length,
+    ])
+
+  const share_list_button = useMemo(() =>
+    show_share_list_button ?
+      <Button
+        rounded
+        outlined
+        raised
+        className={`p-0 w-2rem h-2rem shadow_on_hover align-self-center flex flex-shrink-0 justify-content-center align-items-center inline-flex`}
+        style={{
+          color: '#5486f3'
+        }}
+
+        onClick={share_list}
+
+        tooltip={translations.share_stations_list}
+        tooltipOptions={{
+          position: 'bottom',
+        }}
+        disabled={share_list_popup_opened}
+      >
+        {
+          share_list_popup_opened ?
+            <i className="pi pi-spin pi-spinner" />
+            :
+            <ShareListIcon background='#e9e9ff' />
+        }
+      </Button>
+      : <></>
+    , [
+      translations.share_stations_list,
+      show_share_list_button,
+      share_list,
+      share_list_popup_opened,
+    ])
+
+  const count_message = useMemo(() =>
+    <>
+      <BsFillInfoSquareFill
+        className="flex-shrink-0 md:align-self-center align-self-start"
+        style={{
+          width: '1.3rem',
+          height: '1.3rem',
+        }}
+      />
+
+      <span className="align-self-start md:align-self-center">
+        {translations.number_of_stations_found}: {searched_stations_length} {loading ? <span className="pi pi-spinner pi-spin"></span> : <span className="w-1rem inline-block"></span>}
+      </span>
+
+      <div className="flex flex-column md:flex-row gap-2">
+
+        {random_station_button}
+
+        {share_list_button}
+
+      </div>
     </>
     , [
       translations.number_of_stations_found,
-      searched_stations.length,
+      searched_stations_length,
       loading,
+      random_station_button,
+      share_list_button,
     ])
 
   return (
     <>
       {
-        searched_stations.length ?
+        searched_stations_length ?
           <Message
             severity="info"
             className="font-medium select-none align-self-start py-1 px-2 border-none md:ml-6 my-2 inline-flex align-items-center gap-2"
@@ -179,7 +248,7 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
       <div className="w-full h-full overflow-y-auto page flex-grow-1 flex flex-column" ref={ref}>
 
         {
-          searched_stations?.length || loading ?
+          searched_stations_length || loading ?
             <Stations_grid
               stations={searched_stations}
               columns={columns}

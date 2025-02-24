@@ -7,6 +7,8 @@ import {
   useSearchParams,
 } from "react-router-dom"
 
+import { useClickOutside } from 'primereact/hooks'
+
 import {
   Controller,
   useForm,
@@ -60,6 +62,7 @@ import {
 } from '@/hooks'
 
 import {
+  StationGenre,
   Station as StationType
 } from "@/types"
 
@@ -77,10 +80,13 @@ import {
 
 import { random_station_tag_color } from "@/functions/random_station_tag_color"
 
-import { StationTagRemoveTokenIcon } from "@/layout parts"
+import { GenreItemTemplate, StationTagRemoveTokenIcon } from "@/layout parts"
 
 import { Helmet } from "react-helmet"
 import { update } from "@/API/station/update_json"
+import { MultiSelect } from "primereact/multiselect"
+
+import { multiselect_pt } from "@/constants/multiselect"
 
 export const Station = () => {
 
@@ -89,6 +95,14 @@ export const Station = () => {
   const [search, set_search] = useSearchParams()
 
   const theme = useStore().persistedApp.theme()
+
+  const tags_suggestions_ref = useRef(null)
+
+  const tags_input_ref = useRef<Chips | null>(null)
+
+  useClickOutside(tags_suggestions_ref, () => {
+    set_tags_suggestion_focused(false)
+  })
 
   useEffect(() => {
     if (station.id == 'new') {
@@ -104,6 +118,10 @@ export const Station = () => {
   const navigate = useNavigate()
 
   const tracks_input_ref = useRef<HTMLInputElement>(null)
+
+  const [tags_suggestion_focused, set_tags_suggestion_focused] = useState(false)
+
+  const [tags_suggestion_text, set_tags_suggestion_text] = useState('')
 
   const [profile_photo_exists, set_profile_photo_exists] = useState(true)
 
@@ -129,6 +147,12 @@ export const Station = () => {
 
   const language = useStore().translations.language()
 
+  const station_genres = useStore().session.station_genres()
+
+  const station_languages = useStore().session.station_languages()
+
+  const stations_tags = useStore().session.station_tags()
+
   const [image_loading, set_image_loading] = useState(true)
 
   const [station_avatar, set_station_avatar] = useState<string>(`/api/v1/files/stations/${station?.id}/avatar`)
@@ -147,8 +171,6 @@ export const Station = () => {
     current_user_id
   ])
 
-  //console.log('[Station] is_admin : ', is_admin)
-
   const {
     control,
     formState,
@@ -165,6 +187,8 @@ export const Station = () => {
       external_enable: station?.external_enable ?? false,
       external: station?.external ?? '',
       broadcasting: station?.broadcasting ?? false,
+      genres: station_genres.filter(g => (station?.genres ?? []).includes(g.en)),
+      languages: station_languages.filter(l => (station?.languages ?? []).includes(l.en)),
       tags: station?.tags ?? [],
       ...Object.fromEntries(languages.map(language => ([`description_${language}`, station[`description_${language}`] ?? '']))),
     }
@@ -175,6 +199,10 @@ export const Station = () => {
   //console.log("errors.name : ", errors.name)
 
   const onSubmit = useCallback(useDebounceCallback(async (data: any) => {
+
+    data.genres = data.genres.map((g: StationGenre) => g.en)
+    data.languages = data.languages.map((l: StationGenre) => l.en)
+
     console.log('submit : ', data)
 
     const { id } = station
@@ -327,9 +355,10 @@ export const Station = () => {
   }, [external])
 
   const change_station_tags = useDebounceCallback(async (e, field) => {
+    console.log(field.value)
     e.target.value = e.value = e.value?.map((tag: string) => tag?.trim())
 
-    //console.log('change_station_tags after trim : ', e.value)
+    console.log('change_station_tags after trim : ', e.value)
 
     field.onChange(e)
 
@@ -372,7 +401,7 @@ export const Station = () => {
 
   const click_station_tag_remove = useDebounceCallback((e, field) => {
     if (e) {
-      setValue(field.name, field.value.filter((v: string) => v != (e.target as HTMLElement).closest('.p-chips-token')?.querySelector('.p-tag-value')?.textContent))
+      setValue(field.name, field.value.filter((v: string) => v != (e.target as HTMLElement).closest('.p-chips-token')?.querySelector('.value')?.textContent))
     }
   }, 50)
 
@@ -385,7 +414,20 @@ export const Station = () => {
     }
   }, 50)
 
-  const click_tag_remove_token_icon = useDebounceCallback((e, field) => click_station_tag_remove(e, field), 50)
+  const filtered_tags_suggestions = useMemo(() =>
+    stations_tags?.filter(tag => tag.name.toLowerCase().includes(tags_suggestion_text.toLowerCase())).map(tag =>
+      <StationTag key={tag.name} tag={tag.name} disable_link onClick={(e) => {
+        e?.preventDefault()
+        set_tags_suggestion_text('')
+        if (tags_input_ref.current) {
+          tags_input_ref.current.getInput().value = ''
+          tags_input_ref.current.focus()
+        }
+        setValue('tags', [...(getValues('tags') ?? []), tag.name])
+      }} />), [
+    stations_tags,
+    tags_suggestion_text,
+  ])
 
   return (
     <>
@@ -400,7 +442,7 @@ export const Station = () => {
           language ? <meta property="og:locale" content={language} /> : <></>
         }
 
-        <meta property="og:locale:alternate" content={languages.join(',').replaceAll(`${language},`, '').replaceAll(language ?? '', '')} />
+        <meta property="og:locale:alternate" content={languages.join(',').replace(`${language},`, '').replace(language ?? '', '')} />
 
         <meta property="og:site_name" content={translations.sitename} />
 
@@ -683,33 +725,85 @@ export const Station = () => {
               <span className={`font-semibold select-none ${tag_text_class}`}>
                 {translations.language}:
               </span>
-              <div className="flex flex-row flex-wrap gap-1">
-                {
-                  station?.languages?.map((language, i, arr) =>
-                    <>
-                      <StationLanguageTag language_en={language} />
-                      {
-                        i < arr.length - 1 &&
-                        <span className="text-base">
-                          ,
-                        </span>
-                      }
-                    </>
-                  )
-                }
-              </div>
+              {
+                edit_mode ?
+                  <Controller
+                    name="languages"
+                    control={control}
+                    render={({ field, }) => {
+                      return (
+                        <>
+                          {/* Languages */}
+                          <MultiSelect
+                            value={field.value}
+                            onChange={field.onChange}
+                            options={station_languages}
+                            optionLabel={language ?? 'en'}
+                            display="chip"
+                            filter
+                            placeholder={translations.language}
+                            className="w-20rem max-w-full relative"
+                            pt={multiselect_pt}
+                          />
+                        </>
+                      )
+                    }} />
+                  :
+                  <div className="flex flex-row flex-wrap gap-1">
+                    {
+                      station?.languages?.map((language, i, arr) =>
+                        <>
+                          <StationLanguageTag language_en={language} />
+                          {
+                            i < arr.length - 1 &&
+                            <span className="text-base">
+                              ,
+                            </span>
+                          }
+                        </>
+                      )
+                    }
+                  </div>
+              }
             </div>
 
             <div className="flex flex-row gap-2">
               <span className={`font-semibold select-none ${tag_text_class}`}>
                 {translations.genre}:
               </span>
-              <div className="flex flex-row flex-wrap gap-1">
-                {
-                  station?.genres?.map(genre => <StationGenreTag genre_en={genre} />)
-                }
-              </div>
+              {
+                edit_mode ?
+                  <Controller
+                    name="genres"
+                    control={control}
+                    render={({ field, }) => {
+                      return (
+                        <>
+                          {/* Genres */}
+                          <MultiSelect
+                            value={field.value}
+                            onChange={field.onChange}
+                            options={station_genres}
+                            optionLabel={language ?? 'en'}
+                            itemTemplate={GenreItemTemplate}
+                            display="chip"
+                            filter
+                            placeholder={translations.genre}
+                            className="w-20rem max-w-full relative"
+                            pt={multiselect_pt}
+                          />
+                        </>
+                      )
+                    }} />
+                  :
+                  <div className="flex flex-row flex-wrap gap-1">
+                    {
+                      station?.genres?.map(genre => <StationGenreTag genre_en={genre} />)
+                    }
+                  </div>
+              }
             </div>
+
 
             {
               edit_mode ?
@@ -718,50 +812,82 @@ export const Station = () => {
                   control={control}
                   render={({ field, }) => (
                     <>
-
-                      <label
-                        htmlFor={field.name}
-                        className={classNames(
-                          {
-                            'p-error': errors[field.name]
-                          },
-                          'text-600',
-                          "select-none",
-                          'flex',
-                          'align-items-center'
-                        )}
-                      >
-                        <small>Tags</small>
-                      </label>
-
-                      <Chips
-                        value={field.value}
-                        onChange={e => {
-                          //console.log('chips change : ', e)
-                          change_station_tags(e, field)
-                        }}
-                        allowDuplicate={false}
-                        removable
-
-                        removeIcon={<StationTagRemoveTokenIcon onClick={e => click_tag_remove_token_icon(e, field)} />}
-
-                        separator=","
-
-                        pt={{
-                          token: {
-                            className: classNames({
-
+                      <div className="flex flex-column gap-2 relative">
+                        <label
+                          htmlFor={field.name}
+                          className={classNames(
+                            {
+                              'p-error': errors[field.name]
                             },
-                              'p-0',
-                              'ml-1',
-                              'bg-red-600',
-                              'border-round',
-                            ),
-                          },
-                        }}
+                            'text-600',
+                            "select-none",
+                            'flex',
+                            'align-items-center'
+                          )}
+                        >
+                          <small>Tags</small>
+                        </label>
 
-                        itemTemplate={tag => <StationTag tag={tag} disable_link />}
-                      />
+                        <Chips
+                          value={field.value}
+                          onChange={e => {
+                            //console.log('chips change : ', e)
+                            change_station_tags(e, field)
+                          }}
+
+                          onKeyDown={
+                            (e) => {
+                              setTimeout(() => {
+                                set_tags_suggestion_text((e.target as HTMLInputElement).value)
+                              })
+                            }
+                          }
+
+                          onAdd={
+                            e => {
+                              set_tags_suggestion_text('')
+                            }
+                          }
+
+                          onFocus={() => {
+                            set_tags_suggestion_focused(true)
+                          }}
+
+                          allowDuplicate={false}
+                          removable
+
+                          removeIcon={<StationTagRemoveTokenIcon onClick={e => click_station_tag_remove(e, field)} />}
+
+                          separator=","
+
+                          pt={{
+                            token: {
+                              className: classNames({
+
+                              },
+                                'p-0',
+                                'ml-1',
+                                'bg-red-600',
+                                'border-round',
+                              ),
+                            },
+                          }}
+
+                          itemTemplate={tag => <StationTag tag={tag} disable_link />}
+
+                          ref={tags_input_ref}
+                        />
+
+                        {
+                          tags_suggestion_focused
+                            && tags_suggestion_text ?
+                            <div className="flex flex-row flex-wrap gap-2 absolute top-100 bottom-auto right-0 left-0 h-12rem overflow-y-scroll border-round-2xl surface-border bg-white p-2 z-1 shadow-3 align-items-start justify-content-start" ref={tags_suggestions_ref}>
+                              {filtered_tags_suggestions}
+                            </div>
+                            : <></>
+                        }
+
+                      </div>
                     </>
                   )} />
                 :

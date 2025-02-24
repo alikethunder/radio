@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, memo, useCallback, useEffect, useState, } from "react"
+import { ChangeEvent, FC, memo, useCallback, useEffect, } from "react"
 
 import { InputText } from "primereact/inputtext"
 
@@ -23,21 +23,11 @@ import {
 
 import { useDebounceCallback } from "usehooks-ts"
 import { app_routes } from "@/constants/router"
-import { StationCountry, StationGenre } from "@/types"
-import { StationGenreTag } from "@/components/StationGenreTag"
+import { StationCountry, } from "@/types"
 import { StationCountryTag } from "../StationCountryTag"
+import { GenreItemTemplate } from "@/layout parts"
 
-const multiselect_pt = {
-  panel: {
-    className: 'w-20rem max-w-full'
-  },
-  header: {
-    className: 'p-2'
-  },
-  item: {
-    className: 'p-2'
-  }
-}
+import { multiselect_pt } from "@/constants/multiselect"
 
 export const StationSearchPanelContent: FC = memo(() => {
 
@@ -67,7 +57,7 @@ export const StationSearchPanelContent: FC = memo(() => {
   useEffect(() => {
     debounce(() => {
 
-      const escaped = search_stations_text.replace(/\,/g, ' ').replace(/\-/g, ' ').replaceAll(/\_/g, ' ').toLowerCase().split(' ').filter(w => !!w)
+      const escaped = search_stations_text.replace(/\,/g, ' ').replace(/\-/g, ' ').replace(/\_/g, ' ').toLowerCase().split(' ').filter(w => !!w)
 
       actions.persistedApp.search_stations_text_array(escaped)
     }, 100)()
@@ -89,9 +79,6 @@ export const StationSearchPanelContent: FC = memo(() => {
 
   const countryItemTemplate = useCallback((option: StationCountry) =>
     <StationCountryTag en={option.en} disable_link />
-    , [])
-
-  const genreItemTemplate = useCallback((option: StationGenre) => <StationGenreTag genre_en={option.en} />
     , [])
 
   const change_countries = useCallback((e: MultiSelectChangeEvent) => {
@@ -154,7 +141,7 @@ export const StationSearchPanelContent: FC = memo(() => {
           onChange={change_genres}
           options={station_genres}
           optionLabel={language ?? 'en'}
-          itemTemplate={genreItemTemplate}
+          itemTemplate={GenreItemTemplate}
           display="chip"
           filter
           placeholder={translations.genre}

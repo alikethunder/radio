@@ -62,6 +62,7 @@ export const RightSidebar: FC = memo(() => {
   }, 50)
 
   const trim = useDebounceCallback(async () => {
+    //trims spaces of genres, tags, country, languages for every station
     const res = await fetch('/api/v1/settings/trim')
 
     console.log('[trim] result : ', res)
@@ -80,6 +81,35 @@ export const RightSidebar: FC = memo(() => {
 
   const change_jsons = useCallback(
     useDebounceCallback(
+      //to upload json of stations
+      /* 
+        json_data : json with stations data
+        [
+          {
+            avatar: base64 string;
+            external: stream url string;
+            name: station name;
+          }
+        ]
+
+        json_info : json with stations info
+
+        [
+          {
+            name: station name;
+            country: country name in English;
+            genres: coma separated genres string;
+            languages: coma separated languages string;
+            tags: array of tags strings;
+            description_en: station description in English;
+            description_sp: station description in Spanish;
+            description_fr: station description in French;
+            description_de: station description in German;
+            description_ru: station description in Russian;
+            description_pt: station description in Portuguese;
+          }
+        ]
+      */
       async (e) => {
         if (e.target.files?.length) {
           console.log(e.target.files)
@@ -105,7 +135,7 @@ export const RightSidebar: FC = memo(() => {
 
   const remove_jsons = useCallback(
     useDebounceCallback(
-      //json array with stations ids
+      //json array with stations ids to remove stations from db
       async (e) => {
         if (e.target.files?.length) {
           console.log(e.target.files)
@@ -128,6 +158,8 @@ export const RightSidebar: FC = memo(() => {
   const update_jsons = useCallback(
     useDebounceCallback(
       //json array with stations ids
+      //to update stations info
+      // array of stations objects
       async (e) => {
         if (e.target.files?.length) {
           console.log(e.target.files)
@@ -155,13 +187,27 @@ export const RightSidebar: FC = memo(() => {
   ], true)
 
   const index_now = useDebounceCallback(async () => {
-
+    // send request to indexnow
     await fetch('/api/v1/settings/indexnow')
 
   }, 100)
 
   const upload_genres = useCallback(useDebounceCallback(async (e) => {
-
+    /* 
+      to upload genres
+      [
+        {
+          en: genre name in English;
+          sp: genre name in Spanish;
+          fr: genre name in French;
+          de: genre name in German;
+          ru: genre name in Russian;
+          pt: genre name in Portuguese;
+          color: genre color string;
+          icon: genre icon - emojis string;
+        }
+      ]
+    */
     if (e.target.files?.length) {
       console.log(e.target.files)
 
@@ -179,7 +225,19 @@ export const RightSidebar: FC = memo(() => {
   }, 100), [])
 
   const upload_countries = useCallback(useDebounceCallback(async (e) => {
-
+    /* 
+    to upload countries
+    [
+      {
+        en: country name in English;
+        sp: country name in Spanish;
+        fr: country name in French;
+        de: country name in German;
+        ru: country name in Russian;
+        pt: country name in Portuguese;
+      }
+    ]
+    */
     if (e.target.files?.length) {
       console.log(e.target.files)
 
@@ -197,7 +255,19 @@ export const RightSidebar: FC = memo(() => {
   }, 100), [])
 
   const upload_languages = useCallback(useDebounceCallback(async (e) => {
-
+    /* 
+      to upload languages
+      [
+        {
+          en: language name in English;
+          sp: language name in Spanish;
+          fr: language name in French;
+          de: language name in German;
+          ru: language name in Russian;
+          pt: language name in Portuguese;
+        }
+      ]
+    */
     if (e.target.files?.length) {
       console.log(e.target.files)
 
@@ -418,7 +488,7 @@ export const RightSidebar: FC = memo(() => {
             : <></>
         }
  */}
-        {/* {
+        {
           root_admin ?
             <Button
               label={'Upload genres'}
@@ -441,7 +511,7 @@ export const RightSidebar: FC = memo(() => {
             </Button>
             : <></>
         }
-
+        {/*
         {
           root_admin ?
             <Button

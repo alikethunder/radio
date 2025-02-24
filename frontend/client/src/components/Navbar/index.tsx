@@ -38,10 +38,18 @@ export const Navbar: FC = memo(() => {
 
   const search_selected_countries = useStore().persistedApp.search_selected_countries()
 
+  const search_selected_languages = useStore().persistedApp.search_selected_languages()
+
+  const search_selected_genres = useStore().persistedApp.search_selected_genres()
+
   const show_search_badge = useMemo(() => search_stations_text.length
-    || search_selected_countries.length, [
+    || search_selected_countries.length
+    || search_selected_languages.length
+    || search_selected_genres.length, [
     search_stations_text.length,
     search_selected_countries.length,
+    search_selected_languages.length,
+    search_selected_genres.length,
   ])
 
   const search_panel_closed = useStore().persistedApp.search_panel_closed()

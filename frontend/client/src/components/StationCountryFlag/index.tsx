@@ -43,7 +43,7 @@ export const StationCountryFlag: FC<Props> = memo(({ en, style, onClick, disable
 
   useEffect(() => {
     if (en) {
-      set_flag_url(encodeURIComponent(`/flags/${en}.webp`))
+      set_flag_url(encodeURI(`/flags/${en}.webp`))
     }
   }, [en])
 

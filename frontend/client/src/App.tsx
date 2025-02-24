@@ -16,6 +16,7 @@ import '@/sass/primeflex/primeflex.scss'
 import './index.sass'
 
 import Sockette from 'sockette'
+import * as Sentry from "@sentry/react"
 
 import { useWindowSize } from "usehooks-ts"
 
@@ -29,6 +30,7 @@ import {
   StationSearchPanel,
   DynamicTooltip,
   StationInfoDialog,
+  ShareListPopup,
 } from '@/components'
 import { list } from "@/API/station/list"
 
@@ -139,9 +141,14 @@ export default memo(function App() {
   useEffect(() => {
     if (language) {
       (async () => {
-        const resp = await fetch(`/api/v1/settings/genres/${language ?? 'en'}`)
-        const json = await resp.json() as StationGenre[]
-        actions.session.station_genres((json ?? []).sort(alphabet_sort))
+        try {
+          const resp = await fetch(`/api/v1/settings/genres/${language ?? 'en'}`)
+          const json = await resp.json() as StationGenre[]
+          actions.session.station_genres((json ?? []).sort(alphabet_sort))
+        } catch (e) {
+          Sentry.captureException(e)
+          console.log('fetch /api/v1/settings/genres error : ', e)
+        }
       })()
     }
   }, [language])
@@ -248,6 +255,8 @@ export default memo(function App() {
     } catch (e) {
       console.log(e)
       onLogout()
+    } finally {
+      actions.auth.checked(true)
     }
   }, [])
 
@@ -398,6 +407,20 @@ export default memo(function App() {
     }
   }, [pwa_event])
 
+  useEffect(() => {
+    let touch_start: number | null
+
+    document.addEventListener('touchstart', e => {
+      touch_start = e.changedTouches[0].clientY
+    })
+
+    document.addEventListener('touchmove', e => {
+      if (touch_start && e.changedTouches[0].clientY < touch_start) {
+        actions.persistedApp.search_panel_closed(true)
+      }
+    })
+  }, [])
+
   return (
     <PrimeReactProvider value={{
       appendTo: 'self',
@@ -424,6 +447,8 @@ export default memo(function App() {
       <DynamicTooltip />
 
       <StationInfoDialog />
+
+      <ShareListPopup />
 
     </PrimeReactProvider>
   )

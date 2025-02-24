@@ -56,7 +56,7 @@ export const AddStationToFavorites: FC<Props> = memo(({ station, className, show
       actions.persistedApp.toggle_favorite_station(id)
     }
 
-    const likes = store.persistedApp.favorite_station(id) ? '+1' : '-1'
+    const likes = favorite_station ? '-1' : '+1'
     //update station like count
     const resp = await fetch(`/api/v1/radio/update-likes/${id}`, {
       method: 'POST',
@@ -71,14 +71,6 @@ export const AddStationToFavorites: FC<Props> = memo(({ station, className, show
 
     if (signedin) {
       update_json({ favorite_stations: store.user.favorite_stations() })
-    }
-
-    if (!favorite_station) {
-      //add new station to favorite list
-      actions.app.add_stations_favorite([station])
-    } else {
-      //remove station from favorite list
-      actions.app.remove_stations_favorite([station])
     }
   }, 50), [id])
 

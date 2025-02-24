@@ -103,4 +103,9 @@ var En = map[string]string{
 	"number_of_stations_found":                      "Number of stations found",
 	"random_station":                                "random station",
 	"random_station_from_found":                     "random station from found",
+	"share_stations_list":                           "share stations list",
+	"share_station":                                 "share station",
+	"choose_stations_to_share":                      "choose stations to share",
+	"selected":                                      "selected",
+	"number_of_stations":                            "number of stations",
 }
