@@ -16,6 +16,7 @@ import '@/sass/primeflex/primeflex.scss'
 import './index.sass'
 
 import Sockette from 'sockette'
+import * as Sentry from "@sentry/react"
 
 import { useWindowSize } from "usehooks-ts"
 
@@ -140,9 +141,14 @@ export default memo(function App() {
   useEffect(() => {
     if (language) {
       (async () => {
-        const resp = await fetch(`/api/v1/settings/genres/${language ?? 'en'}`)
-        const json = await resp.json() as StationGenre[]
-        actions.session.station_genres((json ?? []).sort(alphabet_sort))
+        try {
+          const resp = await fetch(`/api/v1/settings/genres/${language ?? 'en'}`)
+          const json = await resp.json() as StationGenre[]
+          actions.session.station_genres((json ?? []).sort(alphabet_sort))
+        } catch (e) {
+          Sentry.captureException(e)
+          console.log('fetch /api/v1/settings/genres error : ', e)
+        }
       })()
     }
   }, [language])
