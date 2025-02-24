@@ -11,6 +11,7 @@ import {
 } from "@/store"
 
 import {
+  useMobile,
   useShowSearchPanel,
   useTranslations,
 } from '@/hooks'
@@ -33,6 +34,8 @@ import './index.sass'
 export const Navbar: FC = memo(() => {
 
   const current_page = useStore().app.current_page()
+
+  const mobile = useMobile()
 
   const search_stations_text = useStore().persistedApp.search_stations_text()
 
@@ -160,7 +163,10 @@ export const Navbar: FC = memo(() => {
 
         </div>
 
-        <YandexAd id="R-A-14083703-6" className="flex-grow-1 align-self-stretch ml-1" onlyDesktop />
+        {
+          mobile ? <></> :
+            <YandexAd id="R-A-14083703-6" className="flex-grow-1 align-self-stretch ml-1" />
+        }
 
         <div className="right h-full mr-0 md:mr-2 md:flex-shrink-0">
           <Button

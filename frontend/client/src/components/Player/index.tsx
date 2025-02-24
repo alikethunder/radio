@@ -33,7 +33,7 @@ import { Slider } from "primereact/slider"
 
 import { classNames } from "primereact/utils"
 import { NumRange } from "@/types/generics/range"
-import { useTooltip, useTranslations, } from "@/hooks"
+import { useMobile, useTooltip, useTranslations, } from "@/hooks"
 import { useDebounceCallback } from "usehooks-ts"
 
 import './index.sass'
@@ -42,6 +42,8 @@ import { switch_to_random_station } from "@/functions"
 export const Player: FC = memo(() => {
 
   const navigate = useNavigate()
+
+  const mobile = useMobile()
 
   const search_panel_closed = useStore().persistedApp.search_panel_closed()
 
@@ -381,7 +383,10 @@ export const Player: FC = memo(() => {
 
       </div>
 
-      <YandexAd id="R-A-14083703-1" className="flex-grow-1 align-self-stretch" onlyDesktop update_dependency={minimized} />
+      {
+        mobile ? <></> :
+          <YandexAd id="R-A-14083703-1" className="flex-grow-1 align-self-stretch" update_dependency={minimized} />
+      }
 
     </div>
   )

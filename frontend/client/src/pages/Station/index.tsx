@@ -57,6 +57,7 @@ import { Ripple } from "primereact/ripple"
 
 import {
   useFormState,
+  useMobile,
   useTranslations,
   useTranslationsSkeleton,
 } from '@/hooks'
@@ -91,6 +92,8 @@ import { multiselect_pt } from "@/constants/multiselect"
 export const Station = () => {
 
   const station = useLoaderData() as StationType
+
+  const mobile = useMobile()
 
   const [search, set_search] = useSearchParams()
 
@@ -718,7 +721,7 @@ export const Station = () => {
                 <StationShareButton station={station} />
               </div>
 
-              <YandexAd id="R-A-14083703-5" className="flex-grow-1 align-self-stretch max-h-5rem" onlyDesktop />
+              <YandexAd id="R-A-14083703-5" className="flex-grow-1 align-self-stretch h-5rem max-h-5rem" />
             </div>
 
             <div className="flex flex-row gap-2">
@@ -1099,7 +1102,10 @@ export const Station = () => {
 
           </form>
 
-          <YandexAd id="R-A-14083703-4" className="flex-grow-1 align-self-stretch" onlyDesktop interval={60000} />
+          {
+            mobile ? <></> :
+              <YandexAd id="R-A-14083703-4" className="flex-grow-1 align-self-stretch" interval={60000} />
+          }
         </div>
 
         {

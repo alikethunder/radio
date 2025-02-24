@@ -31,6 +31,7 @@ import {
   DynamicTooltip,
   StationInfoDialog,
   ShareListPopup,
+  YandexAd,
 } from '@/components'
 import { list } from "@/API/station/list"
 
@@ -411,25 +412,6 @@ export default memo(function App() {
     }
   }, [pwa_event])
 
-  const yandex_floor_ad_id = useMemo(() => 'R-A-14083703-' + (mobile ? '8' : '7'), [mobile])
-
-  useEffect(() => {
-    window.Ya.Context.AdvManager.render({
-      "blockId": yandex_floor_ad_id,
-      "renderTo": `yandex_rtb_${yandex_floor_ad_id}`,
-      "type": "floorAd",
-      "platform": "desktop",
-      "async": true,
-      darkTheme: theme === 'dark',
-      onError: (data: any) => {
-        console.log(`[YandexAd] ${yandex_floor_ad_id} error: `, data)
-      },
-    })
-  }, [
-    theme,
-    yandex_floor_ad_id,
-  ])
-
   return (
     <PrimeReactProvider value={{
       appendTo: 'self',
@@ -459,7 +441,17 @@ export default memo(function App() {
 
       <ShareListPopup />
 
-      <div id={`yandex_rtb_${yandex_floor_ad_id}`} />
+      {
+        mobile ?
+          <YandexAd id="R-A-14083703-8" additional_render_params={{
+            type: 'floorAd',
+            platform: 'touch',
+          }} /> :
+          <YandexAd id="R-A-14083703-7" additional_render_params={{
+            type: 'floorAd',
+            platform: 'desktop',
+          }} />
+      }
 
     </PrimeReactProvider>
   )
