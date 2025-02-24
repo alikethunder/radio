@@ -43,6 +43,14 @@ export const Player: FC = memo(() => {
 
   const navigate = useNavigate()
 
+  const search_panel_closed = useStore().persistedApp.search_panel_closed()
+
+  const [container_ref, set_container_ref] = useState<HTMLDivElement | null>(null)
+
+  const set_c_ref = useCallback((e: HTMLDivElement | null) => {
+    set_container_ref(e)
+  }, [])
+
   const [audio_ref, set_audio_ref] = useState<HTMLAudioElement | null>(null)
 
   const playing = useStore().player.playing()
@@ -160,8 +168,40 @@ export const Player: FC = memo(() => {
     switch_to_random_station(stations)
   }, 50), [])
 
+  useEffect(() => {
+    if (container_ref) {
+      let touch_start: number | null
+
+      const touch_start_f = (e: TouchEvent) => {
+        touch_start = e.changedTouches[0].clientY
+      }
+
+      const touch_move_f = (e: TouchEvent) => {
+        if (touch_start) {
+          actions.player.minimized(e.changedTouches[0].clientY < touch_start)
+        }
+      }
+
+      container_ref.addEventListener('touchstart', touch_start_f)
+
+      container_ref.addEventListener('touchmove', touch_move_f)
+
+      return () => {
+        container_ref.removeEventListener('touchstart', touch_start_f)
+        container_ref.removeEventListener('touchmove', touch_move_f)
+      }
+    }
+  }, [container_ref])
+
   return (
-    <div id="player" className={`flex flex-row flex-shrink-0 shadow-3 surface-card p-2 md:pl-3 gap-2 md:gap-3 mt-auto transition-all transition-duration-300 transition-linear ${current_station ? 'opened' : ''} ${minimized ? 'h-5rem' : 'h-9rem'}`}>
+    <div
+      id="player"
+      className={`flex flex-row flex-shrink-0 z-2 ${search_panel_closed ? 'shadow-2' : ''} surface-card p-2 md:pl-3 gap-2 md:gap-3 mt-auto transition-all transition-duration-300 transition-linear ${current_station ? 'opened' : ''} ${minimized ? 'h-5rem' : 'h-9rem'}`}
+      style={{
+        borderBottom: '1px solid var(--surface-border)',
+      }}
+      ref={set_c_ref}
+    >
 
       <audio
         src=""
@@ -171,20 +211,7 @@ export const Player: FC = memo(() => {
         ref={set_audio_ref}
       />
 
-      <div className={`flex flex-column justify-content-between flex-shrink-0 ${minimized ? '' : 'pb-2'}`}>
-
-        <Button
-          icon={`pi pi-angle-${minimized ? 'up' : 'down'}`}
-          rounded
-          outlined
-          raised
-          className={`p-0 w-2rem h-2rem shadow_on_hover align-self-center flex flex-shrink-0 justify-content-center align-items-center text-600`}
-          severity={`help`}
-
-          onClick={toggle_player}
-
-          {...maximize_tooltip}
-        />
+      <div className={`flex flex-column flex-shrink-0 ${minimized ? '' : 'pb-2'}`}>
 
         {
           current_station && !minimized ?
@@ -192,11 +219,24 @@ export const Player: FC = memo(() => {
 
               <StationShareButton station={current_station} />
 
-              <AddStationToFavorites station={current_station} show_likes />
+              <AddStationToFavorites station={current_station} show_likes className="mt-auto" />
 
             </>
             : <></>
         }
+
+        <Button
+          icon={`pi pi-angle-${minimized ? 'down' : 'up'}`}
+          rounded
+          outlined
+          raised
+          className={`p-0 w-2rem h-2rem shadow_on_hover align-self-center flex flex-shrink-0 justify-content-center align-items-center text-600 mt-auto`}
+          severity={`help`}
+
+          onClick={toggle_player}
+
+          {...maximize_tooltip}
+        />
 
       </div>
 

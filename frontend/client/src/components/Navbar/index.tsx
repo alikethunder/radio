@@ -76,10 +76,12 @@ export const Navbar: FC = memo(() => {
 
   return (
     <>
-      <div className={`flex flex-row flex-shrink-0 h-3rem sm:h-4rem justify-content-between surface-card z-2 ${search_panel_closed ? 'shadow-2' : ''}`}
+      <div
+        className={`flex flex-row flex-shrink-0 h-3rem sm:h-4rem justify-content-between surface-card z-2`}
         style={{
           borderBottom: '1px solid var(--surface-border)',
-        }}>
+        }}
+      >
 
         <div className="left h-full flex gap-1 sm:gap-2 md:flex-shrink-0">
 

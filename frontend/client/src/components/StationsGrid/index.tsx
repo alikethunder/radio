@@ -1,4 +1,4 @@
-import { FC, memo, useCallback, useEffect, useMemo, useRef, useState, } from "react"
+import { FC, memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, } from "react"
 
 import { Stations_grid } from './Stations_grid'
 
@@ -64,6 +64,12 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
   ], true)
 
   const ref = useRef<HTMLDivElement>(null)
+
+  const [message_ref, set_message_ref] = useState<HTMLDivElement | null>(null)
+
+  const set_m_ref = useCallback((e: HTMLDivElement | null) => {
+    set_message_ref(e)
+  }, [])
 
   const [{ width, height }, setSize] = useState<Size>({
     width: undefined,
@@ -225,23 +231,76 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
       share_list_button,
     ])
 
+  useEffect(() => {
+    if (message_ref) {
+      let touch_start: number | null
+
+      const touch_start_f = (e: TouchEvent) => {
+        touch_start = e.changedTouches[0].clientY
+      }
+
+      const touch_move_f = (e: TouchEvent) => {
+        if (touch_start) {
+          actions.persistedApp.search_panel_closed(e.changedTouches[0].clientY < touch_start)
+        }
+      }
+
+      message_ref.addEventListener('touchstart', touch_start_f)
+
+      message_ref.addEventListener('touchmove', touch_move_f)
+
+      return () => {
+        message_ref.removeEventListener('touchstart', touch_start_f)
+        message_ref.removeEventListener('touchmove', touch_move_f)
+      }
+    }
+  }, [message_ref])
+
+  useLayoutEffect(() => {
+    const c_ref = ref.current
+    if (c_ref) {
+      let touch_start: number | null
+
+      const touch_start_f = (e: TouchEvent) => {
+        touch_start = e.changedTouches[0].clientY
+      }
+
+      const touch_move_f = (e: TouchEvent) => {
+        if (touch_start && e.changedTouches[0].clientY < touch_start) {
+          actions.persistedApp.search_panel_closed(true)
+        }
+      }
+
+      c_ref.addEventListener('touchstart', touch_start_f)
+
+      c_ref.addEventListener('touchmove', touch_move_f)
+
+      return () => {
+        c_ref.removeEventListener('touchstart', touch_start_f)
+        c_ref.removeEventListener('touchmove', touch_move_f)
+      }
+    }
+  }, [ref])
+
   return (
     <>
       {
         searched_stations_length ?
-          <Message
-            severity="info"
-            className="font-medium select-none align-self-start py-1 px-2 border-none md:ml-6 my-2 inline-flex align-items-center gap-2"
+          <div ref={set_m_ref}>
+            <Message
+              severity="info"
+              className="font-medium select-none align-self-start py-1 px-2 border-none md:ml-6 my-2 inline-flex align-items-center gap-2"
 
-            style={{
-              ...mobile ? {
-                marginLeft: `${gapx}px`,
-                marginRight: `${gapx}px`,
-              } : {}
-            }}
+              style={{
+                ...mobile ? {
+                  marginLeft: `${gapx}px`,
+                  marginRight: `${gapx}px`,
+                } : {}
+              }}
 
-            content={count_message}
-          />
+              content={count_message}
+            />
+          </div>
           : <></>
       }
 

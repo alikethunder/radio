@@ -407,20 +407,6 @@ export default memo(function App() {
     }
   }, [pwa_event])
 
-  useEffect(() => {
-    let touch_start: number | null
-
-    document.addEventListener('touchstart', e => {
-      touch_start = e.changedTouches[0].clientY
-    })
-
-    document.addEventListener('touchmove', e => {
-      if (touch_start && e.changedTouches[0].clientY < touch_start) {
-        actions.persistedApp.search_panel_closed(true)
-      }
-    })
-  }, [])
-
   return (
     <PrimeReactProvider value={{
       appendTo: 'self',
@@ -430,15 +416,15 @@ export default memo(function App() {
 
       <Navbar />
 
+      {
+        current_station ? <Player /> : <></>
+      }
+
       <StationSearchPanel />
 
       <RightSidebar />
 
       <Outlet />
-
-      {
-        current_station ? <Player /> : <></>
-      }
 
       <Toasts />
 
