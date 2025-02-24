@@ -177,6 +177,7 @@ export const Player: FC = memo(() => {
       }
 
       const touch_move_f = (e: TouchEvent) => {
+        e.preventDefault()
         if (touch_start) {
           actions.player.minimized(e.changedTouches[0].clientY < touch_start)
         }
@@ -184,7 +185,7 @@ export const Player: FC = memo(() => {
 
       container_ref.addEventListener('touchstart', touch_start_f)
 
-      container_ref.addEventListener('touchmove', touch_move_f)
+      container_ref.addEventListener('touchmove', touch_move_f, { passive: false })
 
       return () => {
         container_ref.removeEventListener('touchstart', touch_start_f)

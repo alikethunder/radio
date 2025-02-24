@@ -240,6 +240,7 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
       }
 
       const touch_move_f = (e: TouchEvent) => {
+        e.preventDefault()
         if (touch_start) {
           actions.persistedApp.search_panel_closed(e.changedTouches[0].clientY < touch_start)
         }
@@ -247,7 +248,7 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
 
       message_ref.addEventListener('touchstart', touch_start_f)
 
-      message_ref.addEventListener('touchmove', touch_move_f)
+      message_ref.addEventListener('touchmove', touch_move_f, { passive: false })
 
       return () => {
         message_ref.removeEventListener('touchstart', touch_start_f)
