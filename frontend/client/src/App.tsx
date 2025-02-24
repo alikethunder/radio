@@ -34,7 +34,7 @@ import {
 } from '@/components'
 import { list } from "@/API/station/list"
 
-import { useLog, usePageInList, useTranslations } from '@/hooks'
+import { useLog, useMobile, usePageInList, useTranslations } from '@/hooks'
 
 import {
   WS,
@@ -60,7 +60,7 @@ import {
 import { get_station } from "@/API/station/get_station"
 import { update_json } from "@/API/profile/update_json"
 import { sessionStore } from "@/store/sessionStore"
-import { StationCountry, Language, StationLanguage, StationGenre } from "./types"
+import { StationCountry, Language, StationLanguage, StationGenre } from "@/types"
 
 const get_alphabet_sort = (language: Language | null) => ((a: StationLanguage | StationCountry | StationGenre, b: StationLanguage | StationCountry | StationGenre) => {
   language ??= 'en'
@@ -74,6 +74,8 @@ export default memo(function App() {
   const location = useLocation()
 
   const theme = useStore().persistedApp.theme()
+
+  const mobile = useMobile()
 
   const { pathname, search } = location
 
@@ -409,20 +411,24 @@ export default memo(function App() {
     }
   }, [pwa_event])
 
+  const yandex_floor_ad_id = useMemo(() => mobile ? '8' : '7', [mobile])
+
   useEffect(() => {
-    const id = 'R-A-14083703-7'
     window.Ya.Context.AdvManager.render({
-      "blockId": id,
-      "renderTo": `yandex_rtb_${id}`,
+      "blockId": yandex_floor_ad_id,
+      "renderTo": `yandex_rtb_${yandex_floor_ad_id}`,
       "type": "floorAd",
       "platform": "desktop",
       "async": true,
       darkTheme: theme === 'dark',
       onError: (data: any) => {
-        console.log(`[YandexAd] ${id} error: `, data)
+        console.log(`[YandexAd] ${yandex_floor_ad_id} error: `, data)
       },
     })
-  }, [theme])
+  }, [
+    theme,
+    yandex_floor_ad_id,
+  ])
 
   return (
     <PrimeReactProvider value={{
@@ -453,7 +459,7 @@ export default memo(function App() {
 
       <ShareListPopup />
 
-      <div id="yandex_rtb_R-A-14083703-7" />
+      <div id={`yandex_rtb_R-A-14083703-${yandex_floor_ad_id}`} />
 
     </PrimeReactProvider>
   )
