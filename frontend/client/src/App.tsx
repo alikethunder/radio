@@ -73,6 +73,8 @@ export default memo(function App() {
 
   const location = useLocation()
 
+  const theme = useStore().persistedApp.theme()
+
   const { pathname, search } = location
 
   //useEffect(() => { console.log('location : ', location, location.key) }, [location])
@@ -407,6 +409,21 @@ export default memo(function App() {
     }
   }, [pwa_event])
 
+  useEffect(() => {
+    const id = 'R-A-14083703-7'
+    window.Ya.Context.AdvManager.render({
+      "blockId": id,
+      "renderTo": `yandex_rtb_${id}`,
+      "type": "floorAd",
+      "platform": "desktop",
+      "async": true,
+      darkTheme: theme === 'dark',
+      onError: (data: any) => {
+        console.log(`[YandexAd] ${id} error: `, data)
+      },
+    })
+  }, [theme])
+
   return (
     <PrimeReactProvider value={{
       appendTo: 'self',
@@ -435,6 +452,8 @@ export default memo(function App() {
       <StationInfoDialog />
 
       <ShareListPopup />
+
+      <div id="yandex_rtb_R-A-14083703-7" />
 
     </PrimeReactProvider>
   )
