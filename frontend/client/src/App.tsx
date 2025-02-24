@@ -411,7 +411,7 @@ export default memo(function App() {
     }
   }, [pwa_event])
 
-  const yandex_floor_ad_id = useMemo(() => mobile ? '8' : '7', [mobile])
+  const yandex_floor_ad_id = useMemo(() => 'R-A-14083703-' + mobile ? '8' : '7', [mobile])
 
   useEffect(() => {
     window.Ya.Context.AdvManager.render({
@@ -459,7 +459,7 @@ export default memo(function App() {
 
       <ShareListPopup />
 
-      <div id={`yandex_rtb_R-A-14083703-${yandex_floor_ad_id}`} />
+      <div id={`yandex_rtb_${yandex_floor_ad_id}`} />
 
     </PrimeReactProvider>
   )
