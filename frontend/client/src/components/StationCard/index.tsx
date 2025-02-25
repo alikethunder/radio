@@ -133,7 +133,9 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
 
             <div className="flex flex-column justify-content-center flex-grow-1">
 
-              <QueryLink to={generatePath(app_routes["station$id"], { id: station.id })} className="font-bold text-primary text-center station_name mb-1  text_hidden_overflow line-clamp-3 action_text_font text-xl">
+              <QueryLink to={generatePath(app_routes["station$id"], { id: station.id })} className="font-bold text-primary text-center station_name mb-1  text_hidden_overflow line-clamp-3 action_text_font text-xl" style={{
+                wordBreak: 'break-word',
+              }}>
                 {station.name}
               </QueryLink>
             </div>
