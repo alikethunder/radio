@@ -42,6 +42,7 @@ type AppStore = {
   station_info_dialog: Station | null;
   share_stations_list: Station[];
   share_list_popup_opened: boolean;
+  history_loaded: boolean,
 }
 
 const initial_state = {
@@ -76,6 +77,7 @@ const initial_state = {
   station_info_dialog: null,
   share_stations_list: [],
   share_list_popup_opened: false,
+  history_loaded: false,
 } as AppStore
 
 export const appStore = createStore('app')(initial_state)

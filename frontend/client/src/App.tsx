@@ -61,7 +61,7 @@ import {
 import { get_station } from "@/API/station/get_station"
 import { update_json } from "@/API/profile/update_json"
 import { sessionStore } from "@/store/sessionStore"
-import { StationCountry, Language, StationLanguage, StationGenre } from "@/types"
+import { StationCountry, Language, StationLanguage, StationGenre, HistoryRecord } from "@/types"
 
 const get_alphabet_sort = (language: Language | null) => ((a: StationLanguage | StationCountry | StationGenre, b: StationLanguage | StationCountry | StationGenre) => {
   language ??= 'en'
@@ -422,14 +422,16 @@ export default memo(function App() {
 
       if (signedin) {
         (async () => {
-          const resp = await fetch(`/api/v1/history`)
-          const history = await resp.json()
+          const resp = await fetch(`${window.location.origin}/api/v1/history`)
+          const history = await resp.json() as HistoryRecord[]
           console.log('[history] loaded : ', history)
+
           actions.player.history(history ?? [])
-          actions.player.history_loaded(true)
+
+          actions.app.history_loaded(true)
         })()
       } else {
-        actions.player.history_loaded(true)
+        actions.app.history_loaded(true)
       }
     }
   }, [

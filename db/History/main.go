@@ -12,7 +12,7 @@ func Initialize() {
 		user_id uuid,
 		station_id uuid,
 		date text,
-		PRIMARY KEY (id, user_id)
+		PRIMARY KEY (user_id, id)
 	)`).Exec(); err != nil {
 
 		log.Fatal("create history TABLE err : ", err)

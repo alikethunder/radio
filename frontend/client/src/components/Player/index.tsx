@@ -49,7 +49,7 @@ export const Player: FC = memo(() => {
 
   const signedin = useStore().auth.signedin()
 
-  const history_loaded = useStore().player.history_loaded()
+  const history_loaded = useStore().app.history_loaded()
 
   const search_panel_closed = useStore().persistedApp.search_panel_closed()
 
@@ -204,8 +204,10 @@ export const Player: FC = memo(() => {
   }, [container_ref])
 
   useEffect(() => {
+    console.log('history player : ', history_loaded)
     //stations history update
     if (history_loaded) {
+      console.log('history loaded : ')
 
       if (current_station) {
         const last_record = store.player.history_get_from_last(0)
@@ -221,7 +223,7 @@ export const Player: FC = memo(() => {
             }
 
             if (signedin) {
-              const resp = await fetch(`/api/v1/history/${current_station.id}`, {
+              const resp = await fetch(`${window.location.origin}/api/v1/history/${current_station.id}`, {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json'
@@ -230,7 +232,7 @@ export const Player: FC = memo(() => {
               record = { ...record, ...await resp.json() }
               console.log('signedin history : ', record)
             } else {
-              const resp = await fetch('/api/v1/history/date')
+              const resp = await fetch(`${window.location.origin}/api/v1/history/date`)
               record.date = await resp.text()
               record.id = v7()
               console.log('non signedin history : ', record)

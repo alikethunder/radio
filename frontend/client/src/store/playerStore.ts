@@ -16,7 +16,6 @@ type Player = {
   playing: boolean,
   minimized: boolean,
   history: HistoryRecord[],
-  history_loaded: boolean,
 }
 
 const initialState = {
@@ -26,7 +25,6 @@ const initialState = {
   playing: false,
   minimized: false,
   history: [],
-  history_loaded: false,
 }
 
 export const playerStore = createStore('app')(initialState as Player,
@@ -63,6 +61,6 @@ export const playerStore = createStore('app')(initialState as Player,
       set.history([
         ...get.history(),
         record,
-      ])
+      ].slice(-100))
     },
   }))
