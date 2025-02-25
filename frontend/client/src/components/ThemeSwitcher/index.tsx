@@ -25,7 +25,7 @@ export const ThemeSwitcher: FC = memo(() => {
   useEffect(() => {
     set_theme_loading(true)
 
-    fetch(`/assets/themes/soho_${theme}.css`).then(resp => {
+    fetch(`${window.location.origin}/assets/themes/soho_${theme}.css`).then(resp => {
       return resp.text()
     }).then(text => {
       const style = document.getElementById("theme_css")

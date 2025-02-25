@@ -7,7 +7,7 @@
 
     localStorage.setItem('theme', theme)
 
-    fetch(`/assets/themes/soho_${theme}.css`).then(resp => {
+    fetch(`${window.location.origin}/assets/themes/soho_${theme}.css`).then(resp => {
       return resp.text()
     }).then(text => {
       document.getElementById("theme_css").innerHTML = text
