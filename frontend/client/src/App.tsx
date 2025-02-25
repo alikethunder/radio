@@ -117,7 +117,7 @@ export default memo(function App() {
 
   useEffect(() => {
     (async () => {
-      const resp = await fetch('/api/v1/tags/')
+      const resp = await fetch(`${window.location.origin}/api/v1/tags/`)
       const json = await resp.json()
       actions.session.station_tags(json ?? [])
     })()
@@ -128,7 +128,7 @@ export default memo(function App() {
   useEffect(() => {
     if (language) {
       (async () => {
-        const resp = await fetch(`/api/v1/settings/languages/${language ?? 'en'}`)
+        const resp = await fetch(`${window.location.origin}/api/v1/settings/languages/${language ?? 'en'}`)
         const json = await resp.json() as StationLanguage[]
         actions.session.station_languages((json ?? []).sort(alphabet_sort))
       })()
@@ -138,7 +138,7 @@ export default memo(function App() {
   useEffect(() => {
     if (language) {
       (async () => {
-        const resp = await fetch(`/api/v1/settings/countries/${language ?? 'en'}`)
+        const resp = await fetch(`${window.location.origin}/api/v1/settings/countries/${language ?? 'en'}`)
         const json = await resp.json() as StationCountry[]
         actions.session.station_countries((json ?? []).sort(alphabet_sort))
       })()
@@ -149,7 +149,7 @@ export default memo(function App() {
     if (language) {
       (async () => {
         try {
-          const resp = await fetch(`/api/v1/settings/genres/${language ?? 'en'}`)
+          const resp = await fetch(`${window.location.origin}/api/v1/settings/genres/${language ?? 'en'}`)
           const json = await resp.json() as StationGenre[]
           actions.session.station_genres((json ?? []).sort(alphabet_sort))
         } catch (e) {
@@ -304,7 +304,7 @@ export default memo(function App() {
   useEffect(() => {
     //language preset
     (async () => {
-      const resp = await fetch('/api/v1/translation')
+      const resp = await fetch(`${window.location.origin}/api/v1/translation`)
 
       if (resp.status == 200) {
         const languages = await resp.json()

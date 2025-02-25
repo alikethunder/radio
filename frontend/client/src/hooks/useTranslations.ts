@@ -32,7 +32,7 @@ export const useTranslations = <T extends string>(fields: T[], capitalize?: bool
       if (unchecked_fields.length) {
         //console.log('[useTranslations] request : ', unchecked_fields)
 
-        fetch(`/api/v1/translation/${language}/?fields=${unchecked_fields.join(',')}`).then(r => r.json()).then(json => {
+        fetch(`${window.location.origin}/api/v1/translation/${language}/?fields=${unchecked_fields.join(',')}`).then(r => r.json()).then(json => {
 
           //console.log('[useTranslations] response : ', json)
 

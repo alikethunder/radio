@@ -172,7 +172,7 @@
     // is offline or misbehaving.
     async function checkNetworkAndReload() {
       try {
-        const response = await fetch('.');
+        const response = await fetch(`${window.location.origin}`);
         // Verify we get a valid response from the server
         if (response.status >= 200 && response.status < 500) {
           window.location.reload();

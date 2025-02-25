@@ -56,14 +56,14 @@ export const RightSidebar: FC = memo(() => {
   }, 50)
 
   const update_sitemap = useDebounceCallback(async () => {
-    const res = await fetch('/api/v1/settings/sitemap')
+    const res = await fetch(`${window.location.origin}/api/v1/settings/sitemap`)
 
     console.log('[update_sitemap] result : ', res)
   }, 50)
 
   const trim = useDebounceCallback(async () => {
     //trims spaces of genres, tags, country, languages for every station
-    const res = await fetch('/api/v1/settings/trim')
+    const res = await fetch(`${window.location.origin}/api/v1/settings/trim`)
 
     console.log('[trim] result : ', res)
   }, 50)
@@ -124,7 +124,7 @@ export const RightSidebar: FC = memo(() => {
             }
           }
 
-          fetch('/api/v1/radio/upload-jsons', {
+          fetch(`${window.location.origin}/api/v1/radio/upload-jsons`, {
             method: "POST",
             body,
           })
@@ -146,7 +146,7 @@ export const RightSidebar: FC = memo(() => {
             body.append('json', file)
           }
 
-          fetch('/api/v1/radio/remove-jsons', {
+          fetch(`${window.location.origin}/api/v1/radio/remove-jsons`, {
             method: "POST",
             body,
           })
@@ -170,7 +170,7 @@ export const RightSidebar: FC = memo(() => {
             body.append('json', file)
           }
 
-          fetch('/api/v1/radio/update-json', {
+          fetch(`${window.location.origin}/api/v1/radio/update-json`, {
             method: "POST",
             body,
           })
@@ -188,7 +188,7 @@ export const RightSidebar: FC = memo(() => {
 
   const index_now = useDebounceCallback(async () => {
     // send request to indexnow
-    await fetch('/api/v1/settings/indexnow')
+    await fetch(`${window.location.origin}/api/v1/settings/indexnow`)
 
   }, 100)
 
@@ -217,7 +217,7 @@ export const RightSidebar: FC = memo(() => {
         body.append('genres', file)
       }
 
-      fetch('/api/v1/settings/genres', {
+      fetch(`${window.location.origin}/api/v1/settings/genres`, {
         method: "POST",
         body,
       })
@@ -247,7 +247,7 @@ export const RightSidebar: FC = memo(() => {
         body.append('countries', file)
       }
 
-      fetch('/api/v1/settings/countries', {
+      fetch(`${window.location.origin}/api/v1/settings/countries`, {
         method: "POST",
         body,
       })
@@ -277,7 +277,7 @@ export const RightSidebar: FC = memo(() => {
         body.append('languages', file)
       }
 
-      fetch('/api/v1/settings/languages', {
+      fetch(`${window.location.origin}/api/v1/settings/languages`, {
         method: "POST",
         body,
       })

@@ -233,7 +233,7 @@ export const Station = () => {
 
         body.set('avatar', avatar_blob)
 
-        const resp = await fetch(`/api/v1/files/stations/${id}/avatar`, {
+        const resp = await fetch(`${window.location.origin}/api/v1/files/stations/${id}/avatar`, {
           method: 'POST',
           body,
         })
@@ -375,7 +375,7 @@ export const Station = () => {
     if (new_tags?.length) {
       //console.log('new_tags : ', new_tags)
 
-      const resp = await fetch('/api/v1/tags/', {
+      const resp = await fetch(`${window.location.origin}/api/v1/tags/`, {
         method: 'POST',
         body: JSON.stringify(new_tags)
       })

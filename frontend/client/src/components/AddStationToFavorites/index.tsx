@@ -32,7 +32,7 @@ export const AddStationToFavorites: FC<Props> = memo(({ station, className, show
   useEffect(() => {
     if (show_likes && id) {
       (async () => {
-        const resp = await fetch(`/api/v1/radio/likes/${id}`)
+        const resp = await fetch(`${window.location.origin}/api/v1/radio/likes/${id}`)
         const text = await resp.text()
         //console.log('[AddStationToFavorites] likes : ', text)
         set_likes(Number(text))
@@ -58,7 +58,7 @@ export const AddStationToFavorites: FC<Props> = memo(({ station, className, show
 
     const likes = favorite_station ? '-1' : '+1'
     //update station like count
-    const resp = await fetch(`/api/v1/radio/update-likes/${id}`, {
+    const resp = await fetch(`${window.location.origin}/api/v1/radio/update-likes/${id}`, {
       method: 'POST',
       body: JSON.stringify({
         likes,

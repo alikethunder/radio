@@ -93,7 +93,7 @@ export const Signin: FC = () => {
   const onSubmit: SubmitHandler<SigninUser> = useDebounceCallback(async (form) => {
     console.log('form submit : ', form)
 
-    let res = await fetch('/api/v1/auth/signin', {
+    let res = await fetch(`${window.location.origin}/api/v1/auth/signin`, {
       method: 'POST',
       body: JSON.stringify(form),
       headers: {

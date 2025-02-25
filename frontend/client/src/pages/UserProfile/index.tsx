@@ -132,7 +132,7 @@ export const UserProfile = () => {
 
     //console.log('body : ', body.values())
 
-    const response = await fetch('/api/v1/profile/update', {
+    const response = await fetch(`${window.location.origin}/api/v1/profile/update`, {
       method: 'POST',
       body,
     })
@@ -165,7 +165,7 @@ export const UserProfile = () => {
         draggable: false,
         className: 'w-30rem max-w-full mx-7 surface-card',
         accept: async () => {
-          const update_email_resp = await fetch(`/api/v1/profile/request-update-email?language=${store.translations.language() ?? 'en'}`, {
+          const update_email_resp = await fetch(`${window.location.origin}/api/v1/profile/request-update-email?language=${store.translations.language() ?? 'en'}`, {
             method: 'POST',
             body: JSON.stringify({ new_email: data.email })
           })
