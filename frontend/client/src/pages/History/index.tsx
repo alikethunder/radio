@@ -80,7 +80,7 @@ export const History = memo(() => {
   ])
 
   return (
-    <div className="flex flex-column flex-grow-1 p-2 gap-2">
+    <div className="flex flex-column flex-grow-1 p-2 gap-2 overflow-y-auto">
       History
 
       <Timeline
