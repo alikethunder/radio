@@ -33,7 +33,7 @@ import { useTranslations } from "@/hooks"
 
 type Props = {
   station: Station;
-  style: {
+  style?: {
     [x: string]: any;
   }
 }
@@ -63,7 +63,7 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
 
   return (
     station ?
-      <div className="flex flex-column gap-2" style={style}>
+      <div className="flex flex-column gap-2 flex-shrink-0" style={style}>
 
         <div className={classNames({
           'current_station active_element border-primary': current_station?.id == station.id,
@@ -76,7 +76,7 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
           'shadow_card hover:border-primary',
           'element_with_overlay',
           'w-full',
-          'h-13rem',
+          'w-9rem h-13rem',
           'flex-shrink-0 shadow-2 border-round',
           'surface-card',
         )}
@@ -166,8 +166,8 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
   )
 }, (o, n) => {
   return o.station?.id === n.station?.id
-    && o.style.height === n.style.height
-    && o.style.top === n.style.top
-    && o.style.width === n.style.width
-    && o.style.left === n.style.left
+    && o.style?.height === n.style?.height
+    && o.style?.top === n.style?.top
+    && o.style?.width === n.style?.width
+    && o.style?.left === n.style?.left
 })

@@ -107,4 +107,5 @@ var Ru = map[string]string{
 	"choose_stations_to_share":                      "Выберите радиостанции чтобы поделиться",
 	"selected":                                      "Выбрано",
 	"number_of_stations":                            "Количество радиостанций",
+	"history":                                       "История",
 }

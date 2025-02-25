@@ -109,4 +109,5 @@ var Sp = map[string]string{
 	"choose_stations_to_share":                      "Elegir estaciones para compartir",
 	"selected":                                      "seleccionado",
 	"number_of_stations":                            "Número de estaciones",
+	"history":                                       "historial",
 }

@@ -108,4 +108,5 @@ var En = map[string]string{
 	"choose_stations_to_share":                      "choose stations to share",
 	"selected":                                      "selected",
 	"number_of_stations":                            "number of stations",
+	"history":                                       "history",
 }

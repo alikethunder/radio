@@ -108,4 +108,5 @@ var De = map[string]string{
 	"choose_stations_to_share":                      "Wählen Sie Stationen zum Teilen",
 	"selected":                                      "Ausgewählt",
 	"number_of_stations":                            "Anzahl der Sender",
+	"history":                                       "Geschichte",
 }

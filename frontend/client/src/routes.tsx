@@ -16,6 +16,7 @@ import {
   Station,
   FavoriteStations,
   Shared,
+  History,
 } from '@/pages'
 
 import {
@@ -94,6 +95,12 @@ export const routes = [
           }
 
         },
+        shouldRevalidate: () => false,
+      },
+
+      {
+        path: app_routes.history,
+        element: <History />,
         shouldRevalidate: () => false,
       },
 

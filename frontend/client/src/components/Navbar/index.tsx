@@ -116,7 +116,7 @@ export const Navbar: FC = memo(() => {
           <div className="action_text_font align-self-center text-primary max-h-full text-overflow-ellipsis text_hidden_overflow line-clamp-2 select-none sm:text-lg font-bold">
             {
               current_page?.icon ?
-                <i className={`pi ${current_page?.icon} mr-2`}></i>
+                <i className={`pi ${current_page?.icon} mr-1`}></i>
                 : <></>
             }
 

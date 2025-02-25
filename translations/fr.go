@@ -108,4 +108,5 @@ var Fr = map[string]string{
 	"choose_stations_to_share":                      "Choisissez les stations à partager",
 	"selected":                                      "sélectionné",
 	"number_of_stations":                            "Nombre de stations",
+	"history":                                       "historique",
 }

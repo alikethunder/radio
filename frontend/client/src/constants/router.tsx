@@ -19,6 +19,7 @@ export const app_routes = {
   station$id: '/station/:id',
   my_stations: '/my-stations',
   shared: '/shared/:ids',
+  history: '/history',
 } as const
 
 export const auth_required_routes = [
@@ -40,6 +41,7 @@ export const unprotectedRoutes = [
   ...auth_routes,
   app_routes.station$id,
   app_routes.shared,
+  app_routes.history,
 ] as const
 
 export const all_routes = Object.values(app_routes)
@@ -67,6 +69,10 @@ export const route_attributes = {
   },
   [app_routes.root]: {},
   [app_routes.shared]: {},
+  [app_routes.history]: {
+    name: <Translation capitalize field="history" className="w-5rem" /> as unknown as string,
+    icon: 'pi-history',
+  },
   [app_routes.my_stations]: {
     name: <Translation capitalize field="my_stations" className="w-5rem" /> as unknown as string,
     icon: 'pi-star-fill text-orange-500',

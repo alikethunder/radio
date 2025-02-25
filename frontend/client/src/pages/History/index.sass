@@ -1,0 +1,11 @@
+.history_timeline .p-timeline-event
+  &:first-of-type
+    .p-timeline-event-separator .top_separator
+      opacity: 0
+  &:last-of-type
+    .p-timeline-event-separator .top_separator
+      flex-grow: 0
+  .p-timeline-event-separator .top_separator
+    width: 2px
+    height: 15%
+    background: var(--surface-border)
