@@ -37,7 +37,7 @@ export const Shared = memo(() => {
   const not_all_stations_loaded = useMemo(() => stations.length < decompressed.length, [stations.length, decompressed.length])
 
   useEffect(() => {
-    if (ids) {
+    if (decompressed.length) {
       startTransition(() => {
 
         set_stations(home_stations.filter(station => decompressed.includes(station.id)))
