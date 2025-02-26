@@ -1,4 +1,4 @@
-import { CSSProperties, FC, memo, } from "react"
+import { CSSProperties, FC, memo, useCallback, } from "react"
 
 import {
   AddStationToFavorites,
@@ -35,10 +35,11 @@ type Props = {
   station: Station;
   style?: {
     [x: string]: any;
-  }
+  };
+  at_history?: boolean;
 }
 
-export const StationCard: FC<Props> = memo(({ station, style, }) => {
+export const StationCard: FC<Props> = memo(({ station, style, at_history, }) => {
   //console.log(style)
 
   const current_station = useStore().player.current_station()
@@ -47,14 +48,21 @@ export const StationCard: FC<Props> = memo(({ station, style, }) => {
 
   const edit_mode = useStore().app.FormActionsState_edit_mode()
 
-  const play_click = useDebounceCallback((station) => {
+  const play_click = useCallback(useDebounceCallback((station) => {
     if (store.player.playing() && store.player.current_station()?.id == station.id) {
       actions.player.playing(false)
     } else {
       actions.player.playing(true)
+
+      if (at_history) {
+        actions.player.current_history_station_id(station.id)
+      }
+
       actions.player.current_station(station)
     }
-  }, 50)
+  }, 50), [
+    at_history,
+  ])
 
   const [translations] = useTranslations([
     'open_search_stations_panel',

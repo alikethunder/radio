@@ -112,7 +112,7 @@ export const History = memo(() => {
     ])
 
   const play_random_station = useCallback(useDebounceCallback(() => {
-    switch_to_random_station(history_stations)
+    switch_to_random_station(history_stations, true)
   }, 50), [history_stations])
 
   const customizedMarker = useCallback((record: HistoryRecord) => {
@@ -179,7 +179,7 @@ export const History = memo(() => {
     const station = home_stations.find(s => s.id === record.station_id)
     return (
       station ?
-        <StationCard station={station} />
+        <StationCard station={station} at_history />
         : <></>
     )
   }, [

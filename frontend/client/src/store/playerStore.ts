@@ -16,6 +16,7 @@ type Player = {
   playing: boolean,
   minimized: boolean,
   history: HistoryRecord[],
+  current_history_station_id: string | null,
 }
 
 const initialState = {
@@ -25,6 +26,7 @@ const initialState = {
   playing: false,
   minimized: false,
   history: [],
+  current_history_station_id: null,
 }
 
 export const playerStore = createStore('app')(initialState as Player,

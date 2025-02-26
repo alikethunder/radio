@@ -2,7 +2,7 @@ import { actions, store } from "@/store";
 import { Station } from "@/types";
 import { random_number_from_length } from "./random_number_from_length";
 
-export const switch_to_random_station = (stations: Station[]) => {
+export const switch_to_random_station = (stations: Station[], history_station?: boolean) => {
   const cur_station = store.player.current_station()
 
   let random_station = cur_station
@@ -31,8 +31,11 @@ export const switch_to_random_station = (stations: Station[]) => {
     }
   }
 
+  if (history_station) {
+    actions.player.current_history_station_id(random_station.id)
+  }
+
   actions.player.current_station(random_station)
 
   actions.player.playing(true)
-
 }

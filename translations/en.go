@@ -114,4 +114,6 @@ var En = map[string]string{
 	"no_listened_stations":                          "There are no listened stations yet",
 	"clear_history":                                 "clear history",
 	"random_station_from_history":                   "random station from history",
+	"previous_station":                              "previous station",
+	"next_station":                                  "next station",
 }
