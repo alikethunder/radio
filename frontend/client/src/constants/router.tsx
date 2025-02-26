@@ -71,7 +71,7 @@ export const route_attributes = {
   [app_routes.shared]: {},
   [app_routes.history]: {
     name: <Translation capitalize field="history" className="w-5rem" /> as unknown as string,
-    icon: 'pi-history',
+    icon: 'pi-history history_color',
   },
   [app_routes.my_stations]: {
     name: <Translation capitalize field="my_stations" className="w-5rem" /> as unknown as string,

@@ -33,7 +33,7 @@ import { icon_classes } from "@/constants/icon_classes"
 import { classNames } from "primereact/utils"
 
 import { useDebounceCallback } from "usehooks-ts"
-import { useFavoriteStations, useTranslations, } from "@/hooks"
+import { useFavoriteStations, usePageInList, useTranslations, } from "@/hooks"
 import languages_translations from '&/settings/languages_translations.json'
 
 export const RightSidebar: FC = memo(() => {
@@ -184,6 +184,7 @@ export const RightSidebar: FC = memo(() => {
     'feedback',
     'my_stations',
     'privacy_policy',
+    'history',
   ], true)
 
   const index_now = useDebounceCallback(async () => {
@@ -284,6 +285,8 @@ export const RightSidebar: FC = memo(() => {
     }
   }, 100), [])
 
+  const [history_page] = usePageInList([app_routes.history])
+
   return (
     <Sidebar
       visible={rightSidebarOpened}
@@ -350,7 +353,7 @@ export const RightSidebar: FC = memo(() => {
           favorite_stations.length ?
             <QueryLink to={app_routes.my_stations} onClick={close_rsb}>
               <Button
-                //todo: stations quantity as badge near icon"
+                //todo: stations quantity as badge under icon"
                 label={`${translations.my_stations} (${favorite_stations.length})`}
                 text
                 raised
@@ -360,6 +363,17 @@ export const RightSidebar: FC = memo(() => {
             </QueryLink>
             : <></>
         }
+
+        <QueryLink to={app_routes.history} onClick={close_rsb} className={`${history_page ? 'cursor-auto' : ''}`}>
+          <Button
+            label={translations.history}
+            text
+            raised
+            icon={`${icon_classes} ${route_attributes[app_routes.history].icon}`}
+            className="border-noround w-full px-2 text-2xl shadow_on_hover action_text_font"
+            disabled={Boolean(history_page)}
+          />
+        </QueryLink>
 
         {
           root_admin ?

@@ -1,4 +1,4 @@
-import { FC, memo, useCallback, useEffect, useState } from "react"
+import { FC, memo, useCallback, useEffect, useMemo, useState } from "react"
 
 import {
   generatePath,
@@ -18,6 +18,7 @@ import {
 
 import {
   app_routes,
+  route_attributes,
 } from '@/constants/router'
 
 import {
@@ -33,7 +34,7 @@ import { Slider } from "primereact/slider"
 
 import { classNames } from "primereact/utils"
 import { NumRange } from "@/types/generics/range"
-import { useMobile, useTooltip, useTranslations, } from "@/hooks"
+import { useMobile, usePageInList, useTooltip, useTranslations, } from "@/hooks"
 import { useDebounceCallback } from "usehooks-ts"
 
 import './index.sass'
@@ -120,6 +121,7 @@ export const Player: FC = memo(() => {
     'minimize_player',
     'maximize_player',
     'random_station',
+    'history',
   ], true)
 
   const switch_playing = useDebounceCallback(() => actions.player.switch_playing(), 50)
@@ -160,6 +162,8 @@ export const Player: FC = memo(() => {
   const maximize_tooltip = useTooltip(minimized ? translations.maximize_player : translations.minimize_player)
 
   const random_tooltip = useTooltip(translations.random_station)
+
+  const history_tooltip = useTooltip(translations.history)
 
   const toggle_player = useCallback(useDebounceCallback(() => {
     actions.player.toggle_player_size()
@@ -247,6 +251,8 @@ export const Player: FC = memo(() => {
     signedin,
     history_loaded,
   ])
+
+  const [history_page] = usePageInList([app_routes.history])
 
   return (
     <div
@@ -376,6 +382,21 @@ export const Player: FC = memo(() => {
                   height: '1.5rem',
                 }} />
               </Button>
+
+              <QueryLink to={app_routes.history} className={`${history_page ? 'cursor-auto' : ''}`}>
+                <Button
+                  icon={`pi ${route_attributes[app_routes.history].icon}`}
+                  rounded
+                  outlined
+                  raised
+                  className={`p-0 w-2rem h-2rem shadow_on_hover align-self-center flex flex-shrink-0 justify-content-center align-items-center mt-auto history_color`}
+
+                  disabled={Boolean(history_page)}
+
+                  {...history_tooltip}
+                />
+              </QueryLink>
+
             </div>
         }
 
