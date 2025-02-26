@@ -322,7 +322,6 @@ export const Player: FC = memo(() => {
     if (prev_station) {
       actions.player.playing(false)
 
-      
       actions.player.current_history_station_id(prev_station.id)
 
       actions.player.current_station(prev_station)
