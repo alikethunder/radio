@@ -131,9 +131,7 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
   ])
 
   const play_random_station = useCallback(useDebounceCallback(() => {
-
     switch_to_random_station(searched_stations)
-
   }, 50), [searched_stations])
 
   const share_list = useCallback(useDebounceCallback(() => {

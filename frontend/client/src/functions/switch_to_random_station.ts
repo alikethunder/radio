@@ -8,13 +8,22 @@ export const switch_to_random_station = (stations: Station[]) => {
   let random_station = cur_station
 
   const get_random_station = () => {
-    const random_n = random_number_from_length(stations.length)
-    random_station = stations[random_n]
+    if (stations.length > 1) {
+      const random_n = random_number_from_length(stations.length)
+
+      random_station = stations[random_n]
+    } else {
+      random_station = stations[0]
+    }
   }
 
   if (cur_station && random_station) {
-    while (!random_station || random_station.id === cur_station.id) {
-      get_random_station()
+    if (stations.length > 1) {
+      while (!random_station || random_station?.id === cur_station?.id) {
+        get_random_station()
+      }
+    } else {
+      random_station = stations[0]
     }
   } else {
     while (!random_station) {

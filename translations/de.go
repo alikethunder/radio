@@ -113,4 +113,5 @@ var De = map[string]string{
 	"history_of_listened_stations":                  "Geschichte der gehörten Sender",
 	"no_listened_stations":                          "Es wurden noch keine Sender gehört",
 	"clear_history":                                 "Verlauf löschen",
+	"random_station_from_history":                   "Zufälliger Sender aus dem Verlauf",
 }

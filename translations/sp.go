@@ -114,4 +114,5 @@ var Sp = map[string]string{
 	"history_of_listened_stations":                  "historial de estaciones escuchadas",
 	"no_listened_stations":                          "Aún no hay estaciones escuchadas",
 	"clear_history":                                 "borrar historial",
+	"random_station_from_history":                   "Estación aleatoria de historial",
 }

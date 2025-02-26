@@ -16,6 +16,8 @@ import { Button } from "primereact/button"
 import { useTooltip, useTranslations } from "@/hooks"
 import { useDebounceCallback } from "usehooks-ts"
 import { Message } from "primereact/message"
+import { IoDiceSharp } from "react-icons/io5"
+import { switch_to_random_station } from "@/functions"
 
 export const History = memo(() => {
 
@@ -39,6 +41,7 @@ export const History = memo(() => {
     'history_of_listened_stations',
     'no_listened_stations',
     'clear_history',
+    'random_station_from_history',
   ], true)
 
   const remove_tooltip = useTooltip(translations.remove)
@@ -98,6 +101,19 @@ export const History = memo(() => {
       translations.something_went_wrong_try_again,
       signedin,
     ])
+
+  const history_stations_ids = useMemo(() => history.map(record => record.station_id), [history])
+
+  const history_stations = useMemo(() =>
+    home_stations.filter(s => history_stations_ids.includes(s.id))
+    , [
+      history_stations_ids,
+      home_stations,
+    ])
+
+  const play_random_station = useCallback(useDebounceCallback(() => {
+    switch_to_random_station(history_stations)
+  }, 50), [history_stations])
 
   const customizedMarker = useCallback((record: HistoryRecord) => {
     return (
@@ -200,16 +216,41 @@ export const History = memo(() => {
               {...clear_history_tooltip}
             />
 
-            {/* {share_list_button} */}
+            {
+              history_stations.length > 1 ?
+                <Button
+                  rounded
+                  outlined
+                  raised
+                  className={`p-0 w-2rem h-2rem shadow_on_hover align-self-center flex flex-shrink-0 justify-content-center align-items-center inline-flex`}
+                  severity={`secondary`}
+
+                  onClick={play_random_station}
+
+                  tooltip={translations.random_station_from_history}
+                  tooltipOptions={{
+                    position: 'bottom',
+                  }}
+                >
+                  <IoDiceSharp style={{
+                    width: '1.5rem',
+                    height: '1.5rem',
+                  }} />
+                </Button>
+                : <></>
+            }
 
           </div>
       }
     </>
     , [
       translations.history_of_listened_stations,
+      translations.random_station_from_history,
       loading,
       clear_history_tooltip,
       clear_history,
+      play_random_station,
+      history_stations,
     ])
 
   return (

@@ -113,4 +113,5 @@ var Pt = map[string]string{
 	"history_of_listened_stations":                  "Histórico de estações ouvidas",
 	"no_listened_stations":                          "Ainda não há estações ouvidas",
 	"clear_history":                                 "Limpar histórico",
+	"random_station_from_history":                   "estação aleatória do histórico",
 }

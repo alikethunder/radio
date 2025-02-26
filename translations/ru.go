@@ -112,4 +112,5 @@ var Ru = map[string]string{
 	"history_of_listened_stations":                  "история прослушанных станций",
 	"no_listened_stations":                          "Пока что нет прослушанных станций",
 	"clear_history":                                 "очистить историю",
+	"random_station_from_history":                   "случайная радиостанция из истории",
 }

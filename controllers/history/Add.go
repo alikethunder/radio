@@ -33,7 +33,7 @@ func Add(ctx *fiber.Ctx) error {
 
 			last_record, err := db.SelectRowWithOrder("history", fiber.Map{"user_id": cookie_user["id"]}, "id DESC", "station_id")
 
-			if err.Error() == "not found" || (err == nil && last_record["station_id"] != station_id) {
+			if (err != nil && err.Error() == "not found") || (err == nil && last_record["station_id"] != station_id) {
 
 				record := fiber.Map{
 					"id":         gocql.TimeUUID(),
