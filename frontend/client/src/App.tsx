@@ -470,11 +470,11 @@ export default memo(function App() {
 
       {
         mobile ?
-          <YandexAd id="R-A-14083703-8" additional_render_params={{
+          <YandexAd id="R-A-14083703-8" interval={50000} additional_render_params={{
             type: 'floorAd',
             platform: 'touch',
           }} /> :
-          <YandexAd id="R-A-14083703-7" additional_render_params={{
+          <YandexAd id="R-A-14083703-7" interval={30000} additional_render_params={{
             type: 'floorAd',
             platform: 'desktop',
           }} />

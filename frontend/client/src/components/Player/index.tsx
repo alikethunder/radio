@@ -464,7 +464,7 @@ export const Player: FC = memo(() => {
 
       {
         mobile ? <></> :
-          <YandexAd id="R-A-14083703-1" className="flex-grow-1 align-self-stretch" update_dependency={minimized} />
+          <YandexAd id="R-A-14083703-1" className="flex-grow-1 align-self-stretch" interval={25000} update_dependency={minimized} />
       }
 
     </div>
