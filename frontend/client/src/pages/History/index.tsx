@@ -82,9 +82,7 @@ export const History = memo(() => {
           const resp = await fetch(`${window.location.origin}/api/v1/history/all`, {
             method: 'DELETE',
           })
-          if (resp.status === 200) {
-            actions.player.delete_history()
-          } else {
+          if (resp.status != 200) {
             store.toast['center']().show({
               severity: 'error',
               summary: 'Error',
@@ -92,10 +90,11 @@ export const History = memo(() => {
               closable: true,
               life: 1500
             })
+            return
           }
-        } else {
-          actions.player.delete_history()
         }
+        actions.player.delete_history()
+        actions.player.current_history_station_id(null)
       }, 50)
     , [
       translations.something_went_wrong_try_again,

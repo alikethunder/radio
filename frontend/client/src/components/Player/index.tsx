@@ -79,7 +79,7 @@ export const Player: FC = memo(() => {
   const [offline, set_offline] = useState(false)
 
   const manage_play = useCallback(() => {
-
+    //todo: fix bug for too fast stations switching
     const current_station = store.player.current_station()
     const playing = store.player.playing()
 
