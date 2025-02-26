@@ -109,4 +109,5 @@ var En = map[string]string{
 	"selected":                                      "selected",
 	"number_of_stations":                            "number of stations",
 	"history":                                       "history",
+	"remove":                                        "remove",
 }

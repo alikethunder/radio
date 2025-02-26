@@ -1,5 +1,5 @@
 export type HistoryRecord = {
-  id?: string,
+  id: string,
   date: string,
   station_id: string,
 }

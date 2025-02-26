@@ -108,4 +108,5 @@ var Ru = map[string]string{
 	"selected":                                      "Выбрано",
 	"number_of_stations":                            "Количество радиостанций",
 	"history":                                       "История",
+	"remove":                                        "удалить",
 }

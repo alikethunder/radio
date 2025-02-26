@@ -109,4 +109,5 @@ var De = map[string]string{
 	"selected":                                      "Ausgewählt",
 	"number_of_stations":                            "Anzahl der Sender",
 	"history":                                       "Geschichte",
+	"remove":                                        "Entfernen",
 }

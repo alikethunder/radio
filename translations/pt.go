@@ -109,4 +109,5 @@ var Pt = map[string]string{
 	"selected":                                      "selecionado",
 	"number_of_stations":                            "Número de estações",
 	"history":                                       "histórico",
+	"remove":                                        "remover",
 }

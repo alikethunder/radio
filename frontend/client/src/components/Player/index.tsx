@@ -222,6 +222,7 @@ export const Player: FC = memo(() => {
 
           (async () => {
             let record: HistoryRecord = {
+              id: '',
               date: '',
               station_id: current_station.id,
             }
@@ -233,13 +234,17 @@ export const Player: FC = memo(() => {
                   'Content-Type': 'application/json'
                 },
               })
-              record = { ...record, ...await resp.json() }
-              console.log('signedin history : ', record)
+              if (resp.status === 200) {
+                record = { ...record, ...await resp.json() }
+                console.log('[Player] signedin history added : ', record)
+              } else {
+                console.log('[Player] signedin history add error : ', resp.status)
+              }
             } else {
               const resp = await fetch(`${window.location.origin}/api/v1/history/date`)
               record.date = await resp.text()
               record.id = v7()
-              console.log('non signedin history : ', record)
+              console.log('[Player] non signedin history added : ', record)
             }
             actions.player.history_add(record)
           })()

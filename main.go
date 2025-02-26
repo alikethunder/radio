@@ -175,9 +175,9 @@ func main() {
 
 	history_endpoints.Post("/:station_id", HistoryEndpoints.Add)
 
-	/* history_endpoints.Delete("/:id", HistoryEndpoints.DeleteRecord)
+	history_endpoints.Delete("/record/:station_id", HistoryEndpoints.DeleteRecord)
 
-	history_endpoints.Delete("/all", HistoryEndpoints.DeleteAll) */
+	/* history_endpoints.Delete("/all", HistoryEndpoints.DeleteAll) */
 
 	radio_endpoints := v1.Group("/radio", compress_get, etag.New(), cache.New(cache.Config{
 		Next: func(ctx *fiber.Ctx) bool {

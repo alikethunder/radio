@@ -110,4 +110,5 @@ var Sp = map[string]string{
 	"selected":                                      "seleccionado",
 	"number_of_stations":                            "Número de estaciones",
 	"history":                                       "historial",
+	"remove":                                        "eliminar",
 }

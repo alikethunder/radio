@@ -29,35 +29,42 @@ func Add(ctx *fiber.Ctx) error {
 
 		if station_id != "" && cookie_user["id"] != "" {
 
-			//todo: check if last record is not the same station
-			record := fiber.Map{
-				"id":         gocql.TimeUUID(),
-				"user_id":    cookie_user["id"],
-				"station_id": station_id,
-				"date":       time.Now().UTC().String(),
-			}
+			// check if last record is not the same station
 
-			err := db.Insert("history", record)
+			last_record, err := db.SelectRowWithOrder("history", fiber.Map{"user_id": cookie_user["id"]}, "id DESC", "station_id")
 
-			if err == nil {
+			if err == nil && ((last_record["station_id"] != station_id) || (last_record["station_id"] == nil)) {
 
-				count, _ := db.Count("history", "user_id", fiber.Map{"user_id": cookie_user["id"]})
-
-				fmt.Println("[HistoryEndpoints.Add] count:", count)
-
-				if count > 100 {
-					first_row, _ := db.SelectRow("history", fiber.Map{"user_id": cookie_user["id"]}, "id")
-
-					db.Delete("history", fiber.Map{
-						"id":      first_row["id"],
-						"user_id": cookie_user["id"],
-					})
+				record := fiber.Map{
+					"id":         gocql.TimeUUID(),
+					"user_id":    cookie_user["id"],
+					"station_id": station_id,
+					"date":       time.Now().UTC().String(),
 				}
 
-				delete(record, "user_id")
-				delete(record, "station_id")
-				return ctx.Status(fiber.StatusOK).JSON(record)
+				err := db.Insert("history", record)
+
+				if err == nil {
+
+					count, _ := db.Count("history", "user_id", fiber.Map{"user_id": cookie_user["id"]})
+
+					fmt.Println("[HistoryEndpoints.Add] count:", count)
+
+					if count > 100 {
+						first_row, _ := db.SelectRow("history", fiber.Map{"user_id": cookie_user["id"]}, "id")
+
+						db.Delete("history", fiber.Map{
+							"id":      first_row["id"],
+							"user_id": cookie_user["id"],
+						})
+					}
+
+					delete(record, "user_id")
+					delete(record, "station_id")
+					return ctx.Status(fiber.StatusOK).JSON(record)
+				}
 			}
+			return ctx.SendStatus(fiber.StatusAccepted)
 
 		}
 

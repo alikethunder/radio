@@ -109,4 +109,5 @@ var Fr = map[string]string{
 	"selected":                                      "sélectionné",
 	"number_of_stations":                            "Nombre de stations",
 	"history":                                       "historique",
+	"remove":                                        "supprimer",
 }
