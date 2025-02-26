@@ -237,6 +237,7 @@ export const Player: FC = memo(() => {
               if (resp.status === 200) {
                 record = { ...record, ...await resp.json() }
                 console.log('[Player] signedin history added : ', record)
+                actions.player.history_add(record)
               } else {
                 console.log('[Player] signedin history add error : ', resp.status)
               }
@@ -245,8 +246,8 @@ export const Player: FC = memo(() => {
               record.date = await resp.text()
               record.id = v7()
               console.log('[Player] non signedin history added : ', record)
+              actions.player.history_add(record)
             }
-            actions.player.history_add(record)
           })()
         }
       }

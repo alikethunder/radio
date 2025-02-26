@@ -110,4 +110,7 @@ var En = map[string]string{
 	"number_of_stations":                            "number of stations",
 	"history":                                       "history",
 	"remove":                                        "remove",
+	"history_of_listened_stations":                  "history of listened stations",
+	"no_listened_stations":                          "There are no listened stations yet",
+	"clear_history":                                 "clear history",
 }

@@ -110,4 +110,7 @@ var De = map[string]string{
 	"number_of_stations":                            "Anzahl der Sender",
 	"history":                                       "Geschichte",
 	"remove":                                        "Entfernen",
+	"history_of_listened_stations":                  "Geschichte der gehörten Sender",
+	"no_listened_stations":                          "Es wurden noch keine Sender gehört",
+	"clear_history":                                 "Verlauf löschen",
 }

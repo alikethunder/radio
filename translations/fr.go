@@ -110,4 +110,7 @@ var Fr = map[string]string{
 	"number_of_stations":                            "Nombre de stations",
 	"history":                                       "historique",
 	"remove":                                        "supprimer",
+	"history_of_listened_stations":                  "historique des stations écoutées",
+	"no_listened_stations":                          "Il n'y a pas encore de stations écoutées",
+	"clear_history":                                 "effacer l'historique",
 }

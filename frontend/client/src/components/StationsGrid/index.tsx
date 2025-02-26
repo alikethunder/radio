@@ -327,7 +327,7 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
               place={place}
             />
             :
-            <div className="font-semibold text-2xl text-center">
+            <div className="font-semibold text-2xl text-center mt-2">
               {translations.no_stations_with_parameters}
             </div>
         }

@@ -110,4 +110,7 @@ var Pt = map[string]string{
 	"number_of_stations":                            "Número de estações",
 	"history":                                       "histórico",
 	"remove":                                        "remover",
+	"history_of_listened_stations":                  "Histórico de estações ouvidas",
+	"no_listened_stations":                          "Ainda não há estações ouvidas",
+	"clear_history":                                 "Limpar histórico",
 }

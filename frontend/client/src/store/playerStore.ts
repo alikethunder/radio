@@ -65,5 +65,8 @@ export const playerStore = createStore('app')(initialState as Player,
     },
     delete_history_record(record_id: string) {
       set.history(get.history().filter(r => r.id !== record_id))
-    }
+    },
+    delete_history() {
+      set.history([])
+    },
   }))

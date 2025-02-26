@@ -111,4 +111,7 @@ var Sp = map[string]string{
 	"number_of_stations":                            "Número de estaciones",
 	"history":                                       "historial",
 	"remove":                                        "eliminar",
+	"history_of_listened_stations":                  "historial de estaciones escuchadas",
+	"no_listened_stations":                          "Aún no hay estaciones escuchadas",
+	"clear_history":                                 "borrar historial",
 }

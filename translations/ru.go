@@ -109,4 +109,7 @@ var Ru = map[string]string{
 	"number_of_stations":                            "Количество радиостанций",
 	"history":                                       "История",
 	"remove":                                        "удалить",
+	"history_of_listened_stations":                  "история прослушанных станций",
+	"no_listened_stations":                          "Пока что нет прослушанных станций",
+	"clear_history":                                 "очистить историю",
 }
