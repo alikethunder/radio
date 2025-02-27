@@ -38,6 +38,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cache"
 	"github.com/gofiber/fiber/v2/middleware/compress"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/etag"
 	"github.com/gofiber/fiber/v2/utils"
 	"github.com/gofiber/template/html/v2"
@@ -102,7 +103,11 @@ func main() {
 	})
 
 	if os.Getenv("ENV") == "prod" {
-		// Later in the code
+		app.Use(cors.New(cors.Config{
+			AllowOrigins: "https://radio.best, http://radio.best, http://www.radio.best, https://www.radio.best",
+			AllowMethods: "OPTIONS,GET,POST,PUT,PATCH,DELETE,HEAD",
+		}))
+
 		sentryHandler := sentryfiber.New(sentryfiber.Options{
 			Repanic:         true,
 			WaitForDelivery: true,
