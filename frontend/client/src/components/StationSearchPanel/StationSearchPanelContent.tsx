@@ -110,18 +110,6 @@ export const StationSearchPanelContent: FC = memo(() => {
 
   const languages_multiselect_ref = useStore().app.languages_multiselect_ref()
 
-  /* useEffect(() => {
-    if (genres_multiselect_ref) {
-      genres_multiselect_ref.props.onHide = e => {
-        console.log('genres multiselect hide  e : ', genres_multiselect_ref.getElement().querySelector('[role="searchbox"]'), genres_multiselect_ref.getElement().querySelector('[role="searchbox"]').value)
-
-        genres_multiselect_ref.getElement().querySelector('[role="searchbox"]').value = ''
-      }
-    }
-  }, [
-    genres_multiselect_ref,
-  ]) */
-
   return (
     <>
 
@@ -180,6 +168,7 @@ export const StationSearchPanelContent: FC = memo(() => {
           data-select-label="genres"
           emptyFilterMessage={translations.no_genres_found}
           showClear
+          resetFilterOnHide
         />
 
       </div>
@@ -201,6 +190,7 @@ export const StationSearchPanelContent: FC = memo(() => {
           data-select-label="countries"
           emptyFilterMessage={translations.no_countries_found}
           showClear
+          resetFilterOnHide
         />
 
         {/* Languages */}
@@ -218,6 +208,7 @@ export const StationSearchPanelContent: FC = memo(() => {
           data-select-label="languages"
           emptyFilterMessage={translations.no_languages_found}
           showClear
+          resetFilterOnHide
         />
 
       </div>
