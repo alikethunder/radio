@@ -34,7 +34,7 @@ import { Slider } from "primereact/slider"
 
 import { classNames } from "primereact/utils"
 import { NumRange } from "@/types/generics/range"
-import { useMobile, usePageInList, useTooltip, useTranslations, } from "@/hooks"
+import { useMobile, usePageInList, useRussia, useTooltip, useTranslations, } from "@/hooks"
 import { useDebounceCallback } from "usehooks-ts"
 
 import './index.sass'
@@ -346,6 +346,8 @@ export const Player: FC = memo(() => {
     next_station,
   ])
 
+  const is_rus = useRussia()
+
   return (
     <div
       id="player"
@@ -577,7 +579,12 @@ export const Player: FC = memo(() => {
 
       {
         mobile ? <></> :
-          <YandexAd id="R-A-14083703-1" className="flex-grow-1 align-self-stretch" interval={25000} update_dependency={minimized} />
+          is_rus ?
+            <YandexAd id="R-A-14083703-1" className="flex-grow-1 align-self-stretch" interval={25000} update_dependency={minimized} />
+            :
+            <div className="flex-grow-1">
+              <iframe width={728} height={90} frameBorder='no' scrolling="no" src="//www.highperformanceformat.com/89c3d2e938723e491dff6eefad9837bd/invoke.js" />
+            </div>
       }
 
     </div>

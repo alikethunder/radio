@@ -11,16 +11,24 @@ type Props = {
   style?: React.CSSProperties;
   update_dependency?: any;
   additional_render_params?: { [x: string]: any };
+  only_rus?: boolean;
 }
 
-import { useMobile, } from "@/hooks"
-import { isRussia } from "@/functions";
+import { useMobile, useRussia, } from "@/hooks"
 
 const ads_enabled = true
 
-export const YandexAd: FC<Props> = memo(({ update_dependency, additional_render_params, className, id, interval, style, ...rest }) => {
+export const YandexAd: FC<Props> = memo(({ update_dependency, additional_render_params, className, id, interval, style, only_rus, ...rest }) => {
 
-  if (!isRussia() || !ads_enabled || window.location.port == '3000') return <></>
+  const is_rus = useRussia()
+
+  if (
+    (
+      only_rus ? !is_rus : false
+    )
+    || !ads_enabled
+    || window.location.port == '3000'
+  ) return <></>
 
   const mobile = useMobile()
 
