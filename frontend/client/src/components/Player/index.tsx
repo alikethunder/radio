@@ -489,7 +489,7 @@ export const Player: FC = memo(() => {
                 }} />
               </Button>
 
-              {/* <QueryLink to={app_routes.history} className={`${history_page ? 'cursor-auto' : ''}`}>
+              <QueryLink to={app_routes.history} className={`${history_page ? 'cursor-auto' : ''}`}>
                 <Button
                   icon={`pi ${route_attributes[app_routes.history].icon}`}
                   rounded
@@ -501,7 +501,7 @@ export const Player: FC = memo(() => {
 
                   {...history_tooltip}
                 />
-              </QueryLink> */}
+              </QueryLink>
 
               <Button
                 icon={`pi pi-step-forward`}

@@ -364,7 +364,7 @@ export const RightSidebar: FC = memo(() => {
             : <></>
         }
 
-        {/* <QueryLink to={app_routes.history} onClick={close_rsb} className={`${history_page ? 'cursor-auto' : ''}`}>
+        <QueryLink to={app_routes.history} onClick={close_rsb} className={`${history_page ? 'cursor-auto' : ''}`}>
           <Button
             label={translations.history}
             text
@@ -373,7 +373,7 @@ export const RightSidebar: FC = memo(() => {
             className="border-noround w-full px-2 text-2xl shadow_on_hover action_text_font"
             disabled={Boolean(history_page)}
           />
-        </QueryLink> */}
+        </QueryLink>
 
         {
           root_admin ?

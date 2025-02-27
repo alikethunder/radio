@@ -35,7 +35,7 @@ func Signin(c *fiber.Ctx) error {
 
 				cookies.SetAuthCookie(fiber.Map{"email": req_json["email"], "rememberme": req_json["rememberme"], "id": user["id"]}, c)
 
-				tm := time.Now().UTC().String()
+				tm := time.Now().UTC().Format(time.UnixDate)
 
 				db.Update(
 					"users",

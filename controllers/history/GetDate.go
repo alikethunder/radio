@@ -7,5 +7,5 @@ import (
 )
 
 func GetDate(ctx *fiber.Ctx) error {
-	return ctx.Status(fiber.StatusOK).Send([]byte(time.Now().UTC().String()))
+	return ctx.Status(fiber.StatusOK).Send([]byte(time.Now().UTC().Format(time.UnixDate)))
 }

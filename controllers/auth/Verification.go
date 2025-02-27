@@ -29,7 +29,7 @@ func Verification(c *fiber.Ctx) error {
 
 		p, _ := functions.HashPassword(user_json["password"].(string))
 
-		tm := time.Now().UTC().String()
+		tm := time.Now().UTC().Format(time.UnixDate)
 
 		db.Update(
 			"users",

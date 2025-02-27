@@ -115,6 +115,9 @@ export const History = memo(() => {
   }, 50), [history_stations])
 
   const customizedMarker = useCallback((record: HistoryRecord) => {
+    const date = new Date(
+      record.date.includes('+0000 UTC') ? record.date.replace(' +0000 UTC', '') : record.date
+    )
     return (
       <>
         <div className="top_separator" />
@@ -124,7 +127,7 @@ export const History = memo(() => {
             {
               Intl.DateTimeFormat(locale, {
                 weekday: 'long'
-              }).format(new Date(record.date))
+              }).format(date)
             }
           </span>
           <span>
@@ -133,7 +136,7 @@ export const History = memo(() => {
                 year: "numeric",
                 month: "short",
                 day: "numeric",
-              }).format(new Date(record.date))
+              }).format(date)
             }
           </span>
           <span>
@@ -142,14 +145,14 @@ export const History = memo(() => {
                 hour: "numeric",
                 minute: "numeric",
                 second: "numeric",
-              }).format(new Date(record.date))
+              }).format(date)
             }
           </span>
           <span>
             {
               Intl.DateTimeFormat(locale, {
                 timeZoneName: "short",
-              }).format(new Date(record.date)).split(' ')[1]
+              }).format(date).split(' ')[1]
             }
           </span>
 

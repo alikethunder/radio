@@ -39,7 +39,7 @@ func Add(ctx *fiber.Ctx) error {
 					"id":         gocql.TimeUUID(),
 					"user_id":    cookie_user["id"],
 					"station_id": station_id,
-					"date":       time.Now().UTC().String(),
+					"date":       time.Now().UTC().Format(time.UnixDate),
 				}
 
 				err := db.Insert("history", record)
