@@ -115,4 +115,7 @@ var Ru = map[string]string{
 	"random_station_from_history":                   "случайная станция из истории",
 	"previous_station":                              "предыдущая станция",
 	"next_station":                                  "следующая станция",
+	"no_genres_found":                               "Нет таких жанров",
+	"no_countries_found":                            "Нет таких стран",
+	"no_languages_found":                            "Нет таких языков",
 }

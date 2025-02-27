@@ -19,7 +19,7 @@ import { YandexAd } from "@/components/YandexAd"
 import { Message } from 'primereact/message'
 import { Button } from "primereact/button"
 import { IoDiceSharp } from "react-icons/io5"
-import { switch_to_random_station } from "@/functions"
+import { hide_multiselects, switch_to_random_station } from "@/functions"
 import { ShareListIcon } from "@/components/ShareListIcon"
 
 import { ReactComponent as Found_svg } from '@/assets/svg/found.svg'
@@ -243,6 +243,7 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
       const touch_move_f = (e: TouchEvent) => {
         e.preventDefault()
         if (touch_start) {
+          hide_multiselects()
           actions.persistedApp.search_panel_closed(e.changedTouches[0].clientY < touch_start)
         }
       }
@@ -270,6 +271,7 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
 
       const touch_move_f = (e: TouchEvent) => {
         if (touch_start && e.changedTouches[0].clientY < touch_start) {
+          hide_multiselects()
           actions.persistedApp.search_panel_closed(true)
         }
       }

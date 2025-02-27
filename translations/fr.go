@@ -116,4 +116,7 @@ var Fr = map[string]string{
 	"random_station_from_history":                   "station aléatoire de l'historique",
 	"previous_station":                              "station précédente",
 	"next_station":                                  "station suivante",
+	"no_genres_found":                               "Aucun genre trouvé",
+	"no_countries_found":                            "Aucun pays trouvé",
+	"no_languages_found":                            "Aucune langue trouvée",
 }

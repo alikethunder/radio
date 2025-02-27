@@ -116,4 +116,7 @@ var De = map[string]string{
 	"random_station_from_history":                   "Zufälliger Sender aus dem Verlauf",
 	"previous_station":                              "vorherige Station",
 	"next_station":                                  "nächste Station",
+	"no_genres_found":                               "Keine Genres gefunden",
+	"no_countries_found":                            "Keine Länder gefunden",
+	"no_languages_found":                            "Keine Sprachen gefunden",
 }

@@ -116,4 +116,7 @@ var En = map[string]string{
 	"random_station_from_history":                   "random station from history",
 	"previous_station":                              "previous station",
 	"next_station":                                  "next station",
+	"no_genres_found":                               "No genres found",
+	"no_countries_found":                            "No countries found",
+	"no_languages_found":                            "No languages found",
 }

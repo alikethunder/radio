@@ -116,4 +116,7 @@ var Pt = map[string]string{
 	"random_station_from_history":                   "estação aleatória do histórico",
 	"previous_station":                              "estação anterior",
 	"next_station":                                  "Estación siguiente",
+	"no_genres_found":                               "Nenhum gênero encontrado",
+	"no_countries_found":                            "Nenhum país encontrado",
+	"no_languages_found":                            "Nenhum idioma encontrado",
 }

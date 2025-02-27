@@ -9,6 +9,7 @@ import {
 } from '@/types/FormState'
 
 import { Station } from '@/types';
+import { MultiSelect } from 'primereact/multiselect';
 
 type AppStore = {
   isClient: boolean;
@@ -43,6 +44,9 @@ type AppStore = {
   share_stations_list: Station[];
   share_list_popup_opened: boolean;
   history_loaded: boolean,
+  genres_multiselect_ref: MultiSelect | null;
+  countries_multiselect_ref: MultiSelect | null;
+  languages_multiselect_ref: MultiSelect | null;
 }
 
 const initial_state = {
@@ -78,6 +82,9 @@ const initial_state = {
   share_stations_list: [],
   share_list_popup_opened: false,
   history_loaded: false,
+  genres_multiselect_ref: null,
+  countries_multiselect_ref: null,
+  languages_multiselect_ref: null,
 } as AppStore
 
 export const appStore = createStore('app')(initial_state)

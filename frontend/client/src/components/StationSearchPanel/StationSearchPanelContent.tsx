@@ -52,6 +52,9 @@ export const StationSearchPanelContent: FC = memo(() => {
     'country',
     'genre',
     "language",
+    'no_genres_found',
+    'no_countries_found',
+    'no_languages_found',
   ], true)
 
   useEffect(() => {
@@ -92,6 +95,32 @@ export const StationSearchPanelContent: FC = memo(() => {
   const change_genres = useCallback((e: MultiSelectChangeEvent) => {
     actions.persistedApp.search_selected_genres(e.value)
   }, [])
+
+  const set_multiselect_ref = useCallback((e: MultiSelect) => {
+    if (e) {
+      const label = e.getElement().dataset["selectLabel"]
+      //@ts-ignore
+      actions.app[e.getElement().dataset["selectLabel"] + '_multiselect_ref'](e)
+    }
+  }, [])
+
+  const genres_multiselect_ref = useStore().app.genres_multiselect_ref()
+
+  const countries_multiselect_ref = useStore().app.countries_multiselect_ref()
+
+  const languages_multiselect_ref = useStore().app.languages_multiselect_ref()
+
+  /* useEffect(() => {
+    if (genres_multiselect_ref) {
+      genres_multiselect_ref.props.onHide = e => {
+        console.log('genres multiselect hide  e : ', genres_multiselect_ref.getElement().querySelector('[role="searchbox"]'), genres_multiselect_ref.getElement().querySelector('[role="searchbox"]').value)
+
+        genres_multiselect_ref.getElement().querySelector('[role="searchbox"]').value = ''
+      }
+    }
+  }, [
+    genres_multiselect_ref,
+  ]) */
 
   return (
     <>
@@ -147,6 +176,10 @@ export const StationSearchPanelContent: FC = memo(() => {
           placeholder={translations.genre}
           className="w-20rem max-w-full relative"
           pt={multiselect_pt}
+          ref={set_multiselect_ref}
+          data-select-label="genres"
+          emptyFilterMessage={translations.no_genres_found}
+          showClear
         />
 
       </div>
@@ -164,6 +197,10 @@ export const StationSearchPanelContent: FC = memo(() => {
           placeholder={translations.country}
           className="max-w-20rem w-full relative"
           pt={multiselect_pt}
+          ref={set_multiselect_ref}
+          data-select-label="countries"
+          emptyFilterMessage={translations.no_countries_found}
+          showClear
         />
 
         {/* Languages */}
@@ -177,6 +214,10 @@ export const StationSearchPanelContent: FC = memo(() => {
           placeholder={translations.language}
           className="w-20rem max-w-full relative"
           pt={multiselect_pt}
+          ref={set_multiselect_ref}
+          data-select-label="languages"
+          emptyFilterMessage={translations.no_languages_found}
+          showClear
         />
 
       </div>
