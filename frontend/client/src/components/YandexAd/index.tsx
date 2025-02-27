@@ -14,12 +14,13 @@ type Props = {
 }
 
 import { useMobile, } from "@/hooks"
+import { isRussia } from "@/functions";
 
 const ads_enabled = true
 
 export const YandexAd: FC<Props> = memo(({ update_dependency, additional_render_params, className, id, interval, style, ...rest }) => {
 
-  if (!ads_enabled || window.location.port == '3000') return <></>
+  if (!isRussia() || !ads_enabled || window.location.port == '3000') return <></>
 
   const mobile = useMobile()
 

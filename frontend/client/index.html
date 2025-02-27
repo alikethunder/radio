@@ -147,9 +147,65 @@
     })
   </script>
 
+  <script>
+    if (
+      [
+        "Asia/Anadyr",
+        "Asia/Barnaul",
+        "Asia/Chita",
+        "Asia/Irkutsk",
+        "Asia/Kamchatka",
+        "Asia/Khandyga",
+        "Asia/Krasnoyarsk",
+        "Asia/Magadan",
+        "Asia/Novokuznetsk",
+        "Asia/Novosibirsk",
+        "Asia/Omsk",
+        "Asia/Sakhalin",
+        "Asia/Srednekolymsk",
+        "Asia/Tomsk",
+        "Asia/Ust-Nera",
+        "Asia/Vladivostok",
+        "Asia/Yakutsk",
+        "Asia/Yekaterinburg",
+        "Europe/Astrakhan",
+        "Europe/Kaliningrad",
+        "Europe/Kirov",
+        "Europe/Moscow",
+        "Europe/Samara",
+        "Europe/Saratov",
+        "Europe/Simferopol",
+        "Europe/Ulyanovsk",
+        "Europe/Volgograd"
+      ].includes(Intl.DateTimeFormat().resolvedOptions().timeZone)
+    ) {
+      //is Russia
+      const first_script = document.createElement('script')
+      const second_script = document.createElement('script')
+
+      first_script.textContent = `window.yaContextCb = window.yaContextCb || []`
+
+      second_script.setAttribute('src', 'https://yandex.ru/ads/system/context.js')
+      second_script.setAttribute('async', true)
+
+      document.head.appendChild(first_script)
+      document.head.appendChild(second_script)
+
+    } else {
+
+      const script = document.createElement('script')
+
+      script.setAttribute('src', '//pl25981703.effectiveratecpm.com/1a/c7/a8/1ac7a8b347f50db93590edbb56b56e39.js')
+
+      script.setAttribute('type', 'text/javascript')
+
+      document.head.appendChild(script)
+    }
+  </script>
+
   <!-- Yandex.RTB -->
-  <script>window.yaContextCb = window.yaContextCb || []</script>
-  <script src="https://yandex.ru/ads/system/context.js" async></script>
+  <!-- <script>window.yaContextCb = window.yaContextCb || []</script>
+  <script src="https://yandex.ru/ads/system/context.js" async></script> -->
 </head>
 
 <body class="h-screen">
