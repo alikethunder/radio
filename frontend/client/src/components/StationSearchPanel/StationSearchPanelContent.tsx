@@ -104,12 +104,6 @@ export const StationSearchPanelContent: FC = memo(() => {
     }
   }, [])
 
-  const genres_multiselect_ref = useStore().app.genres_multiselect_ref()
-
-  const countries_multiselect_ref = useStore().app.countries_multiselect_ref()
-
-  const languages_multiselect_ref = useStore().app.languages_multiselect_ref()
-
   return (
     <>
 

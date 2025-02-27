@@ -40,8 +40,20 @@ export const StationSearchPanel: FC = memo(() => {
       const touch_move_f = (e: TouchEvent) => {
         if (
           touch_start
-          && !(e.target as HTMLElement).className.includes('p-multiselect')
-          && !(e.target as HTMLElement).closest('.p-multiselect')
+          && (
+            (
+              (e.target as HTMLElement).className.split && (e.target as HTMLElement).className.split(' ').includes('p-multiselect')
+            )
+
+            || (e.target as HTMLElement).closest('.p-multiselect-label-container')
+
+            || (e.target as HTMLElement).closest('.p-multiselect-trigger')
+
+            || (!(e.target as HTMLElement).className.includes('p-multiselect')
+
+              && !(e.target as HTMLElement).closest('.p-multiselect')
+            )
+          )
         ) {
           e.stopImmediatePropagation()
           e.stopPropagation()
