@@ -266,9 +266,11 @@ export const History = memo(() => {
   const set_ad_size = useCallback((node: HTMLDivElement | null) => {
     if (node) {
       const child = node.children[0] as HTMLElement
-      const rect = node.getBoundingClientRect()
-      child.style.width = `${rect.width}px`
-      child.style.height = `${document.body.clientHeight - rect.top}px`
+      if (child) {
+        const rect = node.getBoundingClientRect()
+        child.style.width = `${rect.width}px`
+        child.style.height = `${document.body.clientHeight - rect.top}px`
+      }
     }
   }, [])
 
