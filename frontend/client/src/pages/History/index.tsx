@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useMemo, useState, useTransition } from "react"
+import { memo, useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react"
 
 import {
   actions,
@@ -8,16 +8,22 @@ import {
 
 import { HistoryRecord, Station } from "@/types"
 import { Timeline } from "primereact/timeline"
-import { StationAvatar, StationCard } from "@/components"
+import { StationAvatar, StationCard, YandexAd } from "@/components"
 import languages_tags from '&/settings/languages_tags.json'
 
 import './index.sass'
 import { Button } from "primereact/button"
-import { useHideTooltip, useTooltip, useTranslations } from "@/hooks"
+import { useHideTooltip, useMobile, useTooltip, useTranslations } from "@/hooks"
 import { useDebounceCallback } from "usehooks-ts"
 import { Message } from "primereact/message"
 import { IoDiceSharp } from "react-icons/io5"
 import { switch_to_random_station } from "@/functions"
+import { useResizeObserver } from 'usehooks-ts'
+
+type Size = {
+  width?: number
+  height?: number
+}
 
 export const History = memo(() => {
 
@@ -255,8 +261,43 @@ export const History = memo(() => {
       history_stations,
     ])
 
+  const mobile = useMobile()
+
+  const set_ad_size = useCallback((node: HTMLDivElement | null) => {
+    if (node) {
+      const child = node.children[0] as HTMLElement
+      const rect = node.getBoundingClientRect()
+      child.style.width = `${rect.width}px`
+      child.style.height = `${document.body.clientHeight - rect.top}px`
+    }
+  }, [])
+
+  const ad_container_ref = useCallback((node: HTMLDivElement | null) => {
+    setTimeout(() => {
+      set_ad_size(node)
+    }, 500)
+  }, [set_ad_size])
+
+  const timeline_container_ref = useRef<HTMLDivElement>(null)
+
+  const onResize = useCallback(useDebounceCallback(() => {
+    if (timeline_container_ref.current) {
+      timeline_container_ref.current.querySelectorAll('.side_ad_container').forEach(ad_container => {
+        set_ad_size(ad_container as HTMLDivElement)
+      })
+    }
+  }, 200)
+    , [
+      set_ad_size,
+    ])
+
+  const _ = useResizeObserver({
+    ref: timeline_container_ref,
+    onResize,
+  })
+
   return (
-    <div className="flex flex-column flex-grow-1 p-2 gap-2 overflow-y-auto">
+    <div className="flex flex-column flex-grow-1 p-2 gap-2 overflow-y-auto" ref={timeline_container_ref}>
       <div >
         <Message
           severity="success"
@@ -269,27 +310,60 @@ export const History = memo(() => {
       {
         loading ? <></> :
           history.length ?
-            <Timeline
-              layout="vertical"
-              value={history}
-              marker={customizedMarker}
-              content={customizedContent}
-              dataKey="id"
-              pt={{
-                root: {
-                  className: 'align-items-center history_timeline',
-                },
-                content: {
-                  className: 'mb-3 p-0 pl-3'
-                },
-                separator: {
-                  className: 'text-center flex-shrink-0 flex-grow-1',
-                },
-                opposite: {
-                  className: 'hidden',
-                },
-              }}
-            />
+            <div className="flex flex-row justify-content-center">
+              {
+                mobile ? <></> :
+                  <div
+                    className="relative flex-grow-1 side_ad_container"
+                    ref={ad_container_ref}
+                    style={{
+                      pointerEvents: 'none'
+                    }}
+                  >
+                    <YandexAd id="R-A-14083703-10" style={{
+                      position: 'fixed',
+                    }} />
+                  </div>
+              }
+
+              <Timeline
+                layout="vertical"
+                value={history}
+                marker={customizedMarker}
+                content={customizedContent}
+                dataKey="id"
+                pt={{
+                  root: {
+                    className: 'align-items-center history_timeline flex-shrink-0 flex-grow-0 md:px-7',
+                  },
+                  content: {
+                    className: 'mb-3 p-0 pl-3'
+                  },
+                  separator: {
+                    className: 'text-center flex-shrink-0 flex-grow-1',
+                  },
+                  opposite: {
+                    className: 'hidden',
+                  },
+                }}
+              />
+
+              {
+                mobile ? <></> :
+                  <div
+                    className="relative flex-grow-1 side_ad_container"
+                    ref={ad_container_ref}
+                    style={{
+                      pointerEvents: 'none'
+                    }}
+                  >
+                    <YandexAd id="R-A-14083703-11" style={{
+                      position: 'fixed',
+                    }} />
+                  </div>
+              }
+
+            </div>
             :
             <span className="md:ml-6 font-semibold text-2xl">
               {translations.no_listened_stations}

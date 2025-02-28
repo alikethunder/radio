@@ -8,6 +8,7 @@ import { Dropdown } from 'primereact/dropdown'
 
 import {
   QueryLink,
+  YandexAd,
 } from '@/components'
 
 import {
@@ -575,6 +576,8 @@ export const RightSidebar: FC = memo(() => {
         } */}
 
       </div>
+
+      <YandexAd id="R-A-14083703-9" className="flex-grow-1" />
 
       <div className="bottom flex flex-column flex-shrink-0">
 
