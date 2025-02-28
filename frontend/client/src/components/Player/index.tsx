@@ -68,6 +68,12 @@ export const Player: FC = memo(() => {
 
   const playing = useStore().player.playing()
 
+  const icon_playing = useStore().player.icon_playing()
+
+  const stream_loading = useStore().player.stream_loading()
+
+  useEffect(() => actions.player.icon_playing(playing), [playing])
+
   const volume = useStore().player.volume()
 
   const current_station = useStore().player.current_station()
@@ -79,23 +85,32 @@ export const Player: FC = memo(() => {
   const [offline, set_offline] = useState(false)
 
   const manage_play = useCallback(() => {
-    //todo: fix bug for too fast stations switching
     const current_station = store.player.current_station()
     const playing = store.player.playing()
 
     set_audio_ref(audio_ref => {
       set_offline(offline => {
         if (current_station && audio_ref) {
+
           if (playing && !offline) {
             audio_ref.src = current_station?.external_enable ? current_station?.external : ''
-            audio_ref.play().catch((e) => {
+            actions.player.stream_loading(true)
+            audio_ref.play().then(_ => {
+              actions.player.icon_playing(true)
+            }).catch((e) => {
               console.log('[Player] play error : ', e)
-              actions.player.playing(false)
-              audio_ref.pause()
+
+              actions.player.icon_playing(false)
+
+            }).finally(() => {
+              const c = store.player.current_station()
+
+              //console.log('[Player] finally : ', current_station.external, c?.external)
+
+              actions.player.stream_loading(current_station.external != c?.external)
             })
           } else {
             audio_ref.pause()
-            //audio_ref.removeAttribute('src')
           }
         }
         return offline
@@ -130,6 +145,8 @@ export const Player: FC = memo(() => {
     'history',
     'previous_station',
     'next_station',
+    'loading',
+    'playing',
   ], true)
 
   const switch_playing = useDebounceCallback(() => actions.player.switch_playing(), 50)
@@ -229,17 +246,17 @@ export const Player: FC = memo(() => {
   }, [container_ref])
 
   useEffect(() => {
-    console.log('history player : ', history_loaded)
+    //console.log('history player : ', history_loaded)
     //stations history update
     if (history_loaded) {
-      console.log('history loaded : ')
+      //console.log('history loaded : ')
 
       if (current_station) {
         const last_record = store.player.history_get_from_last(0)
 
         const current_history_station_id = store.player.current_history_station_id()
 
-        console.log('last record : ', last_record, current_station.id)
+        //console.log('last record : ', last_record, current_station.id)
 
         if (last_record?.station_id !== current_station.id && current_history_station_id !== current_station.id) {
 
@@ -259,15 +276,15 @@ export const Player: FC = memo(() => {
               })
               if (resp.status === 200) {
                 record = { ...record, ...await resp.json() }
-                console.log('[Player] signedin history added : ', record)
+                //console.log('[Player] signedin history added : ', record)
               } else {
-                console.log('[Player] signedin history add error : ', resp.status)
+                //console.log('[Player] signedin history add error : ', resp.status)
               }
             } else {
               const resp = await fetch(`${window.location.origin}/api/v1/history/date`)
               record.date = await resp.text()
               record.id = v7()
-              console.log('[Player] non signedin history added : ', record)
+              //console.log('[Player] non signedin history added : ', record)
             }
             if (record.id) {
               actions.player.history_add(record)
@@ -405,12 +422,12 @@ export const Player: FC = memo(() => {
         <div className={`overlay absolute top-0 left-0 right-0 bottom-0 p-component-overlay border-round-xl transition-all transition-duration-300 transition-linear ${minimized ? 'opacity-80' : 'opacity-0'}`} />
 
         <Button
-          className={`shadow_on_hover active_element p-0 flex-shrink-0 hover:text-primary hover:border-primary player_play_button justify-content-center ${playing ? '' : 'paused'} ${minimized ? 'absolute top-0 bottom-0 my-auto' : ''}`}
+          className={`shadow_on_hover active_element p-0 flex-shrink-0 hover:text-primary hover:border-primary player_play_button justify-content-center ${minimized ? 'absolute top-0 bottom-0 my-auto' : ''}`}
 
           rounded
           outlined
           raised
-          aria-label={`${playing ? translations.pause : translations.play}`}
+          aria-label={`${stream_loading ? translations.loading : icon_playing ? translations.playing : translations.pause}`}
           severity="info"
 
           pt={{
@@ -424,13 +441,13 @@ export const Player: FC = memo(() => {
           }}
 
           onClick={switch_playing}
-          disabled={offline}
+          disabled={offline || stream_loading}
         >
           {
             offline ?
               <MdSignalWifiConnectedNoInternet0 />
               :
-              <i className={`pi text-3xl ${playing ? 'pi-pause' : 'pi-play padding_left_2px'}`}></i>
+              <i className={`pi text-3xl ${stream_loading ? 'pi-spin pi-spinner' : (icon_playing ? 'pi-pause' : 'pi-play padding_left_2px')}`}></i>
           }
         </Button>
 

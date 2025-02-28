@@ -120,4 +120,6 @@ var Sp = map[string]string{
 	"no_genres_found":                               "No se encontraron géneros",
 	"no_countries_found":                            "No se encontraron países",
 	"no_languages_found":                            "No se encontraron idiomas",
+	"loading":                                       "cargando",
+	"playing":                                       "jugando",
 }

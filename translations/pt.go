@@ -119,4 +119,6 @@ var Pt = map[string]string{
 	"no_genres_found":                               "Nenhum gênero encontrado",
 	"no_countries_found":                            "Nenhum país encontrado",
 	"no_languages_found":                            "Nenhum idioma encontrado",
+	"loading":                                       "carregando",
+	"playing":                                       "jogando",
 }

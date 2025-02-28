@@ -17,6 +17,8 @@ type Player = {
   minimized: boolean,
   history: HistoryRecord[],
   current_history_station_id: string | null,
+  icon_playing: boolean,
+  stream_loading: boolean,
 }
 
 const initialState = {
@@ -27,6 +29,8 @@ const initialState = {
   minimized: false,
   history: [],
   current_history_station_id: null,
+  icon_playing: false,
+  stream_loading: false,
 }
 
 export const playerStore = createStore('app')(initialState as Player,
@@ -53,8 +57,7 @@ export const playerStore = createStore('app')(initialState as Player,
         .forEach(n => set[n](initialState[n]))
     },
     switch_playing() {
-      const playing = get.playing()
-      set.playing(!playing)
+      set.playing(!get.playing())
     },
     toggle_player_size() {
       set.minimized(!get.minimized())

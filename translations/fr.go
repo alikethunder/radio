@@ -119,4 +119,6 @@ var Fr = map[string]string{
 	"no_genres_found":                               "Aucun genre trouvé",
 	"no_countries_found":                            "Aucun pays trouvé",
 	"no_languages_found":                            "Aucune langue trouvée",
+	"loading":                                       "chargement",
+	"playing":                                       "jouant",
 }

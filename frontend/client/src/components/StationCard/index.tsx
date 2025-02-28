@@ -1,4 +1,4 @@
-import { CSSProperties, FC, memo, useCallback, } from "react"
+import { FC, memo, useCallback, } from "react"
 
 import {
   AddStationToFavorites,
@@ -40,9 +40,10 @@ type Props = {
 }
 
 export const StationCard: FC<Props> = memo(({ station, style, at_history, }) => {
-  //console.log(style)
 
   const current_station = useStore().player.current_station()
+
+  const stream_loading = useStore().player.stream_loading()
 
   const playing = useStore().player.playing()
 
@@ -122,7 +123,7 @@ export const StationCard: FC<Props> = memo(({ station, style, at_history, }) => 
                 <div className="overlay_text z-1" style={{
                   color: '#fff'
                 }}>
-                  <i className={`font-semibold pi ${current_station?.id == station.id && playing ? 'pi-pause' : 'pi-play'}`} style={{
+                  <i className={`font-semibold pi ${current_station?.id == station.id && (stream_loading ? 'pi-spin pi-spinner' : (playing ? 'pi-pause' : 'pi-play'))}`} style={{
                     fontSize: '2rem',
                     textShadow: '0 0 7px',
                   }}></i>

@@ -119,4 +119,6 @@ var En = map[string]string{
 	"no_genres_found":                               "No genres found",
 	"no_countries_found":                            "No countries found",
 	"no_languages_found":                            "No languages found",
+	"loading":                                       "loading",
+	"playing":                                       "playing",
 }

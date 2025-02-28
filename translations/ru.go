@@ -118,4 +118,6 @@ var Ru = map[string]string{
 	"no_genres_found":                               "Нет таких жанров",
 	"no_countries_found":                            "Нет таких стран",
 	"no_languages_found":                            "Нет таких языков",
+	"loading":                                       "загружается",
+	"playing":                                       "играет",
 }

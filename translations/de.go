@@ -119,4 +119,6 @@ var De = map[string]string{
 	"no_genres_found":                               "Keine Genres gefunden",
 	"no_countries_found":                            "Keine Länder gefunden",
 	"no_languages_found":                            "Keine Sprachen gefunden",
+	"loading":                                       "Laden",
+	"playing":                                       "Abspielen",
 }
