@@ -123,7 +123,7 @@ export const StationCard: FC<Props> = memo(({ station, style, at_history, }) => 
                 <div className="overlay_text z-1" style={{
                   color: '#fff'
                 }}>
-                  <i className={`font-semibold pi ${current_station?.id == station.id && (stream_loading ? 'pi-spin pi-spinner' : (playing ? 'pi-pause' : 'pi-play'))}`} style={{
+                  <i className={`font-semibold pi ${current_station?.id == station.id ? (stream_loading ? 'pi-spin pi-spinner' : (playing ? 'pi-pause' : 'pi-play')) : 'pi-play'}`} style={{
                     fontSize: '2rem',
                     textShadow: '0 0 7px',
                   }}></i>
