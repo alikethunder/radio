@@ -196,7 +196,7 @@ export const History = memo(() => {
     home_stations,
   ])
 
-  const loading = useMemo(() => !home_stations_loaded && !history_loaded, [
+  const loading = useMemo(() => !home_stations_loaded || !history_loaded, [
     home_stations_loaded,
     history_loaded,
   ])
