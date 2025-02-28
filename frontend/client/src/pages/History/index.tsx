@@ -13,7 +13,7 @@ import languages_tags from '&/settings/languages_tags.json'
 
 import './index.sass'
 import { Button } from "primereact/button"
-import { useTooltip, useTranslations } from "@/hooks"
+import { useHideTooltip, useTooltip, useTranslations } from "@/hooks"
 import { useDebounceCallback } from "usehooks-ts"
 import { Message } from "primereact/message"
 import { IoDiceSharp } from "react-icons/io5"
@@ -26,6 +26,8 @@ export const History = memo(() => {
   const history_loaded = useStore().app.history_loaded()
 
   const language = useStore().translations.language()
+
+  const tooltipOptions = useHideTooltip()
 
   const home_stations = useStore().app.stations_home()
 
@@ -230,9 +232,7 @@ export const History = memo(() => {
                   onClick={play_random_station}
 
                   tooltip={translations.random_station_from_history}
-                  tooltipOptions={{
-                    position: 'bottom',
-                  }}
+                  {...{ tooltipOptions }}
                 >
                   <IoDiceSharp style={{
                     width: '1.5rem',

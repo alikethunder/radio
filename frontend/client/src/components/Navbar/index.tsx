@@ -11,6 +11,7 @@ import {
 } from "@/store"
 
 import {
+  useHideTooltip,
   useMobile,
   useShowSearchPanel,
   useTranslations,
@@ -36,6 +37,8 @@ export const Navbar: FC = memo(() => {
   const current_page = useStore().app.current_page()
 
   const mobile = useMobile()
+
+  const tooltipOptions = useHideTooltip()
 
   const search_stations_text = useStore().persistedApp.search_stations_text()
 
@@ -133,6 +136,7 @@ export const Navbar: FC = memo(() => {
                 raised
                 aria-label={translations.open_search_stations_panel}
                 tooltip={translations.open_search_stations_panel}
+                {...{ tooltipOptions }}
                 className={`p-0 w-2rem h-2rem shadow_on_hover align-self-center flex flex-shrink-0 justify-content-center align-items-center`}
                 severity={`info`}
 

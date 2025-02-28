@@ -1,9 +1,9 @@
-import { useMemo, useCallback } from "react"
+import { useMemo, useCallback, } from "react"
 
 import { actions, } from "@/store"
 import { v7 } from "uuid"
 
-export const useTooltip = (ariaLabel: string): { "aria-label": string, "data-tooltip_targetid": string, onMouseEnter: (e: React.MouseEvent<HTMLElement>) => void } => {
+export const useTooltip = (ariaLabel: string): { "aria-label": string, "data-tooltip_targetid": string, onMouseEnter: (e: React.MouseEvent<HTMLElement>) => void, onMouseDown: (e: React.MouseEvent<HTMLElement>) => void } => {
 
   const dataTargetid = useMemo(() => `_${v7()}`, [])
 
@@ -18,9 +18,14 @@ export const useTooltip = (ariaLabel: string): { "aria-label": string, "data-too
     actions.app.hover_tooltip_content(tooltip_target?.ariaLabel ?? '')
   }, [])
 
+  const onMouseDown = useCallback((e: React.MouseEvent<HTMLElement>) => {
+    actions.app.hover_tooltip_content(ariaLabel)
+  }, [ariaLabel])
+
   return {
     "aria-label": ariaLabel,
     "data-tooltip_targetid": dataTargetid,
     onMouseEnter,
+    onMouseDown,
   }
 }

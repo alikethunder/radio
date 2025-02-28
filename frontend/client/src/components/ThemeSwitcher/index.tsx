@@ -1,17 +1,18 @@
-import { FC, memo, useEffect, useMemo, useState } from "react"
+import { FC, memo, useEffect, useMemo, useRef, useState } from "react"
 
 //import { TabMenu } from 'primereact/tabmenu'
 import { Button } from 'primereact/button'
 
 import { actions, useStore, store } from "@/store"
 
-import { tooltip_options } from "@/constants/tooltip_options"
 import { useDebounceCallback } from "usehooks-ts"
-import { useTranslations } from "@/hooks"
+import { useHideTooltip, useTranslations } from "@/hooks"
 
 export const ThemeSwitcher: FC = memo(() => {
 
   const theme = useStore().persistedApp.theme()
+
+  const tooltipOptions = useHideTooltip()
 
   const change_theme = useDebounceCallback(() => {
     const new_theme = store.persistedApp.theme() == 'light' ? 'dark' : 'light'
@@ -43,10 +44,10 @@ export const ThemeSwitcher: FC = memo(() => {
       :
       theme == 'light' ? 'pi-moon' : 'pi-sun'
   }, [theme_loading, theme])
-  
-    const [translations] = useTranslations([
-      'switch_theme',
-    ], true)
+
+  const [translations] = useTranslations([
+    'switch_theme',
+  ], true)
 
   return (
     <Button
@@ -56,7 +57,7 @@ export const ThemeSwitcher: FC = memo(() => {
       raised
       aria-label={translations.switch_theme}
       tooltip={translations.switch_theme}
-      tooltipOptions={tooltip_options}
+      {...{tooltipOptions}}
       className="p-0 w-2rem h-2rem shadow_on_hover align-self-center flex flex-shrink-0 justify-content-center align-items-center icon_button_text_shadow"
       style={{
         color: theme_loading ?

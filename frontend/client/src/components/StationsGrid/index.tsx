@@ -14,7 +14,7 @@ import { Size } from '@/types/size'
 
 import { useDebounceCallback, useResizeObserver } from "usehooks-ts"
 import { Station } from "@/types"
-import { useLog, useMobile, useStationsSearch, useTranslations } from "@/hooks"
+import { useHideTooltip, useLog, useMobile, useStationsSearch, useTranslations } from "@/hooks"
 import { YandexAd } from "@/components/YandexAd"
 import { Message } from 'primereact/message'
 import { Button } from "primereact/button"
@@ -33,6 +33,8 @@ type Props = {
 export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
 
   const edit_mode = useStore().app.FormActionsState_edit_mode()
+
+  const tooltipOptions = useHideTooltip()
 
   const card_size = useMemo(() => ({
     width: 144,
@@ -150,9 +152,7 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
         onClick={play_random_station}
 
         tooltip={translations.random_station_from_found}
-        tooltipOptions={{
-          position: 'bottom',
-        }}
+        {...{ tooltipOptions: { ...tooltipOptions, position: 'bottom' } }}
       >
         <IoDiceSharp style={{
           width: '1.5rem',
@@ -164,6 +164,7 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
       play_random_station,
       translations.random_station_from_found,
       searched_stations_length,
+      tooltipOptions,
     ])
 
   const share_list_button = useMemo(() =>
@@ -180,9 +181,7 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
         onClick={share_list}
 
         tooltip={translations.share_stations_list}
-        tooltipOptions={{
-          position: 'bottom',
-        }}
+        {...{ tooltipOptions: { ...tooltipOptions, position: 'bottom' } }}
         disabled={share_list_popup_opened}
       >
         {
@@ -198,6 +197,7 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
       show_share_list_button,
       share_list,
       share_list_popup_opened,
+      tooltipOptions,
     ])
 
   const count_message = useMemo(() =>

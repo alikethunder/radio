@@ -113,6 +113,7 @@ export const AddStationToFavorites: FC<Props> = memo(({ station, className, show
       }}
 
       {...tooltip}
+
     />
   )
 }, (o, n) => {
