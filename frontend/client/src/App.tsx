@@ -63,11 +63,10 @@ import { update_json } from "@/API/profile/update_json"
 import { sessionStore } from "@/store/sessionStore"
 import { StationCountry, Language, StationLanguage, StationGenre, HistoryRecord } from "@/types"
 
-import { decompress, compress } from "lz-string"
-var CryptoJS = require("crypto-js")
+import lz from 'lz-string'
+import CryptoJS from "crypto-js"
 window.CryptoJS = CryptoJS
-window.compress = compress
-window.decompress = decompress
+window.lz = lz
 
 const get_alphabet_sort = (language: Language | null) => ((a: StationLanguage | StationCountry | StationGenre, b: StationLanguage | StationCountry | StationGenre) => {
   language ??= 'en'

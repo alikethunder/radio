@@ -19,17 +19,15 @@ func GetStation(ctx *fiber.Ctx) error {
 
 	if err == nil {
 		marshalled, _ := json.Marshal(station)
+
 		fmt.Println("[GetStation] marshalled : ", string(marshalled))
-
 		enc := functions.Encrypt(string(marshalled))
+		fmt.Println("[GetStation] enc : ", enc)
 
-		compressed, _ := lzstring.CompressToUTF16(enc)
+		compressed, _ := lzstring.CompressToBase64(enc)
 		fmt.Println("[GetStation] compressed : ", compressed)
-		fmt.Printf("%x\n", compressed)
 
-		//return ctx.Status(fiber.StatusOK).SendString(compressed)
-
-		return ctx.Status(fiber.StatusOK).JSON(station)
+		return ctx.Status(fiber.StatusOK).SendString(compressed)
 	}
 
 	return ctx.SendStatus(fiber.StatusNotFound)

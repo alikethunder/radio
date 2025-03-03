@@ -12,7 +12,7 @@ import (
 
 func Encrypt(text string) string {
 	key := []byte("6368616e676520746869732070617373")
-
+	//iv := []byte("asdasdvcxvdfhert")
 	block, err := aes.NewCipher(key)
 	if err != nil {
 		panic(err)
@@ -27,6 +27,7 @@ func Encrypt(text string) string {
 	}
 	bm := cipher.NewCBCEncrypter(block, iv)
 	bm.CryptBlocks(ciphertext[aes.BlockSize:], plaintext)
+	fmt.Println("iv : ", string(iv))
 
 	return fmt.Sprintf("%x", ciphertext)
 
