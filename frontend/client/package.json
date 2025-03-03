@@ -13,6 +13,7 @@
   "dependencies": {
     "@sentry/react": "^8.36.0",
     "@types/jsmediatags": "^3.9.6",
+    "crypto-js": "^4.2.0",
     "element-closest": "^3.0.2",
     "jsmediatags": "^3.9.7",
     "lodash.debounce": "^4.0.8",
@@ -39,9 +40,10 @@
   "devDependencies": {
     "@sentry/vite-plugin": "^2.22.6",
     "@svgr/rollup": "^8.1.0",
+    "@types/cryptojs": "^3.1.33",
     "@types/element-closest": "^3.0.2",
     "@types/lodash.debounce": "^4.0.9",
-    "@types/node": "^20.10.5",
+    "@types/node": "^20.17.22",
     "@types/promise-polyfill": "^6.0.6",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",

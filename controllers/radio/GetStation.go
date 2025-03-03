@@ -1,9 +1,13 @@
 package RadioEndpoints
 
 import (
+	"encoding/json"
+	"fmt"
 	"web_project/constants"
 	"web_project/db"
+	"web_project/functions"
 
+	lzstring "github.com/daku10/go-lz-string"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -14,6 +18,17 @@ func GetStation(ctx *fiber.Ctx) error {
 	station, err := db.SelectRow("stations", fiber.Map{"id": id}, constants.Public_Station_Props()[:]...)
 
 	if err == nil {
+		marshalled, _ := json.Marshal(station)
+		fmt.Println("[GetStation] marshalled : ", string(marshalled))
+
+		enc := functions.Encrypt(string(marshalled))
+
+		compressed, _ := lzstring.CompressToUTF16(enc)
+		fmt.Println("[GetStation] compressed : ", compressed)
+		fmt.Printf("%x\n", compressed)
+
+		//return ctx.Status(fiber.StatusOK).SendString(compressed)
+
 		return ctx.Status(fiber.StatusOK).JSON(station)
 	}
 

@@ -1,8 +1,11 @@
 module web_project
 
-go 1.22.0
+go 1.23.0
+
+toolchain go1.23.3
 
 require (
+	github.com/daku10/go-lz-string v0.0.6
 	github.com/getsentry/sentry-go v0.29.1
 	github.com/goccy/go-json v0.10.2
 	github.com/gocql/gocql v1.6.0
@@ -12,8 +15,10 @@ require (
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/joho/godotenv v1.5.1
 	github.com/monperrus/crawler-user-agents v0.0.0-20241023055648-e464fa7cb229
-	golang.org/x/crypto v0.28.0
+	golang.org/x/crypto v0.35.0
 )
+
+require github.com/zenazn/pkcs7pad v0.0.0-20170308005700-253a5b1f0e03 // indirect
 
 require (
 	github.com/alikethunder/sitemap-generator v1.3.2
@@ -22,7 +27,6 @@ require (
 	github.com/gofiber/template v1.8.3 // indirect
 	github.com/gofiber/utils v1.1.0 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
-	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/hailocab/go-hostpool v0.0.0-20160125115350-e80d13ce29ed // indirect
 	github.com/klauspost/compress v1.17.7 // indirect
@@ -38,8 +42,8 @@ require (
 	github.com/valyala/fasthttp v1.52.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	golang.org/x/net v0.29.0 // indirect
-	golang.org/x/sys v0.26.0 // indirect
-	golang.org/x/text v0.19.0 // indirect
+	golang.org/x/sys v0.30.0 // indirect
+	golang.org/x/text v0.22.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 )
 
