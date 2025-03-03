@@ -206,6 +206,12 @@
   <!-- Yandex.RTB -->
   <script>window.yaContextCb = window.yaContextCb || []</script>
   <script src="https://yandex.ru/ads/system/context.js" async></script>
+
+  <script>
+    window.structuredClone = window.structuredClone || function (value) {
+      return JSON.parse(JSON.stringify(value))
+    }
+  </script>
 </head>
 
 <body class="h-screen">
