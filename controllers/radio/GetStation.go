@@ -2,7 +2,6 @@ package RadioEndpoints
 
 import (
 	"encoding/json"
-	"fmt"
 	"web_project/constants"
 	"web_project/db"
 	"web_project/functions"
@@ -20,12 +19,9 @@ func GetStation(ctx *fiber.Ctx) error {
 	if err == nil {
 		marshalled, _ := json.Marshal(station)
 
-		fmt.Println("[GetStation] marshalled : ", string(marshalled))
 		enc := functions.Encrypt(string(marshalled))
-		fmt.Println("[GetStation] enc : ", enc)
 
 		compressed, _ := lzstring.CompressToBase64(enc)
-		fmt.Println("[GetStation] compressed : ", compressed)
 
 		return ctx.Status(fiber.StatusOK).SendString(compressed)
 	}

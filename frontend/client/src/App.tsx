@@ -63,11 +63,6 @@ import { update_json } from "@/API/profile/update_json"
 import { sessionStore } from "@/store/sessionStore"
 import { StationCountry, Language, StationLanguage, StationGenre, HistoryRecord } from "@/types"
 
-import lz from 'lz-string'
-import CryptoJS from "crypto-js"
-window.CryptoJS = CryptoJS
-window.lz = lz
-
 const get_alphabet_sort = (language: Language | null) => ((a: StationLanguage | StationCountry | StationGenre, b: StationLanguage | StationCountry | StationGenre) => {
   language ??= 'en'
   return (a[language] ?? '') > (b[language] ?? '') ? 1 : -1

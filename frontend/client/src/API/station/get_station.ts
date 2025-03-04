@@ -10,9 +10,6 @@ export const get_station: (
 
   if (resp.status == 200) {
     const text = await resp.text()
-    const decomp = decompressFromBase64(text)
-
-    const decr = decrypt(decomp)
 
     const r = decrypt(decompressFromBase64(text))
     return JSON.parse(r)
