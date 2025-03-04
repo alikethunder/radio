@@ -27,7 +27,7 @@ export const YandexAd: FC<Props> = memo(({ update_dependency, additional_render_
       only_rus ? !is_rus : false
     )
     || !ads_enabled
-    || window.location.port == '3000'
+    || window.location.port == '5757'
   ) return <></>
 
   const mobile = useMobile()

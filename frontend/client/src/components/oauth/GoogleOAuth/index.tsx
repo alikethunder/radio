@@ -16,7 +16,7 @@ export const GoogleOAuth: FC<{ rememberme?: boolean }> = ({ rememberme }) => {
   useEffect(() => {
     try {
       window.google.accounts.id.initialize({
-        client_id: (window.location.port == '3000' ? oauth_dev : oauth_prod).web.client_id,
+        client_id: (window.location.port == '5757' ? oauth_dev : oauth_prod).web.client_id,
         itp_support: true,
         ux_mode: 'redirect',
         login_uri: `${window.location.origin}/api/v1/auth/google-callback`,
