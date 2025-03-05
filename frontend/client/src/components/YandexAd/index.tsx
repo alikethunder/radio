@@ -1,4 +1,4 @@
-import { FC, memo, useEffect, useRef, useState, } from "react"
+import { FC, memo, useEffect, useMemo, useRef, useState, } from "react"
 
 import {
   useStore,
@@ -38,10 +38,15 @@ export const YandexAd: FC<Props> = memo(({ update_dependency, additional_render_
 
   const container = useRef<HTMLDivElement>(null)
 
+  const int = useMemo(() => {
+    const i = interval ?? 35000
+    return i < 30000 ? 30000 : i
+  }, [interval])
+
   useEffect(() => {
     setInterval(() => {
       set_counter(counter => counter + 1)
-    }, interval ?? 35000)
+    }, int)
   }, [])
 
   useEffect(() => {
