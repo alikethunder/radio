@@ -72,106 +72,126 @@ export const StationCard: FC<Props> = memo(({ station, style, at_history, }) => 
 
   return (
     station ?
-      <div className="flex flex-column gap-2 flex-shrink-0" style={style}>
+      <div className="flex flex-column gap-2 flex-shrink-0 w-9rem h-13rem" style={style}>
 
-        <div className={classNames({
-          'current_station active_element border-primary': current_station?.id == station.id,
-        },
-          'flex',
-          'flex-column',
-          'gap-1',
-          'overflow-hidden',
-          'text-primary',
-          'shadow_card hover:border-primary',
-          'element_with_overlay',
-          'w-full',
-          'w-9rem h-13rem',
-          'flex-shrink-0 shadow-2 border-round',
-          'surface-card',
-        )}
-          style={{
-            border: '2px solid var(--surface-100)',
-          }}
-        >
+        <div className="relative w-full h-full p-05 pb-0">
 
-          <div className="flex flex-row gap-1 relative">
-            <StationCountryFlag disable_link en={station?.country} className="absolute top-0 left-0 z-1 m-05 mt-1" />
+          {/* background for styling */}
+          <div className={classNames({
+            'active_element border-primary': current_station?.id == station.id,
+          },
+            'shadow_card hover:border-primary text-primary',
+            'absolute w-full h-full top-0 bottom-0 left-0 right-0 z-1',
+            'shadow-2 border-round',
+          )}
 
-            <div
-              className="w-full h-5rem flex align-items-center justify-content-center p-ripple relative surface-100"
-              onClick={(e) => {
-                e.preventDefault()
-                e.stopPropagation()
-                play_click(station)
-              }} >
+            style={{
+              border: '2px solid var(--surface-100)',
+              transform: 'translateY(2px)',
+            }} />
 
-              <StationAvatar
-                id={station?.id}
-                className="absolute w-full h-full top-0 left-0 surface-100"
-              />
+          <div className="absolute w-5rem z-2"
+            style={{
+              height: '14px',
+              background: 'linear-gradient(135deg, transparent, transparent 10%, rgb(var(--anti-shadow)) 35%, rgb(var(--anti-shadow)) 65%, transparent 65%, transparent), linear-gradient(225deg, transparent, transparent 10%, rgb(var(--anti-shadow)) 35%, rgb(var(--anti-shadow)) 65%, transparent 65%, transparent)',
+              left: '32px',
+              top: '-12px',
+            }}
+          ></div>
+
+          <div className={classNames({
+            'current_station': current_station?.id == station.id,
+          },
+            'flex flex-column gap-1 w-full h-full',
+            'overflow-hidden',
+            'text-primary',
+            'element_with_overlay',
+            'flex-shrink-0 border-round',
+            'surface-card',
+            'z-2'
+          )}
+          >
+
+            <div className="flex flex-row gap-1 relative">
+              <StationCountryFlag disable_link en={station?.country} className="absolute top-0 left-0 z-1 m-05 mt-1" />
 
               <div
-                className="overlay absolute top-0 bottom-0 right-0 left-0 flex align-items-center justify-content-center text-center cursor-pointer"
+                className="w-full h-5rem flex align-items-center justify-content-center p-ripple relative surface-100"
                 onClick={(e) => {
+                  console.log('click')
                   e.preventDefault()
                   e.stopPropagation()
                   play_click(station)
-                }}>
+                }} >
 
-                <div className="overlay_background p-component-overlay absolute top-0 bottom-0 right-0 left-0"></div>
+                <StationAvatar
+                  id={station?.id}
+                  className="absolute w-full h-full top-0 left-0 surface-100"
+                />
 
-                <div className="overlay_text z-3" style={{
-                  color: '#fff'
-                }}>
-                  <i className={`font-semibold pi ${current_station?.id == station.id ? (stream_loading ? 'pi-spin pi-spinner' : (playing ? 'pi-pause' : 'pi-play')) : 'pi-play'}`} style={{
-                    fontSize: '2rem',
-                    textShadow: '0 0 7px',
-                  }}></i>
+                <div
+                  className="overlay absolute top-0 bottom-0 right-0 left-0 flex align-items-center justify-content-center text-center cursor-pointer"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    play_click(station)
+                  }}>
+
+                  <div className="overlay_background p-component-overlay absolute top-0 bottom-0 right-0 left-0"></div>
+
+                  <div className="overlay_text z-3" style={{
+                    color: '#fff'
+                  }}>
+                    <i className={`font-semibold pi ${current_station?.id == station.id ? (stream_loading ? 'pi-spin pi-spinner' : (playing ? 'pi-pause' : 'pi-play')) : 'pi-play'}`} style={{
+                      fontSize: '2rem',
+                      textShadow: '0 0 7px',
+                    }}></i>
+                  </div>
+
                 </div>
+
+                <Ripple />
 
               </div>
 
-              <Ripple />
-
+              {/* likes listeners */}
             </div>
 
-            {/* likes listeners */}
+            <div className="flex flex-column justify-content-between flex-grow-1 px-1 pb-1">
+
+              <div className="flex flex-column justify-content-center flex-grow-1">
+
+                <QueryLink to={generatePath(app_routes["station$id"], { id: station.id })} className="font-bold text-primary text-center station_name mb-1  text_hidden_overflow line-clamp-3 action_text_font text-xl" style={{
+                  wordBreak: 'break-word',
+                }}>
+                  {station.name}
+                </QueryLink>
+              </div>
+
+              <div className="flex flex-row justify-content-around align-items-center pb-1">
+
+                <AddStationToFavorites station={station} />
+
+                <StationShareButton station={station} />
+
+                <StationInfoButton station={station} />
+
+              </div>
+            </div>
+
           </div>
 
-          <div className="flex flex-column justify-content-between flex-grow-1 px-1 pb-1">
+          {
+            edit_mode ?
+              <div className="flex flex-row flex-wrap flex-shrink-0 align-items-start gap-1 overflow-hidden">
 
-            <div className="flex flex-column justify-content-center flex-grow-1">
+                <StationTag tag="Broadcasting" color={station.broadcasting ? 'green-400' : 'surface-300'} disable_link />
 
-              <QueryLink to={generatePath(app_routes["station$id"], { id: station.id })} className="font-bold text-primary text-center station_name mb-1  text_hidden_overflow line-clamp-3 action_text_font text-xl" style={{
-                wordBreak: 'break-word',
-              }}>
-                {station.name}
-              </QueryLink>
-            </div>
-
-            <div className="flex flex-row justify-content-around align-items-center pb-1">
-
-              <AddStationToFavorites station={station} />
-
-              <StationShareButton station={station} />
-
-              <StationInfoButton station={station} />
-
-            </div>
-          </div>
-
+                <StationTag tag="External" color={station.external && station.external_enable ? 'green-400' : 'surface-300'} disable_link />
+              </div>
+              : <></>
+          }
         </div>
-
-        {
-          edit_mode ?
-            <div className="flex flex-row flex-wrap flex-shrink-0 align-items-start gap-1 overflow-hidden">
-
-              <StationTag tag="Broadcasting" color={station.broadcasting ? 'green-400' : 'surface-300'} disable_link />
-
-              <StationTag tag="External" color={station.external && station.external_enable ? 'green-400' : 'surface-300'} disable_link />
-            </div>
-            : <></>
-        }
       </div>
       : <></>
   )
