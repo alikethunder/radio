@@ -440,7 +440,7 @@ export const Player: FC = memo(() => {
 
         <StationAvatar
           id={current_station?.id}
-          className="w-4rem h-4rem shadow-2 flex-shrink-0 border-round-xl"
+          className="w-4rem h-4rem shadow-2 flex-shrink-0 border-round-xl overflow-hidden"
         />
 
         <div className={`overlay absolute top-0 left-0 right-0 bottom-0 p-component-overlay border-round-xl transition-all transition-duration-300 transition-linear ${minimized ? 'opacity-80' : 'opacity-0'}`} />

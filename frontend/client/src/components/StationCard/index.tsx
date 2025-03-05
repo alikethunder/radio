@@ -97,7 +97,7 @@ export const StationCard: FC<Props> = memo(({ station, style, at_history, }) => 
 
               style={{
                 transform: 'translateY(-2px)',
-                height: 'calc(100% + 2px'
+                height: 'calc(100% + 4px'
               }}
             />
 
