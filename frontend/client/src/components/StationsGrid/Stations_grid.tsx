@@ -91,6 +91,7 @@ export const Stations_grid: FC<Props> = memo(({
 
             columnCount={columns}
             rowCount={rows ?? 1}
+            className="grid_container"
           >
             {GridCell}
           </Grid>

@@ -13,6 +13,7 @@
   font-family: "Bangers", system-ui!important
   font-weight: 400
   font-style: normal
+
   span:not(.pi), & *:not(.pi)
     font-family: "Bangers", system-ui!important
     font-weight: 400
@@ -101,3 +102,20 @@ button
 
 .history_color
   color: #36A178
+
+.grid_container
+  &::-webkit-scrollbar-track
+    background-color: transparent
+
+  &::-webkit-scrollbar
+    width: 8px
+    //background-color: rgb(var(--anti-shadow))
+    background-color: transparent
+
+  &::-webkit-scrollbar-thumb
+    background-color: var(--primary-color)
+    border-radius: 2px
+    width: 8px
+    cursor: pointer
+    &:hover
+      background-color: var(--secondary-color)
