@@ -50,6 +50,7 @@ import {
 import {
   onLogout,
   getCookie,
+  ga_event,
 } from '@/functions'
 
 import {
@@ -81,6 +82,20 @@ export default memo(function App() {
   const mobile = useMobile()
 
   const { pathname, search } = location
+
+  useEffect(() => {
+    ga_event({
+      event: 'navigation',
+      params: {
+        pathname,
+        search,
+      },
+      window_location: window.location,
+    })
+  }, [
+    pathname,
+    search,
+  ])
 
   //useEffect(() => { console.log('location : ', location, location.key) }, [location])
 
