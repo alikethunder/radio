@@ -20,6 +20,7 @@ declare global {
     yaContextCb: any;
     Ya: any;
     dataLayer: any[];
+    user_ip: string;
   }
   interface ObjectConstructor {
     entries<T extends {}>(o: T): ReadonlyArray<Entry<T>>

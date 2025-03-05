@@ -10,5 +10,6 @@ export const ga_event = (data: {
     ...data,
     user_id: signedin ? store.user.id() : store.persistedApp.user_uuid(),
     signedin,
+    ip: window.user_ip,
   })
 }
