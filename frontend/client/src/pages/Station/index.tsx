@@ -721,7 +721,7 @@ export const Station = () => {
                 <StationShareButton station={station} />
               </div>
 
-              <YandexAd id="R-A-14083703-5" className="flex-grow-1 align-self-stretch h-5rem max-h-5rem" interval={25000} />
+              <YandexAd id="R-A-14083703-5" className="flex-grow-1 align-self-stretch h-5rem max-h-5rem" interval={30000} />
             </div>
 
             <div className="flex flex-row gap-2">
