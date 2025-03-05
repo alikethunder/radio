@@ -18,13 +18,15 @@ export const StationAvatar: FC<props> = memo(({ id, className }) => {
 
   return (
     id ?
-      <div className={`bg-no-repeat bg-contain bg-center flex align-items-center justify-content-center ${className ?? ''}`}
-        style={{
-          backgroundImage: `url(${station_avatar})`,
-        }} >
+      <div className={`flex align-items-center justify-content-center relative ${className ?? ''}`} >
+
+        {
+          image_loading ?
+            <i className="pi pi-spin pi-spinner text-400 absolute top-0 left-0 right-0 bottom-0 m-auto w-2rem h-2rem z-1" style={{ fontSize: '2rem' }}></i>
+            : <></>
+        }
 
         <img
-          style={{ display: 'none' }}
           src={station_avatar}
 
           onError={({ currentTarget }) => {
@@ -38,13 +40,9 @@ export const StationAvatar: FC<props> = memo(({ id, className }) => {
           }}
 
           loading="lazy"
-        />
 
-        {
-          image_loading ?
-            <i className="pi pi-spin pi-spinner text-400" style={{ fontSize: '2rem' }}></i>
-            : <></>
-        }
+          className="h-full z-2 cursor-pointer"
+        />
       </div>
       : <></>
   )
