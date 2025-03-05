@@ -72,15 +72,13 @@ export const StationCard: FC<Props> = memo(({ station, style, at_history, }) => 
 
   return (
     station ?
-      <div className="flex flex-column gap-2 flex-shrink-0 w-9rem h-13rem" style={style}>
-
-        <div className="relative w-full h-full p-05 pb-0">
+      <div className="flex flex-column gap-2 flex-shrink-0 w-9rem h-13rem p-05 pb-0 station_card_container" style={style}>
 
           {/* background for styling */}
           <div className={classNames({
             'active_element border-primary': current_station?.id == station.id,
           },
-            'shadow_card hover:border-primary text-primary',
+            'shadow_card border_box text-primary',
             'absolute w-full h-full top-0 bottom-0 left-0 right-0 z-1',
             'shadow-2 border-round',
           )}
@@ -90,6 +88,7 @@ export const StationCard: FC<Props> = memo(({ station, style, at_history, }) => 
               transform: 'translateY(2px)',
             }} />
 
+          {/* overlay to hide shadow above image */}
           <div className="absolute w-5rem z-2"
             style={{
               height: '14px',
@@ -102,18 +101,18 @@ export const StationCard: FC<Props> = memo(({ station, style, at_history, }) => 
           <div className={classNames({
             'current_station': current_station?.id == station.id,
           },
-            'flex flex-column gap-1 w-full h-full',
+            'flex flex-column gap-1 w-full h-full relative',
             'overflow-hidden',
             'text-primary',
             'element_with_overlay',
             'flex-shrink-0 border-round',
             'surface-card',
-            'z-2'
+            'z-3'
           )}
           >
 
             <div className="flex flex-row gap-1 relative">
-              <StationCountryFlag disable_link en={station?.country} className="absolute top-0 left-0 z-1 m-05 mt-1" />
+              <StationCountryFlag disable_link en={station?.country} className="absolute top-0 left-0 z-3 m-05 mt-1" />
 
               <div
                 className="w-full h-5rem flex align-items-center justify-content-center p-ripple relative surface-100"
@@ -191,8 +190,7 @@ export const StationCard: FC<Props> = memo(({ station, style, at_history, }) => 
               </div>
               : <></>
           }
-        </div>
-      </div>
+Ï      </div>
       : <></>
   )
 }, (o, n) => {
