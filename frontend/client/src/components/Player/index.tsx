@@ -232,11 +232,12 @@ export const Player: FC = memo(() => {
 
   const play_random_station = useCallback(useDebounceCallback(() => {
 
-    const stations = store.app.stations_home()
+    ga_event({
+      event: 'random_station',
+      place: 'player',
+    })
 
-    if (!stations.length) {
-      navigate('/')
-    }
+    const stations = store.app.stations_home()
 
     switch_to_random_station(stations)
   }, 50), [])

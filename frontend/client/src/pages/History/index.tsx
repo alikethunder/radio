@@ -17,7 +17,7 @@ import { useHideTooltip, useMobile, useTooltip, useTranslations } from "@/hooks"
 import { useDebounceCallback } from "usehooks-ts"
 import { Message } from "primereact/message"
 import { IoDiceSharp } from "react-icons/io5"
-import { switch_to_random_station } from "@/functions"
+import { ga_event, switch_to_random_station } from "@/functions"
 import { useResizeObserver } from 'usehooks-ts'
 
 type Size = {
@@ -119,6 +119,12 @@ export const History = memo(() => {
     ])
 
   const play_random_station = useCallback(useDebounceCallback(() => {
+  
+      ga_event({
+        event: 'random_station',
+        place: 'history_page',
+      })
+
     switch_to_random_station(history_stations, true)
   }, 50), [history_stations])
 

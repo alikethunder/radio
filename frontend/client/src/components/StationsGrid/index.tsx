@@ -19,7 +19,7 @@ import { YandexAd } from "@/components/YandexAd"
 import { Message } from 'primereact/message'
 import { Button } from "primereact/button"
 import { IoDiceSharp } from "react-icons/io5"
-import { hide_multiselects, switch_to_random_station } from "@/functions"
+import { ga_event, hide_multiselects, switch_to_random_station } from "@/functions"
 import { ShareListIcon } from "@/components/ShareListIcon"
 
 import { ReactComponent as Found_svg } from '@/assets/svg/found.svg'
@@ -133,6 +133,12 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
   ])
 
   const play_random_station = useCallback(useDebounceCallback(() => {
+
+    ga_event({
+      event: 'random_station',
+      place: 'home_page',
+    })
+
     switch_to_random_station(searched_stations)
   }, 50), [searched_stations])
 
