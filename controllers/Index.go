@@ -238,5 +238,7 @@ func Index(ctx *fiber.Ctx) error {
 		"logo": logo,
 
 		"quoted_logo": template.JS("\"" + logo + "\""),
+
+		"user_ip": ctx.IP(),
 	})
 }
