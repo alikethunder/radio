@@ -5,7 +5,6 @@ import { Station } from "@/types"
 export const list: (parameters?: {
   from?: string,
   limit?: number,
-  admin?: boolean,
 }) => Promise<Station[]> = async (parameters) => {
   const resp = await fetch(`${window.location.origin}/api/v1/radio/list?${objectToQuery(parameters ?? {})}`)
 
