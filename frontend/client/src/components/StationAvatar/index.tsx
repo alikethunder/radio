@@ -4,9 +4,12 @@ import { FC, memo, useEffect, useState, } from "react"
 type props = {
   id?: string;
   className?: string;
+  style?: {
+    [x: string]: any;
+  };
 }
 
-export const StationAvatar: FC<props> = memo(({ id, className }) => {
+export const StationAvatar: FC<props> = memo(({ id, className, style, }) => {
 
   const [image_loading, set_image_loading] = useState(true)
 
@@ -18,7 +21,8 @@ export const StationAvatar: FC<props> = memo(({ id, className }) => {
 
   return (
     id ?
-      <div className={`flex align-items-center justify-content-center relative ${className ?? ''}`} >
+      <div className={`flex align-items-center justify-content-center relative ${className ?? ''}`}
+      {...{style}} >
 
         {
           image_loading ?
