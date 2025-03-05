@@ -1,7 +1,6 @@
 import { decrypt } from "@/functions"
 
 import { Station } from "@/types"
-import { decompressFromBase64 } from "lz-string"
 
 export const get_station: (
   id: string,
@@ -11,7 +10,7 @@ export const get_station: (
   if (resp.status == 200) {
     const text = await resp.text()
 
-    const r = decrypt(decompressFromBase64(text))
+    const r = decrypt(text)
     return JSON.parse(r)
   }
 

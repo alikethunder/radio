@@ -6,7 +6,6 @@ import (
 	"web_project/db"
 	"web_project/functions"
 
-	lzstring "github.com/daku10/go-lz-string"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -21,9 +20,7 @@ func GetStation(ctx *fiber.Ctx) error {
 
 		enc := functions.Encrypt(string(marshalled))
 
-		compressed, _ := lzstring.CompressToBase64(enc)
-
-		return ctx.Status(fiber.StatusOK).SendString(compressed)
+		return ctx.Status(fiber.StatusOK).SendString(enc)
 	}
 
 	return ctx.SendStatus(fiber.StatusNotFound)

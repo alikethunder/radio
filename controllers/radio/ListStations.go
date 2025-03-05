@@ -3,9 +3,11 @@ package RadioEndpoints
 import (
 	//"fmt"
 
+	"encoding/json"
 	"web_project/constants"
 	"web_project/cookies"
 	"web_project/db"
+	"web_project/functions"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -51,7 +53,10 @@ func ListStations(ctx *fiber.Ctx) error {
 
 	}
 
-	//fmt.Println("[RadioEndpoints.ListStations] stations ", stations)
-	return ctx.Status(fiber.StatusOK).JSON(stations)
+	marshalled, _ := json.Marshal(stations)
+
+	enc := functions.Encrypt(string(marshalled))
+
+	return ctx.Status(fiber.StatusOK).SendString(enc)
 
 }

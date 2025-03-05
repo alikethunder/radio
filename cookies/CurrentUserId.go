@@ -10,7 +10,7 @@ func CurrentUserId(ctx *fiber.Ctx) (id string) {
 
 	if authCookie != "" {
 
-		cookie_user := ParseCookie(ctx.Cookies(AuthCookieName))
+		cookie_user := ParseCookie(authCookie)
 
 		return cookie_user["id"].(string)
 

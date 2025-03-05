@@ -178,7 +178,7 @@ export default memo(function App() {
         while (true) {
           const from = store.app.stations_home_last_id()
 
-          const res = await list({ limit, admin: store.user.admin(), ...from ? { from } : {} })
+          const res = await list({ limit, ...from ? { from } : {} })
 
           //console.log(`[stations] list result : `, res)
           actions.app.add_stations_home(res)
