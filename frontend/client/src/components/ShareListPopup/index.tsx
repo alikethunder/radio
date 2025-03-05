@@ -22,6 +22,7 @@ import { Column } from "primereact/column"
 import { Station } from "@/types"
 
 import { compressToEncodedURIComponent, } from 'lz-string'
+import { ga_event } from "@/functions"
 
 export const ShareListPopup: FC = memo(() => {
 
@@ -50,7 +51,9 @@ export const ShareListPopup: FC = memo(() => {
       set_loading(true)
       const ids = selected.map(s => s.id)
 
-      const compressed = compressToEncodedURIComponent(ids.join(','))
+      const ids_string = ids.join(',')
+
+      const compressed = compressToEncodedURIComponent(ids_string)
 
       const sharedData = {
         title: `${translations.number_of_stations}: ${selected.length}`,
@@ -59,8 +62,19 @@ export const ShareListPopup: FC = memo(() => {
 
       try {
         await navigator.share(sharedData);
+
+        ga_event({
+          event: 'share_list',
+          ids: ids_string,
+        })
       } catch (e) {
         console.error('[ShareListPopup] share error :', e)
+
+        ga_event({
+          event: 'share_list_error',
+          ids: ids_string,
+          error: e,
+        })
       }
       set_loading(false)
     }

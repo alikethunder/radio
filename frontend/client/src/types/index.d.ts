@@ -19,6 +19,7 @@ declare global {
     PWAInstallEvent: any;
     yaContextCb: any;
     Ya: any;
+    dataLayer: any[];
   }
   interface ObjectConstructor {
     entries<T extends {}>(o: T): ReadonlyArray<Entry<T>>

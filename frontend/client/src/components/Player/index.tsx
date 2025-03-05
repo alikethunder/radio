@@ -38,7 +38,7 @@ import { useMobile, usePageInList, useRussia, useTooltip, useTranslations, } fro
 import { useDebounceCallback } from "usehooks-ts"
 
 import './index.sass'
-import { switch_to_random_station } from "@/functions"
+import { ga_event, switch_to_random_station } from "@/functions"
 import { HistoryRecord } from "@/types"
 import { v7 } from "uuid"
 
@@ -88,6 +88,17 @@ export const Player: FC = memo(() => {
     const current_station = store.player.current_station()
     const playing = store.player.playing()
 
+    ga_event({
+      event: 'play',
+      place: 'player',
+      station: {
+        id: current_station?.id,
+        name: current_station?.name,
+        external: current_station?.external,
+      },
+      playing,
+    })
+
     set_audio_ref(audio_ref => {
       set_offline(offline => {
         if (current_station && audio_ref) {
@@ -99,6 +110,18 @@ export const Player: FC = memo(() => {
               actions.player.icon_playing(true)
             }).catch((e) => {
               console.log('[Player] play error : ', e)
+
+              ga_event({
+                event: 'error',
+                place: 'player',
+                station: {
+                  id: current_station?.id,
+                  name: current_station?.name,
+                  external: current_station?.external,
+                },
+                playing,
+                error: e,
+              })
 
               actions.player.icon_playing(false)
 

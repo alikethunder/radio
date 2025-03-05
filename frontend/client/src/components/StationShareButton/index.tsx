@@ -5,6 +5,7 @@ import { Button } from 'primereact/button'
 import { useTooltip, useTranslations } from "@/hooks"
 import { Station } from "@/types"
 import { FaRegShareFromSquare } from "react-icons/fa6"
+import { ga_event } from "@/functions"
 
 type Props = {
   station: Station;
@@ -30,8 +31,25 @@ export const StationShareButton: FC<Props> = memo(({ station, className, ...rest
 
       try {
         await navigator.share(shareData);
+
+        ga_event({
+          event: 'share_station',
+          station: {
+            id: station.id,
+            name: station.name,
+          }
+        })
       } catch (e) {
         console.error('[StationShareButton] share error :', e)
+
+        ga_event({
+          event: 'share_station_error',
+          station: {
+            id: station.id,
+            name: station.name,
+          },
+          error: e,
+        })
       }
       set_loading(false)
     }
