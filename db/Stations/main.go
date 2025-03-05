@@ -17,7 +17,7 @@ import (
 	tags set<text>,							station tags
 	admins set<uuid>, 					who can alter station
 	render_order smallint,			order of stations to render
-	likes set<text>,						uuid of unregistered users that added to favorites
+	likes set<text>,						uuid of users that added to favorites
 	external text,							external link
 	external_enable boolean,		play from external source
 */
