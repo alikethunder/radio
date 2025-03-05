@@ -72,12 +72,83 @@ export const StationCard: FC<Props> = memo(({ station, style, at_history, }) => 
 
   return (
     station ?
-      <div className="flex flex-column gap-2 flex-shrink-0 w-9rem h-13rem p-05 station_card_container" style={style}>
+      <div className={classNames({
+        'current_station': current_station?.id == station.id,
+      },
+        'flex flex-column gap-2 flex-shrink-0 w-9rem h-13rem p-05 station_card_container element_with_overlay')}
+        style={style}>
 
-        {/* background for styling */}
+        {/* image container */}
+        <div className="flex flex-row gap-1 absolute top-0 left-0 right-0 z-2 pt-05 mx-05 p-ripple">
+          <StationCountryFlag disable_link en={station?.country} className="absolute top-0 left-0 z-3 m-05 mt-1" />
+
+          <div
+            className="w-full h-5rem flex align-items-center justify-content-center relative"
+            onClick={(e) => {
+              console.log('click')
+              e.preventDefault()
+              e.stopPropagation()
+              play_click(station)
+            }} >
+
+            <StationAvatar
+              id={station?.id}
+              className="absolute w-full top-0 left-0"
+
+              style={{
+                transform: 'translateY(-2px)',
+                height: 'calc(100% + 2px'
+              }}
+            />
+
+            <div
+              className="overlay absolute top-0 bottom-0 right-0 left-0 flex align-items-center justify-content-center text-center cursor-pointer"
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                play_click(station)
+              }}>
+
+              <div className="overlay_background p-component-overlay absolute top-0 bottom-0 right-0 left-0 border-noround-bottom"
+                style={{
+                  borderRadius: '4px',
+                }} />
+
+              <div className="overlay_background p-component-overlay absolute"
+                style={{
+                  top: '-2px',
+                  height: '2px',
+                  left: '29px',
+                  width: '82px',
+                }}
+              />
+
+              <div className="overlay_text z-3" style={{
+                color: '#fff'
+              }}>
+                <i className={`font-semibold pi ${current_station?.id == station.id ? (stream_loading ? 'pi-spin pi-spinner' : (playing ? 'pi-pause' : 'pi-play')) : 'pi-play'}`} style={{
+                  fontSize: '2rem',
+                  textShadow: '0 0 7px',
+                }}></i>
+              </div>
+
+            </div>
+
+            <Ripple />
+
+          </div>
+
+          {/* likes listeners */}
+        </div>
+
         <div className={classNames({
-          'active_element border-primary': current_station?.id == station.id,
+          'current_station active_element border-primary': current_station?.id == station.id,
         },
+          'flex flex-column gap-1',
+          'overflow-hidden',
+          'text-primary',
+          'flex-shrink-0 border-round',
+          'surface-card',
           'shadow_card border_box text-primary',
           'absolute w-full h-full top-0 bottom-0 left-0 right-0 z-1',
           'shadow-2 border-round',
@@ -85,79 +156,10 @@ export const StationCard: FC<Props> = memo(({ station, style, at_history, }) => 
 
           style={{
             border: '2px solid var(--surface-100)',
-          }} />
-
-        {/* overlay to hide shadow above image */}
-        <div className="absolute w-5rem z-2"
-          style={{
-            height: '14px',
-            background: 'linear-gradient(135deg, transparent, transparent 10%, rgb(var(--anti-shadow)) 35%, rgb(var(--anti-shadow)) 65%, transparent 65%, transparent), linear-gradient(225deg, transparent, transparent 10%, rgb(var(--anti-shadow)) 35%, rgb(var(--anti-shadow)) 65%, transparent 65%, transparent)',
-            left: '32px',
-            top: '-12px',
           }}
-        ></div>
-
-        <div className={classNames({
-          'current_station': current_station?.id == station.id,
-        },
-          'flex flex-column gap-1 w-full h-full relative',
-          'overflow-hidden',
-          'text-primary',
-          'element_with_overlay',
-          'flex-shrink-0 border-round',
-          'surface-card',
-          'z-3'
-        )}
         >
 
-          <div className="flex flex-row gap-1 relative">
-            <StationCountryFlag disable_link en={station?.country} className="absolute top-0 left-0 z-3 m-05 mt-1" />
-
-            <div
-              className="w-full h-5rem flex align-items-center justify-content-center p-ripple relative surface-100"
-              onClick={(e) => {
-                console.log('click')
-                e.preventDefault()
-                e.stopPropagation()
-                play_click(station)
-              }} >
-
-              <StationAvatar
-                id={station?.id}
-                className="absolute w-full h-full top-0 left-0 surface-100"
-
-                style={{
-                  transform: 'translateY(-2px)',
-                }}
-              />
-
-              <div
-                className="overlay absolute top-0 bottom-0 right-0 left-0 flex align-items-center justify-content-center text-center cursor-pointer"
-                onClick={(e) => {
-                  e.preventDefault()
-                  e.stopPropagation()
-                  play_click(station)
-                }}>
-
-                <div className="overlay_background p-component-overlay absolute top-0 bottom-0 right-0 left-0"></div>
-
-                <div className="overlay_text z-3" style={{
-                  color: '#fff'
-                }}>
-                  <i className={`font-semibold pi ${current_station?.id == station.id ? (stream_loading ? 'pi-spin pi-spinner' : (playing ? 'pi-pause' : 'pi-play')) : 'pi-play'}`} style={{
-                    fontSize: '2rem',
-                    textShadow: '0 0 7px',
-                  }}></i>
-                </div>
-
-              </div>
-
-              <Ripple />
-
-            </div>
-
-            {/* likes listeners */}
-          </div>
+          <div className="h-5rem surface-100" />
 
           <div className="flex flex-column justify-content-between flex-grow-1 px-1 pb-1">
 
@@ -193,7 +195,17 @@ export const StationCard: FC<Props> = memo(({ station, style, at_history, }) => 
             </div>
             : <></>
         }
-        Ï      </div>
+
+        {/* overlay to hide shadow above image */}
+        <div className="absolute w-5rem z-2"
+          style={{
+            height: '14px',
+            background: 'linear-gradient(135deg, transparent, transparent 10%, rgb(var(--anti-shadow)) 35%, rgb(var(--anti-shadow)) 65%, transparent 65%, transparent), linear-gradient(225deg, transparent, transparent 10%, rgb(var(--anti-shadow)) 35%, rgb(var(--anti-shadow)) 65%, transparent 65%, transparent)',
+            left: '32px',
+            top: '-14px',
+          }}
+        ></div>
+      </div>
       : <></>
   )
 }, (o, n) => {
