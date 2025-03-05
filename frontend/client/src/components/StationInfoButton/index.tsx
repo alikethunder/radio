@@ -9,6 +9,7 @@ import {
 import { useTooltip, useTranslations } from "@/hooks"
 import { Station } from "@/types"
 import { RiInfoCardLine } from "react-icons/ri"
+import { ga_event } from "@/functions"
 
 type Props = {
   station: Station;
@@ -23,6 +24,14 @@ export const StationInfoButton: FC<Props> = memo(({ station, className, ...rest 
 
   const open_station_info = useCallback(() => {
     actions.app.station_info_dialog(station)
+
+    ga_event({
+      event: 'station_info',
+      station: {
+        id: station.id,
+        name: station.name,
+      },
+    })
   }, [station.id])
 
   const tooltip = useTooltip(translations.about_station)
@@ -41,7 +50,7 @@ export const StationInfoButton: FC<Props> = memo(({ station, className, ...rest 
       <RiInfoCardLine style={{
         width: '1.2rem',
         height: '1.2rem',
-      }}/>
+      }} />
     </Button>
   )
 }, (o, n) => {

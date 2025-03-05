@@ -14,6 +14,7 @@ import { update_json } from "@/API/profile/update_json"
 import { v7 } from "uuid"
 import { Station } from "@/types"
 import { useAsyncMemo } from "use-async-memo"
+import { ga_event } from "@/functions"
 
 type Props = {
   station: Station;
@@ -72,6 +73,15 @@ export const AddStationToFavorites: FC<Props> = memo(({ station, className, show
     if (signedin) {
       update_json({ favorite_stations: store.user.favorite_stations() })
     }
+
+    ga_event({
+      event: 'add_to_favorites',
+      action: favorite_station ? 'remove' : 'add',
+      station: {
+        id,
+        name: station.name,
+      },
+    })
   }, 50), [id])
 
   const anonym_favorite_station = useStore().persistedApp.favorite_station(id)
