@@ -6,3 +6,12 @@
 .shadow_card
   &:hover, &:focus, &.active_element
     box-shadow: 0 0 10px 2px!important
+
+.shadow_overlay
+  height: 14px
+  --one: 10%
+  --two: 30%
+  --three: 60%
+  background: linear-gradient(135deg, transparent, transparent var(--one), rgb(var(--anti-shadow)) var(--two), rgb(var(--anti-shadow)) var(--three), transparent var(--three), transparent), linear-gradient(225deg, transparent, transparent var(--one), rgb(var(--anti-shadow)) var(--two), rgb(var(--anti-shadow)) var(--three), transparent var(--three), transparent)
+  left: 32px
+  top: -14px

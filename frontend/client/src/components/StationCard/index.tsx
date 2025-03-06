@@ -118,8 +118,8 @@ export const StationCard: FC<Props> = memo(({ station, style, at_history, }) => 
                 style={{
                   top: '-2px',
                   height: '2px',
-                  left: '29px',
-                  width: '82px',
+                  left: '28px',
+                  width: '84px',
                 }}
               />
 
@@ -197,14 +197,7 @@ export const StationCard: FC<Props> = memo(({ station, style, at_history, }) => 
         }
 
         {/* overlay to hide shadow above image */}
-        <div className="absolute w-5rem z-2"
-          style={{
-            height: '14px',
-            background: 'linear-gradient(135deg, transparent, transparent 10%, rgb(var(--anti-shadow)) 35%, rgb(var(--anti-shadow)) 65%, transparent 65%, transparent), linear-gradient(225deg, transparent, transparent 10%, rgb(var(--anti-shadow)) 35%, rgb(var(--anti-shadow)) 65%, transparent 65%, transparent)',
-            left: '32px',
-            top: '-14px',
-          }}
-        ></div>
+        <div className="absolute w-5rem z-2 shadow_overlay" />
       </div>
       : <></>
   )
