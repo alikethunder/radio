@@ -49,11 +49,9 @@ export const StationCountryFlag: FC<Props> = memo(({ en, style, onClick, disable
 
   return (
     <div
-      className={`inline-block bg-no-repeat bg-contain bg-center ${className ?? ''}`}
+      className={`inline-block bg-no-repeat bg-contain bg-center country_flag ${className ?? ''}`}
       onClick={click}
       style={{
-        width: '24px',
-        height: '18px',
         ...flag_url ? { backgroundImage: `url(${flag_url})` } : {},
         ...style ?? {},
       }} />

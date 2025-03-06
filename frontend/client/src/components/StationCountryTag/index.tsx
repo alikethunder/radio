@@ -53,19 +53,12 @@ export const StationCountryTag: FC<Props> = memo(({ en, style, onClick, disable_
         'cursor-pointer': !tag_is_in_search && !disable_link,
         'opacity-70': tag_is_in_search && !disable_link,
       },
-        `inline-block align-items-center font-semibold select-none max-w-full overflow-hidden text-overflow-ellipsis white-space-nowrap text-primary ${tag_text_class} ${className ?? ''}`,
+        `inline-block align-items-center font-semibold select-none max-w-full overflow-hidden text-overflow-ellipsis white-space-nowrap text-primary text-base ${tag_text_class} ${className ?? ''}`,
       )}
-      style={{
-        fontSize: '1rem',
-      }}
     >
-      <StationCountryFlag en={en} className="inline-block mr-1" style={{
-        verticalAlign: 'middle'
-      }} />
+      <StationCountryFlag en={en} className="inline-block mr-1 vertical_align_middle" />
 
-      <span style={{
-        verticalAlign: 'middle'
-      }}>{station_country?.[language ?? 'en']}</span>
+      <span className="vertical_align_middle">{station_country?.[language ?? 'en']}</span>
     </span>
   )
 })

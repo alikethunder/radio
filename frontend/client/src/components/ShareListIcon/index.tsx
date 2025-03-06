@@ -9,13 +9,11 @@ type Props = {
 
 export const ShareListIcon: FC<Props> = memo(({ background }) =>
   <div className="relative w-full h-full">
-    <Share_list className="absolute top-0 left-0 bottom-0 right-0 m-auto" style={{
+    <Share_list className="absolute top-0 left-0 bottom-0 right-0 m-auto h-auto" style={{
       width: '80%',
-      height: 'auto',
     }} />
-    <Share_arrow className="absolute" style={{
+    <Share_arrow className="absolute h-auto" style={{
       width: '55%',
-      height: 'auto',
       right: '6%',
       bottom: '8%',
       background: `linear-gradient(135deg, transparent, 30%, transparent,30%, ${background}, ${background})`,

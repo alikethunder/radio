@@ -54,24 +54,17 @@ export const StationGenreTag: FC<Props> = memo(({ genre_en, onClick, disable_lin
         'cursor-pointer shadow_on_hover shadow-2': !tag_is_in_search && !disable_link,
         'opacity-70': tag_is_in_search && !disable_link,
       },
-        `py-05 select-none font-medium border-round inline-flex max-w-full ${tag_text_class}`,
+        `py-05 select-none font-medium border-round inline-flex max-w-full m-05 py-05 px-1 ${tag_text_class}`,
       )}
 
       style={{
         color: genre?.color,
         backgroundColor: genre?.color,
-        margin: '.125rem',
-        padding: '.125rem .4rem',
       }}
     >
-      <span className="value inline-block max-w-full overflow-hidden text-overflow-ellipsis white-space-nowrap " style={{
-        color: 'white',
-      }}>
+      <span className="value inline-block max-w-full overflow-hidden text-overflow-ellipsis white-space-nowrap text-white">
         <span
-          className="text-xl mr-1"
-          style={{
-            lineHeight: .875,
-          }}
+          className="text-xl mr-1 line-height-0875"
         >{genre?.icon}</span> {genre?.[language ?? 'en']}
       </span>
     </span>

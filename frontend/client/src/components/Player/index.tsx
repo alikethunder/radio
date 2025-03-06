@@ -398,9 +398,7 @@ export const Player: FC = memo(() => {
 
       <audio
         src=""
-        style={{
-          display: 'none'
-        }}
+        className="hidden"
         ref={set_audio_ref}
       />
 

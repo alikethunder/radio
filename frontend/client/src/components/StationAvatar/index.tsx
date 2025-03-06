@@ -22,11 +22,11 @@ export const StationAvatar: FC<props> = memo(({ id, className, style, }) => {
   return (
     id ?
       <div className={`flex align-items-center justify-content-center relative ${className ?? ''}`}
-      {...{style}} >
+        {...{ style }} >
 
         {
           image_loading ?
-            <i className="pi pi-spin pi-spinner text-400 absolute top-0 left-0 right-0 bottom-0 m-auto w-2rem h-2rem z-1" style={{ fontSize: '2rem' }}></i>
+            <i className="pi pi-spin pi-spinner text-400 absolute top-0 left-0 right-0 bottom-0 m-auto w-2rem h-2rem z-1 text-4xl" />
             : <></>
         }
 
