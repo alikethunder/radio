@@ -1,6 +1,7 @@
 import { forwardRef, memo } from "react"
 import { Link, useLocation, LinkProps } from "react-router-dom"
 
+//querylink with search params
 const QueryLink_comp = forwardRef<HTMLAnchorElement, LinkProps>(({ children, to, ...props }, ref) => {
 
   let { search } = useLocation()
