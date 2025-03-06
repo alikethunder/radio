@@ -23,11 +23,16 @@ import {
 
 import { useDebounceCallback } from "usehooks-ts"
 import { app_routes } from "@/constants/router"
-import { StationCountry, } from "@/types"
+import {
+  StationCountry,
+  StationGenre,
+  StationLanguage,
+} from "@/types"
 import { StationCountryTag } from "../StationCountryTag"
 import { GenreItemTemplate } from "@/layout parts"
 
 import { multiselect_pt } from "@/constants/multiselect"
+import { ga_event } from "@/functions"
 
 export const StationSearchPanelContent: FC = memo(() => {
 
@@ -78,7 +83,14 @@ export const StationSearchPanelContent: FC = memo(() => {
   const [home_page] = usePageInList([app_routes.root])
   const [fav_page] = usePageInList([app_routes.my_stations])
 
-  const update_search = useCallback((e: ChangeEvent) => actions.persistedApp.search_stations_text((e.target as HTMLInputElement).value), [])
+  const update_search = useCallback((e: ChangeEvent) => {
+    actions.persistedApp.search_stations_text((e.target as HTMLInputElement).value)
+
+    ga_event({
+      event: 'search_text',
+      text: (e.target as HTMLInputElement).value,
+    })
+  }, [])
 
   const countryItemTemplate = useCallback((option: StationCountry) =>
     <StationCountryTag en={option.en} disable_link />
@@ -86,14 +98,26 @@ export const StationSearchPanelContent: FC = memo(() => {
 
   const change_countries = useCallback((e: MultiSelectChangeEvent) => {
     actions.persistedApp.search_selected_countries(e.value)
+    ga_event({
+      event: 'search_countries',
+      countries: e.value.map((g: StationCountry) => g.en),
+    })
   }, [])
 
   const change_languages = useCallback((e: MultiSelectChangeEvent) => {
     actions.persistedApp.search_selected_languages(e.value)
+    ga_event({
+      event: 'search_languages',
+      languages: e.value.map((g: StationLanguage) => g.en),
+    })
   }, [])
 
   const change_genres = useCallback((e: MultiSelectChangeEvent) => {
     actions.persistedApp.search_selected_genres(e.value)
+    ga_event({
+      event: 'search_genres',
+      genres: e.value.map((g: StationGenre) => g.en),
+    })
   }, [])
 
   const set_multiselect_ref = useCallback((e: MultiSelect) => {
