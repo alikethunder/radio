@@ -202,6 +202,7 @@ export default memo(function App() {
           if (!res.length || res.length < limit) {
             //console.log('set loading false ')
             //console.log('[Home] stations : ', store.app.stations_home())
+            //window.stations = store.app.stations_home()
             actions.app.stations_home_loaded(true)
             break
           }

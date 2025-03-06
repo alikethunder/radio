@@ -182,13 +182,18 @@ func main() {
 
 	history_endpoints.Delete("/all", HistoryEndpoints.DeleteAll)
 
+	radio_cache_time := 4 * time.Hour
+	if os.Getenv("ENV") == "dev" {
+		radio_cache_time = 1 * time.Second
+	}
+
 	radio_endpoints := v1.Group("/radio", compress_get, etag.New(), cache.New(cache.Config{
 		Next: func(ctx *fiber.Ctx) bool {
 			//don't cache likes
 			return ctx.Method() != fiber.MethodGet ||
 				strings.Contains(ctx.Path(), "/api/v1/radio/likes/")
 		},
-		Expiration: 4 * time.Hour,
+		Expiration: radio_cache_time,
 		KeyGenerator: func(ctx *fiber.Ctx) string {
 			return utils.CopyString(ctx.Path() + ctx.Query("from") + ctx.Query("limit") + ctx.Query("admin"))
 		},
