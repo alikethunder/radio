@@ -15,6 +15,7 @@ type Props = {
   className?: string;
   style?: CSSProperties;
 }
+import './index.sass'
 
 export const StationCountryFlag: FC<Props> = memo(({ en, style, onClick, disable_link, className }) => {
 

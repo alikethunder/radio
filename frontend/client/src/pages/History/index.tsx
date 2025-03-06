@@ -119,11 +119,11 @@ export const History = memo(() => {
     ])
 
   const play_random_station = useCallback(useDebounceCallback(() => {
-  
-      ga_event({
-        event: 'random_station',
-        place: 'history_page',
-      })
+
+    ga_event({
+      event: 'random_station',
+      place: 'history_page',
+    })
 
     switch_to_random_station(history_stations, true)
   }, 50), [history_stations])
@@ -322,15 +322,10 @@ export const History = memo(() => {
               {
                 mobile ? <></> :
                   <div
-                    className="relative flex-grow-1 side_ad_container"
+                    className="relative flex-grow-1 side_ad_container pointer-events-none"
                     ref={ad_container_ref}
-                    style={{
-                      pointerEvents: 'none'
-                    }}
                   >
-                    <YandexAd id="R-A-14083703-10" style={{
-                      position: 'fixed',
-                    }} />
+                    <YandexAd id="R-A-14083703-10" className="fixed" />
                   </div>
               }
 
@@ -359,15 +354,10 @@ export const History = memo(() => {
               {
                 mobile ? <></> :
                   <div
-                    className="relative flex-grow-1 side_ad_container"
+                    className="relative flex-grow-1 side_ad_container pointer-events-none"
                     ref={ad_container_ref}
-                    style={{
-                      pointerEvents: 'none'
-                    }}
                   >
-                    <YandexAd id="R-A-14083703-11" style={{
-                      position: 'fixed',
-                    }} />
+                    <YandexAd id="R-A-14083703-11" className="fixed" />
                   </div>
               }
 

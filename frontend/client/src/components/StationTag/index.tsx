@@ -53,7 +53,7 @@ export const StationTag: FC<Props> = memo(({ tag, color, onClick, disable_link }
         'cursor-pointer shadow_on_hover shadow-2': !tag_is_in_search && (!disable_link || onClick),
         'opacity-70': tag_is_in_search && !disable_link,
       },
-        `py-05 select-none ${tag_text_class} font-medium border-round inline-flex 
+        `py-05 select-none ${tag_text_class} font-medium border-round inline-flex m-05 px-1 py-05
         ${color?.includes('surface')
           ? color :
           (
@@ -66,14 +66,9 @@ export const StationTag: FC<Props> = memo(({ tag, color, onClick, disable_link }
         ...raw_color ? {
           'background-color': result_color
         } : {},
-        margin: '.125rem',
-        padding: '.125rem .25rem',
       }}
     >
-      <span className="value" style={{
-        lineHeight: 1.25,
-        color: 'white',
-      }}>
+      <span className="value line-height-125 text-white">
         {tag}
       </span>
     </span>

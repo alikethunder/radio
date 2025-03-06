@@ -10,6 +10,7 @@ import { useTooltip, useTranslations } from "@/hooks"
 import { Station } from "@/types"
 import { RiInfoCardLine } from "react-icons/ri"
 import { ga_event } from "@/functions"
+import './index.sass'
 
 type Props = {
   station: Station;
@@ -47,10 +48,7 @@ export const StationInfoButton: FC<Props> = memo(({ station, className, ...rest 
 
       {...tooltip}
     >
-      <RiInfoCardLine style={{
-        width: '1.2rem',
-        height: '1.2rem',
-      }} />
+      <RiInfoCardLine className="station_info_icon_size" />
     </Button>
   )
 }, (o, n) => {
