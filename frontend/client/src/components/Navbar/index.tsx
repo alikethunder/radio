@@ -83,19 +83,14 @@ export const Navbar: FC = memo(() => {
   return (
     <>
       <div
-        className={`flex flex-row flex-shrink-0 h-3rem sm:h-4rem justify-content-between surface-card z-2`}
-        style={{
-          borderBottom: '1px solid var(--surface-border)',
-        }}
+        className={`flex flex-row flex-shrink-0 h-3rem sm:h-4rem justify-content-between surface-card z-2 layout_component_border_bottom`}
       >
 
         <div className="left h-full flex gap-1 sm:gap-2 md:flex-shrink-0">
 
           <QueryLink to={app_routes.root}
             onClick={click_root}
-            style={{
-              borderRight: '1px solid var(--surface-border)',
-            }}
+            className="layout_component_border_right"
           >
             <Button
               text

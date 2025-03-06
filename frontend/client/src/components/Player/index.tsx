@@ -392,10 +392,7 @@ export const Player: FC = memo(() => {
   return (
     <div
       id="player"
-      className={`flex flex-row flex-shrink-0 z-2 ${search_panel_closed ? 'shadow-2' : ''} surface-card p-2 md:pl-3 gap-2 md:gap-3 mt-auto transition-all transition-duration-300 transition-linear ${current_station ? 'opened' : ''} ${minimized ? 'h-5rem' : 'h-9rem'}`}
-      style={{
-        borderBottom: '1px solid var(--surface-border)',
-      }}
+      className={`flex flex-row flex-shrink-0 z-2 ${search_panel_closed ? 'shadow-2' : ''} surface-card p-2 md:pl-3 gap-2 md:gap-3 mt-auto transition-all transition-duration-300 transition-linear layout_component_border_bottom ${current_station ? 'opened' : ''} ${minimized ? 'h-5rem' : 'h-9rem'}`}
       ref={set_c_ref}
     >
 

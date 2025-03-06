@@ -8,10 +8,30 @@
     box-shadow: 0 0 10px 2px!important
 
 .shadow_overlay
-  height: 14px
+  height: 11px
   --one: 10%
   --two: 30%
   --three: 60%
   background: linear-gradient(135deg, transparent, transparent var(--one), rgb(var(--anti-shadow)) var(--two), rgb(var(--anti-shadow)) var(--three), transparent var(--three), transparent), linear-gradient(225deg, transparent, transparent var(--one), rgb(var(--anti-shadow)) var(--two), rgb(var(--anti-shadow)) var(--three), transparent var(--three), transparent)
-  left: 32px
-  top: -14px
+  left: 30px
+  top: -11px
+  width: 84px
+
+.station_avatar_overlay_top
+  top: -2px
+  height: 2px
+  left: 28px
+  width: 84px
+
+.station_avatar_overlay
+  border-radius: 4px
+
+.station_card_avatar
+  transform: translateY(-2px)
+  height: calc(100% + 4px)
+
+.station_card_play_button
+  text-shadow: 0 0 7px
+
+.station_card_border
+  border: 2px solid var(--surface-100)

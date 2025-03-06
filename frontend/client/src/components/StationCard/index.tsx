@@ -75,7 +75,7 @@ export const StationCard: FC<Props> = memo(({ station, style, at_history, }) => 
       <div className={classNames({
         'current_station': current_station?.id == station.id,
       },
-        'flex flex-column gap-2 flex-shrink-0 w-9rem h-13rem p-05 station_card_container element_with_overlay')}
+        'flex flex-column gap-2 flex-shrink-0 w-9rem h-13rem station_card_container element_with_overlay')}
         style={style}>
 
         {/* image container */}
@@ -93,12 +93,7 @@ export const StationCard: FC<Props> = memo(({ station, style, at_history, }) => 
 
             <StationAvatar
               id={station?.id}
-              className="absolute w-full top-0 left-0"
-
-              style={{
-                transform: 'translateY(-2px)',
-                height: 'calc(100% + 4px'
-              }}
+              className="absolute w-full top-0 left-0 station_card_avatar"
             />
 
             <div
@@ -109,27 +104,12 @@ export const StationCard: FC<Props> = memo(({ station, style, at_history, }) => 
                 play_click(station)
               }}>
 
-              <div className="overlay_background p-component-overlay absolute top-0 bottom-0 right-0 left-0 border-noround-bottom"
-                style={{
-                  borderRadius: '4px',
-                }} />
+              <div className="overlay_background p-component-overlay absolute top-0 bottom-0 right-0 left-0 border-noround-bottom station_avatar_overlay" />
 
-              <div className="overlay_background p-component-overlay absolute"
-                style={{
-                  top: '-2px',
-                  height: '2px',
-                  left: '28px',
-                  width: '84px',
-                }}
-              />
+              <div className="overlay_background p-component-overlay absolute station_avatar_overlay_top" />
 
-              <div className="overlay_text z-3" style={{
-                color: '#fff'
-              }}>
-                <i className={`font-semibold pi ${current_station?.id == station.id ? (stream_loading ? 'pi-spin pi-spinner' : (playing ? 'pi-pause' : 'pi-play')) : 'pi-play'}`} style={{
-                  fontSize: '2rem',
-                  textShadow: '0 0 7px',
-                }}></i>
+              <div className="overlay_text z-3 text-white">
+                <i className={`font-semibold text-4xl station_card_play_button pi ${current_station?.id == station.id ? (stream_loading ? 'pi-spin pi-spinner' : (playing ? 'pi-pause' : 'pi-play')) : 'pi-play'}`} />
               </div>
 
             </div>
@@ -151,12 +131,8 @@ export const StationCard: FC<Props> = memo(({ station, style, at_history, }) => 
           'surface-card',
           'shadow_card border_box text-primary',
           'absolute w-full h-full top-0 bottom-0 left-0 right-0 z-1',
-          'shadow-2 border-round',
+          'shadow-2 border-round station_card_border',
         )}
-
-          style={{
-            border: '2px solid var(--surface-100)',
-          }}
         >
 
           <div className="h-5rem surface-100" />
@@ -165,9 +141,7 @@ export const StationCard: FC<Props> = memo(({ station, style, at_history, }) => 
 
             <div className="flex flex-column justify-content-center flex-grow-1">
 
-              <QueryLink to={generatePath(app_routes["station$id"], { id: station.id })} className="font-bold text-primary text-center station_name mb-1  text_hidden_overflow line-clamp-3 action_text_font text-xl" style={{
-                wordBreak: 'break-word',
-              }}>
+              <QueryLink to={generatePath(app_routes["station$id"], { id: station.id })} className="font-bold text-primary text-center station_name mb-1  text_hidden_overflow line-clamp-3 action_text_font text-xl word_break" >
                 {station.name}
               </QueryLink>
             </div>
@@ -197,7 +171,7 @@ export const StationCard: FC<Props> = memo(({ station, style, at_history, }) => 
         }
 
         {/* overlay to hide shadow above image */}
-        <div className="absolute w-5rem z-2 shadow_overlay" />
+        <div className="absolute z-2 shadow_overlay" />
       </div>
       : <></>
   )
