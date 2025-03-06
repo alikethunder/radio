@@ -195,9 +195,7 @@ export const History = memo(() => {
     const station = home_stations.find(s => s.id === record.station_id)
     return (
       station ?
-        <StationCard station={station} at_history style={{
-          position: 'relative',
-        }} />
+        <StationCard station={station} at_history className="relative" />
         : <></>
     )
   }, [

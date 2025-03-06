@@ -37,9 +37,10 @@ type Props = {
     [x: string]: any;
   };
   at_history?: boolean;
+  className?: string;
 }
 
-export const StationCard: FC<Props> = memo(({ station, style, at_history, }) => {
+export const StationCard: FC<Props> = memo(({ station, style, at_history, className, }) => {
 
   const current_station = useStore().player.current_station()
 
@@ -75,6 +76,7 @@ export const StationCard: FC<Props> = memo(({ station, style, at_history, }) => 
       <div className={classNames({
         'current_station': current_station?.id == station.id,
       },
+        className ?? '',
         'flex flex-column gap-2 flex-shrink-0 w-9rem h-13rem station_card_container element_with_overlay')}
         style={style}>
 
