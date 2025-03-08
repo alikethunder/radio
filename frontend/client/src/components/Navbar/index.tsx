@@ -162,11 +162,6 @@ export const Navbar: FC = memo(() => {
 
         </div>
 
-        {
-          mobile ? <></> :
-            <YandexAd id="R-A-14083703-6" className="flex-grow-1 align-self-stretch ml-1" interval={30000} />
-        }
-
         <div className="right h-full mr-0 md:mr-2 md:flex-shrink-0">
           <Button
             className="h-full shadow-none"

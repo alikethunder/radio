@@ -357,7 +357,7 @@ export const History = memo(() => {
                     className="relative flex-grow-1 side_ad_container pointer-events-none"
                     ref={ad_container_ref}
                   >
-                    <YandexAd id="R-A-14083703-11" className="fixed" />
+                    {/* <YandexAd id="R-A-14083703-11" className="fixed" /> */}
                   </div>
               }
 
