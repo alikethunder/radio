@@ -63,14 +63,16 @@ func UpdateJson(ctx *fiber.Ctx) error {
 					json_station["external_enable"] = true
 					json_station["broadcasting"] = true
 
-					for _, tag := range json_station["tags"].([]interface{}) {
-						tag_exists, _ := db.SelectRow("station_tags", fiber.Map{"name": tag.(string)}, "name")
+					if json_station["tags"] != nil {
+						for _, tag := range json_station["tags"].([]interface{}) {
+							tag_exists, _ := db.SelectRow("station_tags", fiber.Map{"name": tag.(string)}, "name")
 
-						if tag_exists == nil {
-							db.Insert("station_tags", fiber.Map{
-								"name":  tag.(string),
-								"color": station_tag_colors[rand.Intn(len(station_tag_colors))],
-							})
+							if tag_exists == nil {
+								db.Insert("station_tags", fiber.Map{
+									"name":  tag.(string),
+									"color": station_tag_colors[rand.Intn(len(station_tag_colors))],
+								})
+							}
 						}
 					}
 					delete(json_station, "id")

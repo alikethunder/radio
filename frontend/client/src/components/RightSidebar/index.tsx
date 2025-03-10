@@ -450,7 +450,7 @@ export const RightSidebar: FC = memo(() => {
             </Button>
             : <></>
         }
- */}{/* 
+ */}
         {
           root_admin ?
 
@@ -474,7 +474,7 @@ export const RightSidebar: FC = memo(() => {
             </Button>
             : <></>
         }
- */}
+
         {
           root_admin ?
             <QueryLink to={generatePath(`${app_routes["station$id"]}/${'?edit'}`, { id: "new" })} onClick={close_rsb}>
@@ -502,7 +502,7 @@ export const RightSidebar: FC = memo(() => {
             : <></>
         }
  */}
-        {
+        {/* {
           root_admin ?
             <Button
               label={'Upload genres'}
@@ -524,7 +524,7 @@ export const RightSidebar: FC = memo(() => {
               />
             </Button>
             : <></>
-        }
+        } */}
         {/*
         {
           root_admin ?
