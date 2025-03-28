@@ -149,7 +149,7 @@ func main() {
 
 	translation_endpoints := v1.Group("/translation", compress_get, etag.New(), cache.New(cache.Config{
 		Next:       notGet,
-		Expiration: 24 * 7 * time.Hour,
+		Expiration: 24 * time.Hour,
 		KeyGenerator: func(ctx *fiber.Ctx) string {
 			return utils.CopyString(ctx.Path() + ctx.Query("fields"))
 		},
