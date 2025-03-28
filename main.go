@@ -163,7 +163,7 @@ func main() {
 
 	files_endpoints := v1.Group("/files", etag.New(), cache.New(cache.Config{
 		Next:       notGet,
-		Expiration: 24 * 7 * time.Hour,
+		Expiration: 24 * time.Hour,
 	}))
 
 	files_endpoints.Get("/:table/:row_id/:field", FilesEndpoints.GetFile)
