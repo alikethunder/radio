@@ -6,9 +6,9 @@ import {
   useStore,
 } from "@/store"
 
-import { HistoryRecord, Station } from "@/types"
+import { HistoryRecord } from "@/types"
 import { Timeline } from "primereact/timeline"
-import { StationAvatar, StationCard, YandexAd } from "@/components"
+import { StationCard, YandexAd } from "@/components"
 import languages_tags from '&/settings/languages_tags.json'
 
 import './index.sass'
@@ -20,14 +20,11 @@ import { IoDiceSharp } from "react-icons/io5"
 import { ga_event, switch_to_random_station } from "@/functions"
 import { useResizeObserver } from 'usehooks-ts'
 
-type Size = {
-  width?: number
-  height?: number
-}
-
 export const History = memo(() => {
 
-  const history = useStore().player.history()
+  const stored_history = useStore().player.history()
+
+  const history = useMemo(() => stored_history.reverse(), [stored_history])
 
   const history_loaded = useStore().app.history_loaded()
 
