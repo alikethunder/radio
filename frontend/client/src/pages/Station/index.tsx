@@ -389,7 +389,6 @@ export const Station = () => {
   const [translations] = useTranslations([
     'play',
     'pause',
-    'sitename',
     'add_to_favorites',
     'tags',
     'genre',
@@ -435,7 +434,9 @@ export const Station = () => {
   return (
     <>
       <Helmet>
-        <title>{translations.sitename} - {station?.name}</title>
+        <title>Radio Best - {station?.name}</title>
+
+        <meta name='pagename' content="Radio Best - {{.station.name}}" />
 
         <meta property="og:type" content="music.radio_station" />
 
@@ -445,12 +446,14 @@ export const Station = () => {
           language ? <meta property="og:locale" content={language} /> : <></>
         }
 
+        <link rel="alternate" hrefLang="{{.code}}" href="{{$.Domain}}/station/{{$.station.id}}?language={{.name}}" />
+
         <meta property="og:locale:alternate" content={languages.join(',').replace(`${language},`, '').replace(language ?? '', '')} />
 
-        <meta property="og:site_name" content={translations.sitename} />
+        <meta property="og:site_name" content="Radio Best" />
 
-        <meta property="og:title" content={`${translations.sitename} - ${station?.name}`} />
-        <meta name="twitter:title" content={`${translations.sitename} - ${station?.name}`} />
+        <meta property="og:title" content={`Radio Best - ${station?.name}`} />
+        <meta name="twitter:title" content={`Radio Best - ${station?.name}`} />
 
         <meta name="description" content={`${station?.[`description_${language}`]}`} />
         <meta property="og:description" content={`${station?.[`description_${language}`]}`} />
@@ -469,6 +472,15 @@ export const Station = () => {
         <meta property="twitter:image" content={`${window.location.origin}/api/v1/files/stations/${station?.id}/avatar`} />
 
         <meta property="twitter:domain" content={window.location.origin} />
+
+
+        <meta name='keywords' content="Radio Best,{{.station.name}},{{range .station.genres}}{{.}},{{end}}{{range .station.tags}}{{.}},{{end}}" />
+
+        <meta name='robots' content='index,follow' />
+
+        <meta name='copyright' content='radio.best' />
+
+        <meta name="subject" content="{{.Description}} {{.station.country}}. {{range .station.genres}}{{.}},{{end}} {{.Tags}}: {{range .station.tags}}{{.}},{{end}}" />
 
       </Helmet>
 
