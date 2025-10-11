@@ -49,6 +49,7 @@ import { icon_classes } from "@/constants/icon_classes"
 import { Helmet } from "react-helmet"
 import { useDebounceCallback } from "usehooks-ts"
 import { reset_password } from "@/API/auth/reset_password"
+import { get_api_origin } from "@/functions"
 
 export const Verification: FC = () => {
 
@@ -103,7 +104,7 @@ export const Verification: FC = () => {
   const onSubmit: SubmitHandler<User> = useDebounceCallback(async (form) => {
     //console.log('form submit : ', form)
 
-    let res = await fetch(`${window.location.origin}/api/v1/auth/verification`, {
+    let res = await fetch(`${get_api_origin()}/api/v1/auth/verification`, {
       method: 'POST',
       body: JSON.stringify({ ...form, email: store.user.email() }),
       headers: {
@@ -184,7 +185,7 @@ export const Verification: FC = () => {
       <Helmet>
         <title>{translations.sitename} - {translations.create_password}</title>
 
-        <link rel="canonical" href={`${window.location.origin}/verification?language=${language}`} />
+        <link rel="canonical" href={`${get_api_origin()}/verification?language=${language}`} />
 
       </Helmet>
       <div className="sm:px-3 md:px-5 min-h-screen flex justify-content-center align-items-center">

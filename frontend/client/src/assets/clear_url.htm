@@ -1,20 +1,21 @@
 <script type="text/javascript">
   //remove hashbang
-  let url = new URL(window.location.href
-    //remove double slashes
-    .replace(/([^:]\/)\/+/g, "$1")
-    //remove '?' duplicates
-    .split('?')
-    .reduce((prev, curr, i) => prev + (i == 1 ? '?' : '&') + (i >= 1 ? curr.substring(0, curr.includes('/') ? curr.indexOf('/') : curr.length) : curr))
-    //remove duplicate query parameters
-    .split('&')
-    .filter((s, i, a) => a.indexOf(s) == i)
-    .join('&')
-  );
+  if (typeof window !== 'undefined') {
+    let url = new URL(window.location.href
+      //remove double slashes
+      .replace(/([^:]\/)\/+/g, "$1")
+      //remove '?' duplicates
+      .split('?')
+      .reduce((prev, curr, i) => prev + (i == 1 ? '?' : '&') + (i >= 1 ? curr.substring(0, curr.includes('/') ? curr.indexOf('/') : curr.length) : curr))
+      //remove duplicate query parameters
+      .split('&')
+      .filter((s, i, a) => a.indexOf(s) == i)
+      .join('&')
+    );
 
-  //remove _uzsk
-  url.searchParams.delete('auth');
+    //remove _uzsk
+    url.searchParams.delete('auth');
 
-  window.history.replaceState(null, '', url.href);
-
+    window.history.replaceState(null, '', url.href);
+  }
 </script>

@@ -195,13 +195,15 @@ export const Player: FC = memo(() => {
   }, [])
 
   useEffect(() => {
-    window.addEventListener('online', ononline)
+    if (typeof window !== 'undefined') {
+      window.addEventListener('online', ononline)
 
-    window.addEventListener('offline', onoffline)
+      window.addEventListener('offline', onoffline)
 
-    return () => {
-      window.removeEventListener('offline', onoffline)
-      window.removeEventListener('online', ononline)
+      return () => {
+        window.removeEventListener('offline', onoffline)
+        window.removeEventListener('online', ononline)
+      }
     }
   }, [])
 
@@ -272,49 +274,51 @@ export const Player: FC = memo(() => {
   useEffect(() => {
     //console.log('history player : ', history_loaded)
     //stations history update
-    if (history_loaded) {
-      //console.log('history loaded : ')
+    if (typeof window !== 'undefined') {
+      if (history_loaded) {
+        //console.log('history loaded : ')
 
-      if (current_station) {
-        const last_record = store.player.history_get_from_last(0)
+        if (current_station) {
+          const last_record = store.player.history_get_from_last(0)
 
-        const current_history_station_id = store.player.current_history_station_id()
+          const current_history_station_id = store.player.current_history_station_id()
 
-        //console.log('last record : ', last_record, current_station.id)
+          //console.log('last record : ', last_record, current_station.id)
 
-        if (last_record?.station_id !== current_station.id && current_history_station_id !== current_station.id) {
+          if (last_record?.station_id !== current_station.id && current_history_station_id !== current_station.id) {
 
-          (async () => {
-            let record: HistoryRecord = {
-              id: '',
-              date: '',
-              station_id: current_station.id,
-            }
-
-            if (signedin) {
-              const resp = await fetch(`${window.location.origin}/api/v1/history/${current_station.id}`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-              })
-              if (resp.status === 200) {
-                record = { ...record, ...await resp.json() }
-                //console.log('[Player] signedin history added : ', record)
-              } else {
-                //console.log('[Player] signedin history add error : ', resp.status)
+            (async () => {
+              let record: HistoryRecord = {
+                id: '',
+                date: '',
+                station_id: current_station.id,
               }
-            } else {
-              const resp = await fetch(`${window.location.origin}/api/v1/history/date`)
-              record.date = await resp.text()
-              record.id = v7()
-              //console.log('[Player] non signedin history added : ', record)
-            }
-            if (record.id) {
-              actions.player.history_add(record)
-              actions.player.current_history_station_id(current_station.id)
-            }
-          })()
+
+              if (signedin) {
+                const resp = await fetch(`${window.location.origin}/api/v1/history/${current_station.id}`, {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                })
+                if (resp.status === 200) {
+                  record = { ...record, ...await resp.json() }
+                  //console.log('[Player] signedin history added : ', record)
+                } else {
+                  //console.log('[Player] signedin history add error : ', resp.status)
+                }
+              } else {
+                const resp = await fetch(`${window.location.origin}/api/v1/history/date`)
+                record.date = await resp.text()
+                record.id = v7()
+                //console.log('[Player] non signedin history added : ', record)
+              }
+              if (record.id) {
+                actions.player.history_add(record)
+                actions.player.current_history_station_id(current_station.id)
+              }
+            })()
+          }
         }
       }
     }

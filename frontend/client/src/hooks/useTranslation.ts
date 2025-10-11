@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 
 import { actions, useStore } from "@/store"
+import { get_api_origin } from "@/functions"
 
 export const useTranslation = (field: string, capitalize?: boolean,): [string, boolean] => {
 
@@ -15,7 +16,7 @@ export const useTranslation = (field: string, capitalize?: boolean,): [string, b
   useEffect(() => {
     if (language && !translation_checked) {
       (async () => {
-        const resp = await fetch(`${window.location.origin}/api/v1/translation/${language}/${field}`)
+        const resp = await fetch(`${get_api_origin()}/api/v1/translation/${language}/${field}`)
         const text = await resp.text()
 
         actions.translations.add_translation(field, capitalize ? text.charAt(0).toUpperCase() + text.slice(1) : text)

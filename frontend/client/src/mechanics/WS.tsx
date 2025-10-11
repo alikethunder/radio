@@ -3,6 +3,7 @@ import { FC, useMemo, useEffect, createRef, useState } from "react"
 import Sockette from 'sockette'
 
 import { actions, useTrackedStore, store, useStore } from "@/store"
+import { get_api_origin } from "@/functions"
 
 export const WS: FC = () => {
 
@@ -15,7 +16,7 @@ export const WS: FC = () => {
       if (signedin) {
 
         const ws = await new Promise((res, rej) => {
-          let s = new Sockette(`${window.location.origin}/ws`, {
+          let s = new Sockette(`${get_api_origin()}/ws`, {
             timeout: 5e3,
             maxAttempts: 1,//10,
             onopen: e => {

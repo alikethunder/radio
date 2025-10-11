@@ -3,25 +3,29 @@
 <head>
   <style id="theme_css"></style>
   <script>
-    const theme = localStorage.getItem('theme') || window?.matchMedia?.('(prefers-color-scheme:dark)')?.matches ? 'dark' : 'light'
+    if (typeof window !== 'undefined') {
+      const theme = localStorage.getItem('theme') || window?.matchMedia?.('(prefers-color-scheme:dark)')?.matches ? 'dark' : 'light'
 
-    localStorage.setItem('theme', theme)
+      localStorage.setItem('theme', theme)
 
-    fetch(`${window.location.origin}/assets/themes/soho_${theme}.css`).then(resp => {
-      return resp.text()
-    }).then(text => {
-      document.getElementById("theme_css").innerHTML = text
-    })
+      fetch(`${window.location.origin}/assets/themes/soho_${theme}.css`).then(resp => {
+        return resp.text()
+      }).then(text => {
+        document.getElementById("theme_css").innerHTML = text
+      })
+    }
   </script>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-XSP8Y55XTL"></script>
   <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
+    if (typeof window !== 'undefined') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
 
-    gtag('config', 'G-XSP8Y55XTL');
-    gtag('config', 'G-XSP8Y55XTL');
+      gtag('config', 'G-XSP8Y55XTL');
+      gtag('config', 'G-XSP8Y55XTL');
+    }
   </script>
 
   <meta charSet="utf-8" />
@@ -134,18 +138,20 @@
   <!-- /Yandex.Metrika counter -->
 
   <script type="text/javascript">
-    window.addEventListener('load', function () {
-      window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        //console.log('[PWA] onbeforeinstallprompt index.html');
+    if (typeof window !== 'undefined') {
+      window.addEventListener('load', function () {
+        window.addEventListener('beforeinstallprompt', (e) => {
+          e.preventDefault();
+          //console.log('[PWA] onbeforeinstallprompt index.html');
 
-        window.PWAInstallEvent = e
+          window.PWAInstallEvent = e
 
-        const event = new Event('PWAEvent', { "bubbles": true })
+          const event = new Event('PWAEvent', { "bubbles": true })
 
-        document.dispatchEvent(event)
-      }, { once: true })
-    })
+          document.dispatchEvent(event)
+        }, { once: true })
+      })
+    }
   </script>
 
   <!-- <script>
@@ -205,17 +211,24 @@
   </script> -->
 
   <!-- Yandex.RTB -->
-  <script>window.yaContextCb = window.yaContextCb || []</script>
+  <script>
+    if (typeof window !== 'undefined') {
+      window.yaContextCb = window.yaContextCb || []
+    }</script>
   <script src="https://yandex.ru/ads/system/context.js" async></script>
 
   <script>
-    window.structuredClone = window.structuredClone || function (value) {
-      return JSON.parse(JSON.stringify(value))
+    if (typeof window !== 'undefined') {
+      window.structuredClone = window.structuredClone || function (value) {
+        return JSON.parse(JSON.stringify(value))
+      }
     }
   </script>
 
   <script>
-    window.user_ip = "{{.user_ip}}"
+    if (typeof window !== 'undefined') {
+      window.user_ip = "{{.user_ip}}"
+    }
   </script>
 </head>
 

@@ -17,7 +17,7 @@ import { useHideTooltip, useMobile, useTooltip, useTranslations } from "@/hooks"
 import { useDebounceCallback } from "usehooks-ts"
 import { Message } from "primereact/message"
 import { IoDiceSharp } from "react-icons/io5"
-import { ga_event, switch_to_random_station } from "@/functions"
+import { ga_event, get_api_origin, switch_to_random_station } from "@/functions"
 import { useResizeObserver } from 'usehooks-ts'
 
 export const History = memo(() => {
@@ -57,7 +57,7 @@ export const History = memo(() => {
     useDebounceCallback(
       async (record_id: string) => {
         if (signedin) {
-          const resp = await fetch(`${window.location.origin}/api/v1/history/record/${record_id}`, {
+          const resp = await fetch(`${get_api_origin()}/api/v1/history/record/${record_id}`, {
             method: 'DELETE',
           })
           if (resp.status === 200) {
@@ -84,7 +84,7 @@ export const History = memo(() => {
     useDebounceCallback(
       async () => {
         if (signedin) {
-          const resp = await fetch(`${window.location.origin}/api/v1/history/all`, {
+          const resp = await fetch(`${get_api_origin()}/api/v1/history/all`, {
             method: 'DELETE',
           })
           if (resp.status != 200) {

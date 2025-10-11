@@ -1,8 +1,8 @@
 import { actions } from "@/store"
-import { onLogout } from "./"
+import { get_api_origin, onLogout } from "@/functions"
 
 export const logout = async () => {
-  await fetch(`${window.location.origin}/api/v1/auth/logout`, {
+  await fetch(`${get_api_origin()}/api/v1/auth/logout`, {
     method: 'POST'
   })
 

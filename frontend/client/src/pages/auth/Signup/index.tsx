@@ -47,6 +47,7 @@ import {
 
 import { Helmet } from "react-helmet"
 import { useDebounceCallback } from "usehooks-ts"
+import { get_api_origin } from "@/functions"
 
 export const Signup: FC = () => {
   const navigate = useNavigate()
@@ -86,7 +87,7 @@ export const Signup: FC = () => {
   const onSubmit: SubmitHandler<User> = useDebounceCallback(async (form) => {
     //console.log('form submit : ', form)
 
-    let res = await fetch(`${window.location.origin}/api/v1/auth/signup?language=${store.translations.language() ?? 'en'}`, {
+    let res = await fetch(`${get_api_origin()}/api/v1/auth/signup?language=${store.translations.language() ?? 'en'}`, {
       method: 'POST',
       body: JSON.stringify(form),
       headers: {
@@ -125,7 +126,7 @@ export const Signup: FC = () => {
       <Helmet>
         <title>{translations.sitename} - {translations.registration}</title>
 
-        <link rel="canonical" href={`${window.location.origin}/signup?language=${language}`} />
+        <link rel="canonical" href={`${get_api_origin()}/signup?language=${language}`} />
 
       </Helmet>
 

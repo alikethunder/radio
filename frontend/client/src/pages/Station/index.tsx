@@ -43,6 +43,7 @@ import {
 } from "@/store"
 
 import {
+  get_api_origin,
   resize_image,
 } from "@/functions"
 
@@ -233,7 +234,7 @@ export const Station = () => {
 
         body.set('avatar', avatar_blob)
 
-        const resp = await fetch(`${window.location.origin}/api/v1/files/stations/${id}/avatar`, {
+        const resp = await fetch(`${get_api_origin()}/api/v1/files/stations/${id}/avatar`, {
           method: 'POST',
           body,
         })
@@ -289,19 +290,20 @@ export const Station = () => {
   }, [])
 
   const get_track_metadata = async (file: File) => {
-
-    return await new Promise((res, rej) => {
-      window.jsmediatags.read(file, {
-        onSuccess(tag: any) {
-          console.log("[Station] onSuccess get_track_metadata : ", tag)
-          res(tag)
-        },
-        onError(er: Error) {
-          console.log("[Station] onError get_track_metadata : ", er)
-          rej(er)
-        }
+    if (typeof window !== 'undefined') {
+      return await new Promise((res, rej) => {
+        window.jsmediatags.read(file, {
+          onSuccess(tag: any) {
+            console.log("[Station] onSuccess get_track_metadata : ", tag)
+            res(tag)
+          },
+          onError(er: Error) {
+            console.log("[Station] onError get_track_metadata : ", er)
+            rej(er)
+          }
+        })
       })
-    })
+    }
   }
 
   const addTracks = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -375,7 +377,7 @@ export const Station = () => {
     if (new_tags?.length) {
       //console.log('new_tags : ', new_tags)
 
-      const resp = await fetch(`${window.location.origin}/api/v1/tags/`, {
+      const resp = await fetch(`${get_api_origin()}/api/v1/tags/`, {
         method: 'POST',
         body: JSON.stringify(new_tags)
       })
@@ -459,19 +461,19 @@ export const Station = () => {
         <meta property="og:description" content={`${station?.[`description_${language}`]}`} />
         <meta property="twitter:description" content={`${station?.[`description_${language}`]}`} />
 
-        <link rel="canonical" href={`${window.location.origin}${generatePath(app_routes["station$id"], { id: station?.id })}?language=${language}`} />
+        <link rel="canonical" href={`${get_api_origin()}${generatePath(app_routes["station$id"], { id: station?.id })}?language=${language}`} />
 
-        <meta property="og:url" content={`${window.location.origin}${generatePath(app_routes["station$id"], { id: station?.id })}?language=${language}`} />
+        <meta property="og:url" content={`${get_api_origin()}${generatePath(app_routes["station$id"], { id: station?.id })}?language=${language}`} />
 
         <meta property="twitter:url"
-          content={`${window.location.origin}${generatePath(app_routes["station$id"], { id: station?.id })}?language=${language}`} />
+          content={`${get_api_origin()}${generatePath(app_routes["station$id"], { id: station?.id })}?language=${language}`} />
 
-        <meta property="og:image" content={`${window.location.origin}/api/v1/files/stations/${station?.id}/avatar`} />
+        <meta property="og:image" content={`${get_api_origin()}/api/v1/files/stations/${station?.id}/avatar`} />
         <meta property="og:image:width" content="128" />
         <meta property="og:image:height" content="128" />
-        <meta property="twitter:image" content={`${window.location.origin}/api/v1/files/stations/${station?.id}/avatar`} />
+        <meta property="twitter:image" content={`${get_api_origin()}/api/v1/files/stations/${station?.id}/avatar`} />
 
-        <meta property="twitter:domain" content={window.location.origin} />
+        <meta property="twitter:domain" content={get_api_origin()} />
 
 
         <meta name='keywords' content="Radio Best,{{.station.name}},{{range .station.genres}}{{.}},{{end}}{{range .station.tags}}{{.}},{{end}}" />
@@ -491,8 +493,8 @@ export const Station = () => {
           name: station?.name,
           description: station?.[`description_${language}`],
           keywords: station.tags?.join(','),
-          logo: `${window.location.origin}/api/v1/files/stations/${station.id}/avatar`,
-          url: `${window.location.origin}${generatePath(app_routes["station$id"], { id: station?.id })}?language=${language}`,
+          logo: `${get_api_origin()}/api/v1/files/stations/${station.id}/avatar`,
+          url: `${get_api_origin()}${generatePath(app_routes["station$id"], { id: station?.id })}?language=${language}`,
         })}
       </script>
 

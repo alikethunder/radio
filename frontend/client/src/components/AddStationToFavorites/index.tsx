@@ -14,7 +14,7 @@ import { update_json } from "@/API/profile/update_json"
 import { v7 } from "uuid"
 import { Station } from "@/types"
 import { useAsyncMemo } from "use-async-memo"
-import { ga_event } from "@/functions"
+import { ga_event, get_api_origin } from "@/functions"
 
 type Props = {
   station: Station;
@@ -33,7 +33,7 @@ export const AddStationToFavorites: FC<Props> = memo(({ station, className, show
   useEffect(() => {
     if (show_likes && id) {
       (async () => {
-        const resp = await fetch(`${window.location.origin}/api/v1/radio/likes/${id}`)
+        const resp = await fetch(`${get_api_origin()}/api/v1/radio/likes/${id}`)
         const text = await resp.text()
         //console.log('[AddStationToFavorites] likes : ', text)
         set_likes(Number(text))
@@ -59,17 +59,18 @@ export const AddStationToFavorites: FC<Props> = memo(({ station, className, show
 
     const likes = favorite_station ? '-1' : '+1'
     //update station like count
-    const resp = await fetch(`${window.location.origin}/api/v1/radio/update-likes/${id}`, {
+    const resp = await fetch(`${get_api_origin()}/api/v1/radio/update-likes/${id}`, {
       method: 'POST',
       body: JSON.stringify({
         likes,
         uuid: signedin ? store.user.id() : store.persistedApp.user_uuid(),
       })
     })
+
     const text = await resp.text()
+
     //console.log('[AddStationToFavorites] likes : ', text)
     set_likes(Number(text))
-
     if (signedin) {
       update_json({ favorite_stations: store.user.favorite_stations() })
     }

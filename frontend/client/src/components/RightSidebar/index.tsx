@@ -11,6 +11,7 @@ import {
 } from '@/components'
 
 import {
+  get_api_origin,
   logout,
 } from '@/functions'
 
@@ -56,14 +57,14 @@ export const RightSidebar: FC = memo(() => {
   }, 50)
 
   const update_sitemap = useDebounceCallback(async () => {
-    const res = await fetch(`${window.location.origin}/api/v1/settings/sitemap`)
+    const res = await fetch(`${get_api_origin()}/api/v1/settings/sitemap`)
 
     console.log('[update_sitemap] result : ', res)
   }, 50)
 
   const trim = useDebounceCallback(async () => {
     //trims spaces of genres, tags, country, languages for every station
-    const res = await fetch(`${window.location.origin}/api/v1/settings/trim`)
+    const res = await fetch(`${get_api_origin()}/api/v1/settings/trim`)
 
     console.log('[trim] result : ', res)
   }, 50)
@@ -124,7 +125,7 @@ export const RightSidebar: FC = memo(() => {
             }
           }
 
-          fetch(`${window.location.origin}/api/v1/radio/upload-jsons`, {
+          fetch(`${get_api_origin()}/api/v1/radio/upload-jsons`, {
             method: "POST",
             body,
           })
@@ -146,7 +147,7 @@ export const RightSidebar: FC = memo(() => {
             body.append('json', file)
           }
 
-          fetch(`${window.location.origin}/api/v1/radio/remove-jsons`, {
+          fetch(`${get_api_origin()}/api/v1/radio/remove-jsons`, {
             method: "POST",
             body,
           })
@@ -170,7 +171,7 @@ export const RightSidebar: FC = memo(() => {
             body.append('json', file)
           }
 
-          fetch(`${window.location.origin}/api/v1/radio/update-json`, {
+          fetch(`${get_api_origin()}/api/v1/radio/update-json`, {
             method: "POST",
             body,
           })
@@ -189,8 +190,7 @@ export const RightSidebar: FC = memo(() => {
 
   const index_now = useDebounceCallback(async () => {
     // send request to indexnow
-    await fetch(`${window.location.origin}/api/v1/settings/indexnow`)
-
+    await fetch(`${get_api_origin()}/api/v1/settings/indexnow`)
   }, 100)
 
   const upload_genres = useCallback(useDebounceCallback(async (e) => {
@@ -218,7 +218,7 @@ export const RightSidebar: FC = memo(() => {
         body.append('genres', file)
       }
 
-      fetch(`${window.location.origin}/api/v1/settings/genres`, {
+      fetch(`${get_api_origin()}/api/v1/settings/genres`, {
         method: "POST",
         body,
       })
@@ -248,7 +248,7 @@ export const RightSidebar: FC = memo(() => {
         body.append('countries', file)
       }
 
-      fetch(`${window.location.origin}/api/v1/settings/countries`, {
+      fetch(`${get_api_origin()}/api/v1/settings/countries`, {
         method: "POST",
         body,
       })
@@ -278,7 +278,7 @@ export const RightSidebar: FC = memo(() => {
         body.append('languages', file)
       }
 
-      fetch(`${window.location.origin}/api/v1/settings/languages`, {
+      fetch(`${get_api_origin()}/api/v1/settings/languages`, {
         method: "POST",
         body,
       })

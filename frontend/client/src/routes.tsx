@@ -1,5 +1,5 @@
 import React, { Profiler } from "react"
-import { redirect, ShouldRevalidateFunctionArgs, } from "react-router-dom"
+import { redirect, RouteObject, ShouldRevalidateFunctionArgs, } from "react-router-dom"
 import App from "@/App"
 
 import {
@@ -231,4 +231,4 @@ export const routes = [
       }
     ],
   },
-]
+] as RouteObject[]

@@ -24,18 +24,20 @@ export const ThemeSwitcher: FC = memo(() => {
   const [theme_loading, set_theme_loading] = useState(false)
 
   useEffect(() => {
-    set_theme_loading(true)
+    if (typeof window !== 'undefined') {
+      set_theme_loading(true)
 
-    fetch(`${window.location.origin}/assets/themes/soho_${theme}.css`).then(resp => {
-      return resp.text()
-    }).then(text => {
-      const style = document.getElementById("theme_css")
-      if (style) {
-        style.innerHTML = text
-      }
-    }).finally(() => {
-      set_theme_loading(false)
-    })
+      fetch(`${window.location.origin}/assets/themes/soho_${theme}.css`).then(resp => {
+        return resp.text()
+      }).then(text => {
+        const style = document.getElementById("theme_css")
+        if (style) {
+          style.innerHTML = text
+        }
+      }).finally(() => {
+        set_theme_loading(false)
+      })
+    }
   }, [theme])
 
   const current_theme_icon = useMemo(() => {
@@ -57,7 +59,7 @@ export const ThemeSwitcher: FC = memo(() => {
       raised
       aria-label={translations.switch_theme}
       tooltip={translations.switch_theme}
-      {...{tooltipOptions}}
+      {...{ tooltipOptions }}
       className="p-0 w-2rem h-2rem shadow_on_hover align-self-center flex flex-shrink-0 justify-content-center align-items-center icon_button_text_shadow"
       style={{
         color: theme_loading ?

@@ -42,7 +42,7 @@ export const PurchasePlan = () => {
   console.log('plans : ', plans)
 
   const becomeSeller = async () => {
-    /* const r = await fetch(`${window.location.origin}/api/v1/purchase-plan/start`, {
+    /* const r = await fetch(`${get_api_origin()}/api/v1/purchase-plan/start`, {
       method: 'POST',
     }) */
 

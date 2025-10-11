@@ -51,6 +51,7 @@ import {
   onLogout,
   getCookie,
   ga_event,
+  get_api_origin,
 } from '@/functions'
 
 import {
@@ -84,14 +85,16 @@ export default memo(function App() {
   const { pathname, search } = location
 
   useEffect(() => {
-    ga_event({
-      event: 'navigation',
-      params: {
-        pathname,
-        search,
-      },
-      window_location: window.location,
-    })
+    if (typeof window !== 'undefined') {
+      ga_event({
+        event: 'navigation',
+        params: {
+          pathname,
+          search,
+        },
+        window_location: window.location,
+      })
+    }
   }, [
     pathname,
     search,
@@ -132,7 +135,7 @@ export default memo(function App() {
 
   useEffect(() => {
     (async () => {
-      const resp = await fetch(`${window.location.origin}/api/v1/tags/`)
+      const resp = await fetch(`${get_api_origin()}/api/v1/tags/`)
       const json = await resp.json()
       actions.session.station_tags(json ?? [])
     })()
@@ -143,7 +146,7 @@ export default memo(function App() {
   useEffect(() => {
     if (language) {
       (async () => {
-        const resp = await fetch(`${window.location.origin}/api/v1/settings/languages/${language ?? 'en'}`)
+        const resp = await fetch(`${get_api_origin()}/api/v1/settings/languages/${language ?? 'en'}`)
         const json = await resp.json() as StationLanguage[]
         actions.session.station_languages((json ?? []).sort(alphabet_sort))
       })()
@@ -153,7 +156,7 @@ export default memo(function App() {
   useEffect(() => {
     if (language) {
       (async () => {
-        const resp = await fetch(`${window.location.origin}/api/v1/settings/countries/${language ?? 'en'}`)
+        const resp = await fetch(`${get_api_origin()}/api/v1/settings/countries/${language ?? 'en'}`)
         const json = await resp.json() as StationCountry[]
         actions.session.station_countries((json ?? []).sort(alphabet_sort))
       })()
@@ -164,7 +167,7 @@ export default memo(function App() {
     if (language) {
       (async () => {
         try {
-          const resp = await fetch(`${window.location.origin}/api/v1/settings/genres/${language ?? 'en'}`)
+          const resp = await fetch(`${get_api_origin()}/api/v1/settings/genres/${language ?? 'en'}`)
           const json = await resp.json() as StationGenre[]
           actions.session.station_genres((json ?? []).sort(alphabet_sort))
         } catch (e) {
@@ -320,7 +323,7 @@ export default memo(function App() {
   useEffect(() => {
     //language preset
     (async () => {
-      const resp = await fetch(`${window.location.origin}/api/v1/translation`)
+      const resp = await fetch(`${get_api_origin()}/api/v1/translation`)
 
       if (resp.status == 200) {
         const languages = await resp.json()
@@ -362,49 +365,55 @@ export default memo(function App() {
   }, [language, languages])
 
   useEffect(() => {
-    (async () => {
+    if (typeof window !== 'undefined') {
+      (async () => {
 
-      if ('serviceWorker' in navigator) {
-        const prev_sws = await navigator.serviceWorker.getRegistrations()
+        if ('serviceWorker' in navigator) {
+          const prev_sws = await navigator.serviceWorker.getRegistrations()
 
-        for (const sw of prev_sws) {
-          await sw.unregister()
+          for (const sw of prev_sws) {
+            await sw.unregister()
+          }
+
+          try {
+
+            const serviceWorkerRegistration = await navigator.serviceWorker.register(`${get_api_origin()}/service-worker.js`, {
+              scope: '/'
+            })
+
+          } catch (e) {
+            console.log('[service-worker] init err : ', e)
+          }
         }
-
-        try {
-
-          const serviceWorkerRegistration = await navigator.serviceWorker.register(`${window.location.origin}/service-worker.js`, {
-            scope: '/'
-          })
-
-        } catch (e) {
-          console.log('[service-worker] init err : ', e)
-        }
-      }
-    })()
+      })()
+    }
   }, [])
 
   const pwa_event = useStore().session.pwa_event()
 
   useEffect(() => {
-    if (window.PWAInstallEvent) {
-      actions.session.pwa_event(window.PWAInstallEvent)
-    } else {
-      //@ts-ignore
-      window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
+    if (typeof window !== 'undefined') {
+      if (window.PWAInstallEvent) {
+        actions.session.pwa_event(window.PWAInstallEvent)
+      } else {
+        //@ts-ignore
+        window.addEventListener('beforeinstallprompt', (e) => {
+          e.preventDefault();
 
-        window.PWAInstallEvent = e
-        actions.session.pwa_event(e)
-      }, { once: true })
+          window.PWAInstallEvent = e
+          actions.session.pwa_event(e)
+        }, { once: true })
+      }
     }
   }, [])
 
   useEffect(() => {
     //store pwa install event
-    document.addEventListener('PWAEvent', (e) => {
-      actions.session.pwa_event(window.PWAInstallEvent)
-    }, { once: true })
+    if (typeof window !== 'undefined') {
+      document.addEventListener('PWAEvent', (e) => {
+        actions.session.pwa_event(window.PWAInstallEvent)
+      }, { once: true })
+    }
   }, [])
 
   const install_pwa = useCallback(() => {
@@ -434,20 +443,22 @@ export default memo(function App() {
 
   useEffect(() => {
     //load history if user logged in and it was checked
-    if (auth_checked) {
+    if (typeof window !== 'undefined') {
+      if (auth_checked) {
 
-      if (signedin) {
-        (async () => {
-          const resp = await fetch(`${window.location.origin}/api/v1/history`)
-          const history = await resp.json() as HistoryRecord[]
-          console.log('[history] loaded : ', history)
+        if (signedin) {
+          (async () => {
+            const resp = await fetch(`${get_api_origin()}/api/v1/history`)
+            const history = await resp.json() as HistoryRecord[]
+            console.log('[history] loaded : ', history)
 
-          actions.player.history(history ?? [])
+            actions.player.history(history ?? [])
 
+            actions.app.history_loaded(true)
+          })()
+        } else {
           actions.app.history_loaded(true)
-        })()
-      } else {
-        actions.app.history_loaded(true)
+        }
       }
     }
   }, [

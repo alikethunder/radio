@@ -26,6 +26,7 @@ import {
 } from "@/store"
 
 import {
+  get_api_origin,
   resize_image,
 } from "@/functions"
 
@@ -132,7 +133,7 @@ export const UserProfile = () => {
 
     //console.log('body : ', body.values())
 
-    const response = await fetch(`${window.location.origin}/api/v1/profile/update`, {
+    const response = await fetch(`${get_api_origin()}/api/v1/profile/update`, {
       method: 'POST',
       body,
     })
@@ -165,7 +166,7 @@ export const UserProfile = () => {
         draggable: false,
         className: 'w-30rem max-w-full mx-7 surface-card',
         accept: async () => {
-          const update_email_resp = await fetch(`${window.location.origin}/api/v1/profile/request-update-email?language=${store.translations.language() ?? 'en'}`, {
+          const update_email_resp = await fetch(`${get_api_origin()}/api/v1/profile/request-update-email?language=${store.translations.language() ?? 'en'}`, {
             method: 'POST',
             body: JSON.stringify({ new_email: data.email })
           })
@@ -198,7 +199,7 @@ export const UserProfile = () => {
       <Helmet>
         <title>{translations.sitename} - {user_data?.name}</title>
 
-        <link rel="canonical" href={`${window.location.origin}/user-profile/${user_data?.id}?language=${language}`} />
+        <link rel="canonical" href={`${get_api_origin()}/user-profile/${user_data?.id}?language=${language}`} />
 
       </Helmet>
 

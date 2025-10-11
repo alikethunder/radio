@@ -42,6 +42,7 @@ import {
 import { Helmet } from "react-helmet"
 import { useDebounceCallback } from "usehooks-ts"
 import { reset_password } from "@/API/auth/reset_password"
+import { get_api_origin } from "@/functions"
 
 type ResetPasswordUser = (Pick<User, 'email'>)
 
@@ -126,7 +127,7 @@ export const ResetPassword: FC = () => {
       <Helmet>
         <title>{translations.sitename} - {translations.reset_password}</title>
 
-        <link rel="canonical" href={`${window.location.origin}/reset-password?language=${language}`} />
+        <link rel="canonical" href={`${get_api_origin()}/reset-password?language=${language}`} />
 
       </Helmet>
 

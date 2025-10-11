@@ -8,7 +8,9 @@
     "build": "tsc && vite build",
     "build:watch": "vite build --watch --emptyOutDir",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "bun:build": "bun run build",
+    "bun:start": "bun start"
   },
   "dependencies": {
     "@sentry/react": "^8.36.0",
@@ -39,6 +41,7 @@
   "devDependencies": {
     "@sentry/vite-plugin": "^2.22.6",
     "@svgr/rollup": "^8.1.0",
+    "@types/bun": "^1.2.23",
     "@types/element-closest": "^3.0.2",
     "@types/lodash.debounce": "^4.0.9",
     "@types/node": "^20.10.5",

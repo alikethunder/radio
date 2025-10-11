@@ -27,7 +27,7 @@ export const YandexAd: FC<Props> = memo(({ update_dependency, additional_render_
       only_rus ? !is_rus : false
     )
     || !ads_enabled
-    || window.location.port == '5757'
+    || window?.location?.port == '5757'
   ) return <></>
 
   const mobile = useMobile()
@@ -54,30 +54,32 @@ export const YandexAd: FC<Props> = memo(({ update_dependency, additional_render_
   }, [update_dependency])
 
   useEffect(() => {
-    if (ads_enabled) {
+    if (typeof window !== 'undefined') {
+      if (ads_enabled) {
 
-      if (counter > 1) {
-        const ya = document.getElementById(`yandex_rtb_${id}-${counter - 1}`)
-        const new_ya = document.createElement('div')
-        new_ya.id = `yandex_rtb_${id}-${counter}`
-        new_ya.className = `w-full h-full ${className ?? ''}`
+        if (counter > 1) {
+          const ya = document.getElementById(`yandex_rtb_${id}-${counter - 1}`)
+          const new_ya = document.createElement('div')
+          new_ya.id = `yandex_rtb_${id}-${counter}`
+          new_ya.className = `w-full h-full ${className ?? ''}`
 
-        container.current?.insertBefore(new_ya, ya)
+          container.current?.insertBefore(new_ya, ya)
 
-        ya?.remove()
+          ya?.remove()
 
-        window.yaContextCb.push(() => {
-          window.Ya.Context.AdvManager.render({
-            "blockId": id,
-            "renderTo": `yandex_rtb_${id}-${counter}`,
-            "async": true,
-            darkTheme: theme === 'dark',
-            onError: (data: any) => {
-              console.log(`[YandexAd] ${id} error: `, data)
-            },
-            ...(additional_render_params ?? {}),
+          window.yaContextCb.push(() => {
+            window.Ya.Context.AdvManager.render({
+              "blockId": id,
+              "renderTo": `yandex_rtb_${id}-${counter}`,
+              "async": true,
+              darkTheme: theme === 'dark',
+              onError: (data: any) => {
+                console.log(`[YandexAd] ${id} error: `, data)
+              },
+              ...(additional_render_params ?? {}),
+            })
           })
-        })
+        }
       }
     }
   }, [
