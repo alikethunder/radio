@@ -159,10 +159,10 @@ export const Station = () => {
 
   const [image_loading, set_image_loading] = useState(true)
 
-  const [station_avatar, set_station_avatar] = useState<string>(`/api/v1/files/stations/${station?.id}/avatar`)
+  const [station_avatar, set_station_avatar] = useState<string>(`${get_api_origin()}/api/v1/files/stations/${station?.id}/avatar`)
 
   useEffect(() => {
-    set_station_avatar(`/api/v1/files/stations/${station?.id}/avatar`)
+    set_station_avatar(`${get_api_origin()}/api/v1/files/stations/${station?.id}/avatar`)
   }, [station?.id])
 
   const station_admin = useMemo(() => Boolean(
@@ -260,34 +260,35 @@ export const Station = () => {
 
   }, 50), [avatar_blob, avatar_data_url, station])
 
-  const file_reader = new FileReader()
+  /* const file_reader = new FileReader()
 
   const get_track_duration = useCallback(async (file: File) => {
+    if (file_reader) {
+      file_reader.readAsArrayBuffer(file)
 
-    file_reader.readAsArrayBuffer(file)
+      return await new Promise((res, rej) => {
+        file_reader.onloadend = (e) => {
+          const ctx = new AudioContext()
 
-    return await new Promise((res, rej) => {
-      file_reader.onloadend = (e) => {
-        const ctx = new AudioContext()
+          const audioArrayBuffer = e.target?.result as ArrayBuffer
 
-        const audioArrayBuffer = e.target?.result as ArrayBuffer
+          ctx.decodeAudioData(audioArrayBuffer, data => {
+            //success
+            const duration = data.duration
 
-        ctx.decodeAudioData(audioArrayBuffer, data => {
-          //success
-          const duration = data.duration
+            //console.log('Audio file duration: ', duration, duration.toFixed(3))
 
-          //console.log('Audio file duration: ', duration, duration.toFixed(3))
+            res(duration.toFixed(3))
+          }, er => {
+            //error
+            console.error("[Station] get_track_duration something wrong with file: ", er)
+            rej(er)
+          })
 
-          res(duration.toFixed(3))
-        }, er => {
-          //error
-          console.error("[Station] get_track_duration something wrong with file: ", er)
-          rej(er)
-        })
-
-      }
-    })
-  }, [])
+        }
+      })
+    }
+  }, []) */
 
   const get_track_metadata = async (file: File) => {
     if (typeof window !== 'undefined') {
@@ -306,7 +307,7 @@ export const Station = () => {
     }
   }
 
-  const addTracks = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  /* const addTracks = async (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log('[Station] addTracks : ', e.target.files)
 
     if (e.target.files?.length) {
@@ -328,11 +329,11 @@ export const Station = () => {
 
 
 
-      /* const [blob, data_url] = await resize_image(e.target.files?.[0])
+      const [blob, data_url] = await resize_image(e.target.files?.[0])
       set_avatar_blob(blob)
-      set_avatar_data_url(data_url) */
+      set_avatar_data_url(data_url)
     }
-  }
+  } */
 
   //todo add prompt to reset and save form if fields changed
   useFormState({
@@ -435,7 +436,7 @@ export const Station = () => {
 
   return (
     <>
-      <Helmet>
+      {/* <Helmet>
         <title>Radio Best - {station?.name}</title>
 
         <meta name='pagename' content="Radio Best - {{.station.name}}" />
@@ -484,7 +485,7 @@ export const Station = () => {
 
         <meta name="subject" content="{{.Description}} {{.station.country}}. {{range .station.genres}}{{.}},{{end}} {{.Tags}}: {{range .station.tags}}{{.}},{{end}}" />
 
-      </Helmet>
+      </Helmet> */}
 
       <script type="application/ld+json">
         {JSON.stringify({
@@ -1129,7 +1130,7 @@ export const Station = () => {
 
               {/* Upload tracks */}
 
-              <Button className="track_uploader" label="Upload tracks" onClick={e => {
+              {/* <Button className="track_uploader" label="Upload tracks" onClick={e => {
                 if (edit_mode) {
                   tracks_input_ref.current?.click()
                 }
@@ -1143,7 +1144,7 @@ export const Station = () => {
                   multiple
                   onChange={addTracks}
                 />
-              </Button>
+              </Button> */}
 
               {/* Playlist */}
               < DataTable value={[]} sortField="order" sortOrder={1} stripedRows>

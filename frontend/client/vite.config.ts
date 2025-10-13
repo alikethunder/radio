@@ -10,6 +10,32 @@ import { sentryVitePlugin } from "@sentry/vite-plugin"
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  ssr: {
+    noExternal: [
+      "react",
+      "react-dom",
+      "react-router",
+      "react-router-dom",
+      'primereact',
+      'primeicons',
+      'react-transition-group',
+      'dom-helpers',
+      "use-async-memo",
+      "usehooks-ts",
+      "react-hook-form",
+      "react-helmet",
+      "react-window",
+      "react-side-effect",
+      "react-virtualized-auto-sizer",
+      "@sentry/react",
+      "zustand-x",
+      "react-tracked",
+      'proxy-compare',
+      'zustand',
+      "use-sync-external-store",
+      "react-icons",
+    ]
+  },
   build: {
     sourcemap: true,
     chunkSizeWarningLimit: 1500,
@@ -32,7 +58,8 @@ export default defineConfig({
             return 'assets/[name]-[hash].[ext]'
           }
           return 'assets/[name].[ext]';
-        }
+        },
+        format: 'esm'
       }
     }
   },

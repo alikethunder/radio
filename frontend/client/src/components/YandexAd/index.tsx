@@ -23,6 +23,8 @@ export const YandexAd: FC<Props> = memo(({ update_dependency, additional_render_
   const is_rus = useRussia()
 
   if (
+    typeof window === 'undefined'
+    ||
     (
       only_rus ? !is_rus : false
     )

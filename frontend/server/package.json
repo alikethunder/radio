@@ -1,0 +1,38 @@
+{
+  "name": "server",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "@sentry/react": "^8.36.0",
+    "@types/jsmediatags": "^3.9.6",
+    "element-closest": "^3.0.2",
+    "jsmediatags": "^3.9.7",
+    "lodash.debounce": "^4.0.8",
+    "lz-string": "^1.5.0",
+    "primeflex": "^3.3.1",
+    "primeicons": "^7.0.0",
+    "primereact": "^10.8.3",
+    "promise-polyfill": "8.3.0",
+    "quill": "^2.0.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-helmet": "^6.1.0",
+    "react-hook-form": "^7.52.2",
+    "react-icons": "^5.4.0",
+    "react-router-dom": "^6.26.0",
+    "react-virtualized-auto-sizer": "^1.0.24",
+    "react-window": "^1.8.10",
+    "sockette": "^2.0.6",
+    "use-async-memo": "^1.2.5",
+    "usehooks-ts": "^3.0.1",
+    "uuid": "^11.0.2",
+    "zustand-x": "^3.0.4"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
