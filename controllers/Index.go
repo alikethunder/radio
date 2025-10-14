@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"encoding/json"
 	"fmt"
 	"html/template"
+	"net/url"
 	"os"
 	"strings"
 	"web_project/constants"
@@ -13,7 +13,6 @@ import (
 
 	"github.com/gocql/gocql"
 	"github.com/gofiber/fiber/v2"
-	agents "github.com/monperrus/crawler-user-agents"
 )
 
 func Index(ctx *fiber.Ctx) error {
@@ -29,152 +28,6 @@ func Index(ctx *fiber.Ctx) error {
 	}
 
 	languages := translations.Languages()
-
-	var languages_maps []fiber.Map
-
-	for _, lang := range languages {
-		code := constants.Language_codes[lang]
-
-		if code == nil {
-			code = lang
-		}
-
-		languages_maps = append(languages_maps, fiber.Map{
-			"name": lang,
-			"code": code,
-		})
-	}
-
-	if agents.IsCrawler(ctx.Get("User-Agent")) {
-
-		var lang_translations fiber.Map
-
-		lang_translations_json, _ := os.ReadFile(os.Getenv("TEMPL_PATH") + "/settings/languages_translations.json")
-
-		json.Unmarshal(lang_translations_json, &lang_translations)
-
-		for _, lang_map := range languages_maps {
-			lang_map["translation"] = lang_translations[lang_map["name"].(string)]
-		}
-
-		if ctx.Path() == "/" {
-
-			logo := template.JS(ctx.BaseURL() + "/android-chrome-192x192.png")
-
-			return ctx.Render("seo/home", fiber.Map{
-				"Language": language,
-
-				"sitename": translations.Dictionary[language]["sitename"],
-
-				"Languages": languages_maps,
-
-				"Description": translations.Dictionary[language]["home_page_description"],
-
-				"content": template.HTML(translations.Dictionary[language]["home_page_content"]),
-
-				"keywords": translations.Dictionary[language]["home_page_keywords"],
-
-				"URL": ctx.OriginalURL(),
-
-				"Domain": ctx.BaseURL(),
-
-				"Full_url": template.JS("\"" + fmt.Sprintf("%s%s", ctx.BaseURL(), ctx.OriginalURL()) + "\""),
-
-				"links_to_page_on_other_languages": translations.Dictionary[language]["links_to_page_on_other_languages"],
-
-				"logo": logo,
-
-				"quoted_logo": template.JS("\"" + logo + "\""),
-			})
-		}
-
-		if strings.Contains(ctx.Path(), "/station/") {
-
-			fmt.Printf("[Index] language %s \n", language)
-
-			station_id := strings.TrimSuffix(strings.TrimPrefix(ctx.Path(), "/station/"), "/")
-
-			fmt.Printf("[Index] station id %s \n", station_id)
-
-			station, _ := db.SelectRow("stations", fiber.Map{"id": station_id}, "id", "name", "description_"+language, "tags", "avatar", "country", "genres")
-
-			logo := template.JS(ctx.BaseURL() + "/api/v1/files/stations/" + station_id + "/avatar")
-
-			station_description := ""
-			if station["description_"+language] != nil {
-				station_description = station["description_"+language].(string)
-			} else {
-				station_description = ""
-			}
-
-			if station["genres"] != nil {
-				if len(station["genres"].([]string)) > 0 {
-					for i, genre := range station["genres"].([]string) {
-						if genre != "" {
-							genre = strings.TrimSpace(genre)
-							genre_row, _ := db.SelectRow("genres", fiber.Map{"en": genre}, language, "icon")
-
-							icon := ""
-							if genre_row["icon"] != nil {
-								icon = genre_row["icon"].(string) + " "
-							}
-
-							tr := genre
-							if genre_row[language] != nil && genre_row[language] != "" {
-								tr = genre_row[language].(string)
-							}
-
-							station["genres"].([]string)[i] = icon + tr
-						}
-					}
-				}
-			}
-
-			if station["country"] != nil && station["country"] != "" {
-				country := strings.TrimSpace(station["country"].(string))
-				country_row, _ := db.SelectRow("countries", fiber.Map{"en": country}, "flag", language)
-
-				flag := ""
-				lang := ""
-
-				if country_row["flag"] != nil {
-					flag = country_row["flag"].(string) + " "
-				}
-
-				if country_row[language] != nil {
-					lang = country_row[language].(string)
-				}
-
-				station["country"] = flag + lang
-			}
-
-			return ctx.Render("seo/station", fiber.Map{
-				"station": station,
-
-				"Language": language,
-
-				"Languages": languages_maps,
-
-				"description": template.HTML(station_description),
-
-				"Tags": translations.Dictionary[language]["tags"],
-
-				"URL": ctx.OriginalURL(),
-
-				"Domain": ctx.BaseURL(),
-
-				"Full_url": template.JS("\"" + fmt.Sprintf("%s%s", ctx.BaseURL(), ctx.OriginalURL()) + "\""),
-
-				"links_to_page_on_other_languages": translations.Dictionary[language]["links_to_page_on_other_languages"],
-
-				"sitename": translations.Dictionary[language]["sitename"],
-
-				"logo": logo,
-
-				"quoted_logo": template.JS("\"" + logo + "\""),
-			})
-		}
-	}
 
 	authCookie := ctx.Cookies(cookies.AuthCookieName)
 
@@ -218,27 +71,171 @@ func Index(ctx *fiber.Ctx) error {
 
 	logo := template.JS(ctx.BaseURL() + "/android-chrome-192x192.png")
 
-	return ctx.Render("public/index", fiber.Map{
-		"Language": language,
+	sitename := translations.Dictionary[language]["sitename"]
 
-		"sitename": translations.Dictionary[language]["sitename"],
+	var alternates []fiber.Map
+	purl, err := url.Parse(ctx.OriginalURL())
+	if err != nil {
+		return err
+	}
 
+	q := purl.Query()
+
+	for _, lang := range languages {
+		code := constants.Language_codes[lang]
+
+		if code == nil {
+			code = lang
+		}
+		q.Set("language", lang)
+		purl.RawQuery = q.Encode()
+		newURL := purl.String()
+
+		alternates = append(alternates, fiber.Map{
+			"url":  ctx.BaseURL() + newURL,
+			"code": code,
+		})
+	}
+
+	injectables := fiber.Map{
+		"HTML":        "",
+		"Language":    language,
+		"sitename":    sitename,
+		"user_ip":     ctx.IP(),
+		"ldjson":      template.JS(`"@type": "RadioBroadcastService", "name" : "` + sitename + `", `),
+		"head":        "",
+		"logo":        logo,
+		"title":       sitename,
+		"alternates":  alternates,
 		"Description": translations.Dictionary[language]["home_page_description"],
+		"subject":     translations.Dictionary[language]["home_page_description"],
+		"Domain":      ctx.BaseURL(),
+		"URL":         ctx.OriginalURL(),
+		"keywords":    translations.Dictionary[language]["home_page_keywords"],
+		"Full_url":    ctx.BaseURL() + ctx.OriginalURL(),
+	}
 
-		"Languages": languages_maps,
+	if ctx.Path() == "/" || strings.Contains(ctx.Path(), "/station/") {
+		head := `<link rel="stylesheet" crossorigin="" href="/assets/themes/soho_dark.css">`
 
-		"keywords": translations.Dictionary[language]["home_page_keywords"],
+		fmt.Println("Full url : ", ctx.BaseURL()+ctx.OriginalURL())
 
-		"URL": ctx.OriginalURL(),
+		/* fmt.Println("BaseURL : ", ctx.BaseURL())
+		fmt.Println("OriginalURL : ", ctx.OriginalURL())
+		fmt.Println("port : ", os.Getenv("PORT")) */
+		ssr_url := strings.Replace(ctx.BaseURL(), os.Getenv("PORT"), "5454", 1) + ctx.OriginalURL()
+		/* fmt.Println("ssr_url : ", ssr_url) */
+		agent := fiber.Get(ssr_url)
+		code, body, errs := agent.String()
 
-		"Domain": ctx.BaseURL(),
+		if len(errs) > 0 {
+			return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"errs": errs,
+			})
+		}
+		fmt.Println("code : ", code)
+		//fmt.Println("body: ", body)
 
-		"Full_url": template.JS("\"" + fmt.Sprintf("%s%s", ctx.BaseURL(), ctx.OriginalURL()) + "\""),
+		if ctx.Path() == "/" {
+			injectables = fiber.Map{
+				"HTML": template.HTML(body),
 
-		"logo": logo,
+				"quoted_logo": template.JS("\"" + logo + "\""),
 
-		"quoted_logo": template.JS("\"" + logo + "\""),
+				"head": template.HTML(head),
+			}
+		}
 
-		"user_ip": ctx.IP(),
-	})
+		if strings.Contains(ctx.Path(), "/station/") {
+
+			station_id := strings.TrimSuffix(strings.TrimPrefix(ctx.Path(), "/station/"), "/")
+
+			fmt.Printf("[Index] station id %s \n", station_id)
+
+			station, _ := db.SelectRow("stations", fiber.Map{"id": station_id}, "id", "name", "description_"+language, "tags", "avatar", "country", "genres")
+
+			station_description := ""
+			if station["description_"+language] != nil {
+				station_description = station["description_"+language].(string)
+			} else {
+				station_description = ""
+			}
+
+			station_genres := ""
+			if station["genres"] != nil {
+				if len(station["genres"].([]string)) > 0 {
+					for i, genre := range station["genres"].([]string) {
+						if genre != "" {
+							genre = strings.TrimSpace(genre)
+							genre_row, _ := db.SelectRow("genres", fiber.Map{"en": genre}, language, "icon")
+
+							icon := ""
+							if genre_row["icon"] != nil {
+								icon = genre_row["icon"].(string) + " "
+							}
+
+							tr := genre
+							if genre_row[language] != nil && genre_row[language] != "" {
+								tr = genre_row[language].(string)
+							}
+
+							station_genres += icon + tr
+							if i < len(station["genres"].([]string))-1 {
+								station_genres += ","
+							}
+						}
+					}
+				}
+			}
+
+			if station["country"] != nil && station["country"] != "" {
+				country := strings.TrimSpace(station["country"].(string))
+				country_row, _ := db.SelectRow("countries", fiber.Map{"en": country}, "flag", language)
+
+				flag := ""
+				lang := ""
+
+				if country_row["flag"] != nil {
+					flag = country_row["flag"].(string) + " "
+				}
+
+				if country_row[language] != nil {
+					lang = country_row[language].(string)
+				}
+
+				station["country"] = flag + lang
+			}
+
+			station_tags := strings.Join(station["tags"].([]string), ",")
+
+			logo := template.JS(ctx.BaseURL() + "/api/v1/files/stations/" + fmt.Sprint(station["id"]) + "/avatar")
+
+			head += `<meta property="og:image:width" content="128" />
+        <meta property="og:image:height" content="128" />`
+
+			injectables = fiber.Map{
+
+				"HTML": template.HTML(body),
+
+				"station": station,
+
+				"Description": template.HTML(station_description),
+
+				"subject": template.HTML(station_description + " " + fmt.Sprint(station["country"]) + ". " + translations.Dictionary[language]["genre"] + ":" + station_genres + "." + translations.Dictionary[language]["tags"] + ":" + station_tags),
+
+				"keywords": fmt.Sprint(station["name"]) + "," + station_genres + "," + station_tags,
+
+				"title": fmt.Sprint(station["name"]) + " - Radio Best",
+
+				"logo": logo,
+
+				"quoted_logo": template.JS("\"" + logo + "\""),
+
+				"head": template.HTML(head),
+
+				"ldjson": template.JS(`"@type": "Radiostation", "name" : "` + fmt.Sprint(station["name"]) + `", `),
+			}
+		}
+	}
+	return ctx.Render("public/index", injectables)
 }

@@ -321,8 +321,6 @@ func main() {
 
 	app.Get("/", controllers.Index)
 
-	app.Get("/station/:id", controllers.Station)
-
 	static_config := fiber.Static{
 		Compress:      true,
 		CacheDuration: 4 * time.Hour,

@@ -435,702 +435,638 @@ export const Station = () => {
   ])
 
   return (
-    <>
-      {/* <Helmet>
-        <title>Radio Best - {station?.name}</title>
+    <div
+      className=" w-full overflow-y-auto page station_page flex-grow-1 flex flex-column text-800 md:p-4 md:pl-5 p-3 md:pr-0"
+    >
+      {/* background here? */}
 
-        <meta name='pagename' content="Radio Best - {{.station.name}}" />
+      <div className="flex flex-row gap-2 flex-grow-1">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-3 align-self-start max-w-full flex-shrink-0" ref={setForm}>
 
-        <meta property="og:type" content="music.radio_station" />
+          <div className="flex flex-row gap-3">
 
-        <meta name="twitter:card" content="summary" />
+            <div
+              style={{ backgroundImage: `url(${avatar_data_url || station_avatar})` }}
 
-        {
-          language ? <meta property="og:locale" content={language} /> : <></>
-        }
+              className={`element_with_overlay shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-round-xl flex flex-shrink-0 align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode ? 'cursor-pointer' : ''}`}
+            >
+              <img
+                src={station_avatar}
 
-        <link rel="alternate" hrefLang="{{.code}}" href="{{$.Domain}}/station/{{$.station.id}}?language={{.name}}" />
-
-        <meta property="og:locale:alternate" content={languages.join(',').replace(`${language},`, '').replace(language ?? '', '')} />
-
-        <meta property="og:site_name" content="Radio Best" />
-
-        <meta property="og:title" content={`Radio Best - ${station?.name}`} />
-        <meta name="twitter:title" content={`Radio Best - ${station?.name}`} />
-
-        <meta name="description" content={`${station?.[`description_${language}`]}`} />
-        <meta property="og:description" content={`${station?.[`description_${language}`]}`} />
-        <meta property="twitter:description" content={`${station?.[`description_${language}`]}`} />
-
-        <link rel="canonical" href={`${get_api_origin()}${generatePath(app_routes["station$id"], { id: station?.id })}?language=${language}`} />
-
-        <meta property="og:url" content={`${get_api_origin()}${generatePath(app_routes["station$id"], { id: station?.id })}?language=${language}`} />
-
-        <meta property="twitter:url"
-          content={`${get_api_origin()}${generatePath(app_routes["station$id"], { id: station?.id })}?language=${language}`} />
-
-        <meta property="og:image" content={`${get_api_origin()}/api/v1/files/stations/${station?.id}/avatar`} />
-        <meta property="og:image:width" content="128" />
-        <meta property="og:image:height" content="128" />
-        <meta property="twitter:image" content={`${get_api_origin()}/api/v1/files/stations/${station?.id}/avatar`} />
-
-        <meta property="twitter:domain" content={get_api_origin()} />
-
-
-        <meta name='keywords' content="Radio Best,{{.station.name}},{{range .station.genres}}{{.}},{{end}}{{range .station.tags}}{{.}},{{end}}" />
-
-        <meta name='robots' content='index,follow' />
-
-        <meta name='copyright' content='radio.best' />
-
-        <meta name="subject" content="{{.Description}} {{.station.country}}. {{range .station.genres}}{{.}},{{end}} {{.Tags}}: {{range .station.tags}}{{.}},{{end}}" />
-
-      </Helmet> */}
-
-      <script type="application/ld+json">
-        {JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'Radiostation',
-          name: station?.name,
-          description: station?.[`description_${language}`],
-          keywords: station.tags?.join(','),
-          logo: `${get_api_origin()}/api/v1/files/stations/${station.id}/avatar`,
-          url: `${get_api_origin()}${generatePath(app_routes["station$id"], { id: station?.id })}?language=${language}`,
-        })}
-      </script>
-
-      <div
-        className=" w-full overflow-y-auto page station_page flex-grow-1 flex flex-column text-800 md:p-4 md:pl-5 p-3 md:pr-0"
-      >
-        {/* background here? */}
-
-        <div className="flex flex-row gap-2 flex-grow-1">
-          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-3 align-self-start max-w-full flex-shrink-0" ref={setForm}>
-
-            <div className="flex flex-row gap-3">
-
-              <div
-                style={{ backgroundImage: `url(${avatar_data_url || station_avatar})` }}
-
-                className={`element_with_overlay shadow-2 select-none w-6rem h-6rem md:w-8rem md:h-8rem border-round-xl flex flex-shrink-0 align-items-center justify-content-center p-ripple bg-no-repeat bg-contain bg-center ${edit_mode ? 'cursor-pointer' : ''}`}
-              >
-                <img
-                  src={station_avatar}
-
-                  onError={({ currentTarget }) => {
-                    currentTarget.onerror = null
-                    set_profile_photo_exists(false)
-                    set_station_avatar('/radio.png')
-                  }}
-
-                  onLoad={(e) => {
-                    set_image_loading(false)
-                  }}
-
-                  loading="lazy"
-
-                  className="hidden"
-                />
-
-                {
-                  image_loading ?
-                    <i className="pi pi-spin pi-spinner text-400 text-4xl" />
-                    : <></>
-                }
-
-                {
-                  edit_mode ?
-                    <>
-
-                      <label htmlFor="fileElem" className="overlay absolute top-0 bottom-0 right-0 left-0 m-0 flex align-items-center justify-content-center text-center">
-
-                        <div className="overlay_background surface-900 absolute top-0 bottom-0 right-0 left-0"></div>
-
-                        <div className="overlay_text text-white font-semibold z-1">
-                          {translations_skl.choose_image}
-                        </div>
-
-                      </label>
-
-                      <Ripple />
-
-                    </>
-                    : <></>
-                }
-
-                <input
-                  type="file"
-                  id="fileElem"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={async (e) => {
-                    if (e.target.files?.[0]) {
-                      const [blob, data_url] = await resize_image(e.target.files?.[0])
-                      set_avatar_blob(blob)
-                      set_avatar_data_url(data_url)
-                    }
-                  }}
-                />
-
-              </div>
-
-              <div className="flex flex-column gap-2">
-                <Controller
-                  name="name"
-                  control={control}
-                  rules={{
-                    required: {
-                      value: true,
-                      message: translations_skl.error_radiostation_name_empty,
-                    }
-                  }}
-                  render={({ field, fieldState }) => (
-                    edit_mode ?
-                      <>
-                        <label
-                          htmlFor={field.name}
-                          className={classNames(
-                            {
-                              'p-error': errors[field.name]
-                            },
-                            'text-600',
-                            "select-none",
-                            'flex',
-                            'align-items-center'
-                          )}
-                        >
-                          <small>{translations_skl.radiostation}</small>
-
-                          <Controller
-                            name="broadcasting"
-                            control={control}
-                            render={({ field: switch_field, }) => (
-                              <>
-                                <InputSwitch
-                                  inputId={switch_field.name}
-                                  checked={switch_field.value}
-                                  inputRef={switch_field.ref}
-                                  className="origin-center"
-                                  onChange={switch_field.onChange}
-                                  disabled={!external}
-                                  pt={{
-                                    root: {
-                                      style: {
-                                        transform: 'scale(0.6)'
-                                      },
-                                      className: classNames({
-
-                                      })
-                                    }
-                                  }}
-                                />
-
-                                <label htmlFor={switch_field.name} className="cursor-pointer ml-0">
-                                  <Tag
-                                    value={switch_field.value ? 'on' : 'off'}
-                                    severity={switch_field.value ? 'success' : null}
-                                    pt={{
-                                      root: {
-                                        className: classNames({
-                                          'surface-300': !switch_field.value
-                                        },
-                                          'py-05',
-                                          'shadow-2',
-                                        ),
-                                      },
-                                      value: {
-                                        style: {
-                                          lineHeight: 1.25,
-                                        }
-                                      }
-                                    }}
-                                  />
-                                </label>
-                              </>
-                            )}
-                          />
-                        </label>
-
-                        <InputText
-                          id={field.name}
-                          value={field.value}
-                          className={classNames(
-                            {
-                              'p-invalid': fieldState.error,
-                            },
-                            'max-w-full',
-                            'align-self-start',
-                            'shadow-2',
-                            'w-20rem',
-                            'action_text_font',
-                            'text-xl',
-                          )}
-                          onChange={(e) => {
-                            field.onChange(e.target.value)
-                          }}
-                          onBlur={field.onBlur}
-                          disabled={!edit_mode}
-                          pt={{
-                            root: {
-                              onInput: (e) => {
-                                //@ts-ignore
-                                e.target.size = Math.min(Math.max(e.target.value.length - 7, 20), 70)
-                              }
-                            }
-                          }}
-                        />
-
-                        <small className="p-error">{errors[field.name]?.message ?? ' '}</small>
-                      </>
-                      :
-                      <span className="font-bold text-base sm:text-xl select-none">
-                        {
-                          station?.name
-                        }
-                      </span>
-                  )}
-                />
-
-                <StationCountryTag en={station?.country} />
-
-              </div>
-
-            </div>
-
-            <div className="flex flex-row gap-3 align-items-center">
-              <Button
-                className="shadow_on_hover p-0 flex-shrink-0 w-4rem md:w-5rem h-4rem md:h-5rem"
-
-                rounded
-                outlined
-                raised
-                aria-label={`${playing && current_station?.id == station.id ? translations.pause : translations.play}`}
-                severity="info"
-                icon={`pi text-4xl ${playing && current_station?.id == station.id ? 'pi-pause' : 'pi-play'}`}
-
-                pt={{
-                  root: {
-                    style: {
-                      backgroundColor: 'var(--maskbg)',
-                      borderColor: '#fff',
-                      color: theme == 'light' ? 'var(--maskbg)' : '#fff',
-                    }
-                  },
-                  icon: {
-                    style: {
-                      paddingLeft: playing && current_station?.id == station.id ? '0' : '4px',
-                      color: '#fff',
-                      fontWeight: 600,
-                    }
-                  }
+                onError={({ currentTarget }) => {
+                  currentTarget.onerror = null
+                  set_profile_photo_exists(false)
+                  set_station_avatar('/radio.png')
                 }}
 
-                onClick={(e) => {
-                  e.preventDefault()
-                  click_play()
+                onLoad={(e) => {
+                  set_image_loading(false)
+                }}
+
+                loading="lazy"
+
+                className="hidden"
+              />
+
+              {
+                image_loading ?
+                  <i className="pi pi-spin pi-spinner text-400 text-4xl" />
+                  : <></>
+              }
+
+              {
+                edit_mode ?
+                  <>
+
+                    <label htmlFor="fileElem" className="overlay absolute top-0 bottom-0 right-0 left-0 m-0 flex align-items-center justify-content-center text-center">
+
+                      <div className="overlay_background surface-900 absolute top-0 bottom-0 right-0 left-0"></div>
+
+                      <div className="overlay_text text-white font-semibold z-1">
+                        {translations_skl.choose_image}
+                      </div>
+
+                    </label>
+
+                    <Ripple />
+
+                  </>
+                  : <></>
+              }
+
+              <input
+                type="file"
+                id="fileElem"
+                accept="image/*"
+                className="hidden"
+                onChange={async (e) => {
+                  if (e.target.files?.[0]) {
+                    const [blob, data_url] = await resize_image(e.target.files?.[0])
+                    set_avatar_blob(blob)
+                    set_avatar_data_url(data_url)
+                  }
                 }}
               />
 
-              <div className="flex flex-column justify-content-between gap-2 flex-shrink-0">
-                <AddStationToFavorites station={station} />
-
-                <StationShareButton station={station} />
-              </div>
-
-              <YandexAd id="R-A-14083703-5" className="flex-grow-1 align-self-stretch h-5rem max-h-5rem" interval={30000} />
             </div>
 
-            <div className="flex flex-row gap-2">
-              <span className={`font-semibold select-none ${tag_text_class}`}>
-                {translations.language}:
-              </span>
-              {
-                edit_mode ?
-                  <Controller
-                    name="languages"
-                    control={control}
-                    render={({ field, }) => {
-                      return (
-                        <>
-                          {/* Languages */}
-                          <MultiSelect
-                            value={field.value}
-                            onChange={field.onChange}
-                            options={station_languages}
-                            optionLabel={language ?? 'en'}
-                            display="chip"
-                            filter
-                            placeholder={translations.language}
-                            className="w-20rem max-w-full relative"
-                            pt={multiselect_pt}
-                          />
-                        </>
-                      )
-                    }} />
-                  :
-                  <div className="flex flex-row flex-wrap gap-1">
-                    {
-                      station?.languages?.map((language, i, arr) =>
-                        <>
-                          <StationLanguageTag language_en={language} />
-                          {
-                            i < arr.length - 1 &&
-                            <span className="text-base">
-                              ,
-                            </span>
-                          }
-                        </>
-                      )
-                    }
-                  </div>
-              }
-            </div>
-
-            <div className="flex flex-row gap-2">
-              <span className={`font-semibold select-none ${tag_text_class}`}>
-                {translations.genre}:
-              </span>
-              {
-                edit_mode ?
-                  <Controller
-                    name="genres"
-                    control={control}
-                    render={({ field, }) => {
-                      return (
-                        <>
-                          {/* Genres */}
-                          <MultiSelect
-                            value={field.value}
-                            onChange={field.onChange}
-                            options={station_genres}
-                            optionLabel={language ?? 'en'}
-                            itemTemplate={GenreItemTemplate}
-                            display="chip"
-                            filter
-                            placeholder={translations.genre}
-                            className="w-20rem max-w-full relative"
-                            pt={multiselect_pt}
-                          />
-                        </>
-                      )
-                    }} />
-                  :
-                  <div className="flex flex-row flex-wrap gap-1">
-                    {
-                      station?.genres?.map(genre => <StationGenreTag genre_en={genre} />)
-                    }
-                  </div>
-              }
-            </div>
-
-
-            {
-              edit_mode ?
-                <Controller
-                  name="tags"
-                  control={control}
-                  render={({ field, }) => (
-                    <>
-                      <div className="flex flex-column gap-2 relative">
-                        <label
-                          htmlFor={field.name}
-                          className={classNames(
-                            {
-                              'p-error': errors[field.name]
-                            },
-                            'text-600',
-                            "select-none",
-                            'flex',
-                            'align-items-center'
-                          )}
-                        >
-                          <small>Tags</small>
-                        </label>
-
-                        <Chips
-                          value={field.value}
-                          onChange={e => {
-                            //console.log('chips change : ', e)
-                            change_station_tags(e, field)
-                          }}
-
-                          onKeyDown={
-                            (e) => {
-                              setTimeout(() => {
-                                set_tags_suggestion_text((e.target as HTMLInputElement).value)
-                              })
-                            }
-                          }
-
-                          onAdd={
-                            e => {
-                              set_tags_suggestion_text('')
-                            }
-                          }
-
-                          onFocus={() => {
-                            set_tags_suggestion_focused(true)
-                          }}
-
-                          allowDuplicate={false}
-                          removable
-
-                          removeIcon={<StationTagRemoveTokenIcon onClick={e => click_station_tag_remove(e, field)} />}
-
-                          separator=","
-
-                          pt={{
-                            token: {
-                              className: classNames({
-
-                              },
-                                'p-0',
-                                'ml-1',
-                                'bg-red-600',
-                                'border-round',
-                              ),
-                            },
-                          }}
-
-                          itemTemplate={tag => <StationTag tag={tag} disable_link />}
-
-                          ref={tags_input_ref}
-                        />
-
-                        {
-                          tags_suggestion_focused
-                            && tags_suggestion_text ?
-                            <div className="flex flex-row flex-wrap gap-2 absolute top-100 bottom-auto right-0 left-0 h-12rem overflow-y-scroll border-round-2xl surface-border bg-white p-2 z-1 shadow-3 align-items-start justify-content-start" ref={tags_suggestions_ref}>
-                              {filtered_tags_suggestions}
-                            </div>
-                            : <></>
-                        }
-
-                      </div>
-                    </>
-                  )} />
-                :
-                <div className="flex flex-row gap-2">
-                  <span className={`font-semibold select-none ${tag_text_class}`}>
-                    {translations.tags}:
-                  </span>
-                  <div className="flex flex-row flex-wrap gap-1">
-                    {
-                      station?.tags?.map(tag => <StationTag tag={tag} />)
-                    }
-                  </div>
-                </div>
-            }
-
-            {/* Read only editor */}
-            <Editor
-              value={station[`description_${language}`]}
-              readOnly
-              headerTemplate={<></>}
-              pt={{
-                toolbar: {
-                  style: {
-                    display: 'none'
+            <div className="flex flex-column gap-2">
+              <Controller
+                name="name"
+                control={control}
+                rules={{
+                  required: {
+                    value: true,
+                    message: translations_skl.error_radiostation_name_empty,
                   }
-                },
-                content: {
-                  className: classNames({},
-                    'mt-2',
-                    'shadow-2',
-                    'surface-border',
-                    tag_text_class,
-                  ),
-                  style: {
-                    height: 'fit-content',
-                    border: '1px solid #dfe7ef',
-                    overflowY: 'auto',
-                    borderRadius: '6px',
-                    padding: '1px',
-                    ...edit_mode || !station[`description_${language}`] ? {
-                      display: 'none',
-                    } : {},
-                  },
-                }
-              }}
-            />
-
-            {/* Edit only editor */}
-            {
-              languages.map(language =>
-                <>
-                  <Editor
-                    value={station[`description_${language}`]}
-                    className="overflow-y-auto "
-                    style={{
-                      maxHeight: '240px',
-                      height: 'fit-content',
-                    }}
-
-                    formats={['bold', 'font', 'italic', 'link', 'size', 'underline', 'list', '']}
-
-                    headerTemplate={
-                      <>
-                        <span className="bg-primary select-none p-2">
-                          {language}
-                        </span>
-
-                        <span className={`ql-formats`} >
-
-                          <select className="ql-size">
-
-                            <option selected></option>
-                            <option value="large"></option>
-                            <option value="huge"></option>
-                          </select>
-
-                        </span>
-
-                        <span className={`ql-formats`} >
-
-                          <button className="ql-bold" aria-label="Bold"></button>
-
-                          <button className="ql-italic" aria-label="Italic"></button>
-
-                          <button className="ql-underline" aria-label="Underline"></button>
-
-                        </span>
-
-                        <span className={`ql-formats`} >
-
-                          <button className="ql-list" value={'ordered'} aria-label="Ordered List"></button>
-
-                          <button className="ql-list" value={'bullet'} aria-label="Unordered List"></button>
-
-                        </span>
-
-                        <span className={`ql-formats`} >
-
-                          <button className="ql-link" aria-label="Link"></button>
-
-                        </span>
-                      </>
-                    }
-
-                    pt={{
-                      root: {
-                        className: classNames({},
-                          'shadow-2',
-                          'mt-2',
-                        ),
-                        style: {
-                          ...edit_mode ? {} : {
-                            display: 'none'
+                }}
+                render={({ field, fieldState }) => (
+                  edit_mode ?
+                    <>
+                      <label
+                        htmlFor={field.name}
+                        className={classNames(
+                          {
+                            'p-error': errors[field.name]
                           },
-                        }
-                      }
-                    }}
+                          'text-600',
+                          "select-none",
+                          'flex',
+                          'align-items-center'
+                        )}
+                      >
+                        <small>{translations_skl.radiostation}</small>
 
-                    onTextChange={e => {
-                      //console.log('description ', language, ' : ', e.htmlValue)
-                      //@ts-ignore
-                      setValue(`description_${language}`, e.htmlValue ?? '')
-                    }}
-                  />
-                </>
-              )
-            }
+                        <Controller
+                          name="broadcasting"
+                          control={control}
+                          render={({ field: switch_field, }) => (
+                            <>
+                              <InputSwitch
+                                inputId={switch_field.name}
+                                checked={switch_field.value}
+                                inputRef={switch_field.ref}
+                                className="origin-center"
+                                onChange={switch_field.onChange}
+                                disabled={!external}
+                                pt={{
+                                  root: {
+                                    style: {
+                                      transform: 'scale(0.6)'
+                                    },
+                                    className: classNames({
 
-            {
-              edit_mode ?
-                <div className="flex flex-column gap-1">
-                  <Controller
-                    name="external"
-                    control={control}
-                    render={({ field, fieldState }) => (
-                      <>
-                        <label
-                          htmlFor={field.name}
-                          className='text-600 select-none flex align-items-center'
-                        >
-                          <small>External</small>
+                                    })
+                                  }
+                                }}
+                              />
 
-                          <Controller
-                            name="external_enable"
-                            control={control}
-                            render={({ field: switch_field, }) => (
-                              <>
-                                <InputSwitch
-                                  inputId={switch_field.name}
-                                  checked={switch_field.value}
-                                  inputRef={switch_field.ref}
-                                  className="origin-center"
-                                  onChange={switch_field.onChange}
-                                  disabled={!external}
+                              <label htmlFor={switch_field.name} className="cursor-pointer ml-0">
+                                <Tag
+                                  value={switch_field.value ? 'on' : 'off'}
+                                  severity={switch_field.value ? 'success' : null}
                                   pt={{
                                     root: {
-                                      style: {
-                                        transform: 'scale(0.6)'
-                                      },
                                       className: classNames({
-
-                                      })
+                                        'surface-300': !switch_field.value
+                                      },
+                                        'py-05',
+                                        'shadow-2',
+                                      ),
+                                    },
+                                    value: {
+                                      style: {
+                                        lineHeight: 1.25,
+                                      }
                                     }
                                   }}
                                 />
-
-                                <label htmlFor={switch_field.name} className="cursor-pointer ml-0">
-                                  <Tag
-                                    value={switch_field.value ? 'on' : 'off'}
-                                    severity={switch_field.value ? 'success' : null}
-                                    pt={{
-                                      root: {
-                                        className: classNames({
-                                          'surface-300': !switch_field.value
-                                        },
-                                          'py-05',
-                                        ),
-                                      },
-                                      value: {
-                                        style: {
-                                          lineHeight: 1.25,
-                                        }
-                                      }
-                                    }}
-                                  />
-                                </label>
-                              </>
-                            )}
-                          />
-
-                        </label>
-
-                        <InputText
-                          id={field.name}
-                          value={field.value}
-                          className={classNames(
-                            {
-                            },
+                              </label>
+                            </>
                           )}
+                        />
+                      </label>
+
+                      <InputText
+                        id={field.name}
+                        value={field.value}
+                        className={classNames(
+                          {
+                            'p-invalid': fieldState.error,
+                          },
+                          'max-w-full',
+                          'align-self-start',
+                          'shadow-2',
+                          'w-20rem',
+                          'action_text_font',
+                          'text-xl',
+                        )}
+                        onChange={(e) => {
+                          field.onChange(e.target.value)
+                        }}
+                        onBlur={field.onBlur}
+                        disabled={!edit_mode}
+                        pt={{
+                          root: {
+                            onInput: (e) => {
+                              //@ts-ignore
+                              e.target.size = Math.min(Math.max(e.target.value.length - 7, 20), 70)
+                            }
+                          }
+                        }}
+                      />
+
+                      <small className="p-error">{errors[field.name]?.message ?? ' '}</small>
+                    </>
+                    :
+                    <span className="font-bold text-base sm:text-xl select-none">
+                      {
+                        station?.name
+                      }
+                    </span>
+                )}
+              />
+
+              <StationCountryTag en={station?.country} />
+
+            </div>
+
+          </div>
+
+          <div className="flex flex-row gap-3 align-items-center">
+            <Button
+              className="shadow_on_hover p-0 flex-shrink-0 w-4rem md:w-5rem h-4rem md:h-5rem"
+
+              rounded
+              outlined
+              raised
+              aria-label={`${playing && current_station?.id == station.id ? translations.pause : translations.play}`}
+              severity="info"
+              icon={`pi text-4xl ${playing && current_station?.id == station.id ? 'pi-pause' : 'pi-play'}`}
+
+              pt={{
+                root: {
+                  style: {
+                    backgroundColor: 'var(--maskbg)',
+                    borderColor: '#fff',
+                    color: theme == 'light' ? 'var(--maskbg)' : '#fff',
+                  }
+                },
+                icon: {
+                  style: {
+                    paddingLeft: playing && current_station?.id == station.id ? '0' : '4px',
+                    color: '#fff',
+                    fontWeight: 600,
+                  }
+                }
+              }}
+
+              onClick={(e) => {
+                e.preventDefault()
+                click_play()
+              }}
+            />
+
+            <div className="flex flex-column justify-content-between gap-2 flex-shrink-0">
+              <AddStationToFavorites station={station} />
+
+              <StationShareButton station={station} />
+            </div>
+
+            <YandexAd id="R-A-14083703-5" className="flex-grow-1 align-self-stretch h-5rem max-h-5rem" interval={30000} />
+          </div>
+
+          <div className="flex flex-row gap-2">
+            <span className={`font-semibold select-none ${tag_text_class}`}>
+              {translations.language}:
+            </span>
+            {
+              edit_mode ?
+                <Controller
+                  name="languages"
+                  control={control}
+                  render={({ field, }) => {
+                    return (
+                      <>
+                        {/* Languages */}
+                        <MultiSelect
+                          value={field.value}
                           onChange={field.onChange}
-                          onBlur={field.onBlur}
+                          options={station_languages}
+                          optionLabel={language ?? 'en'}
+                          display="chip"
+                          filter
+                          placeholder={translations.language}
+                          className="w-20rem max-w-full relative"
+                          pt={multiselect_pt}
                         />
                       </>
-                    )}
-                  />
+                    )
+                  }} />
+                :
+                <div className="flex flex-row flex-wrap gap-1">
+                  {
+                    station?.languages?.map((language, i, arr) =>
+                      <>
+                        <StationLanguageTag language_en={language} />
+                        {
+                          i < arr.length - 1 &&
+                          <span className="text-base">
+                            ,
+                          </span>
+                        }
+                      </>
+                    )
+                  }
                 </div>
-                : <></>
             }
+          </div>
 
-          </form>
+          <div className="flex flex-row gap-2">
+            <span className={`font-semibold select-none ${tag_text_class}`}>
+              {translations.genre}:
+            </span>
+            {
+              edit_mode ?
+                <Controller
+                  name="genres"
+                  control={control}
+                  render={({ field, }) => {
+                    return (
+                      <>
+                        {/* Genres */}
+                        <MultiSelect
+                          value={field.value}
+                          onChange={field.onChange}
+                          options={station_genres}
+                          optionLabel={language ?? 'en'}
+                          itemTemplate={GenreItemTemplate}
+                          display="chip"
+                          filter
+                          placeholder={translations.genre}
+                          className="w-20rem max-w-full relative"
+                          pt={multiselect_pt}
+                        />
+                      </>
+                    )
+                  }} />
+                :
+                <div className="flex flex-row flex-wrap gap-1">
+                  {
+                    station?.genres?.map(genre => <StationGenreTag genre_en={genre} />)
+                  }
+                </div>
+            }
+          </div>
+
 
           {
-            mobile ? <></> :
-              <YandexAd id="R-A-14083703-4" className="flex-grow-1 align-self-stretch" interval={60000} />
+            edit_mode ?
+              <Controller
+                name="tags"
+                control={control}
+                render={({ field, }) => (
+                  <>
+                    <div className="flex flex-column gap-2 relative">
+                      <label
+                        htmlFor={field.name}
+                        className={classNames(
+                          {
+                            'p-error': errors[field.name]
+                          },
+                          'text-600',
+                          "select-none",
+                          'flex',
+                          'align-items-center'
+                        )}
+                      >
+                        <small>Tags</small>
+                      </label>
+
+                      <Chips
+                        value={field.value}
+                        onChange={e => {
+                          //console.log('chips change : ', e)
+                          change_station_tags(e, field)
+                        }}
+
+                        onKeyDown={
+                          (e) => {
+                            setTimeout(() => {
+                              set_tags_suggestion_text((e.target as HTMLInputElement).value)
+                            })
+                          }
+                        }
+
+                        onAdd={
+                          e => {
+                            set_tags_suggestion_text('')
+                          }
+                        }
+
+                        onFocus={() => {
+                          set_tags_suggestion_focused(true)
+                        }}
+
+                        allowDuplicate={false}
+                        removable
+
+                        removeIcon={<StationTagRemoveTokenIcon onClick={e => click_station_tag_remove(e, field)} />}
+
+                        separator=","
+
+                        pt={{
+                          token: {
+                            className: classNames({
+
+                            },
+                              'p-0',
+                              'ml-1',
+                              'bg-red-600',
+                              'border-round',
+                            ),
+                          },
+                        }}
+
+                        itemTemplate={tag => <StationTag tag={tag} disable_link />}
+
+                        ref={tags_input_ref}
+                      />
+
+                      {
+                        tags_suggestion_focused
+                          && tags_suggestion_text ?
+                          <div className="flex flex-row flex-wrap gap-2 absolute top-100 bottom-auto right-0 left-0 h-12rem overflow-y-scroll border-round-2xl surface-border bg-white p-2 z-1 shadow-3 align-items-start justify-content-start" ref={tags_suggestions_ref}>
+                            {filtered_tags_suggestions}
+                          </div>
+                          : <></>
+                      }
+
+                    </div>
+                  </>
+                )} />
+              :
+              <div className="flex flex-row gap-2">
+                <span className={`font-semibold select-none ${tag_text_class}`}>
+                  {translations.tags}:
+                </span>
+                <div className="flex flex-row flex-wrap gap-1">
+                  {
+                    station?.tags?.map(tag => <StationTag tag={tag} />)
+                  }
+                </div>
+              </div>
           }
-        </div>
+
+          {/* Read only editor */}
+          <Editor
+            value={station[`description_${language}`]}
+            readOnly
+            headerTemplate={<></>}
+            pt={{
+              toolbar: {
+                style: {
+                  display: 'none'
+                }
+              },
+              content: {
+                className: classNames({},
+                  'mt-2',
+                  'shadow-2',
+                  'surface-border',
+                  tag_text_class,
+                ),
+                style: {
+                  height: 'fit-content',
+                  border: '1px solid #dfe7ef',
+                  overflowY: 'auto',
+                  borderRadius: '6px',
+                  padding: '1px',
+                  ...edit_mode || !station[`description_${language}`] ? {
+                    display: 'none',
+                  } : {},
+                },
+              }
+            }}
+          />
+
+          {/* Edit only editor */}
+          {
+            languages.map(language =>
+              <>
+                <Editor
+                  value={station[`description_${language}`]}
+                  className="overflow-y-auto "
+                  style={{
+                    maxHeight: '240px',
+                    height: 'fit-content',
+                  }}
+
+                  formats={['bold', 'font', 'italic', 'link', 'size', 'underline', 'list', '']}
+
+                  headerTemplate={
+                    <>
+                      <span className="bg-primary select-none p-2">
+                        {language}
+                      </span>
+
+                      <span className={`ql-formats`} >
+
+                        <select className="ql-size">
+
+                          <option selected></option>
+                          <option value="large"></option>
+                          <option value="huge"></option>
+                        </select>
+
+                      </span>
+
+                      <span className={`ql-formats`} >
+
+                        <button className="ql-bold" aria-label="Bold"></button>
+
+                        <button className="ql-italic" aria-label="Italic"></button>
+
+                        <button className="ql-underline" aria-label="Underline"></button>
+
+                      </span>
+
+                      <span className={`ql-formats`} >
+
+                        <button className="ql-list" value={'ordered'} aria-label="Ordered List"></button>
+
+                        <button className="ql-list" value={'bullet'} aria-label="Unordered List"></button>
+
+                      </span>
+
+                      <span className={`ql-formats`} >
+
+                        <button className="ql-link" aria-label="Link"></button>
+
+                      </span>
+                    </>
+                  }
+
+                  pt={{
+                    root: {
+                      className: classNames({},
+                        'shadow-2',
+                        'mt-2',
+                      ),
+                      style: {
+                        ...edit_mode ? {} : {
+                          display: 'none'
+                        },
+                      }
+                    }
+                  }}
+
+                  onTextChange={e => {
+                    //console.log('description ', language, ' : ', e.htmlValue)
+                    //@ts-ignore
+                    setValue(`description_${language}`, e.htmlValue ?? '')
+                  }}
+                />
+              </>
+            )
+          }
+
+          {
+            edit_mode ?
+              <div className="flex flex-column gap-1">
+                <Controller
+                  name="external"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <>
+                      <label
+                        htmlFor={field.name}
+                        className='text-600 select-none flex align-items-center'
+                      >
+                        <small>External</small>
+
+                        <Controller
+                          name="external_enable"
+                          control={control}
+                          render={({ field: switch_field, }) => (
+                            <>
+                              <InputSwitch
+                                inputId={switch_field.name}
+                                checked={switch_field.value}
+                                inputRef={switch_field.ref}
+                                className="origin-center"
+                                onChange={switch_field.onChange}
+                                disabled={!external}
+                                pt={{
+                                  root: {
+                                    style: {
+                                      transform: 'scale(0.6)'
+                                    },
+                                    className: classNames({
+
+                                    })
+                                  }
+                                }}
+                              />
+
+                              <label htmlFor={switch_field.name} className="cursor-pointer ml-0">
+                                <Tag
+                                  value={switch_field.value ? 'on' : 'off'}
+                                  severity={switch_field.value ? 'success' : null}
+                                  pt={{
+                                    root: {
+                                      className: classNames({
+                                        'surface-300': !switch_field.value
+                                      },
+                                        'py-05',
+                                      ),
+                                    },
+                                    value: {
+                                      style: {
+                                        lineHeight: 1.25,
+                                      }
+                                    }
+                                  }}
+                                />
+                              </label>
+                            </>
+                          )}
+                        />
+
+                      </label>
+
+                      <InputText
+                        id={field.name}
+                        value={field.value}
+                        className={classNames(
+                          {
+                          },
+                        )}
+                        onChange={field.onChange}
+                        onBlur={field.onBlur}
+                      />
+                    </>
+                  )}
+                />
+              </div>
+              : <></>
+          }
+
+        </form>
 
         {
-          edit_mode && false ?
-            <>
+          mobile ? <></> :
+            <YandexAd id="R-A-14083703-4" className="flex-grow-1 align-self-stretch" interval={60000} />
+        }
+      </div>
 
-              {/* Upload tracks */}
+      {
+        edit_mode && false ?
+          <>
 
-              {/* <Button className="track_uploader" label="Upload tracks" onClick={e => {
+            {/* Upload tracks */}
+
+            {/* <Button className="track_uploader" label="Upload tracks" onClick={e => {
                 if (edit_mode) {
                   tracks_input_ref.current?.click()
                 }
@@ -1146,30 +1082,29 @@ export const Station = () => {
                 />
               </Button> */}
 
-              {/* Playlist */}
-              < DataTable value={[]} sortField="order" sortOrder={1} stripedRows>
+            {/* Playlist */}
+            < DataTable value={[]} sortField="order" sortOrder={1} stripedRows>
 
-                <Column field="order" header="Order" sortable ></Column>
+              <Column field="order" header="Order" sortable ></Column>
 
-                <Column field="image" header="Image" ></Column>
+              <Column field="image" header="Image" ></Column>
 
-                <Column field="track" header="Track" sortable ></Column>
+              <Column field="track" header="Track" sortable ></Column>
 
-                <Column field="artist" header="artist" sortable ></Column>
+              <Column field="artist" header="artist" sortable ></Column>
 
-                <Column field="track_time" header="Track time" sortable></Column>
+              <Column field="track_time" header="Track time" sortable></Column>
 
-                <Column field="time_to_play" header="Time to play (local PC time)"></Column>
+              <Column field="time_to_play" header="Time to play (local PC time)"></Column>
 
-                <Column field="downloads" header="Downloads" sortable></Column>
+              <Column field="downloads" header="Downloads" sortable></Column>
 
-                <Column field="likes" header="Likes" sortable></Column>
-              </DataTable>
-            </>
-            : <></>
-        }
+              <Column field="likes" header="Likes" sortable></Column>
+            </DataTable>
+          </>
+          : <></>
+      }
 
-      </div >
-    </>
+    </div >
   )
 }
