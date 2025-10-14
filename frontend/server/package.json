@@ -3,6 +3,10 @@
   "module": "index.ts",
   "type": "module",
   "private": true,
+  "scripts": {
+    "bun:build": "bun run build",
+    "bun:start": "bun run index.ts"
+  },
   "dependencies": {
     "@sentry/react": "^8.36.0",
     "@types/jsmediatags": "^3.9.6",

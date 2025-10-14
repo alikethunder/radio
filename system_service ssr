@@ -1,0 +1,24 @@
+/*
+save as lib/systemd/system/radiobestssr.service
+systemctl daemon-reload
+systemctl restart radiobestssr
+*/
+this will overwrite settings in .env
+
+[Unit]
+Description=radio.best.ssr
+
+[Service]
+Environment=TEMPL_PATH=/home/radio
+Environment=PORT=5454
+Environment=ENV=prod
+Restart=always
+ExecStart=/home/radio/build/main ???????????
+WorkingDirectory=/home/radio
+
+StandardOutput=null
+StandardError=syslog
+SyslogIdentifier=radiobestssr
+
+[Install]
+WantedBy=multi-user.target

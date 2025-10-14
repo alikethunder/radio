@@ -150,7 +150,26 @@ func Station(ctx *fiber.Ctx) error {
 		station["country"] = flag + lang
 	}
 
-	return ctx.Render("seo/station", fiber.Map{
+	fmt.Println("BaseURL : ", ctx.BaseURL())
+	fmt.Println("OriginalURL : ", ctx.OriginalURL())
+	fmt.Println("port : ", os.Getenv("PORT"))
+	ssr_url := strings.Replace(ctx.BaseURL(), os.Getenv("PORT"), "5454", 1) + ctx.OriginalURL()
+	fmt.Println("ssr_url : ", ssr_url)
+	agent := fiber.Get(ssr_url)
+	code, body, errs := agent.String()
+
+	if len(errs) > 0 {
+		return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"errs": errs,
+		})
+	}
+	fmt.Println("code : ", code)
+	fmt.Println("body: ", body)
+
+	return ctx.Render("public/index", fiber.Map{
+
+		"HTML": template.HTML(body),
+
 		"station": station,
 
 		"Language": language,

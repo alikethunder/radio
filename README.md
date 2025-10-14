@@ -38,18 +38,18 @@ Prerequisites
      - mac: start from docker gui
   
   - start dev server: air -c .air.toml & npm --prefix ./frontend/client run build:watch
+
   (This will run go build with hot reload and building to ./build/main and vite build watching frontend/client building to ./served/public )
 
 2. To build & deploy projectd from inside radio folder
 
-  npm --prefix ./frontend/client run build -- --emptyOutDir
+  npm --prefix ./frontend/client run build
   go build -o ./build/main .
 
   // to start built project 
+  npm --prefix ./frontend/server run bun:start
   ./build/main
   
-  // todo: add bun built script
-
   //connect with ssh 
   ssh -p 56777 root@45.66.248.26
 
