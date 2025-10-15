@@ -36,6 +36,8 @@ import {
   get_station,
 } from '@/API/station/get_station'
 import { useFavoriteStations } from "./hooks"
+import { get_api_origin } from "./functions"
+import { Language, StationCountry, StationGenre, StationLanguage } from "./types"
 
 type Loader_params = { params: { [param: string]: string; }, request: Request }
 
@@ -57,15 +59,75 @@ const auth_loader = () => {
 
 let signedin = false
 
+const get_alphabet_sort = (language: Language | null) => ((a: StationLanguage | StationCountry | StationGenre, b: StationLanguage | StationCountry | StationGenre) => {
+  language ??= 'en'
+  return (a[language] ?? '') > (b[language] ?? '') ? 1 : -1
+})
+
+
+
 export const routes = [
   {
     path: app_routes.root,
     element: <Profiler id="App" onRender={(id, phase) => {
       console.log('App render, id , phase : ', id, phase)
     }}><App /></Profiler>,
-    loader() {
+    loader: async () => {
+      // ?????????????????????????
+    //language preset
+      const resp = await fetch(`${get_api_origin()}/api/v1/translation`)
+
+      if (resp.status == 200) {
+        const languages = await resp.json()
+
+        actions.translations.languages(languages)
+
+        const curr_selected_lang = store.translations.language()
+
+        if (!curr_selected_lang || !languages.includes(curr_selected_lang)) {
+          //lang was not set or it is not supported
+
+          //get navigator language
+          const nav_lang = navigator.language.substring(0, 2)
+
+          if (languages.includes(nav_lang)) {
+            actions.translations.language(nav_lang as Language)
+          } else {
+            //navigator language is not supported
+            //find supported in navigator languages
+
+            const supported_navigator_languages = navigator.languages.find(l => languages.includes(l.substring(0, 2)))
+
+            actions.translations.language(supported_navigator_languages ?? languages[0])
+
+          }
+        }
+      }
+      // ?????????????????????????
+
+
       //console.log('root loader')
+      const language = store.translations.language()
+
+      const alphabet_sort = get_alphabet_sort(language)
+
       actions.app.current_page({})
+      const tags_resp = await fetch(`${get_api_origin()}/api/v1/tags/`)
+      const tags = await tags_resp.json()
+      actions.session.station_tags(tags ?? [])
+
+      const genres_resp = await fetch(`${get_api_origin()}/api/v1/settings/genres/${language ?? 'en'}`)
+      const genres = await genres_resp.json() as StationGenre[]
+      actions.session.station_genres((genres ?? []).sort(alphabet_sort))
+
+      const countries_resp = await fetch(`${get_api_origin()}/api/v1/settings/countries/${language ?? 'en'}`)
+      const countries = await countries_resp.json() as StationCountry[]
+      actions.session.station_countries((countries ?? []).sort(alphabet_sort))
+
+      const languages_resp = await fetch(`${get_api_origin()}/api/v1/settings/languages/${language ?? 'en'}`)
+      const languages = await languages_resp.json() as StationLanguage[]
+      actions.session.station_languages((languages ?? []).sort(alphabet_sort))
+
       return null
     },
     shouldRevalidate: () => {

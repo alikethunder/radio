@@ -97,13 +97,20 @@ func Index(ctx *fiber.Ctx) error {
 		})
 	}
 
+	head := ``
+
+	/* theme, err := os.ReadFile("served/public/assets/theme/soho_dark.css")
+	if err != nil {
+		panic(err)
+	} */
+
 	injectables := fiber.Map{
+		"head":        template.HTML(head),
 		"HTML":        "",
 		"Language":    language,
 		"sitename":    sitename,
 		"user_ip":     ctx.IP(),
 		"ldjson":      template.JS(`"@type": "RadioBroadcastService", "name" : "` + sitename + `", `),
-		"head":        "",
 		"logo":        logo,
 		"title":       sitename,
 		"alternates":  alternates,
@@ -113,10 +120,11 @@ func Index(ctx *fiber.Ctx) error {
 		"URL":         ctx.OriginalURL(),
 		"keywords":    translations.Dictionary[language]["home_page_keywords"],
 		"Full_url":    ctx.BaseURL() + ctx.OriginalURL(),
+		/* "theme":       string(theme), */
 	}
 
 	if ctx.Path() == "/" || strings.Contains(ctx.Path(), "/station/") {
-		head := `<link rel="stylesheet" crossorigin="" href="/assets/themes/soho_dark.css">`
+		head := `<link rel="stylesheet" id="theme" crossorigin="" href="/assets/themes/soho_dark.css">`
 
 		fmt.Println("Full url : ", ctx.BaseURL()+ctx.OriginalURL())
 

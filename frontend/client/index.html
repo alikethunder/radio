@@ -2,6 +2,7 @@
 
 <head>
   <style id="theme_css"></style>
+  {{.head}}
   <script>
     if (typeof window !== 'undefined') {
       const theme = localStorage.getItem('theme') || window?.matchMedia?.('(prefers-color-scheme:dark)')?.matches ? 'dark' : 'light'
@@ -88,8 +89,8 @@
   <meta property="twitter:url" content="{{.Full_url}}" />
 
   <meta property="twitter:domain" content="{{.Domain}}" />
-<meta property="og:type" content="music.radio_station" />
-  {{.head}}
+
+  <meta property="og:type" content="music.radio_station" />
 
   <script type="application/ld+json">
     {

@@ -32,6 +32,7 @@ export const ThemeSwitcher: FC = memo(() => {
       }).then(text => {
         const style = document.getElementById("theme_css")
         if (style) {
+          document.getElementById("theme")?.remove()
           style.innerHTML = text
         }
       }).finally(() => {

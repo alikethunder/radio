@@ -65,11 +65,6 @@ import { update_json } from "@/API/profile/update_json"
 import { sessionStore } from "@/store/sessionStore"
 import { StationCountry, Language, StationLanguage, StationGenre, HistoryRecord } from "@/types"
 
-const get_alphabet_sort = (language: Language | null) => ((a: StationLanguage | StationCountry | StationGenre, b: StationLanguage | StationCountry | StationGenre) => {
-  language ??= 'en'
-  return (a[language] ?? '') > (b[language] ?? '') ? 1 : -1
-})
-
 export default memo(function App() {
 
   const navigate = useNavigate()
@@ -132,51 +127,6 @@ export default memo(function App() {
       }
     }, 1000)
   }, [searchParams, search])
-
-  useEffect(() => {
-    (async () => {
-      const resp = await fetch(`${get_api_origin()}/api/v1/tags/`)
-      const json = await resp.json()
-      actions.session.station_tags(json ?? [])
-    })()
-  }, [])
-
-  const alphabet_sort = useMemo(() => get_alphabet_sort(language), [language])
-
-  useEffect(() => {
-    if (language) {
-      (async () => {
-        const resp = await fetch(`${get_api_origin()}/api/v1/settings/languages/${language ?? 'en'}`)
-        const json = await resp.json() as StationLanguage[]
-        actions.session.station_languages((json ?? []).sort(alphabet_sort))
-      })()
-    }
-  }, [language])
-
-  useEffect(() => {
-    if (language) {
-      (async () => {
-        const resp = await fetch(`${get_api_origin()}/api/v1/settings/countries/${language ?? 'en'}`)
-        const json = await resp.json() as StationCountry[]
-        actions.session.station_countries((json ?? []).sort(alphabet_sort))
-      })()
-    }
-  }, [language])
-
-  useEffect(() => {
-    if (language) {
-      (async () => {
-        try {
-          const resp = await fetch(`${get_api_origin()}/api/v1/settings/genres/${language ?? 'en'}`)
-          const json = await resp.json() as StationGenre[]
-          actions.session.station_genres((json ?? []).sort(alphabet_sort))
-        } catch (e) {
-          Sentry.captureException(e)
-          console.log('fetch /api/v1/settings/genres error : ', e)
-        }
-      })()
-    }
-  }, [language])
 
   useEffect(() => {
     //console.log('get station')
@@ -321,6 +271,7 @@ export default memo(function App() {
   ])
 
   useEffect(() => {
+      // ?????????????????????????
     //language preset
     (async () => {
       const resp = await fetch(`${get_api_origin()}/api/v1/translation`)
@@ -351,6 +302,7 @@ export default memo(function App() {
           }
         }
       }
+      // ?????????????????????????
     })()
   }, [])
 
