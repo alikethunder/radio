@@ -64,7 +64,7 @@ const get_alphabet_sort = (language: Language | null) => ((a: StationLanguage | 
   return (a[language] ?? '') > (b[language] ?? '') ? 1 : -1
 })
 
-
+globalThis.translations = globalThis.translations || {}
 
 export const routes = [
   {
@@ -221,7 +221,8 @@ export const routes = [
             request,
           }: Loader_params
         ) => {
-          //console.log('station params : ', params)
+          console.log('station params : ', params)
+
           const { id } = params
 
           if (id == 'new') {

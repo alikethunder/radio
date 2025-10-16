@@ -25,6 +25,9 @@ declare global {
   interface ObjectConstructor {
     entries<T extends {}>(o: T): ReadonlyArray<Entry<T>>
   }
+  var translations: {
+    [x: string]: string;
+  }
 }
 
 type Entry<T> = { [K in keyof T]: [K, T[K]] }[keyof T]

@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"net/url"
@@ -213,8 +214,16 @@ func Index(ctx *fiber.Ctx) error {
 
 			logo := template.JS(ctx.BaseURL() + "/api/v1/files/stations/" + fmt.Sprint(station["id"]) + "/avatar")
 
-			head += `<meta property="og:image:width" content="128" />
-        <meta property="og:image:height" content="128" />`
+			translations_obj := translations.TranslateSlice([]string{"genre", "tags", "language"}, language)
+
+			translations_string, _ := json.Marshal(translations_obj)
+
+			head += fmt.Sprintf(`<meta property="og:image:width" content="128" />
+        <meta property="og:image:height" content="128" />
+				<script>
+				globalThis.translations = %s
+				</script>
+				`, string(translations_string))
 
 			functions.UpdateMap(injectables, fiber.Map{
 

@@ -473,9 +473,10 @@ export const Station = () => {
               />
 
               {
-                image_loading ?
-                  <i className="pi pi-spin pi-spinner text-400 text-4xl" />
-                  : <></>
+                is_ssr() ? <></> :
+                  image_loading ?
+                    <i className="pi pi-spin pi-spinner text-400 text-4xl" />
+                    : <></>
               }
 
               {
@@ -681,8 +682,8 @@ export const Station = () => {
           </div>
 
           <div className="flex flex-row gap-2">
-            <span className={`font-semibold select-none ${tag_text_class}`}>
-              {translations.language}:
+            <span className={`font-semibold select-none capitalize ${tag_text_class}`}>
+              {globalThis.translations.language}:
             </span>
             {
               edit_mode ?
@@ -700,7 +701,7 @@ export const Station = () => {
                           optionLabel={language ?? 'en'}
                           display="chip"
                           filter
-                          placeholder={translations.language}
+                          placeholder={globalThis.translations.language}
                           className="w-20rem max-w-full relative"
                           pt={multiselect_pt}
                         />
@@ -728,7 +729,9 @@ export const Station = () => {
 
           <div className="flex flex-row gap-2">
             <span className={`font-semibold select-none ${tag_text_class}`}>
-              {translations.genre}:
+              {
+                globalThis.translations.genre
+              }:
             </span>
             {
               edit_mode ?
@@ -747,7 +750,7 @@ export const Station = () => {
                           itemTemplate={GenreItemTemplate}
                           display="chip"
                           filter
-                          placeholder={translations.genre}
+                          placeholder={globalThis.translations.genre}
                           className="w-20rem max-w-full relative"
                           pt={multiselect_pt}
                         />
@@ -852,7 +855,7 @@ export const Station = () => {
               :
               <div className="flex flex-row gap-2">
                 <span className={`font-semibold select-none ${tag_text_class}`}>
-                  {translations.tags}:
+                  {globalThis.translations.tags}:
                 </span>
                 <div className="flex flex-row flex-wrap gap-1">
                   {

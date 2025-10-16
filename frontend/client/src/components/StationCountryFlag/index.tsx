@@ -40,20 +40,12 @@ export const StationCountryFlag: FC<Props> = memo(({ en, style, onClick, disable
     }
   }, 100), [station_country, tag_is_in_search])
 
-  const [flag_url, set_flag_url] = useState<string | null>(null)
-
-  useEffect(() => {
-    if (en) {
-      set_flag_url(encodeURI(`/flags/${en}.webp`))
-    }
-  }, [en])
-
   return (
     <div
       className={`inline-block bg-no-repeat bg-contain bg-center country_flag ${className ?? ''}`}
       onClick={click}
       style={{
-        ...flag_url ? { backgroundImage: `url(${flag_url})` } : {},
+        ...en ? { backgroundImage: `url(${encodeURI(`/flags/${en}.webp`)})` } : {},
         ...style ?? {},
       }} />
   )

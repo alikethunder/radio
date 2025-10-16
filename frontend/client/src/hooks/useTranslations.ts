@@ -22,10 +22,14 @@ export const useTranslations = <T extends string>(fields: T[], capitalize?: bool
 
       //if the field translation was loaded in other request
       for (const field of fields) {
-        (
-          store.session.translation_checked(language, field)
-            ? checked_fields : unchecked_fields
-        ).push(field)
+        if (globalThis.translations[field]) {
+          actions.translations.add_translation(field, capitalize ? globalThis.translations[field].charAt(0).toUpperCase() + globalThis.translations[field].slice(1) : globalThis.translations[field])
+        } else {
+          (
+            store.session.translation_checked(language, field)
+              ? checked_fields : unchecked_fields
+          ).push(field)
+        }
 
         actions.session.translation_checked(language, field)
       }
