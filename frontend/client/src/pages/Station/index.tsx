@@ -44,6 +44,7 @@ import {
 
 import {
   get_api_origin,
+  is_ssr,
   resize_image,
 } from "@/functions"
 
@@ -61,6 +62,7 @@ import {
   useMobile,
   useTranslations,
   useTranslationsSkeleton,
+  useUrlLang,
 } from '@/hooks'
 
 import {
@@ -149,7 +151,9 @@ export const Station = () => {
 
   const languages = useStore().translations.languages()
 
-  const language = useStore().translations.language()
+  const url_lang = useUrlLang()
+
+  const language = useStore().translations.language() ?? url_lang
 
   const station_genres = useStore().session.station_genres()
 
@@ -858,37 +862,44 @@ export const Station = () => {
               </div>
           }
 
-          {/* Read only editor */}
-          <Editor
-            value={station[`description_${language}`]}
-            readOnly
-            headerTemplate={<></>}
-            pt={{
-              toolbar: {
-                style: {
-                  display: 'none'
-                }
-              },
-              content: {
-                className: classNames({},
-                  'mt-2',
-                  'shadow-2',
-                  'surface-border',
-                  tag_text_class,
-                ),
-                style: {
-                  height: 'fit-content',
-                  border: '1px solid #dfe7ef',
-                  overflowY: 'auto',
-                  borderRadius: '6px',
-                  padding: '1px',
-                  ...edit_mode || !station[`description_${language}`] ? {
-                    display: 'none',
-                  } : {},
-                },
-              }
-            }}
-          />
+          {
+            is_ssr() ?
+              <span>{station[`description_${language}`]}</span>
+              :
+              <>
+                {/* Read only editor */}
+                < Editor
+                  value={station[`description_${language}`]}
+                  readOnly
+                  headerTemplate={<></>}
+                  pt={{
+                    toolbar: {
+                      style: {
+                        display: 'none'
+                      }
+                    },
+                    content: {
+                      className: classNames({},
+                        'mt-2',
+                        'shadow-2',
+                        'surface-border',
+                        tag_text_class,
+                      ),
+                      style: {
+                        height: 'fit-content',
+                        border: '1px solid #dfe7ef',
+                        overflowY: 'auto',
+                        borderRadius: '6px',
+                        padding: '1px',
+                        ...edit_mode || !station[`description_${language}`] ? {
+                          display: 'none',
+                        } : {},
+                      },
+                    }
+                  }}
+                />
+              </>
+          }
 
           {/* Edit only editor */}
           {

@@ -9,7 +9,7 @@ import {
   actions,
   useStore,
 } from "@/store"
-import { useLog } from "@/hooks"
+import { useLog, useUrlLang } from "@/hooks"
 import { StationCountryFlag } from "../StationCountryFlag"
 
 type Props = {
@@ -25,8 +25,9 @@ export const StationCountryTag: FC<Props> = memo(({ en, style, onClick, disable_
   const station_country = useStore().session.get_country(en)
 
   const search_selected_countries = useStore().persistedApp.search_selected_countries()
+  const url_lang = useUrlLang()
 
-  const language = useStore().translations.language()
+  const language = useStore().translations.language() ?? url_lang
 
   const tag_is_in_search = useMemo(() => search_selected_countries.find(g => g.en == station_country?.en), [search_selected_countries])
 

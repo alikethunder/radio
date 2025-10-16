@@ -36,7 +36,7 @@ import {
   get_station,
 } from '@/API/station/get_station'
 import { useFavoriteStations } from "./hooks"
-import { get_api_origin } from "./functions"
+import { get_api_origin, is_ssr } from "./functions"
 import { Language, StationCountry, StationGenre, StationLanguage } from "./types"
 
 type Loader_params = { params: { [param: string]: string; }, request: Request }
@@ -72,42 +72,48 @@ export const routes = [
     element: <Profiler id="App" onRender={(id, phase) => {
       console.log('App render, id , phase : ', id, phase)
     }}><App /></Profiler>,
-    loader: async () => {
+    loader: async ({ request }) => {
       // ?????????????????????????
-    //language preset
+      //language preset
       const resp = await fetch(`${get_api_origin()}/api/v1/translation`)
+
+      const url = new URL(request.url)
+
+      const url_language = url.searchParams.get('language') as Language
 
       if (resp.status == 200) {
         const languages = await resp.json()
 
         actions.translations.languages(languages)
 
-        const curr_selected_lang = store.translations.language()
+        if (!is_ssr()) {
+          const curr_selected_lang = store.translations.language()
 
-        if (!curr_selected_lang || !languages.includes(curr_selected_lang)) {
-          //lang was not set or it is not supported
+          if (!curr_selected_lang || !languages.includes(curr_selected_lang)) {
+            //lang was not set or it is not supported
 
-          //get navigator language
-          const nav_lang = navigator.language.substring(0, 2)
+            //get navigator language
+            const nav_lang = is_ssr() ? undefined : navigator.language.substring(0, 2)
 
-          if (languages.includes(nav_lang)) {
-            actions.translations.language(nav_lang as Language)
-          } else {
-            //navigator language is not supported
-            //find supported in navigator languages
+            if (languages.includes(nav_lang)) {
+              actions.translations.language(nav_lang as Language)
+            } else {
+              //navigator language is not supported
+              //find supported in navigator languages
 
-            const supported_navigator_languages = navigator.languages.find(l => languages.includes(l.substring(0, 2)))
+              const supported_navigator_languages = is_ssr() ? undefined : navigator.languages.find(l => languages.includes(l.substring(0, 2)))
 
-            actions.translations.language(supported_navigator_languages ?? languages[0])
+              actions.translations.language(supported_navigator_languages ?? languages[0] ?? url_language)
 
+            }
           }
         }
       }
       // ?????????????????????????
 
+      const language = is_ssr() ? url_language : store.translations.language()
 
-      //console.log('root loader')
-      const language = store.translations.language()
+      console.log('language : ', language)
 
       const alphabet_sort = get_alphabet_sort(language)
 

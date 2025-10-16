@@ -9,8 +9,9 @@ import {
   store,
   useStore,
 } from "@/store"
-import { useLocation, useNavigate } from "react-router-dom"
+import { useLocation, } from "react-router-dom"
 import { tag_text_class } from '@/constants/classes'
+import { useUrlLang } from "@/hooks"
 
 type Props = {
   genre_en: string;
@@ -26,7 +27,9 @@ export const StationGenreTag: FC<Props> = memo(({ genre_en, onClick, disable_lin
 
   const search_selected_genres = useStore().persistedApp.search_selected_genres()
 
-  const language = useStore().translations.language()
+  const url_lang = useUrlLang()
+
+  const language = useStore().translations.language() ?? url_lang
 
   const tag_is_in_search = useMemo(() => search_selected_genres.find(g => g.en == genre?.en), [search_selected_genres])
 

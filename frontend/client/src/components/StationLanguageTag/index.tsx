@@ -9,6 +9,7 @@ import {
   actions,
   useStore,
 } from "@/store"
+import { useUrlLang } from "@/hooks"
 
 type Props = {
   language_en: string;
@@ -23,7 +24,9 @@ export const StationLanguageTag: FC<Props> = memo(({ language_en, onClick, disab
 
   const search_selected_languages = useStore().persistedApp.search_selected_languages()
 
-  const language = useStore().translations.language()
+  const url_lang = useUrlLang()
+
+  const language = useStore().translations.language() ?? url_lang
 
   const tag_is_in_search = useMemo(() => search_selected_languages.find(g => g.en == station_language?.en), [search_selected_languages])
 

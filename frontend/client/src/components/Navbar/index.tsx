@@ -95,18 +95,10 @@ export const Navbar: FC = memo(() => {
             <Button
               text
               raised
-              className="flex flex-row gap-1 border-noround w-full h-full md:px-2 px-1  action_text_font text-xl shadow_on_hover md:text-3xl bangers-font logo-glow shadow-none border-none"
+              className="flex flex-row gap-1 border-noround w-full h-full py-0 md:px-2 px-1  action_text_font text-xl shadow_on_hover md:text-3xl bangers-font logo-glow shadow-none border-none align-items-center"
             >
               <span>Radio</span>
-              <img src="/favicon_120x120.png" className="h-3rem sm:h-4rem w-3rem sm:w-4rem" loading="lazy"
-                style={{
-                  opacity: 0,
-                  transition: 'opacity .3s ease'
-                }}
-
-                onLoad={(e) => {
-                  (e.target as HTMLImageElement).style.opacity = '1'
-                }} />
+              <img src="/favicon_120x120.png" className="h-3rem sm:h-4rem w-3rem sm:w-4rem" />
               <span>Best</span>
             </Button>
           </QueryLink>

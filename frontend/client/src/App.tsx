@@ -62,7 +62,6 @@ import {
 
 import { get_station } from "@/API/station/get_station"
 import { update_json } from "@/API/profile/update_json"
-import { sessionStore } from "@/store/sessionStore"
 import { StationCountry, Language, StationLanguage, StationGenre, HistoryRecord } from "@/types"
 
 export default memo(function App() {

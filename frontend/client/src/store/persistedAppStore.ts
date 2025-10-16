@@ -2,6 +2,7 @@ import { createStore } from 'zustand-x'
 
 import { v7 } from 'uuid'
 import { StationCountry, StationGenre, StationLanguage } from '@/types';
+import { is_ssr } from '@/functions';
 
 type PersistedApp = {
   rememberme: boolean;
@@ -27,7 +28,7 @@ const initial_state = {
   user_uuid: v7(),
   home_scroll: 0,
   my_stations_scroll: 0,
-  theme: typeof window === 'undefined' ? 'dark' : (window?.matchMedia?.('(prefers-color-scheme:dark)')?.matches ? 'dark' : 'light'),
+  theme: is_ssr() ? 'dark' : (window?.matchMedia?.('(prefers-color-scheme:dark)')?.matches ? 'dark' : 'light'),
   search_selected_countries: [],
   search_selected_languages: [],
   search_selected_genres: [],
