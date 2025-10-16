@@ -15,7 +15,7 @@ import {
   useWatch
 } from 'react-hook-form'
 
-import { useDebounceCallback } from 'usehooks-ts'
+import { useDebounceCallback, useIsClient } from 'usehooks-ts'
 
 import { classNames } from 'primereact/utils'
 
@@ -44,7 +44,6 @@ import {
 
 import {
   get_api_origin,
-  is_ssr,
   resize_image,
 } from "@/functions"
 
@@ -438,6 +437,8 @@ export const Station = () => {
     tags_suggestion_text,
   ])
 
+  const isClient = useIsClient()
+
   return (
     <div
       className=" w-full overflow-y-auto page station_page flex-grow-1 flex flex-column text-800 md:p-4 md:pl-5 p-3 md:pr-0"
@@ -445,7 +446,7 @@ export const Station = () => {
       {/* background here? */}
 
       <div className="flex flex-row gap-2 flex-grow-1">
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-3 align-self-start max-w-full flex-shrink-0" ref={setForm}>
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-column gap-3 align-self-start max-w-full flex-shrink-0" ref={setForm} >
 
           <div className="flex flex-row gap-3">
 
@@ -473,10 +474,11 @@ export const Station = () => {
               />
 
               {
-                is_ssr() ? <></> :
+                isClient ?
                   image_loading ?
                     <i className="pi pi-spin pi-spinner text-400 text-4xl" />
                     : <></>
+                  : <></>
               }
 
               {
@@ -866,7 +868,7 @@ export const Station = () => {
           }
 
           {
-            is_ssr() ?
+            !isClient ?
               <span>{station[`description_${language}`]}</span>
               :
               <>

@@ -1,6 +1,7 @@
 //import { Entries } from 'type-fest'
 
 import type { read as Read, Reader, Config } from '@types/jsmediatags'
+import { StationTag } from './StationTag';
 
 declare global {
   interface Window {

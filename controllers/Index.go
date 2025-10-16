@@ -221,7 +221,7 @@ func Index(ctx *fiber.Ctx) error {
 			head += fmt.Sprintf(`<meta property="og:image:width" content="128" />
         <meta property="og:image:height" content="128" />
 				<script>
-				globalThis.translations = %s
+				globalThis.translations = %s;
 				</script>
 				`, string(translations_string))
 

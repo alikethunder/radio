@@ -30,4 +30,8 @@ const router = createBrowserRouter(routes as RouteObject[], {
 
 actions.app.router(router)
 
-hydrateRoot(document.getElementById("app")!, <RouterProvider router={router} />)
+hydrateRoot(document.getElementById("app")!, <RouterProvider router={router} />/* , {
+  onRecoverableError: (error, errorInfo) => {
+    console.error('Caught error:', error, errorInfo);
+  }
+} */)

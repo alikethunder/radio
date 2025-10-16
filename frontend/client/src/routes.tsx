@@ -84,34 +84,11 @@ export const routes = [
         const languages = await resp.json()
 
         actions.translations.languages(languages)
-
-        if (!is_ssr()) {
-          const curr_selected_lang = store.translations.language()
-
-          if (!curr_selected_lang || !languages.includes(curr_selected_lang)) {
-            //lang was not set or it is not supported
-
-            //get navigator language
-            const nav_lang = is_ssr() ? undefined : navigator.language.substring(0, 2)
-
-            if (languages.includes(nav_lang)) {
-              actions.translations.language(nav_lang as Language)
-            } else {
-              //navigator language is not supported
-              //find supported in navigator languages
-
-              const supported_navigator_languages = is_ssr() ? undefined : navigator.languages.find(l => languages.includes(l.substring(0, 2)))
-
-              actions.translations.language(supported_navigator_languages ?? languages[0] ?? url_language)
-
-            }
-          }
-        }
       }
 
       const language = is_ssr() ? url_language : store.translations.language()
 
-      console.log('language : ', language)
+      //console.log('language : ', language)
 
       const alphabet_sort = get_alphabet_sort(language)
 
@@ -131,6 +108,15 @@ export const routes = [
       const languages_resp = await fetch(`${get_api_origin()}/api/v1/settings/languages/${language ?? 'en'}`)
       const languages = await languages_resp.json() as StationLanguage[]
       actions.session.station_languages((languages ?? []).sort(alphabet_sort))
+
+      fetch(`${get_api_origin()}/api/v1/translation/${language}/?fields=${['genre', 'language', 'tags'].join(',')}`).then(r => r.json()).then(json => {
+
+        //console.log('[useTranslations] response : ', json)
+
+        Object.entries(json).map(([field, text]) => {
+          globalThis.translations[field] = text.charAt(0).toUpperCase() + text.slice(1)
+        })
+      })
 
       return null
     },

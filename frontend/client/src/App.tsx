@@ -52,7 +52,6 @@ import {
   getCookie,
   ga_event,
   get_api_origin,
-  is_ssr,
 } from '@/functions'
 
 import {
@@ -64,6 +63,11 @@ import {
 import { get_station } from "@/API/station/get_station"
 import { update_json } from "@/API/profile/update_json"
 import { StationCountry, Language, StationLanguage, StationGenre, HistoryRecord } from "@/types"
+
+const get_alphabet_sort = (language: Language | null) => ((a: StationLanguage | StationCountry | StationGenre, b: StationLanguage | StationCountry | StationGenre) => {
+  language ??= 'en'
+  return (a[language] ?? '') > (b[language] ?? '') ? 1 : -1
+})
 
 export default memo(function App() {
 
@@ -271,7 +275,6 @@ export default memo(function App() {
   ])
 
   useEffect(() => {
-    // ?????????????????????????
     //language preset
     (async () => {
       const resp = await fetch(`${get_api_origin()}/api/v1/translation`)
@@ -302,9 +305,48 @@ export default memo(function App() {
           }
         }
       }
-      // ?????????????????????????
     })()
   }, [])
+
+  useEffect(() => {
+    (async () => {
+      const resp = await fetch(`${window.location.origin}/api/v1/tags/`)
+      const json = await resp.json()
+      actions.session.station_tags(json ?? [])
+    })()
+  }, [])
+
+  const alphabet_sort = get_alphabet_sort(language)
+
+  useEffect(() => {
+    if (language) {
+      (async () => {
+        const resp = await fetch(`${window.location.origin}/api/v1/settings/languages/${language ?? 'en'}`)
+        const json = await resp.json() as StationLanguage[]
+        actions.session.station_languages((json ?? []).sort(alphabet_sort))
+      })()
+    }
+  }, [language])
+
+  useEffect(() => {
+    if (language) {
+      (async () => {
+        const genres_resp = await fetch(`${get_api_origin()}/api/v1/settings/genres/${language ?? 'en'}`)
+        const genres = await genres_resp.json() as StationGenre[]
+        actions.session.station_genres((genres ?? []).sort(alphabet_sort))
+      })()
+    }
+  }, [language])
+
+  useEffect(() => {
+    if (language) {
+      (async () => {
+        const countries_resp = await fetch(`${get_api_origin()}/api/v1/settings/countries/${language ?? 'en'}`)
+        const countries = await countries_resp.json() as StationCountry[]
+        actions.session.station_countries((countries ?? []).sort(alphabet_sort))
+      })()
+    }
+  }, [language])
 
   useEffect(() => {
     //update language in url

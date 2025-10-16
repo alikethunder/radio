@@ -23,6 +23,7 @@ import { Station } from "@/types"
 import { Helmet } from "react-helmet"
 import { is_ssr } from "@/functions"
 import { useLoaderData } from "react-router-dom"
+import { useIsClient } from "usehooks-ts"
 
 export const Home = memo(() => {
 
@@ -85,6 +86,7 @@ export const Home = memo(() => {
 
     }
   }, [grid_ref]) */
+  const isClient = useIsClient()
 
   return (
     <>
@@ -95,10 +97,9 @@ export const Home = memo(() => {
       />
 
       {
-        is_ssr() ?
+        isClient ? <></> :
           <span dangerouslySetInnerHTML={{ __html: ssr_text }}>
           </span>
-          : <> </>
       }
     </>
   )
