@@ -9,6 +9,7 @@ import (
 	"web_project/constants"
 	"web_project/cookies"
 	"web_project/db"
+	"web_project/functions"
 	"web_project/translations"
 
 	"github.com/gocql/gocql"
@@ -99,11 +100,6 @@ func Index(ctx *fiber.Ctx) error {
 
 	head := ``
 
-	/* theme, err := os.ReadFile("served/public/assets/theme/soho_dark.css")
-	if err != nil {
-		panic(err)
-	} */
-
 	injectables := fiber.Map{
 		"head":        template.HTML(head),
 		"HTML":        "",
@@ -120,7 +116,7 @@ func Index(ctx *fiber.Ctx) error {
 		"URL":         ctx.OriginalURL(),
 		"keywords":    translations.Dictionary[language]["home_page_keywords"],
 		"Full_url":    ctx.BaseURL() + ctx.OriginalURL(),
-		/* "theme":       string(theme), */
+		"quoted_logo": template.JS("\"" + logo + "\""),
 	}
 
 	if ctx.Path() == "/" || strings.Contains(ctx.Path(), "/station/") {
@@ -145,13 +141,12 @@ func Index(ctx *fiber.Ctx) error {
 		//fmt.Println("body: ", body)
 
 		if ctx.Path() == "/" {
-			injectables = fiber.Map{
+			functions.UpdateMap(injectables, fiber.Map{
 				"HTML": template.HTML(body),
-
-				"quoted_logo": template.JS("\"" + logo + "\""),
-
 				"head": template.HTML(head),
-			}
+
+				"content": template.HTML(translations.Dictionary[language]["home_page_content"]),
+			})
 		}
 
 		if strings.Contains(ctx.Path(), "/station/") {
@@ -221,7 +216,7 @@ func Index(ctx *fiber.Ctx) error {
 			head += `<meta property="og:image:width" content="128" />
         <meta property="og:image:height" content="128" />`
 
-			injectables = fiber.Map{
+			functions.UpdateMap(injectables, fiber.Map{
 
 				"HTML": template.HTML(body),
 
@@ -242,7 +237,7 @@ func Index(ctx *fiber.Ctx) error {
 				"head": template.HTML(head),
 
 				"ldjson": template.JS(`"@type": "Radiostation", "name" : "` + fmt.Sprint(station["name"]) + `", `),
-			}
+			})
 		}
 	}
 	return ctx.Render("public/index", injectables)

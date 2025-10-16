@@ -73,7 +73,6 @@ export const routes = [
       console.log('App render, id , phase : ', id, phase)
     }}><App /></Profiler>,
     loader: async ({ request }) => {
-      // ?????????????????????????
       //language preset
       const resp = await fetch(`${get_api_origin()}/api/v1/translation`)
 
@@ -109,7 +108,6 @@ export const routes = [
           }
         }
       }
-      // ?????????????????????????
 
       const language = is_ssr() ? url_language : store.translations.language()
 
@@ -144,6 +142,15 @@ export const routes = [
       {
         path: app_routes.root,
         element: <Home />,
+        loader: async ({ request }) => {
+          const url = new URL(request.url)
+
+          const language = url.searchParams.get('language') as Language
+
+          const resp = await fetch(`${get_api_origin()}/api/v1/translation/${language}/home_page_content`)
+          const text = await resp.text()
+          return text
+        },
         shouldRevalidate: () => false,
       },
 

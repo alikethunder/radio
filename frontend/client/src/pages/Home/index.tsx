@@ -21,11 +21,15 @@ import {
 import { Station } from "@/types"
 
 import { Helmet } from "react-helmet"
+import { is_ssr } from "@/functions"
+import { useLoaderData } from "react-router-dom"
 
 export const Home = memo(() => {
 
   const stations = useStore().app.stations_home()
   const loading = !useStore().app.stations_home_loaded()
+
+  const ssr_text = useLoaderData() as string
 
   //useLog(true, '[Home] stations : ', stations)
 
@@ -83,10 +87,19 @@ export const Home = memo(() => {
   }, [grid_ref]) */
 
   return (
-    <StationsGrid
-      stations={stations}
-      loading={loading}
-      place={'home'}
-    />
+    <>
+      <StationsGrid
+        stations={stations}
+        loading={loading}
+        place={'home'}
+      />
+
+      {
+        is_ssr() ?
+          <span dangerouslySetInnerHTML={{ __html: ssr_text }}>
+          </span>
+          : <> </>
+      }
+    </>
   )
 })
