@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"html/template"
 	"net/url"
-	"os"
 	"strings"
 	"web_project/constants"
 	"web_project/cookies"
@@ -128,7 +127,7 @@ func Index(ctx *fiber.Ctx) error {
 		/* fmt.Println("BaseURL : ", ctx.BaseURL())
 		fmt.Println("OriginalURL : ", ctx.OriginalURL())
 		fmt.Println("port : ", os.Getenv("PORT")) */
-		ssr_url := strings.Replace(ctx.BaseURL(), os.Getenv("PORT"), "5454", 1) + ctx.OriginalURL()
+		ssr_url := "http://localhost:5454" + ctx.OriginalURL()
 		/* fmt.Println("ssr_url : ", ssr_url) */
 		agent := fiber.Get(ssr_url)
 		code, body, errs := agent.String()

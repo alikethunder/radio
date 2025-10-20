@@ -13,7 +13,7 @@ Environment=TEMPL_PATH=/home/radio/frontend/server
 Environment=PORT=5454
 Environment=ENV=prod
 Restart=always
-ExecStart=bun run index.ts
+ExecStart=/root/.bun/bin/bun run index.ts
 WorkingDirectory=/home/radio/frontend/server
 
 StandardOutput=null
