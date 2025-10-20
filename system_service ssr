@@ -11,7 +11,7 @@ Description=radio.best.ssr
 [Service]
 Environment=NODE_ENV=production
 Restart=always
-ExecStart=/root/.bun/bin/bun run index.ts
+ExecStart=/root/.bun/bin/bun --env-file=.env.production run index.ts
 WorkingDirectory=/home/radio/frontend/server
 
 StandardOutput=null

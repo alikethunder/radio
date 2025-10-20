@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "bun:build": "bun run build",
-    "bun:dev": "bun --watch run index.ts"
+    "bun:dev": "bun --env-file=.env.development --watch run index.ts"
   },
   "dependencies": {
     "@sentry/react": "^8.36.0",
