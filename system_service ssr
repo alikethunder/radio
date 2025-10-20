@@ -1,5 +1,5 @@
 /*
-save as lib/systemd/system/radiobestssr.service
+sudo nano /lib/systemd/system/radiobestssr.service
 systemctl daemon-reload
 systemctl restart radiobestssr
 */
