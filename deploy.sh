@@ -5,6 +5,7 @@ echo "Radio.Best deploy start"
 cd radio
 git pull origin HEAD
 npm --prefix ./frontend/client install
+bun install --cwd ./frontend/server
 npm --prefix ./frontend/client run build -- --emptyOutDir
 echo "Radio.best frontend built"
 go build -o ./build/main .

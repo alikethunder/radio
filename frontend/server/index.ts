@@ -1,5 +1,5 @@
 const server = Bun.serve({
-  port: process.env.PORT,
+  port: 5454,
   async fetch(req) {
     const render = (await import( '../../served/public/entry-server')).render;
     const html = await render(req);
