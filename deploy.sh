@@ -9,5 +9,6 @@ npm --prefix ./frontend/client run build -- --emptyOutDir
 echo "Radio.best frontend built"
 go build -o ./build/main .
 echo "Radio.Best backend built. Restarting..."
+sudo systemctl restart radiobestssr
 sudo systemctl restart radiobest
 echo "Radio.Best deploy finished"
