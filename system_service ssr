@@ -9,12 +9,12 @@ this will overwrite settings in .env
 Description=radio.best.ssr
 
 [Service]
-Environment=TEMPL_PATH=/home/radio
+Environment=TEMPL_PATH=/home/radio/frontend/server
 Environment=PORT=5454
 Environment=ENV=prod
 Restart=always
-ExecStart=/home/radio/build/main ???????????
-WorkingDirectory=/home/radio
+ExecStart=/home/YOUR_USER/.bun/bin/bun run index.ts
+WorkingDirectory=/home/radio/frontend/server
 
 StandardOutput=null
 StandardError=syslog
