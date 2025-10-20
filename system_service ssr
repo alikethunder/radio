@@ -9,9 +9,7 @@ this will overwrite settings in .env
 Description=radio.best.ssr
 
 [Service]
-Environment=TEMPL_PATH=/home/radio/frontend/server
-Environment=PORT=5454
-Environment=ENV=prod
+Environment=NODE_ENV=production
 Restart=always
 ExecStart=/root/.bun/bin/bun run index.ts
 WorkingDirectory=/home/radio/frontend/server
