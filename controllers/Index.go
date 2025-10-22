@@ -106,7 +106,7 @@ func Index(ctx *fiber.Ctx) error {
 		"Language":    language,
 		"sitename":    sitename,
 		"user_ip":     ctx.IP(),
-		"ldjson":      template.JS(`"@type": "RadioBroadcastService", "name" : "` + sitename + `", `),
+		"ldjson":      template.JS(`"@type": "RadioBroadcastService", "name" : "` + sitename + `"`),
 		"logo":        logo,
 		"title":       sitename,
 		"alternates":  alternates,
@@ -244,7 +244,7 @@ func Index(ctx *fiber.Ctx) error {
 
 				"head": template.HTML(head),
 
-				"ldjson": template.JS(`"@type": "Radiostation", "name" : "` + fmt.Sprint(station["name"]) + `", `),
+				"ldjson": template.JS(`"@type": "Radiostation", "name" : "` + fmt.Sprint(station["name"]) + `"`),
 			})
 		}
 	}
