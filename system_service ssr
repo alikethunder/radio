@@ -7,6 +7,7 @@ this will overwrite settings in .env
 
 [Unit]
 Description=radio.best.ssr
+Before=radiobest.ssr
 
 [Service]
 Environment=NODE_ENV=production

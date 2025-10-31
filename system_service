@@ -7,6 +7,8 @@ this will overwrite settings in .env
 
 [Unit]
 Description=radio.best
+Requires=radiobestssr.service
+After=radiobestssr.service
 
 [Service]
 Environment=TEMPL_PATH=/home/radio
