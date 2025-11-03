@@ -120,6 +120,13 @@ func Index(ctx *fiber.Ctx) error {
 	}
 
 	if ctx.Path() == "/" || strings.Contains(ctx.Path(), "/station/") {
+		ctx.Append("Link", ctx.BaseURL()+ctx.OriginalURL()+`; rel="canonical"`)
+
+		for _, page := range alternates {
+			link := page["url"].(string) + `; rel="alternate"; hreflang="` + page["code"].(string) + `"`
+			ctx.Append("Link", link)
+		}
+
 		head := `<link rel="stylesheet" id="theme" crossorigin="" href="/assets/themes/soho_dark.css">`
 
 		fmt.Println("Full url : ", ctx.BaseURL()+ctx.OriginalURL())
