@@ -162,7 +162,18 @@ func Index(ctx *fiber.Ctx) error {
 
 			fmt.Printf("[Index] station id %s \n", station_id)
 
-			station, _ := db.SelectRow("stations", fiber.Map{"id": station_id}, "id", "name", "description_"+language, "tags", "avatar", "country", "genres")
+			station, e := db.SelectRow("stations", fiber.Map{"id": station_id}, "id", "name", "description_"+language, "tags", "avatar", "country", "genres")
+
+			//fmt.Println("[Index] station   \n", station, e)
+
+			if e != nil {
+				queries := ctx.Queries()
+				var query string
+				for key, val := range queries {
+					query += key + "=" + val
+				}
+				return ctx.Redirect("/?"+query, fiber.StatusPermanentRedirect)
+			}
 
 			station_description := ""
 			if station["description_"+language] != nil {
