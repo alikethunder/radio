@@ -23,12 +23,6 @@ func UpdateJson(ctx *fiber.Ctx) error {
 
 		if form, err := ctx.MultipartForm(); err == nil {
 			info_files := form.File["json"]
-
-			var station_tag_colors []string
-
-			station_tag_colors_content, _ := os.ReadFile(os.Getenv("TEMPL_PATH") + "/settings/station_tag_colors.json")
-
-			json.Unmarshal(station_tag_colors_content, &station_tag_colors)
 			//fmt.Println("[UpdateJson] info_files : ", info_files)
 
 			for _, file := range info_files {
@@ -64,6 +58,12 @@ func UpdateJson(ctx *fiber.Ctx) error {
 					json_station["broadcasting"] = true
 
 					if json_station["tags"] != nil {
+
+						var station_tag_colors []string
+
+						station_tag_colors_content, _ := os.ReadFile(os.Getenv("TEMPL_PATH") + "/settings/station_tag_colors.json")
+
+						json.Unmarshal(station_tag_colors_content, &station_tag_colors)
 						for _, tag := range json_station["tags"].([]interface{}) {
 							tag_exists, _ := db.SelectRow("station_tags", fiber.Map{"name": tag.(string)}, "name")
 
