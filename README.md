@@ -36,7 +36,8 @@ Prerequisites
   - start scylladb:
      - ubuntu: sudo systemctl start scylla-server
      - mac: start from docker gui
-  
+     
+  - start bun render react: npm run bun:dev
   - start dev server: air -c .air.toml & npm --prefix ./frontend/client run build:watch
 
   (This will run go build with hot reload and building to ./build/main and vite build watching frontend/client building to ./served/public )
