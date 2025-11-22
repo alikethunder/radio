@@ -28,7 +28,7 @@ func Index(ctx *fiber.Ctx) error {
 		language = "en"
 	}
 
-	languages := translations.Languages()
+	languages := translations.Languages
 
 	authCookie := ctx.Cookies(cookies.AuthCookieName)
 

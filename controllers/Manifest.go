@@ -11,7 +11,7 @@ import (
 
 func Manifest(ctx *fiber.Ctx) error {
 
-	language := ctx.AcceptsLanguages(translations.Languages()[:]...)
+	language := ctx.AcceptsLanguages(translations.Languages[:]...)
 	//fmt.Println("[Manifest] langs : ", language)
 
 	if language == "" {

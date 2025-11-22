@@ -20,6 +20,7 @@ import (
 	"web_project/db/StationTags"
 	"web_project/db/Stations"
 	Users "web_project/db/Users"
+	"web_project/translations"
 
 	"web_project/controllers"
 	AuthEndpoints "web_project/controllers/auth"
@@ -52,6 +53,7 @@ import (
 
 func init() {
 	//initializers.LoadEnvVars()
+	translations.Init()
 	Users.Initialize()
 	DBPlans.Initialize()
 	mailer.Initialize()

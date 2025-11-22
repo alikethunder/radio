@@ -33,7 +33,7 @@ func GenerateSitemap(ctx *fiber.Ctx) error {
 		sm.SetLastMod(&now)
 		sm.SetMaxURLsCount(5000)
 
-		languages := translations.Languages()
+		languages := translations.Languages
 
 		var main_alternates []*smg.SitemapAlternateLoc
 

@@ -6,7 +6,7 @@ func Public_Station_Props() []string {
 
 	i := 0
 
-	languages := translations.Languages()
+	languages := translations.Languages
 
 	result := make([]string, len(Public_Station_List_Props)+len(languages))
 

@@ -8,6 +8,6 @@ import (
 
 func Languages(c *fiber.Ctx) error {
 
-	return c.Status(fiber.StatusOK).JSON(translations.Languages())
+	return c.Status(fiber.StatusOK).JSON(translations.Languages)
 
 }

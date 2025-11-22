@@ -22,7 +22,7 @@ func IndexNow(ctx *fiber.Ctx) error {
 
 		stations := db.List("stations", fiber.Map{"broadcasting": true}, []string{}, "", "id")
 
-		total_urls := len(stations) * len(translations.Languages())
+		total_urls := len(stations) * len(translations.Languages)
 		//fmt.Println("[IndexNow] total_urls : ", total_urls)
 
 		urlList := make([]string, total_urls)
@@ -34,7 +34,7 @@ func IndexNow(ctx *fiber.Ctx) error {
 
 			station_url := "https://" + constants.BaseURL + "/station/" + station_id
 
-			for _, lang := range translations.Languages() {
+			for _, lang := range translations.Languages {
 
 				urlList[i] = station_url + "?language=" + lang
 				i++
