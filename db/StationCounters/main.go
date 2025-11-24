@@ -1,7 +1,6 @@
 package StationCounters
 
 import (
-	"fmt"
 	"log"
 	"web_project/db"
 )
@@ -22,5 +21,5 @@ func Initialize() {
 		log.Fatal("create stations TABLE err : ", err)
 	}
 
-	fmt.Println("station_counters TABLE CREATED")
+	//fmt.Println("station_counters TABLE CREATED")
 }

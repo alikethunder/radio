@@ -1,7 +1,6 @@
 package Languages
 
 import (
-	"fmt"
 	"log"
 	"web_project/db"
 )
@@ -19,5 +18,5 @@ func Initialize() {
 		log.Fatal("create languages TABLE err : ", err)
 	}
 
-	fmt.Println("languages TABLE CREATED")
+	//fmt.Println("languages TABLE CREATED")
 }

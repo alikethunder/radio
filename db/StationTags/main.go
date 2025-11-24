@@ -1,7 +1,6 @@
 package StationTags
 
 import (
-	"fmt"
 	"log"
 	"web_project/db"
 )
@@ -20,5 +19,5 @@ func Initialize() {
 		log.Fatal("create tags TABLE err : ", err)
 	}
 
-	fmt.Println("tags TABLE CREATED")
+	//fmt.Println("tags TABLE CREATED")
 }

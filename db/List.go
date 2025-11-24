@@ -1,7 +1,6 @@
 package db
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
@@ -75,8 +74,8 @@ func List(table string, key_parameters fiber.Map, additional_selectors []string,
 
 	selectString.WriteString(` ALLOW FILTERING`)
 
-	fmt.Println("[db.List] selectString : ", selectString.String())
-	fmt.Println("[db.List] values : ", values)
+	//fmt.Println("[db.List] selectString : ", selectString.String())
+	//fmt.Println("[db.List] values : ", values)
 
 	iter := Session.Query(selectString.String(), values...).Iter()
 

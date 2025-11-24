@@ -1,7 +1,6 @@
 package Genres
 
 import (
-	"fmt"
 	"log"
 	"web_project/db"
 )
@@ -21,5 +20,5 @@ func Initialize() {
 		log.Fatal("create genres TABLE err : ", err)
 	}
 
-	fmt.Println("genres TABLE CREATED")
+	//fmt.Println("genres TABLE CREATED")
 }

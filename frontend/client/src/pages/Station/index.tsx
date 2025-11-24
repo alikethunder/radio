@@ -14,7 +14,7 @@ import {
   useForm,
   useWatch
 } from 'react-hook-form'
-  
+
 import { useDebounceCallback, useIsClient } from 'usehooks-ts'
 
 import { classNames } from 'primereact/utils'
@@ -685,7 +685,7 @@ export const Station = () => {
 
           <div className="flex flex-row gap-2">
             <span className={`font-semibold select-none capitalize ${tag_text_class}`}>
-              {globalThis.translations.language}:
+              {translations.language || globalThis.translations.language}:
             </span>
             {
               edit_mode ?
@@ -703,7 +703,7 @@ export const Station = () => {
                           optionLabel={language ?? 'en'}
                           display="chip"
                           filter
-                          placeholder={globalThis.translations.language}
+                          placeholder={translations.language || globalThis.translations.language}
                           className="w-20rem max-w-full relative"
                           pt={multiselect_pt}
                         />
@@ -732,7 +732,7 @@ export const Station = () => {
           <div className="flex flex-row gap-2">
             <span className={`font-semibold select-none ${tag_text_class}`}>
               {
-                globalThis.translations.genre
+                translations.genre || globalThis.translations.genre
               }:
             </span>
             {
@@ -752,7 +752,7 @@ export const Station = () => {
                           itemTemplate={GenreItemTemplate}
                           display="chip"
                           filter
-                          placeholder={globalThis.translations.genre}
+                          placeholder={translations.genre || globalThis.translations.genre}
                           className="w-20rem max-w-full relative"
                           pt={multiselect_pt}
                         />
@@ -857,7 +857,7 @@ export const Station = () => {
               :
               <div className="flex flex-row gap-2">
                 <span className={`font-semibold select-none ${tag_text_class}`}>
-                  {globalThis.translations.tags}:
+                  {translations.tags || globalThis.translations.tags}:
                 </span>
                 <div className="flex flex-row flex-wrap gap-1">
                   {

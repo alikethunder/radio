@@ -2,7 +2,6 @@ package translations
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -20,12 +19,12 @@ func Init() {
 		log.Fatal(err)
 	}
 
-	fmt.Println("dictionary entries : ", entries)
+	//fmt.Println("dictionary entries : ", entries)
 	for _, entry := range entries {
 		if entry.IsDir() {
 			continue
 		}
-		fmt.Println("dictionary entry : ", entry, entry.Name())
+		//fmt.Println("dictionary entry : ", entry, entry.Name())
 
 		if strings.HasSuffix(entry.Name(), ".json") {
 			lang := strings.TrimSpace(strings.TrimSuffix(entry.Name(), ".json"))
@@ -51,6 +50,6 @@ func Init() {
 			Languages = append(Languages, lang)
 		}
 	}
-	fmt.Println("len(Dictionary) : ", len(Dictionary))
+	//fmt.Println("len(Dictionary) : ", len(Dictionary))
 
 }

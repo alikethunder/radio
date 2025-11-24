@@ -1,7 +1,6 @@
 package Users
 
 import (
-	"fmt"
 	"log"
 	"web_project/db"
 )
@@ -42,5 +41,5 @@ func Initialize() {
 			log.Fatal("create INDEX on users err : ", err)
 		} */
 
-	fmt.Println("users TABLE CREATED")
+	//fmt.Println("users TABLE CREATED")
 }

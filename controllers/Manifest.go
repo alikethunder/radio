@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"os"
+	"slices"
 	"web_project/constants"
 	"web_project/translations"
 
@@ -10,11 +11,17 @@ import (
 )
 
 func Manifest(ctx *fiber.Ctx) error {
-
-	language := ctx.AcceptsLanguages(translations.Languages[:]...)
-	//fmt.Println("[Manifest] langs : ", language)
+	//Manifest is using language preferred by browser
+	language := ctx.Query("language")
+	//fmt.Println("Manifest Query Language : ", language)
 
 	if language == "" {
+		language = ctx.AcceptsLanguages(translations.Languages[:]...)
+	}
+
+	languages := translations.Languages
+
+	if language == "" || !slices.Contains(languages, language) {
 		language = "en"
 	}
 
@@ -24,6 +31,7 @@ func Manifest(ctx *fiber.Ctx) error {
 
 	json.Unmarshal(lang_tags_json, &lang_tags)
 
+	//fmt.Println("Manifest Language : ", language)
 	manifest := fiber.Map{
 		"name":                        "Radio Best",
 		"short_name":                  "Radio Best",

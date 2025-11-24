@@ -2,7 +2,7 @@ package FilesEndpoints
 
 import (
 	//"bytes"
-	"fmt"
+
 	//"io"
 
 	"web_project/db"
@@ -16,7 +16,7 @@ func GetFile(ctx *fiber.Ctx) error {
 	table := ctx.Params("table")
 	field := ctx.Params("field")
 
-	fmt.Printf("[FilesEndpoints.GetFile] row_id %s, table %s, field %s \n", row_id, table, field)
+	//fmt.Printf("[FilesEndpoints.GetFile] row_id %s, table %s, field %s \n", row_id, table, field)
 
 	/* if table == "stations" && field == "avatar" {
 		return ctx.SendStatus(fiber.StatusNotFound)
@@ -26,7 +26,7 @@ func GetFile(ctx *fiber.Ctx) error {
 
 		if result, _ := db.SelectRow(table, fiber.Map{"id": row_id}, field); result != nil {
 
-			fmt.Printf("[FilesEndpoints.GetFile] %s %d \n", field, len(result[field].([]byte)))
+			//fmt.Printf("[FilesEndpoints.GetFile] %s %d \n", field, len(result[field].([]byte)))
 
 			if len(result[field].([]byte)) > 0 {
 				if table == "stations" && field == "avatar" {

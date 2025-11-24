@@ -1,7 +1,6 @@
 package Countries
 
 import (
-	"fmt"
 	"log"
 	"web_project/db"
 )
@@ -20,5 +19,5 @@ func Initialize() {
 		log.Fatal("create countries TABLE err : ", err)
 	}
 
-	fmt.Println("countries TABLE CREATED")
+	//fmt.Println("countries TABLE CREATED")
 }

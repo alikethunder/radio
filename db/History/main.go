@@ -1,7 +1,6 @@
 package History
 
 import (
-	"fmt"
 	"log"
 	"web_project/db"
 )
@@ -18,5 +17,5 @@ func Initialize() {
 		log.Fatal("create history TABLE err : ", err)
 	}
 
-	fmt.Println("users TABLE CREATED")
+	//fmt.Println("users TABLE CREATED")
 }
