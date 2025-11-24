@@ -27,7 +27,6 @@ func ListStations(ctx *fiber.Ctx) error {
 	}
 
 	props := constants.Public_Station_List_Props
-	//props := constants.Public_Station_Props()
 
 	if admin {
 		stations = db.List("stations", fiber.Map{}, additional_selectors, limit, props[:]...)

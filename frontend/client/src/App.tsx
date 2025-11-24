@@ -358,7 +358,7 @@ export default memo(function App() {
 
     const query_lang = new URLSearchParams(window.location.search).get('language') as Language
 
-    console.log('query lang : ', query_lang);
+    //console.log('query lang : ', query_lang);
 
     if (first_lang_check) {
       if (query_lang) {
