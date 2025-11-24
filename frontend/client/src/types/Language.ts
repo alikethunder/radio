@@ -1,1 +1,44 @@
-export type Language = ("en" | "ru" | "sp" | "fr" | "de" | "pt")
+export type Language = (
+  "ar" |
+  "az" |
+  "bg" |
+  "bn" |
+  "cs" |
+  "da" |
+  "de" |
+  "el" |
+  "en" |
+  "fa" |
+  "fi" |
+  "fr" |
+  "gu" |
+  "hi" |
+  "hr" |
+  "hu" |
+  "it" |
+  "ja" |
+  "jv" |
+  "ko" |
+  "mr" |
+  "nl" |
+  "pa" |
+  "pl" |
+  "pt" |
+  "ro" |
+  "ru" |
+  "sk" |
+  "sp" |
+  "sq" |
+  "sr" |
+  "su" |
+  "sv" |
+  "ta" |
+  "te" |
+  "th" |
+  "tr" |
+  "uk" |
+  "ur" |
+  "uz" |
+  "vi" |
+  "zh"
+)

@@ -83,7 +83,7 @@ export const routes = [
       if (resp.status == 200) {
         const languages = await resp.json()
 
-        actions.translations.languages(languages)
+        actions.translations.set_languages(languages)
       }
 
       const language = is_ssr() ? url_language : store.translations.language()

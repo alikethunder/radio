@@ -22,8 +22,6 @@ import { IoDiceSharp } from "react-icons/io5"
 import { ga_event, hide_multiselects, switch_to_random_station } from "@/functions"
 import { ShareListIcon } from "@/components/ShareListIcon"
 
-import { ReactComponent as Found_svg } from '@/assets/svg/found.svg'
-
 type Props = {
   stations: Station[];
   loading: boolean;
@@ -206,41 +204,6 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
       tooltipOptions,
     ])
 
-  const count_message = useMemo(() =>
-    <>
-      {/* Found svg */}
-      <svg
-        className="flex-shrink-0"
-        style={{
-          width: '1.8rem',
-          height: '1.8rem',
-          fill: '#696cff',
-        }}
-        version="1.1" xmlns="http://www.w3.org/2000/svg"
-        x="0px" y="0px" viewBox="0 0 256 256" enable-background="new 0 0 256 256">
-        <g><g><g><path fill="#000000" d="M92.6,139.6c0-9.6,3.5-17.9,10.5-24.9s15.3-10.5,24.9-10.5s17.9,3.5,24.9,10.5s10.5,15.3,10.5,24.9s-3.5,17.9-10.5,24.9c-7,7-15.3,10.5-24.9,10.5s-17.9-3.5-24.9-10.5C96,157.5,92.6,149.2,92.6,139.6z M222.7,217.8l-45.4-45.4c6.6-10.3,10-21.2,10-32.7c0-16.3-5.8-30.1-17.5-41.5c-11.6-11.4-25.6-17.2-41.8-17.2s-30.2,5.7-41.8,17.2c-11.6,11.4-17.5,25.3-17.5,41.5c0,16.3,5.8,30.2,17.5,41.8c11.6,11.6,25.6,17.5,41.8,17.5c11.4,0,22.3-3.3,32.7-10l52.1,52.6c-4.1,3-8.7,4.4-13.8,4.4H57.1c-6.3,0-11.8-2.3-16.6-6.9c-4.8-4.6-7.2-10.1-7.2-16.4l0.6-189.5c0-6.3,2.3-11.7,6.9-16.4c4.6-4.6,10.1-6.9,16.3-6.9h94.7l70.9,70.9V217.8z" /></g></g></g>
-      </svg>
-
-      <span className="md:text-base text-sm">
-        {translations.number_of_stations_found}: {searched_stations_length} {loading ? <span className="pi pi-spinner pi-spin"></span> : <span className="w-1rem inline-block"></span>}
-      </span>
-
-      <div className="flex flex-row gap-2 ml-2">
-
-        {random_station_button}
-
-        {share_list_button}
-
-      </div>
-    </>
-    , [
-      translations.number_of_stations_found,
-      searched_stations_length,
-      loading,
-      random_station_button,
-      share_list_button,
-    ])
-
   useEffect(() => {
     // hide/show search panel when touch moved on message of found stations
     if (message_ref) {
@@ -313,7 +276,31 @@ export const StationsGrid: FC<Props> = memo(({ stations, loading, place }) => {
                 } : {}
               }}
 
-              content={count_message}
+              content={<>
+                <svg
+                  className="flex-shrink-0"
+                  style={{
+                    width: '1.8rem',
+                    height: '1.8rem',
+                    fill: '#696cff',
+                  }}
+                  version="1.1" xmlns="http://www.w3.org/2000/svg"
+                  x="0px" y="0px" viewBox="0 0 256 256" enable-background="new 0 0 256 256">
+                  <g><g><g><path fill="#000000" d="M92.6,139.6c0-9.6,3.5-17.9,10.5-24.9s15.3-10.5,24.9-10.5s17.9,3.5,24.9,10.5s10.5,15.3,10.5,24.9s-3.5,17.9-10.5,24.9c-7,7-15.3,10.5-24.9,10.5s-17.9-3.5-24.9-10.5C96,157.5,92.6,149.2,92.6,139.6z M222.7,217.8l-45.4-45.4c6.6-10.3,10-21.2,10-32.7c0-16.3-5.8-30.1-17.5-41.5c-11.6-11.4-25.6-17.2-41.8-17.2s-30.2,5.7-41.8,17.2c-11.6,11.4-17.5,25.3-17.5,41.5c0,16.3,5.8,30.2,17.5,41.8c11.6,11.6,25.6,17.5,41.8,17.5c11.4,0,22.3-3.3,32.7-10l52.1,52.6c-4.1,3-8.7,4.4-13.8,4.4H57.1c-6.3,0-11.8-2.3-16.6-6.9c-4.8-4.6-7.2-10.1-7.2-16.4l0.6-189.5c0-6.3,2.3-11.7,6.9-16.4c4.6-4.6,10.1-6.9,16.3-6.9h94.7l70.9,70.9V217.8z" /></g></g></g>
+                </svg>
+
+                <span className="md:text-base text-sm">
+                  {translations.number_of_stations_found}: {searched_stations_length} {loading ? <span className="pi pi-spinner pi-spin"></span> : <span className="w-1rem inline-block"></span>}
+                </span>
+
+                <div className="flex flex-row gap-2 ml-2">
+
+                  {random_station_button}
+
+                  {share_list_button}
+
+                </div>
+              </>}
             />
           </div>
           : <></>

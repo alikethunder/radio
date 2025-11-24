@@ -1,39 +1,24 @@
 import { createStore } from 'zustand-x'
 
-import type {Language} from '@/types'
+import type { Language } from '@/types'
+import { get_api_origin } from "@/functions"
 
 const initialState = {
-  en: {},
-  ru: {},
-  sp: {},
-  fr: {},
-  de: {},
-  pt: {},
+  dictionary: {},
   language: null,
   languages: [],
+  loading: false,
 }
 
 type Translations = {
-  en: {
-    [x: string]: string;
-  },
-  ru: {
-    [x: string]: string;
-  },
-  sp: {
-    [x: string]: string;
-  },
-  fr: {
-    [x: string]: string;
-  },
-  de: {
-    [x: string]: string;
-  },
-  pt: {
-    [x: string]: string;
+  dictionary: {
+    [x: string]: {
+      [y: string]: string;
+    }
   },
   language: Language | null,
   languages: Language[],
+  loading: boolean,
 }
 
 export const translationsStore = createStore('app')(initialState as Translations,
@@ -44,13 +29,18 @@ export const translationsStore = createStore('app')(initialState as Translations
     }
   })
   .extendSelectors((state, get, api) => ({
-    get_translation(field: string) {
+    get_translation(field: string, capitalize?: boolean) {
       //@ts-ignore
-      return get[get.language() ?? 'en']()[field]
+      const tr = get.dictionary()[get.language() ?? 'en'][field]
+      return tr ? capitalize ? tr.charAt(0) + tr.slice(1) : tr : ''
     },
-    get_translations(fields: string[]) {
+  }))
+  .extendSelectors((state, get, api) => ({
+    get_translations(fields: string[], capitalize?: boolean) {
       //@ts-ignore
-      return Object.fromEntries(fields.map(field => [field, get[get.language() ?? 'en']()[field]]))
+      return Object.fromEntries(fields.map(field => {
+        return [field, get.get_translation(field, capitalize)]
+      }))
     },
   }))
   .extendActions((set, get, api) => ({
@@ -63,11 +53,17 @@ export const translationsStore = createStore('app')(initialState as Translations
         //@ts-ignore
         .forEach(n => set[n](initialState[n]))
     },
-    add_translation(field: string, translation: string) {
-      //@ts-ignore
-      const lang_dict = structuredClone(get[get.language()]())
-      lang_dict[field] = translation
-      //@ts-ignore
-      set[get.language()](lang_dict)
+    set_language(language: Language) {
+      set.language(language)
+      //get dictionary for this language
+      set.loading(true)
+      fetch(`${get_api_origin()}/dictionary/${language}.json`).then(r => r.json()).then(json => { get.dictionary()[language] = json }).finally(() => {
+        set.loading(false)
+      })
     },
+    set_languages(languages: Language[]) {
+      set.languages(languages)
+
+      set.dictionary(Object.fromEntries(languages.map(l => [l, {}])))
+    }
   }))

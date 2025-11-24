@@ -7,6 +7,7 @@ served/static/favicon.ico.fiber.gz
 served/static/robots.txt.fiber.gz
 served/static/*.fiber.gz
 served/static/.well-known/*.fiber.gz
+served/static/dictionary/*.json.fiber.gz
 
 # Logs
 logs

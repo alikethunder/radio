@@ -69,10 +69,12 @@ export const RightSidebar: FC = memo(() => {
     console.log('[trim] result : ', res)
   }, 50)
 
-  const languages_options = useMemo(() => languages.map(code => ({
-    code,
-    translation: languages_translations[code],
-  })), [languages_translations])
+  const languages_options = useMemo(() => {
+    return languages.map(code => ({
+      code,
+      translation: languages_translations[code],
+    }))
+  }, [languages])
 
   const active_dropdown_language = useMemo(() => languages_options.find(l => l.code == language), [language, languages_options])
 
@@ -312,7 +314,7 @@ export const RightSidebar: FC = memo(() => {
 
         <Dropdown
           value={active_dropdown_language}
-          onChange={(e) => actions.translations.language(e.value.code)}
+          onChange={(e) => actions.translations.set_language(e.value.code)}
           options={languages_options}
           optionLabel="translation"
           className="w-full border-noround border-none flex-shrink-0"

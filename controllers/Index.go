@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/url"
+	"slices"
 	"strings"
 	"web_project/constants"
 	"web_project/cookies"
@@ -29,6 +30,19 @@ func Index(ctx *fiber.Ctx) error {
 	}
 
 	languages := translations.Languages
+
+	if !slices.Contains(languages, language) {
+		queries := ctx.Queries()
+		var query string
+		for key, val := range queries {
+			if key == "language" {
+				query += key + "=en"
+			} else {
+				query += key + "=" + val
+			}
+		}
+		return ctx.Redirect("/?"+query, fiber.StatusPermanentRedirect)
+	}
 
 	authCookie := ctx.Cookies(cookies.AuthCookieName)
 

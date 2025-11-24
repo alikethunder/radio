@@ -64,6 +64,8 @@ import { get_station } from "@/API/station/get_station"
 import { update_json } from "@/API/profile/update_json"
 import { StationCountry, Language, StationLanguage, StationGenre, HistoryRecord } from "@/types"
 
+let first_lang_check = true;
+
 const get_alphabet_sort = (language: Language | null) => ((a: StationLanguage | StationCountry | StationGenre, b: StationLanguage | StationCountry | StationGenre) => {
   language ??= 'en'
   return (a[language] ?? '') > (b[language] ?? '') ? 1 : -1
@@ -276,13 +278,14 @@ export default memo(function App() {
 
   useEffect(() => {
     //language preset
+
     (async () => {
       const resp = await fetch(`${get_api_origin()}/api/v1/translation`)
 
       if (resp.status == 200) {
         const languages = await resp.json()
 
-        actions.translations.languages(languages)
+        actions.translations.set_languages(languages)
 
         const curr_selected_lang = store.translations.language()
 
@@ -293,16 +296,18 @@ export default memo(function App() {
           const nav_lang = navigator.language.substring(0, 2)
 
           if (languages.includes(nav_lang)) {
-            actions.translations.language(nav_lang as Language)
+            actions.translations.set_language(nav_lang as Language)
           } else {
             //navigator language is not supported
             //find supported in navigator languages
 
             const supported_navigator_languages = navigator.languages.find(l => languages.includes(l.substring(0, 2)))
 
-            actions.translations.language(supported_navigator_languages ?? languages[0])
+            actions.translations.set_language(supported_navigator_languages ?? languages[0])
 
           }
+        } else {
+          actions.translations.set_language(curr_selected_lang)
         }
       }
     })()
@@ -350,7 +355,22 @@ export default memo(function App() {
 
   useEffect(() => {
     //update language in url
-    if (languages.length && language) {
+
+    const query_lang = new URLSearchParams(window.location.search).get('language') as Language
+
+    console.log('query lang : ', query_lang);
+
+    if (first_lang_check) {
+      if (query_lang) {
+        actions.translations.set_language(query_lang)
+      } else if (languages.length && language) {
+        set_search(s => {
+          s.set('language', language)
+          return s
+        })
+      }
+      first_lang_check = false
+    } else if (languages.length && language) {
       set_search(s => {
         s.set('language', language)
         return s

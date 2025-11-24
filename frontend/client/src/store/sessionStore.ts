@@ -5,7 +5,6 @@ import {
 } from '@/constants/router'
 
 import { createJSONStorage } from 'zustand/middleware'
-import { Station } from '@/types';
 
 import {
   StationTag,
@@ -19,26 +18,6 @@ type SessionStore = {
   leftSidebarOpened: boolean;
   prev_pathname: string;
   redirect_from_google: boolean;
-  checked_translation: {
-    en: {
-      [x: string]: boolean;
-    };
-    ru: {
-      [x: string]: boolean;
-    };
-    sp: {
-      [x: string]: boolean;
-    };
-    de: {
-      [x: string]: boolean;
-    };
-    fr: {
-      [x: string]: boolean;
-    };
-    pt: {
-      [x: string]: boolean;
-    };
-  };
   pwa_event: any;
   station_tags: StationTag[]; //all possible station tags
   station_languages: StationLanguage[]; //all possible station languages
@@ -51,14 +30,6 @@ const initial_state = {
   leftSidebarOpened: false,
   prev_pathname: app_routes.root,
   redirect_from_google: false,
-  checked_translation: {
-    en: {},
-    ru: {},
-    sp: {},
-    de: {},
-    fr: {},
-    pt: {},
-  },
   pwa_event: null,
   station_tags: [],
   station_languages: [],
@@ -74,11 +45,6 @@ export const sessionStore = createStore('sessionStore')(initial_state, {
   }
 })
   .extendSelectors((state, get, api) => ({
-    translation_checked(language: string | null, field: string) {
-      //returns if translation was checked
-      //@ts-ignore
-      return get.checked_translation()[language ?? 'en']?.[field]
-    },
     get_station_tag(name: string) {
       return get.station_tags()?.find(t => t.name == name)
     },
@@ -93,17 +59,6 @@ export const sessionStore = createStore('sessionStore')(initial_state, {
     },
   }))
   .extendActions((set, get, api) => ({
-    translation_checked(language: string, field: string) {
-      //stores that translation was checked
-      //@ts-ignore
-      const checked_translation = structuredClone(get.checked_translation())
-      //@ts-ignore
-      checked_translation[language] = checked_translation[language] ?? {}
-      //@ts-ignore
-      checked_translation[language][field] = true
-      //@ts-ignore
-      set.checked_translation(checked_translation)
-    },
     update_tags: (tags: StationTag[]) => {
       set.station_tags([...get.station_tags(), ...tags].filter((t, i, a) => i === a.indexOf(t)))
     },
