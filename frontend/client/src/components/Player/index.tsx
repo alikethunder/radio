@@ -2,7 +2,6 @@ import { FC, memo, useCallback, useEffect, useMemo, useState } from "react"
 
 import {
   generatePath,
-  useNavigate,
 } from "react-router-dom"
 
 import { Button } from 'primereact/button'
@@ -43,8 +42,6 @@ import { HistoryRecord } from "@/types"
 import { v7 } from "uuid"
 
 export const Player: FC = memo(() => {
-
-  const navigate = useNavigate()
 
   const mobile = useMobile()
 

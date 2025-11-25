@@ -291,23 +291,32 @@ export default memo(function App() {
 
         if (!curr_selected_lang || !languages.includes(curr_selected_lang)) {
           //lang was not set or it is not supported
-
-          //get navigator language
-          const nav_lang = navigator.language.substring(0, 2)
-
-          if (languages.includes(nav_lang)) {
-            actions.translations.set_language(nav_lang as Language)
+          const query_lang = searchParams.get('language') as Language
+          if (query_lang) {
+            actions.translations.set_language(query_lang)
           } else {
-            //navigator language is not supported
-            //find supported in navigator languages
+            //get navigator language
+            const nav_lang = navigator.language.substring(0, 2)
 
-            const supported_navigator_languages = navigator.languages.find(l => languages.includes(l.substring(0, 2)))
+            if (languages.includes(nav_lang)) {
+              actions.translations.set_language(nav_lang as Language)
+              searchParams.set('language', nav_lang)
+              set_search(searchParams)
+            } else {
+              //navigator language is not supported
+              //find supported in navigator languages
 
-            actions.translations.set_language(supported_navigator_languages ?? languages[0])
+              const supported_navigator_languages = navigator.languages.find(l => languages.includes(l.substring(0, 2)))
 
+              actions.translations.set_language((supported_navigator_languages ?? 'en') as Language)
+              searchParams.set('language', supported_navigator_languages ?? languages[0])
+              set_search(searchParams)
+            }
           }
         } else {
           actions.translations.set_language(curr_selected_lang)
+          searchParams.set('language', curr_selected_lang)
+          set_search(searchParams)
         }
       }
     })()
@@ -352,31 +361,6 @@ export default memo(function App() {
       })()
     }
   }, [language])
-
-  useEffect(() => {
-    //update language in url
-
-    const query_lang = new URLSearchParams(window.location.search).get('language') as Language
-
-    //console.log('query lang : ', query_lang);
-
-    if (first_lang_check) {
-      if (query_lang) {
-        actions.translations.set_language(query_lang)
-      } else if (languages.length && language) {
-        set_search(s => {
-          s.set('language', language)
-          return s
-        })
-      }
-      first_lang_check = false
-    } else if (languages.length && language) {
-      set_search(s => {
-        s.set('language', language)
-        return s
-      })
-    }
-  }, [language, languages])
 
   useEffect(() => {
     if (typeof window !== 'undefined') {

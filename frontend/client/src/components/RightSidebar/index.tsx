@@ -4,7 +4,7 @@ import { Button } from 'primereact/button'
 
 import { Sidebar } from 'primereact/sidebar'
 
-import { Dropdown } from 'primereact/dropdown'
+import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown'
 
 import {
   QueryLink,
@@ -28,7 +28,7 @@ import {
 } from "@/store"
 
 import './index.sass'
-import { generatePath } from "react-router-dom"
+import { generatePath, useSearchParams } from "react-router-dom"
 
 import { icon_classes } from "@/constants/icon_classes"
 import { classNames } from "primereact/utils"
@@ -40,6 +40,8 @@ import languages_translations from '&/settings/languages_translations.json'
 export const RightSidebar: FC = memo(() => {
 
   const rightSidebarOpened = useTrackedStore().session.rightSidebarOpened()
+
+  const [searchParams, set_search] = useSearchParams()
 
   const signedin = useStore().auth.signedin()
 
@@ -289,6 +291,12 @@ export const RightSidebar: FC = memo(() => {
 
   const [history_page] = usePageInList([app_routes.history])
 
+  const set_language = useCallback((e: DropdownChangeEvent) => {
+    actions.translations.set_language(e.value.code)
+    searchParams.set('language', e.value.code)
+    set_search(searchParams)
+  }, [])
+
   return (
     <Sidebar
       visible={rightSidebarOpened}
@@ -314,7 +322,7 @@ export const RightSidebar: FC = memo(() => {
 
         <Dropdown
           value={active_dropdown_language}
-          onChange={(e) => actions.translations.set_language(e.value.code)}
+          onChange={set_language}
           options={languages_options}
           optionLabel="translation"
           className="w-full border-noround border-none flex-shrink-0"

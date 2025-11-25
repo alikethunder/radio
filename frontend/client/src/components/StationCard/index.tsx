@@ -70,7 +70,6 @@ export const StationCard: FC<Props> = memo(({ station, style, at_history, classN
     'open_search_stations_panel',
   ], true)
 
-
   return (
     station ?
       <div className={classNames({

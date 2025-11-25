@@ -2,6 +2,7 @@ import { createStore } from 'zustand-x'
 
 import type { Language } from '@/types'
 import { get_api_origin } from "@/functions"
+import { useSearchParams } from 'react-router-dom'
 
 const initialState = {
   dictionary: {},
@@ -31,7 +32,7 @@ export const translationsStore = createStore('app')(initialState as Translations
   .extendSelectors((state, get, api) => ({
     get_translation(field: string, capitalize?: boolean) {
       //@ts-ignore
-      const tr = get.dictionary()[get.language() ?? 'en'][field]
+      const tr = (get.dictionary()[get.language() ?? 'en'] ?? {})[field] ?? ''
       return tr ? capitalize ? tr.charAt(0) + tr.slice(1) : tr : ''
     },
   }))
@@ -54,10 +55,13 @@ export const translationsStore = createStore('app')(initialState as Translations
         .forEach(n => set[n](initialState[n]))
     },
     set_language(language: Language) {
-      set.language(language)
       //get dictionary for this language
       set.loading(true)
-      fetch(`${get_api_origin()}/dictionary/${language}.json`).then(r => r.json()).then(json => { get.dictionary()[language] = json }).finally(() => {
+      fetch(`${get_api_origin()}/dictionary/${language}.json`).then(r => r.json()).then(json => {
+        get.dictionary()[language] = json
+      }).finally(() => {
+        set.language(language)
+
         set.loading(false)
       })
     },

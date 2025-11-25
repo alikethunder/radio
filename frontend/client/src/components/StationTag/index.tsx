@@ -9,7 +9,7 @@ import {
   store,
   useStore,
 } from "@/store"
-import { useLocation, useNavigate } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 import { tag_text_class } from '@/constants/classes'
 
 type Props = {
