@@ -1,0 +1,1 @@
+ALTER TABLE countries ADD (ar text, az text, bg text, bn text, cs text, da text,  el text,  fa text, fi text,  gu text, hi text, hr text, hu text, it text, ja text, jv text, ko text, mr text, nl text, pa text, pl text,  ro text,  sk text,  sq text, sr text, su text, sv text, ta text, te text, th text, tr text, uk text, ur text, uz text, vi text, zh text);

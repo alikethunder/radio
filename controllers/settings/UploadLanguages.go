@@ -28,7 +28,9 @@ func UploadLanguages(ctx *fiber.Ctx) error {
 
 				for _, language := range json_data {
 
-					db.Insert("languages", language)
+					db.Update("languages", language, fiber.Map{
+						"en": language["en"],
+					})
 
 				}
 			}

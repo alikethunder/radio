@@ -39,8 +39,9 @@ func UploadGenres(ctx *fiber.Ctx) error {
 
 					genre["color"] = station_tag_colors[rand.Intn(len(station_tag_colors))]
 
-					db.Insert("genres", genre)
-
+					db.Update("genres", genre, fiber.Map{
+						"en": genre["en"],
+					})
 				}
 			}
 		}

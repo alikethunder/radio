@@ -28,7 +28,9 @@ func UploadCountries(ctx *fiber.Ctx) error {
 
 				for _, country := range json_data {
 
-					db.Insert("countries", country)
+					db.Update("countries", country, fiber.Map{
+						"en": country["en"],
+					})
 
 				}
 			}

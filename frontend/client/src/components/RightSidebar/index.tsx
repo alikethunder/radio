@@ -512,7 +512,7 @@ export const RightSidebar: FC = memo(() => {
             : <></>
         }
  */}
-        {/* {
+        {
           root_admin ?
             <Button
               label={'Upload genres'}
@@ -534,8 +534,7 @@ export const RightSidebar: FC = memo(() => {
               />
             </Button>
             : <></>
-        } */}
-        {/*
+        }
         {
           root_admin ?
             <Button
@@ -582,7 +581,7 @@ export const RightSidebar: FC = memo(() => {
               />
             </Button>
             : <></>
-        } */}
+        }
 
       </div>
 
