@@ -1,0 +1,41 @@
+1764166952105
+
+Enter docker container at VDS
+  docker exec -it scylla_radio bash
+
+  cd /var/lib/scylla/data/app
+
+  tar czf stations-e2e474a099e811efa7195423bc32960b.tar.gz stations-e2e474a099e811efa7195423bc32960b
+
+  exit 
+
+Copy to /root
+  docker cp scylla_radio:/var/lib/scylla/data/app/stations-e2e474a099e811efa7195423bc32960b.tar.gz ./
+
+From local pc copy the file
+  scp -P 56777 root@45.66.248.26:/root/stations-e2e474a099e811efa7195423bc32960b.tar.gz .
+
+  docker cp stations-e2e474a099e811efa7195423bc32960b.tar.gz scylla_radio:/var/lib/scylla/data/app/stations-e2e474a099e811efa7195423bc32960b.tar.gz
+
+  docker exec -it scylla_radio bash
+
+https://opensource.docs.scylladb.com/stable/operating-scylla/procedures/backup-restore/restore.html
+  cd /var/lib/scylla/data/app
+
+  supervisorctl stop scylla
+
+  sudo rm -rf /var/lib/scylla/commitlog/*
+
+  rm -rf stations-e2e474a099e811efa7195423bc32960b
+
+  tar -xvzf stations-e2e474a099e811efa7195423bc32960b.tar.gz
+
+  sudo chown -R scylla:scylla /var/lib/scylla/data/app/stations-e2e474a099e811efa7195423bc32960b
+
+  supervisorctl start scylla
+
+  
+
+Make snapshot - nodetool snapshot mykeyspace
+  nodetool snapshot app
+

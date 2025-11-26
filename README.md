@@ -59,3 +59,7 @@ Replace everything in sitemap except loc
 ^(?!(<loc>.*</loc>)).*
 Every empty line 
 ^$\n
+
+Restart prod service 
+  sudo systemctl restart radiobest
+  sudo systemctl restart radiobestssr
