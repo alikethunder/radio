@@ -38,6 +38,7 @@ import {
 import { useFavoriteStations } from "./hooks"
 import { get_api_origin, is_ssr } from "./functions"
 import { Language, StationCountry, StationGenre, StationLanguage } from "./types"
+import { get_station_description } from "./API/station/get_station_description"
 
 type Loader_params = { params: { [param: string]: string; }, request: Request }
 
@@ -225,8 +226,17 @@ export const routes = [
             }
           }
           try {
+            const url = new URL(request.url)
 
-            const station = await get_station(id)
+            const url_language = url.searchParams.get('language') as Language
+            const language = is_ssr() ? url_language : store.translations.language() as Language
+
+            const [station, description] = await Promise.all([
+              get_station(id),
+              get_station_description(id, language)
+            ])
+
+            station[`description_${language}`] = description
 
             if (!station) {
               throw new Error('station not found')
