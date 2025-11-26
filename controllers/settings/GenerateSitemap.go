@@ -15,93 +15,93 @@ import (
 )
 
 func GenerateSitemap(ctx *fiber.Ctx) error {
-
 	admin := db.CheckRootAdmin(ctx)
 
 	if admin {
-		now := time.Now().UTC()
-		baseURL := "https://" + constants.BaseURL
+		// Start the sitemap generation in a goroutine to avoid blocking the HTTP request
+		go func() {
+			defer func() {
+				if r := recover(); r != nil {
+					sentry.CaptureMessage(fmt.Sprintf("Sitemap generation panic: %v", r))
+				}
+			}()
 
-		smi := smg.NewSitemapIndex(true)
-		smi.SetCompress(false)
-		smi.SetHostname(baseURL)
-		smi.SetOutputPath("./served/static/sitemaps/")
-		smi.SetServerURI("/sitemaps/")
+			now := time.Now().UTC()
+			baseURL := "https://" + constants.BaseURL
 
-		sm := smi.NewSitemap()
-		sm.SetName("radiobest")
-		sm.SetLastMod(&now)
-		sm.SetMaxURLsCount(5000)
+			smi := smg.NewSitemapIndex(true)
+			smi.SetCompress(false)
+			smi.SetHostname(baseURL)
+			smi.SetOutputPath("./served/static/sitemaps/")
+			smi.SetServerURI("/sitemaps/")
 
-		languages := translations.Languages
+			sm := smi.NewSitemap()
+			sm.SetName("radiobest")
+			sm.SetLastMod(&now)
+			sm.SetMaxURLsCount(5000)
 
-		var main_alternates []*smg.SitemapAlternateLoc
+			languages := translations.Languages
 
-		for _, lang := range languages {
-
-			main_alternates = append(main_alternates, &smg.SitemapAlternateLoc{
-				Hreflang: constants.Language_codes[lang].(string),
-				Href:     baseURL + "?language=" + lang,
-				Rel:      "alternate",
-			})
-		}
-
-		for _, lang := range languages {
-
-			sm.Add(&smg.SitemapLoc{
-				Loc:        "?language=" + lang,
-				LastMod:    &now,
-				ChangeFreq: smg.Weekly,
-				Priority:   1,
-				Images:     []*smg.SitemapImage{{ImageLoc: "/android-chrome-192x192.png"}},
-				Alternate:  main_alternates,
-			})
-		}
-
-		for _, station := range db.List("stations", fiber.Map{"broadcasting": true}, []string{}, "", "id") {
-
-			id := station["id"].(gocql.UUID).String()
-
-			var station_alternates []*smg.SitemapAlternateLoc
+			var main_alternates []*smg.SitemapAlternateLoc
 
 			for _, lang := range languages {
-
-				station_alternates = append(station_alternates, &smg.SitemapAlternateLoc{
+				main_alternates = append(main_alternates, &smg.SitemapAlternateLoc{
 					Hreflang: constants.Language_codes[lang].(string),
-					Href:     baseURL + "/station/" + id + "?language=" + lang,
+					Href:     baseURL + "?language=" + lang,
 					Rel:      "alternate",
 				})
 			}
 
 			for _, lang := range languages {
 				sm.Add(&smg.SitemapLoc{
-					Loc:        "/station/" + id + "?language=" + lang,
+					Loc:        "?language=" + lang,
 					LastMod:    &now,
 					ChangeFreq: smg.Weekly,
 					Priority:   1,
-					Images:     []*smg.SitemapImage{{ImageLoc: "/api/v1/files/stations/" + id + "/avatar"}},
-					Alternate:  station_alternates,
+					Images:     []*smg.SitemapImage{{ImageLoc: "/android-chrome-192x192.png"}},
+					Alternate:  main_alternates,
 				})
 			}
-		}
 
-		filename, err := smi.Save()
-		if err != nil {
-			sentry.CaptureMessage(fmt.Sprintf("Unable to Save Sitemap: %s", err))
-		}
+			for _, station := range db.List("stations", fiber.Map{"broadcasting": true}, []string{}, "", "id") {
+				id := station["id"].(gocql.UUID).String()
 
-		// Pings the Search engines. default Google and Bing, But you can add any other ping URL's
-		// in this format: http://www.google.com/webmasters/tools/ping?sitemap=%s
+				var station_alternates []*smg.SitemapAlternateLoc
 
-		if os.Getenv("ENV") == "prod" {
-			smi.PingSearchEngines()
-		}
+				for _, lang := range languages {
+					station_alternates = append(station_alternates, &smg.SitemapAlternateLoc{
+						Hreflang: constants.Language_codes[lang].(string),
+						Href:     baseURL + "/station/" + id + "?language=" + lang,
+						Rel:      "alternate",
+					})
+				}
 
-		fmt.Println("sitemap_index file:", filename)
+				for _, lang := range languages {
+					sm.Add(&smg.SitemapLoc{
+						Loc:        "/station/" + id + "?language=" + lang,
+						LastMod:    &now,
+						ChangeFreq: smg.Weekly,
+						Priority:   1,
+						Images:     []*smg.SitemapImage{{ImageLoc: "/api/v1/files/stations/" + id + "/avatar"}},
+						Alternate:  station_alternates,
+					})
+				}
+			}
 
-		if err == nil {
-			return ctx.SendStatus(fiber.StatusOK)
-		}
+			filename, err := smi.Save()
+			if err != nil {
+				sentry.CaptureMessage(fmt.Sprintf("Unable to Save Sitemap: %s", err))
+			}
+
+			if os.Getenv("ENV") == "prod" {
+				smi.PingSearchEngines()
+			}
+
+			fmt.Println("sitemap_index file:", filename)
+		}()
+
+		// Return an immediate response to the client
+		return ctx.SendStatus(fiber.StatusOK)
 	}
 
 	return ctx.SendStatus(fiber.StatusUnauthorized)
