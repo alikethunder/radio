@@ -193,7 +193,7 @@ func Index(ctx *fiber.Ctx) error {
 			if station["description_"+language] != nil {
 				station_description = station["description_"+language].(string)
 			} else {
-				station_description = ""
+				station_description = fmt.Sprint(station["name"]) + " - " + translations.Dictionary[language]["home_page_description"]
 			}
 
 			station_genres := ""
