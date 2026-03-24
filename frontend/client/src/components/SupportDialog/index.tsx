@@ -62,7 +62,9 @@ export const SupportDialog: FC = memo(() => {
     if (!clipboard_supported) return
 
     try {
-      await navigator.clipboard.writeText(details)
+      // Extract content without brackets (e.g., "(IBAN) KZ05..." -> "KZ05...")
+      const textToCopy = details.replace(/^\([^)]+\)\s*/, '')
+      await navigator.clipboard.writeText(textToCopy)
       setCopiedIndex(index)
 
       setTimeout(() => {
@@ -76,11 +78,11 @@ export const SupportDialog: FC = memo(() => {
   const list = methods.map((method, index) =>
     <div className="col-12" key={method.name}>
       <div className='flex flex-column gap-1 align-items-center border-top-1 surface-border p-1 sm:p-2'>
-        <div className="flex flex-row align-items-center gap-1">
+        <div className="flex flex-row align-items-center gap-2">
           {method.image}
 
 
-          <div className="ml-1 text-2xl font-bold text-900">
+          <div className="ml-1 text-xl font-bold text-900">
             {method.name}
           </div>
 
@@ -123,7 +125,7 @@ export const SupportDialog: FC = memo(() => {
       }}
 
       content={() => <>
-        <div className="text-center p-2 sm:p-4 pr-2 sm:pr-2 align-items-center surface-card text-2xl">
+        <div className="text-center p-2 sm:p-4 pr-2 sm:pr-2 align-items-center surface-card text-2xl font-bold">
           {translations.support_project}
         </div>
         {/* @ts-ignore */}
