@@ -115,5 +115,6 @@
   "no_countries_found": "Нет таких стран",
   "no_languages_found": "Нет таких языков",
   "loading": "загружается",
-  "playing": "играет"
+   "playing": "играет",
+   "support_project": "Поддержка проекта"
 }

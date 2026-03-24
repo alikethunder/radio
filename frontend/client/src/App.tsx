@@ -32,6 +32,7 @@ import {
   StationInfoDialog,
   ShareListPopup,
   YandexAd,
+  SupportDialog,
 } from '@/components'
 import { list } from "@/API/station/list"
 
@@ -490,6 +491,8 @@ export default memo(function App() {
       <DynamicTooltip />
 
       <StationInfoDialog />
+
+      <SupportDialog />
 
       <ShareListPopup />
 

@@ -113,7 +113,8 @@
   "next_station": "наступна станція",
   "no_genres_found": "Жодних жанрів не знайдено",
   "no_countries_found": "Не знайдено жодних країн",
-  "no_languages_found": "Жодних мов не знайдено.",
-  "loading": "завантаження",
-  "playing": "Граючи"
+   "no_languages_found": "Жодних мов не знайдено.",
+   "loading": "завантаження",
+   "playing": "Граючи",
+   "support_project": "Підтримка проекту"
 }

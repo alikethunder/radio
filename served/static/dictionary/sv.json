@@ -113,7 +113,8 @@
   "next_station": "nästa station",
   "no_genres_found": "Inga genrer hittades",
   "no_countries_found": "Inga länder hittades",
-  "no_languages_found": "Inga språk hittade",
-  "loading": "laddar",
-  "playing": "spelar"
+   "no_languages_found": "Inga språk hittade",
+   "loading": "laddar",
+   "playing": "spelar",
+   "support_project": "Stödprojekt"
 }

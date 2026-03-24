@@ -115,5 +115,6 @@
   "no_countries_found": "국가가 없습니다",
   "no_languages_found": "언어 없음",
   "loading": "로딩 중",
-  "playing": "재생 중"
+   "playing": "재생 중",
+   "support_project": "지원 프로젝트"
 }

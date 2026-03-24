@@ -113,7 +113,8 @@
   "next_station": "Bir sonraki istasyon",
   "no_genres_found": "Hiç tür bulunamadı",
   "no_countries_found": "Hiç ülke bulunamadı.",
-  "no_languages_found": "Dil bulunamadı",
-  "loading": "yükleniyor",
-  "playing": "oynayan"
+   "no_languages_found": "Dil bulunamadı",
+   "loading": "yükleniyor",
+   "playing": "oynayan",
+   "support_project": "Destek projesi"
 }

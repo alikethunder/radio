@@ -84,6 +84,10 @@ export const RightSidebar: FC = memo(() => {
     useDebounceCallback(() => actions.session.rightSidebarOpened(false), 50)
     , [])
 
+  const open_support_dialog = useCallback(() => {
+    actions.app.open_support_dialog(true)
+  }, [])
+
   const change_jsons = useCallback(
     useDebounceCallback(
       //to upload json of stations
@@ -190,6 +194,7 @@ export const RightSidebar: FC = memo(() => {
     'my_stations',
     'privacy_policy',
     'history',
+    'support_project'
   ], true)
 
   const index_now = useDebounceCallback(async () => {
@@ -587,6 +592,17 @@ export const RightSidebar: FC = memo(() => {
 
 
       <div className="bottom flex flex-column flex-shrink-0">
+
+        <Button
+          rounded
+          outlined
+          raised
+          className={`border-noround action_text_font px-2 text-xl shadow_on_hover w-full border-none`}
+          label={translations.support_project}
+
+          onClick={open_support_dialog}
+          icon={`${icon_classes} pi-dollar`}
+        />
 
         <a href={`/privacy_policy.txt`} target="_blank" className="w-full">
           <Button

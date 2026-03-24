@@ -47,6 +47,7 @@ type AppStore = {
   genres_multiselect_ref: MultiSelect | null;
   countries_multiselect_ref: MultiSelect | null;
   languages_multiselect_ref: MultiSelect | null;
+  open_support_dialog: boolean;
 }
 
 const initial_state = {
@@ -85,6 +86,7 @@ const initial_state = {
   genres_multiselect_ref: null,
   countries_multiselect_ref: null,
   languages_multiselect_ref: null,
+  open_support_dialog: true,
 } as AppStore
 
 export const appStore = createStore('app')(initial_state)

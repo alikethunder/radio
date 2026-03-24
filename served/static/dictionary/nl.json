@@ -113,7 +113,8 @@
   "next_station": "volgende station",
   "no_genres_found": "Geen genres gevonden",
   "no_countries_found": "Geen landen gevonden",
-  "no_languages_found": "Geen talen gevonden",
-  "loading": "Laden",
-  "playing": "spelende"
+   "no_languages_found": "Geen talen gevonden",
+   "loading": "Laden",
+   "playing": "spelende",
+   "support_project": "Ondersteuningsproject"
 }

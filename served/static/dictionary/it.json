@@ -113,7 +113,8 @@
   "next_station": "prossima stazione",
   "no_genres_found": "Nessun genere trovato",
   "no_countries_found": "Nessun paese trovato",
-  "no_languages_found": "Nessuna lingua trovata",
-  "loading": "caricamento",
-  "playing": "giocando"
+   "no_languages_found": "Nessuna lingua trovata",
+   "loading": "caricamento",
+   "playing": "giocando",
+   "support_project": "Progetto di supporto"
 }

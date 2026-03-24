@@ -114,6 +114,7 @@
   "no_genres_found": "Δεν βρέθηκαν γένη",
   "no_countries_found": "Δεν βρέθηκαν χώρες",
   "no_languages_found": "Δε βρέθηκε καμία γλώσσα",
-  "loading": "φορτώνει",
-  "playing": "παίζον"
+   "loading": "φορτώνει",
+   "playing": "παίζον",
+   "support_project": "Πρόγραμμα υποστήριξης"
 }

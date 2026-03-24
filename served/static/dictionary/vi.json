@@ -114,6 +114,7 @@
   "no_genres_found": "Không tìm thấy thể loại",
   "no_countries_found": "Không tìm thấy quốc gia nào",
   "no_languages_found": "Không tìm thấy ngôn ngữ",
-  "loading": "đang tải",
-  "playing": "đang chơi"
+   "loading": "đang tải",
+   "playing": "đang chơi",
+   "support_project": "Dự án hỗ trợ"
 }

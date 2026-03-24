@@ -115,5 +115,6 @@
   "no_countries_found": "国が見つかりません",
   "no_languages_found": "言語が見つかりません",
   "loading": "読み込み中",
-  "playing": "遊んでいる"
+   "playing": "遊んでいる",
+   "support_project": "サポートプロジェクト"
 }
