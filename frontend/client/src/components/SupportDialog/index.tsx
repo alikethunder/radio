@@ -1,4 +1,4 @@
-import { FC, memo } from "react"
+import { FC, memo, useState } from "react"
 
 import {
   actions,
@@ -28,6 +28,8 @@ export const SupportDialog: FC = memo(() => {
     'support_project',
   ], true)
 
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null)
+
   const methods = [
     {
       name: 'Visa',
@@ -56,10 +58,25 @@ export const SupportDialog: FC = memo(() => {
     }
   ]
 
+  const handleCopy = async (details: string, index: number) => {
+    if (!clipboard_supported) return
+
+    try {
+      await navigator.clipboard.writeText(details)
+      setCopiedIndex(index)
+
+      setTimeout(() => {
+        setCopiedIndex(null)
+      }, 3000)
+    } catch (err) {
+      console.error('Failed to copy:', err)
+    }
+  }
+
   const list = methods.map((method, index) =>
     <div className="col-12" key={method.name}>
       <div className='flex flex-column gap-1 align-items-center border-top-1 surface-border p-1 sm:p-2'>
-        <div className="flex flex-row align-items-center">
+        <div className="flex flex-row align-items-center gap-1">
           {method.image}
 
 
@@ -67,7 +84,15 @@ export const SupportDialog: FC = memo(() => {
             {method.name}
           </div>
 
-          <i className="pi "></i>
+          {
+            clipboard_supported ?
+              <i
+                className={`pi ${copiedIndex === index ? 'pi-check' : 'pi-copy'}`}
+                onClick={() => handleCopy(method.details, index)}
+                style={{ cursor: 'pointer' }}
+              ></i>
+              : <></>
+          }
         </div>
 
         <div className="text-center" style={{ wordBreak: 'break-word' }}>
