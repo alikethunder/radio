@@ -18,7 +18,6 @@ import { ReactComponent as BTCSvg } from '@/assets/svg/btc.svg'
 import { ReactComponent as EthSvg } from '@/assets/svg/eth.svg'
 
 const svg_class = 'w-3rem h-3rem'
-const clipboard_supported = !!navigator.clipboard.writeText
 
 export const SupportDialog: FC = memo(() => {
 
@@ -59,19 +58,21 @@ export const SupportDialog: FC = memo(() => {
   ]
 
   const handleCopy = async (details: string, index: number) => {
-    if (!clipboard_supported) return
+    if (typeof window !== 'undefined') {
+      if (!navigator?.clipboard?.writeText) return
 
-    try {
-      // Extract content without brackets (e.g., "(IBAN) KZ05..." -> "KZ05...")
-      const textToCopy = details.replace(/^\([^)]+\)\s*/, '')
-      await navigator.clipboard.writeText(textToCopy)
-      setCopiedIndex(index)
+      try {
+        // Extract content without brackets (e.g., "(IBAN) KZ05..." -> "KZ05...")
+        const textToCopy = details.replace(/^\([^)]+\)\s*/, '')
+        await navigator.clipboard.writeText(textToCopy)
+        setCopiedIndex(index)
 
-      setTimeout(() => {
-        setCopiedIndex(null)
-      }, 3000)
-    } catch (err) {
-      console.error('Failed to copy:', err)
+        setTimeout(() => {
+          setCopiedIndex(null)
+        }, 3000)
+      } catch (err) {
+        console.error('Failed to copy:', err)
+      }
     }
   }
 
@@ -87,7 +88,7 @@ export const SupportDialog: FC = memo(() => {
           </div>
 
           {
-            clipboard_supported ?
+            typeof window !== 'undefined' && !!navigator?.clipboard?.writeText ?
               <i
                 className={`pi ${copiedIndex === index ? 'pi-check' : 'pi-copy'}`}
                 onClick={() => handleCopy(method.details, index)}
